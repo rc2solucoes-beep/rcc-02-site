@@ -1,0 +1,177 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* ────────────────────────────────────────────────
+   Barlow — Google Fonts
+   Família única da identidade RC2
+──────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Barlow+Condensed:wght@400;500;700;800&display=swap');
+
+@custom-variant dark (&:is(.dark *));
+
+/* ────────────────────────────────────────────────
+   Tailwind v4 — Tokens RC2 "The High-End Tool"
+──────────────────────────────────────────────── */
+@theme inline {
+  /* RC2 Palette */
+  --color-rc2-sand:   #F5F0E8;  /* Areia Industrial — fundo principal (50%) */
+  --color-rc2-ink:    #121212;  /* Ink Black — seções escuras, headers (20%) */
+  --color-rc2-forest: #163020;  /* Deep Forest — rodapés, prova social (20%) */
+  --color-rc2-orange: #FF5F1F;  /* Safety Orange — CTA, detalhe logo (máx 10%) */
+  --color-rc2-ebony:  #1E1610;  /* Ébano Quente — texto corrido */
+
+  /* shadcn semantic tokens mapeados para RC2 */
+  --color-background:         var(--background);
+  --color-foreground:         var(--foreground);
+  --color-primary:            var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary:          var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted:              var(--muted);
+  --color-muted-foreground:   var(--muted-foreground);
+  --color-accent:             var(--accent);
+  --color-accent-foreground:  var(--accent-foreground);
+  --color-destructive:        var(--destructive);
+  --color-border:             var(--border);
+  --color-input:              var(--input);
+  --color-ring:               var(--ring);
+  --color-card:               var(--card);
+  --color-card-foreground:    var(--card-foreground);
+  --color-popover:            var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  /* Radius */
+  --radius-sm:  calc(var(--radius) * 0.6);
+  --radius-md:  calc(var(--radius) * 0.8);
+  --radius-lg:  var(--radius);
+  --radius-xl:  calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+
+  /* Tipografia Barlow */
+  --font-sans:      'Barlow', sans-serif;
+  --font-condensed: 'Barlow Condensed', sans-serif;
+  --font-mono:      ui-monospace, monospace;
+}
+
+/* ────────────────────────────────────────────────
+   CSS Variables — RC2 Brand
+   Remapeia shadcn tokens para paleta RC2
+──────────────────────────────────────────────── */
+:root {
+  /* Fundo: Areia Industrial — NUNCA branco puro */
+  --background: #F5F0E8;
+  --foreground: #1E1610;
+
+  /* Cartões e popovers sobre o fundo areia */
+  --card:            #F5F0E8;
+  --card-foreground: #1E1610;
+  --popover:         #F5F0E8;
+  --popover-foreground: #1E1610;
+
+  /* Primary = Safety Orange (CTA) */
+  --primary:            #FF5F1F;
+  --primary-foreground: #F5F0E8;
+
+  /* Secondary = Ink Black (dark sections) */
+  --secondary:            #121212;
+  --secondary-foreground: #F5F0E8;
+
+  /* Muted = tom neutro sobre areia */
+  --muted:            #E8E2D8;
+  --muted-foreground: #5A4E42;
+
+  /* Accent = Deep Forest */
+  --accent:            #163020;
+  --accent-foreground: #F5F0E8;
+
+  /* Destructive */
+  --destructive: #DC2626;
+
+  /* Borders e inputs */
+  --border: #D4CCB8;
+  --input:  #D4CCB8;
+  --ring:   #FF5F1F;
+
+  /* Radius base (shadcn usa 0.625rem por padrão) */
+  --radius: 0.375rem;
+}
+
+/* RC2 não usa tema escuro — a marca opera em luz */
+/* Dark mode desativado intencionalmente */
+
+/* ────────────────────────────────────────────────
+   Base styles
+──────────────────────────────────────────────── */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply font-sans;
+    font-feature-settings: "kern" 1, "liga" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    background-color: #F5F0E8;
+    color: #1E1610;
+    font-family: 'Barlow', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  h1 {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #1E1610;
+  }
+
+  h2 {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #1E1610;
+  }
+
+  h3 {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 500;
+    color: #1E1610;
+  }
+}
+
+/* ────────────────────────────────────────────────
+   Utilitários RC2 customizados
+──────────────────────────────────────────────── */
+@layer utilities {
+  /* Eyebrow / Label — uppercase com tracking generoso */
+  .rc2-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.10em;
+    font-size: 0.75rem;
+    color: #FF5F1F;
+  }
+
+  /* Display — impacto máximo */
+  .rc2-display {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* Caption / rodapé */
+  .rc2-caption {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    font-size: 0.75rem;
+    color: #5A4E42;
+  }
+}
