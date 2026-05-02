@@ -3,21 +3,9 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { Turnstile } from "@marsidev/react-turnstile";
+import { contactSchema, type ContactFormData } from "@/lib/validations/contact";
 import { cn } from "@/lib/utils";
-
-const schema = z.object({
-  name: z.string().min(2, "Nome obrigatório"),
-  company: z.string().min(2, "Empresa obrigatória"),
-  email: z.string().email("E-mail inválido"),
-  whatsapp: z.string().min(10, "WhatsApp obrigatório (com DDD)"),
-  segment: z.string().min(2, "Segmento obrigatório"),
-  size: z.string().min(1, "Selecione o número de colaboradores"),
-  solution: z.string().min(1, "Selecione uma solução"),
-  message: z.string().min(10, "Descreva seu desafio (mínimo 10 caracteres)"),
-});
-
-type FormData = z.infer<typeof schema>;
 
 const solutionOptions = [
   "Automações com IA",
@@ -37,7 +25,7 @@ const sizeOptions = [
 
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
-  return <p className="mt-1 text-xs text-destructive">{message}</p>;
+  return <p className="mt-1 text-xs text-destructive" role="alert">{message}</p>;
 }
 
 function Label({
@@ -52,7 +40,7 @@ function Label({
   return (
     <label htmlFor={htmlFor} className="block text-sm font-medium text-rc2-ebony mb-1.5">
       {children}
-      {required && <span className="text-rc2-orange ml-0.5">*</span>}
+      {required && <span className="text-rc2-orange ml-0.5" aria-hidden>*</span>}
     </label>
   );
 }
@@ -60,19 +48,41 @@ function Label({
 const inputBase =
   "w-full rounded-none border border-border bg-rc2-sand px-4 py-3 text-sm text-rc2-ebony placeholder:text-rc2-ebony/40 outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors";
 
+const TURNSTILE_SITE_KEY =
+  process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "1x00000000000000000000AA";
+
 export function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
+  } = useForm<ContactFormData>({ resolver: zodResolver(contactSchema) });
 
-  // Phase 3: UI only — backend integration in Phase 4
-  const onSubmit = async (_data: FormData) => {
-    await new Promise((r) => setTimeout(r, 800));
-    setSubmitted(true);
+  const onSubmit = async (data: ContactFormData) => {
+    setServerError(null);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, turnstileToken: turnstileToken ?? "" }),
+      });
+
+      const json = await res.json() as { success?: boolean; error?: string };
+
+      if (!res.ok) {
+        setServerError(json.error ?? "Erro inesperado. Tente novamente.");
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      setServerError("Falha de conexão. Verifique sua internet e tente novamente.");
+    }
   };
 
   if (submitted) {
@@ -100,6 +110,16 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
+      {/* Honeypot — deve estar vazio */}
+      <input
+        type="text"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="hidden"
+        {...register("website")}
+      />
+
       {/* Nome + Empresa */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
@@ -212,9 +232,25 @@ export function ContactForm() {
         <FieldError message={errors.message?.message} />
       </div>
 
+      {/* Turnstile */}
+      <Turnstile
+        siteKey={TURNSTILE_SITE_KEY}
+        onSuccess={setTurnstileToken}
+        onError={() => setTurnstileToken(null)}
+        onExpire={() => setTurnstileToken(null)}
+        options={{ theme: "light", language: "pt-BR" }}
+      />
+
+      {/* Server error */}
+      {serverError && (
+        <p className="text-sm text-destructive bg-destructive/5 border border-destructive/20 px-4 py-3" role="alert">
+          {serverError}
+        </p>
+      )}
+
       <button
         type="submit"
-        disabled={isSubmitting}
+        disabled={isSubmitting || !turnstileToken}
         className="w-full sm:w-auto px-10 h-12 bg-rc2-orange text-rc2-sand font-semibold tracking-wide uppercase text-xs hover:bg-rc2-orange/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {isSubmitting ? "Enviando..." : "Solicitar diagnóstico"}
