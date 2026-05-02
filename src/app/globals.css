@@ -2,12 +2,6 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* ────────────────────────────────────────────────
-   Barlow — Google Fonts
-   Família única da identidade RC2
-──────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Barlow+Condensed:wght@400;500;700;800&display=swap');
-
 @custom-variant dark (&:is(.dark *));
 
 /* ────────────────────────────────────────────────
@@ -48,9 +42,9 @@
   --radius-xl:  calc(var(--radius) * 1.4);
   --radius-2xl: calc(var(--radius) * 1.8);
 
-  /* Tipografia Barlow */
-  --font-sans:      'Barlow', sans-serif;
-  --font-condensed: 'Barlow Condensed', sans-serif;
+  /* Tipografia Barlow (variáveis injetadas via next/font/google no layout) */
+  --font-sans:      var(--font-barlow), sans-serif;
+  --font-condensed: var(--font-barlow-condensed), sans-serif;
   --font-mono:      ui-monospace, monospace;
 }
 
@@ -119,27 +113,27 @@
     @apply bg-background text-foreground;
     background-color: #F5F0E8;
     color: #1E1610;
-    font-family: 'Barlow', sans-serif;
+    font-family: var(--font-barlow), sans-serif;
     font-size: 16px;
     line-height: 1.7;
   }
 
   h1 {
-    font-family: 'Barlow', sans-serif;
+    font-family: var(--font-barlow), sans-serif;
     font-weight: 700;
     letter-spacing: -0.02em;
     color: #1E1610;
   }
 
   h2 {
-    font-family: 'Barlow', sans-serif;
+    font-family: var(--font-barlow), sans-serif;
     font-weight: 600;
     letter-spacing: -0.01em;
     color: #1E1610;
   }
 
   h3 {
-    font-family: 'Barlow', sans-serif;
+    font-family: var(--font-barlow), sans-serif;
     font-weight: 500;
     color: #1E1610;
   }
@@ -151,7 +145,7 @@
 @layer utilities {
   /* Eyebrow / Label — uppercase com tracking generoso */
   .rc2-label {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: var(--font-barlow-condensed), sans-serif;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.10em;
@@ -161,7 +155,7 @@
 
   /* Display — impacto máximo */
   .rc2-display {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: var(--font-barlow-condensed), sans-serif;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -169,7 +163,7 @@
 
   /* Caption / rodapé */
   .rc2-caption {
-    font-family: 'Barlow', sans-serif;
+    font-family: var(--font-barlow), sans-serif;
     font-weight: 300;
     font-size: 0.75rem;
     color: #5A4E42;
