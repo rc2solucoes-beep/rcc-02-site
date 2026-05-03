@@ -52,7 +52,7 @@ export function Header() {
                 "ml-2 font-semibold tracking-wide uppercase text-xs px-5 h-9 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90"
               )}
             >
-              Diagnóstico Gratuito
+              Diagnóstico gratuito
             </Link>
           </nav>
 
@@ -96,7 +96,7 @@ export function Header() {
               )}
               onClick={() => setOpen(false)}
             >
-              Diagnóstico Gratuito
+              Diagnóstico gratuito
             </Link>
           </nav>
         </div>

@@ -46,7 +46,7 @@ export default function PrivacidadePage() {
                 <li>Descrição do desafio</li>
               </ul>
               <p>
-                Também coletamos dados de navegação de forma automática (endereço IP, tipo de dispositivo, páginas visitadas) por meio de ferramentas de analytics.
+                Também coletamos dados de navegação de forma automática (endereço IP, tipo de dispositivo, páginas visitadas) por meio de ferramentas de análise de dados.
               </p>
             </section>
 
@@ -93,7 +93,7 @@ export default function PrivacidadePage() {
             <section>
               <h2 className="text-xl font-semibold text-rc2-ebony mb-3">7. Cookies</h2>
               <p>
-                Utilizamos cookies para funcionamento do site e analytics de privacidade (Umami — sem cookies de rastreamento individual). Você pode desativar cookies no seu navegador.
+                Utilizamos cookies para funcionamento do site e análises de uso com foco em privacidade (Umami — sem cookies de rastreamento individual). Você pode desativar cookies no seu navegador.
               </p>
             </section>
 

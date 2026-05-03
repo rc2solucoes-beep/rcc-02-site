@@ -109,7 +109,7 @@ export function ContactForm() {
           rel="noopener noreferrer"
           className="mt-6 text-sm font-medium text-rc2-orange underline underline-offset-4"
         >
-          Prefere falar agora? Chama no WhatsApp →
+          Prefere falar agora? Fale no WhatsApp →
         </a>
       </div>
     );

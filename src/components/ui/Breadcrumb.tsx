@@ -30,7 +30,7 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <nav aria-label="Breadcrumb" className="hidden">
+      <nav aria-label="Trilha de navegação" className="hidden">
         <ol>
           <li><Link href="/">Início</Link></li>
           {items.map((item, i) =>

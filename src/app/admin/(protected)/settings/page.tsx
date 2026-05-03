@@ -10,7 +10,7 @@ const SETTING_KEYS = [
   { key: "whatsapp",       label: "WhatsApp (só números)", type: "text",   placeholder: "5511988028550" },
   { key: "instagram_url",  label: "URL do Instagram",      type: "url",    placeholder: "https://instagram.com/..." },
   { key: "linkedin_url",   label: "URL do LinkedIn",       type: "url",    placeholder: "https://linkedin.com/company/..." },
-  { key: "og_image_url",   label: "URL OG Image padrão",   type: "url",    placeholder: "/og-image.png" },
+  { key: "og_image_url",   label: "URL da imagem OG padrão", type: "url",    placeholder: "/og-image.png" },
 ];
 
 async function getSettings() {
