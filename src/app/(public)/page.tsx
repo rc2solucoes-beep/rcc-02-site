@@ -68,7 +68,7 @@ export default function HomePage() {
               Conhecer soluções
             </Link>
           </div>
-          <p className="mt-8 rc2-caption text-rc2-ebony/40 italic">
+          <p className="mt-8 rc2-caption text-rc2-ebony/70 italic">
             "Tecnologia que funciona. Operação que entrega."
           </p>
         </div>
@@ -150,11 +150,11 @@ export default function HomePage() {
             liderança de operações digitais, a RC2 atua do diagnóstico à
             implantação.
           </p>
-          <p className="text-rc2-sand/50 italic text-sm border-l-2 border-rc2-orange pl-4">
+          <p className="text-rc2-sand/70 italic text-sm border-l-2 border-rc2-orange pl-4">
             &ldquo;A IA não substitui uma operação mal estruturada. Primeiro
             organizamos o processo. Depois automatizamos o que faz sentido.&rdquo;
           </p>
-          <p className="mt-8 rc2-caption text-rc2-sand/40">
+          <p className="mt-8 rc2-caption text-rc2-sand/60">
             Mais de 20 anos de experiência em tecnologia, operações digitais,
             e-commerce, automações e gestão de equipes.
           </p>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { buttonVariants } from "@/components/ui/button";
@@ -17,6 +18,9 @@ const navLinks = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
 
   return (
     <header className="sticky top-0 z-50 bg-rc2-sand/95 backdrop-blur-sm border-b border-border">
@@ -30,7 +34,13 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-rc2-ebony hover:text-rc2-orange transition-colors"
+                aria-current={isActive(link.href) ? "page" : undefined}
+                className={cn(
+                  "ui-focus-ring rounded-sm text-sm transition-colors",
+                  isActive(link.href)
+                    ? "font-semibold text-rc2-orange underline underline-offset-4 decoration-rc2-orange"
+                    : "font-medium text-rc2-ebony hover:text-rc2-orange"
+                )}
               >
                 {link.label}
               </Link>
@@ -48,7 +58,7 @@ export function Header() {
 
           {/* Mobile hamburger */}
           <button
-            className="md:hidden p-2 -mr-2 text-rc2-ebony hover:text-rc2-orange transition-colors"
+            className="ui-focus-ring rounded md:hidden p-2 -mr-2 text-rc2-ebony hover:text-rc2-orange transition-colors"
             onClick={() => setOpen(!open)}
             aria-label={open ? "Fechar menu" : "Abrir menu"}
             aria-expanded={open}
@@ -66,7 +76,13 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="py-2 text-sm font-medium text-rc2-ebony hover:text-rc2-orange transition-colors"
+                aria-current={isActive(link.href) ? "page" : undefined}
+                className={cn(
+                  "ui-focus-ring rounded-sm py-2 text-sm transition-colors",
+                  isActive(link.href)
+                    ? "font-semibold text-rc2-orange"
+                    : "font-medium text-rc2-ebony hover:text-rc2-orange"
+                )}
                 onClick={() => setOpen(false)}
               >
                 {link.label}

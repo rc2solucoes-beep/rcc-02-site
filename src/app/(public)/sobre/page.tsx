@@ -81,11 +81,11 @@ export default function SobrePage() {
                 </p>
               </div>
 
-              <blockquote className="mt-8 border-l-2 border-rc2-orange pl-5 text-rc2-ebony/50 italic text-sm leading-relaxed">
+              <blockquote className="mt-8 border-l-2 border-rc2-orange pl-5 text-rc2-ebony/70 italic text-sm leading-relaxed">
                 &ldquo;A IA não substitui uma operação mal estruturada. Primeiro
                 organizamos o processo. Depois automatizamos o que faz
                 sentido.&rdquo;
-                <cite className="block mt-2 not-italic font-medium text-rc2-ebony/40 text-xs">
+                <cite className="block mt-2 not-italic font-medium text-rc2-ebony/70 text-xs">
                   — Robson Azevedo, fundador
                 </cite>
               </blockquote>

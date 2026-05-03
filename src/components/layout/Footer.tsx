@@ -36,13 +36,13 @@ export function Footer() {
 
           {/* Empresa */}
           <div>
-            <h3 className="rc2-label text-rc2-sand/50 mb-4">Empresa</h3>
+            <h3 className="rc2-label text-rc2-sand/60 mb-4">Empresa</h3>
             <ul className="space-y-2">
               {footerLinks.empresa.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-rc2-sand/70 hover:text-rc2-sand transition-colors"
+                    className="ui-focus-ring rounded-sm text-sm text-rc2-sand/70 hover:text-rc2-sand transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -53,13 +53,13 @@ export function Footer() {
 
           {/* Serviços */}
           <div>
-            <h3 className="rc2-label text-rc2-sand/50 mb-4">Serviços</h3>
+            <h3 className="rc2-label text-rc2-sand/60 mb-4">Serviços</h3>
             <ul className="space-y-2">
               {footerLinks.servicos.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-rc2-sand/70 hover:text-rc2-sand transition-colors"
+                    className="ui-focus-ring rounded-sm text-sm text-rc2-sand/70 hover:text-rc2-sand transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -70,7 +70,7 @@ export function Footer() {
 
           {/* Contato */}
           <div>
-            <h3 className="rc2-label text-rc2-sand/50 mb-4">Contato</h3>
+            <h3 className="rc2-label text-rc2-sand/60 mb-4">Contato</h3>
             <ul className="space-y-2">
               <li>
                 <a
@@ -96,7 +96,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-12 pt-6 border-t border-rc2-sand/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="rc2-caption text-rc2-sand/40 text-center sm:text-left">
+          <p className="rc2-caption text-rc2-sand/60 text-center sm:text-left">
             © 2025 RC2 Soluções. Todos os direitos reservados.
           </p>
           <div className="flex gap-6">
@@ -104,7 +104,7 @@ export function Footer() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="rc2-caption text-rc2-sand/40 hover:text-rc2-sand/60 transition-colors"
+                className="ui-focus-ring rounded-sm rc2-caption text-rc2-sand/60 hover:text-rc2-sand transition-colors"
               >
                 {link.label}
               </Link>

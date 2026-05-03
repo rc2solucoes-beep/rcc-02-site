@@ -44,7 +44,7 @@ export default function ServicosPage() {
                   <p className="text-rc2-ebony/70 leading-relaxed mb-6">
                     {service.description}
                   </p>
-                  <p className="text-sm font-medium text-rc2-ebony/50 italic border-l-2 border-rc2-orange pl-4">
+                  <p className="text-sm font-medium text-rc2-ebony/70 italic border-l-2 border-rc2-orange pl-4">
                     {service.cta}
                   </p>
                   <Link
@@ -59,7 +59,7 @@ export default function ServicosPage() {
                 {/* Lists */}
                 <div className={index % 2 === 1 ? "lg:order-1" : ""}>
                   <div className="mb-6">
-                    <h3 className="rc2-label text-rc2-ebony/40 mb-3">O que pode ser implantado</h3>
+                    <h3 className="rc2-label text-rc2-ebony/70 mb-3">O que pode ser implantado</h3>
                     <ul className="space-y-2">
                       {service.items.map((item, i) => (
                         <li key={i} className="flex items-start gap-2.5">
@@ -70,7 +70,7 @@ export default function ServicosPage() {
                     </ul>
                   </div>
                   <div>
-                    <h3 className="rc2-label text-rc2-ebony/40 mb-3">Benefícios</h3>
+                    <h3 className="rc2-label text-rc2-ebony/70 mb-3">Benefícios</h3>
                     <ul className="space-y-2">
                       {service.benefits.map((benefit, i) => (
                         <li key={i} className="flex items-start gap-2.5">

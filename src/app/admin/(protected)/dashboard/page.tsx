@@ -1,5 +1,8 @@
+import Link from "next/link";
 import { createSessionClient } from "@/lib/supabase/server";
 import { AdminHeader } from "@/components/admin/AdminHeader";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { FileText, Users, TrendingUp } from "lucide-react";
 
 async function getStats() {
@@ -48,12 +51,18 @@ export default async function DashboardPage() {
         <div className="mt-8 bg-white border border-border p-6">
           <h2 className="text-sm font-semibold text-rc2-ebony mb-3">Acesso rápido</h2>
           <div className="flex flex-wrap gap-3">
-            <a href="/admin/posts/novo" className="px-4 py-2 bg-rc2-orange text-white text-sm font-medium hover:bg-rc2-orange/90 transition-colors">
+            <Link
+              href="/admin/posts/novo"
+              className={cn(buttonVariants({ variant: "default" }), "bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90 px-4 h-9")}
+            >
               + Novo post
-            </a>
-            <a href="/admin/leads" className="px-4 py-2 border border-border text-sm font-medium text-rc2-ebony hover:border-rc2-orange transition-colors">
+            </Link>
+            <Link
+              href="/admin/leads"
+              className={cn(buttonVariants({ variant: "outline" }), "px-4 h-9")}
+            >
               Ver leads
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -109,7 +109,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <div className="container mx-auto max-w-3xl">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-rc2-sand/50 hover:text-rc2-sand/80 transition-colors mb-8 uppercase tracking-wider"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-rc2-sand/70 hover:text-rc2-sand transition-colors mb-8 uppercase tracking-wider"
             >
               ← Blog
             </Link>
@@ -119,7 +119,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <h1 className="text-3xl md:text-4xl font-bold text-rc2-sand leading-tight mb-4">
               {post.title}
             </h1>
-            <p className="text-rc2-sand/60 text-lg leading-relaxed">{post.summary}</p>
+            <p className="text-rc2-sand/70 text-lg leading-relaxed">{post.summary}</p>
           </div>
         </header>
 
@@ -148,7 +148,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <div className="mt-16 pt-8 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <Link
               href="/blog"
-              className="text-sm font-medium text-rc2-ebony/60 hover:text-rc2-orange transition-colors"
+              className="text-sm font-medium text-rc2-ebony/70 hover:text-rc2-orange transition-colors"
             >
               ← Voltar para o blog
             </Link>

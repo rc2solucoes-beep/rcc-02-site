@@ -57,7 +57,7 @@ export default async function BlogPage() {
           {posts.length === 0 ? (
             <div className="text-center py-24">
               <SectionLabel className="mb-4">Em breve</SectionLabel>
-              <p className="text-rc2-ebony/60 text-lg">Novos conteúdos chegando em breve.</p>
+              <p className="text-rc2-ebony/70 text-lg">Novos conteúdos chegando em breve.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -83,13 +83,13 @@ export default async function BlogPage() {
                         <span className="text-rc2-forest/30 text-4xl font-bold font-condensed uppercase tracking-widest">RC2</span>
                       </div>
                     )}
-                    <time className="text-xs text-rc2-ebony/40 uppercase tracking-wider">
+                    <time className="text-xs text-rc2-ebony/70 uppercase tracking-wider">
                       {formatDate(post.published_at)}
                     </time>
                     <h2 className={`font-semibold text-rc2-ebony mt-1.5 group-hover:text-rc2-orange transition-colors leading-snug ${index === 0 ? "text-2xl" : "text-lg"}`}>
                       {post.title}
                     </h2>
-                    <p className="text-rc2-ebony/60 text-sm mt-2 line-clamp-3">{post.summary}</p>
+                    <p className="text-rc2-ebony/70 text-sm mt-2 line-clamp-3">{post.summary}</p>
                     <span className="inline-block mt-3 text-sm font-medium text-rc2-orange group-hover:underline underline-offset-4">
                       Ler artigo →
                     </span>

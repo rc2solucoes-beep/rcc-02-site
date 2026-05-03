@@ -161,6 +161,11 @@
     letter-spacing: 0.04em;
   }
 
+  /* Focus ring — aplicado a links e botões fora do shadcn */
+  .ui-focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rc2-orange focus-visible:ring-offset-2;
+  }
+
   /* Caption / rodapé */
   .rc2-caption {
     font-family: var(--font-barlow), sans-serif;

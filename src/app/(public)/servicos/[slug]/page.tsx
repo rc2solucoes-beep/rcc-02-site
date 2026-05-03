@@ -108,7 +108,7 @@ export default async function ServicePage({ params }: Props) {
                 ))}
               </ul>
 
-              <blockquote className="border-l-2 border-rc2-orange pl-4 text-rc2-ebony/60 italic text-sm leading-relaxed">
+              <blockquote className="border-l-2 border-rc2-orange pl-4 text-rc2-ebony/70 italic text-sm leading-relaxed">
                 {service.cta}
               </blockquote>
 
@@ -135,7 +135,7 @@ export default async function ServicePage({ params }: Props) {
               {prev && (
                 <Link
                   href={`/servicos/${prev.slug}`}
-                  className="flex items-center gap-2 text-sm text-rc2-ebony/50 hover:text-rc2-ebony transition-colors"
+                  className="flex items-center gap-2 text-sm text-rc2-ebony/70 hover:text-rc2-ebony transition-colors"
                 >
                   <ArrowLeft size={14} aria-hidden="true" />
                   <span>{prev.shortTitle}</span>
@@ -144,7 +144,7 @@ export default async function ServicePage({ params }: Props) {
             </div>
             <Link
               href="/servicos"
-              className="text-sm text-rc2-ebony/50 hover:text-rc2-ebony transition-colors"
+              className="text-sm text-rc2-ebony/70 hover:text-rc2-ebony transition-colors"
             >
               ← Todos os serviços
             </Link>
@@ -152,7 +152,7 @@ export default async function ServicePage({ params }: Props) {
               {next && (
                 <Link
                   href={`/servicos/${next.slug}`}
-                  className="flex items-center gap-2 text-sm text-rc2-ebony/50 hover:text-rc2-ebony transition-colors"
+                  className="flex items-center gap-2 text-sm text-rc2-ebony/70 hover:text-rc2-ebony transition-colors"
                 >
                   <span>{next.shortTitle}</span>
                   <ArrowLeft size={14} className="rotate-180" aria-hidden="true" />

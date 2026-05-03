@@ -70,7 +70,7 @@ export function CTABlock({
             target={secondaryHref.startsWith("http") ? "_blank" : undefined}
             rel={secondaryHref.startsWith("http") ? "noopener noreferrer" : undefined}
             className={cn(
-              "text-sm font-medium underline underline-offset-4 transition-opacity hover:opacity-70",
+              "ui-focus-ring rounded-sm text-sm font-medium underline underline-offset-4 transition-opacity hover:opacity-70",
               isDark ? "text-rc2-sand/60" : "text-rc2-sand/90"
             )}
           >

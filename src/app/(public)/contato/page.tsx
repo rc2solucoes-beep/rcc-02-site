@@ -54,7 +54,7 @@ export default function ContatoPage() {
             </div>
 
             <div className="mt-6">
-              <p className="text-xs text-rc2-ebony/40 mb-2">Prefere falar diretamente?</p>
+              <p className="text-xs text-rc2-ebony/70 mb-2">Prefere falar diretamente?</p>
               <a
                 href="https://wa.me/5511988028550"
                 target="_blank"

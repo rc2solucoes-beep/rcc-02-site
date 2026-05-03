@@ -55,6 +55,7 @@ export function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileError, setTurnstileError] = useState<string | null>(null);
 
   const {
     register,
@@ -64,6 +65,12 @@ export function ContactForm() {
 
   const onSubmit = async (data: ContactFormData) => {
     setServerError(null);
+
+    if (!turnstileToken) {
+      setTurnstileError("Complete a verificação de segurança antes de enviar.");
+      return;
+    }
+    setTurnstileError(null);
 
     try {
       const res = await fetch("/api/contact", {
@@ -235,11 +242,18 @@ export function ContactForm() {
       {/* Turnstile */}
       <Turnstile
         siteKey={TURNSTILE_SITE_KEY}
-        onSuccess={setTurnstileToken}
-        onError={() => setTurnstileToken(null)}
-        onExpire={() => setTurnstileToken(null)}
+        onSuccess={(token) => { setTurnstileToken(token); setTurnstileError(null); }}
+        onError={() => { setTurnstileToken(null); setTurnstileError("Falha na verificação de segurança. Recarregue a página."); }}
+        onExpire={() => { setTurnstileToken(null); setTurnstileError("Verificação expirada. Por favor, complete novamente."); }}
         options={{ theme: "light", language: "pt-BR" }}
       />
+
+      {/* Turnstile error */}
+      <div aria-live="polite">
+        {turnstileError && (
+          <p className="text-xs text-destructive" role="alert">{turnstileError}</p>
+        )}
+      </div>
 
       {/* Server error */}
       {serverError && (
@@ -251,14 +265,14 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full sm:w-auto px-10 h-12 bg-rc2-orange text-rc2-sand font-semibold tracking-wide uppercase text-xs hover:bg-rc2-orange/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        className="ui-focus-ring w-full sm:w-auto px-10 h-12 bg-rc2-orange text-rc2-sand font-semibold tracking-wide uppercase text-xs hover:bg-rc2-orange/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {isSubmitting ? "Enviando..." : "Solicitar diagnóstico"}
       </button>
 
-      <p className="text-xs text-rc2-ebony/40">
+      <p className="text-xs text-rc2-ebony/70">
         Ao enviar, você concorda com nossa{" "}
-        <a href="/privacidade" className="underline hover:text-rc2-ebony/60 transition-colors">
+        <a href="/privacidade" className="ui-focus-ring rounded-sm underline hover:text-rc2-ebony transition-colors">
           Política de Privacidade
         </a>
         .

@@ -92,7 +92,7 @@ export default function SolucoesComIAPage() {
                   {block.title}
                 </h2>
                 {block.subtitle && (
-                  <p className="text-sm text-rc2-ebony/50 mb-4">{block.subtitle}</p>
+                  <p className="text-sm text-rc2-ebony/70 mb-4">{block.subtitle}</p>
                 )}
                 <ul className="mt-4 space-y-2">
                   {block.items.map((item, i) => (
@@ -108,7 +108,7 @@ export default function SolucoesComIAPage() {
 
           {/* Bridge text */}
           <div className="mt-16 max-w-2xl">
-            <p className="text-rc2-ebony/60 text-lg leading-relaxed border-l-2 border-rc2-orange pl-5 italic">
+            <p className="text-rc2-ebony/70 text-lg leading-relaxed border-l-2 border-rc2-orange pl-5 italic">
               Muitas empresas ainda não sabem exatamente o que pedir. A RC2
               ajuda a identificar quais soluções fazem sentido para o momento do
               seu negócio.
