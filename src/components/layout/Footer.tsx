@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
+import { services } from "@/lib/content/services";
 
 const footerLinks = {
   empresa: [
@@ -7,12 +8,10 @@ const footerLinks = {
     { href: "/blog", label: "Blog" },
     { href: "/contato", label: "Contato" },
   ],
-  servicos: [
-    { href: "/servicos/automacoes-com-ia", label: "Automações com IA" },
-    { href: "/servicos/agentes-de-ia", label: "Agentes de IA" },
-    { href: "/servicos/automacao-de-processos", label: "Integrações e Automações" },
-    { href: "/servicos/sites-e-landing-pages", label: "Sites Inteligentes" },
-  ],
+  servicos: services.map(s => ({
+    href: `/servicos/${s.slug}`,
+    label: s.shortTitle,
+  })),
 };
 
 const legalLinks = [

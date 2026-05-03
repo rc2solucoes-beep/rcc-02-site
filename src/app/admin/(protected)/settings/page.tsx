@@ -31,17 +31,27 @@ async function saveSettings(formData: FormData) {
     })
   );
   revalidatePath("/admin/settings");
-  redirect("/admin/settings");
+  redirect("/admin/settings?saved=1");
 }
 
 const inputBase = "w-full border border-border bg-rc2-sand px-3 py-2.5 text-sm text-rc2-ebony placeholder:text-rc2-ebony/40 outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors";
 
-export default async function SettingsPage() {
+type Props = {
+  searchParams: Promise<{ saved?: string }>;
+};
+
+export default async function SettingsPage({ searchParams }: Props) {
   const settings = await getSettings();
+  const { saved } = await searchParams;
 
   return (
     <>
       <AdminHeader title="Configurações" description="Dados gerais do site" />
+      {saved === "1" && (
+        <div className="mx-8 mt-4 px-4 py-3 bg-green-50 border border-green-200 text-green-800 text-sm rounded">
+          ✓ Configurações salvas com sucesso.
+        </div>
+      )}
       <form action={saveSettings} className="p-8 space-y-5 max-w-xl">
         {SETTING_KEYS.map(({ key, label, type, placeholder }) => (
           <div key={key}>

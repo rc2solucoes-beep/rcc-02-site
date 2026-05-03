@@ -264,7 +264,7 @@ export function ContactForm() {
 
       <button
         type="submit"
-        disabled={isSubmitting}
+        disabled={!turnstileToken || isSubmitting}
         className="ui-focus-ring w-full sm:w-auto px-10 h-12 bg-rc2-orange text-rc2-sand font-semibold tracking-wide uppercase text-xs hover:bg-rc2-orange/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {isSubmitting ? "Enviando..." : "Solicitar diagnóstico"}

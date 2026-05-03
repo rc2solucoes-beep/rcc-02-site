@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, FileText, Users, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, FileText, Users, Settings, LogOut, Menu, X } from "lucide-react";
 
 const navItems = [
   { href: "/admin/dashboard", label: "Dashboard",  icon: LayoutDashboard },
@@ -16,6 +17,7 @@ const navItems = [
 export function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const [open, setOpen] = useState(false);
 
   const handleSignOut = async () => {
     const supabase = createClient();
@@ -24,8 +26,35 @@ export function AdminSidebar() {
     router.refresh();
   };
 
+  const handleNavClick = () => {
+    setOpen(false);
+  };
+
   return (
-    <aside className="w-56 shrink-0 bg-rc2-ink text-rc2-sand flex flex-col">
+    <>
+      {/* Mobile menu button */}
+      <button
+        onClick={() => setOpen(!open)}
+        className="md:hidden fixed top-4 left-4 z-40 p-2 rounded bg-rc2-ink text-rc2-sand hover:bg-rc2-ink/90 transition-colors"
+        aria-label="Menu"
+      >
+        {open ? <X size={20} /> : <Menu size={20} />}
+      </button>
+
+      {/* Overlay */}
+      {open && (
+        <div
+          className="md:hidden fixed inset-0 bg-black/50 z-30"
+          onClick={() => setOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside className={cn(
+        "bg-rc2-ink text-rc2-sand flex flex-col transition-all z-40",
+        "fixed md:relative md:z-auto w-56 h-screen md:h-auto shrink-0",
+        open ? "left-0" : "-left-56 md:left-0"
+      )}>
       {/* Brand */}
       <div className="px-5 py-5 border-b border-white/10">
         <span className="text-xs font-semibold uppercase tracking-widest text-rc2-orange">RC2 Admin</span>
@@ -39,6 +68,7 @@ export function AdminSidebar() {
             <Link
               key={href}
               href={href}
+              onClick={handleNavClick}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded text-sm font-medium transition-colors",
                 active
@@ -63,6 +93,7 @@ export function AdminSidebar() {
           Sair
         </button>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }
