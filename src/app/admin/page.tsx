@@ -31,14 +31,15 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-rc2-sand flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-rc2-sand via-rc2-sand to-surface-2 flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 flex justify-center">
           <Logo variant="dark" />
         </div>
 
-        <div className="bg-white border border-border p-8">
-          <h1 className="text-xl font-semibold text-rc2-ebony mb-6">Acesso administrativo</h1>
+        <div className="bg-white border border-border rounded-lg shadow-lg p-8">
+          <h1 className="text-xl font-semibold text-rc2-ebony mb-2">Acesso administrativo</h1>
+          <p className="text-sm text-text-secondary mb-6">Digite suas credenciais para acessar o painel.</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -52,7 +53,7 @@ export default function AdminLoginPage() {
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full border border-border bg-rc2-sand px-4 py-3 text-sm text-rc2-ebony placeholder:text-rc2-ebony/40 outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors"
+                className="w-full rounded-md border border-border bg-white px-4 py-3 text-sm text-rc2-ebony placeholder:text-rc2-ebony/40 outline-none focus:border-rc2-orange focus:ring-2 focus:ring-rc2-orange/20 transition-colors shadow-sm"
                 placeholder="admin@rc2solucoes.com.br"
               />
             </div>
@@ -68,7 +69,7 @@ export default function AdminLoginPage() {
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-border bg-rc2-sand px-4 py-3 text-sm text-rc2-ebony placeholder:text-rc2-ebony/40 outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors"
+                className="w-full rounded-md border border-border bg-white px-4 py-3 text-sm text-rc2-ebony placeholder:text-rc2-ebony/40 outline-none focus:border-rc2-orange focus:ring-2 focus:ring-rc2-orange/20 transition-colors shadow-sm"
                 placeholder="••••••••"
               />
             </div>

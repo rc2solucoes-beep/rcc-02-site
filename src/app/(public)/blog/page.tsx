@@ -55,9 +55,21 @@ export default async function BlogPage() {
       <section className="bg-rc2-sand py-20">
         <div className="container mx-auto px-4 max-w-5xl">
           {posts.length === 0 ? (
-            <div className="text-center py-24">
-              <SectionLabel className="mb-4">Em breve</SectionLabel>
-              <p className="text-rc2-ebony/70 text-lg">Novos conteúdos chegando em breve.</p>
+            <div className="text-center py-16">
+              <div className="inline-block rounded-full bg-surface-2 p-4 mb-6">
+                <span className="text-3xl">📚</span>
+              </div>
+              <SectionLabel className="mb-3">Em breve</SectionLabel>
+              <h2 className="text-2xl font-semibold text-rc2-ebony mb-3">Conteúdo em desenvolvimento</h2>
+              <p className="text-text-secondary text-lg mb-8 max-w-md mx-auto">Estamos preparando insights práticos sobre automação, IA e operações digitais. Novos artigos chegando em breve.</p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href="/servicos" className="inline-flex items-center gap-2 px-6 h-11 bg-rc2-orange text-rc2-sand font-semibold text-sm rounded-md hover:bg-rc2-orange/90 transition-colors">
+                  Explorar serviços
+                </Link>
+                <Link href="/contato" className="inline-flex items-center gap-2 px-6 h-11 border border-border text-rc2-ebony font-medium text-sm rounded-md hover:bg-surface-1 transition-colors">
+                  Solicitar diagnóstico
+                </Link>
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
