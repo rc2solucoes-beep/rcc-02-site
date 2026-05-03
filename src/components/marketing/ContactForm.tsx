@@ -25,7 +25,7 @@ const sizeOptions = [
 
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
-  return <p className="mt-1 text-xs text-destructive" role="alert">{message}</p>;
+  return <p className="mt-1.5 text-xs text-destructive font-medium" role="alert">{message}</p>;
 }
 
 function Label({
@@ -46,7 +46,7 @@ function Label({
 }
 
 const inputBase =
-  "w-full rounded-none border border-border bg-rc2-sand px-4 py-3 text-sm text-rc2-ebony placeholder:text-rc2-ebony/40 outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors";
+  "w-full rounded-md border border-border bg-white px-4 py-3 text-sm text-rc2-ebony placeholder:text-rc2-ebony/40 outline-none focus:border-rc2-orange focus:ring-2 focus:ring-rc2-orange/20 transition-colors shadow-sm";
 
 const TURNSTILE_SITE_KEY =
   process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "1x00000000000000000000AA";

@@ -27,29 +27,31 @@ export default function ServicosPage() {
       <section className="bg-rc2-sand py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="space-y-16">
-            {services.map((service, index) => (
+            {services.map((service, index) => {
+              const isDark = index % 2 === 1;
+              return (
               <article
                 key={service.slug}
                 id={service.slug}
-                className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 p-8 md:p-10 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 last:border-b-0 last:pb-0 rounded-lg bg-[var(--surface-1)] border border-[var(--surface-2)]"
+                className={`grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 p-8 md:p-10 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 last:border-b-0 last:pb-0 rounded-lg border ${isDark ? "bg-rc2-forest border-rc2-forest/80" : "bg-[var(--surface-1)] border-[var(--surface-2)]"}`}
               >
                 {/* Content */}
                 <div className={index % 2 === 1 ? "lg:order-2" : ""}>
-                  <SectionLabel className="block mb-3">
+                  <SectionLabel className={`block mb-3 ${isDark ? "text-rc2-orange" : ""}`}>
                     {String(index + 1).padStart(2, "0")} / {String(services.length).padStart(2, "0")}
                   </SectionLabel>
-                  <h2 className="text-2xl md:text-3xl font-semibold text-rc2-ebony mb-4 leading-snug">
+                  <h2 className={`text-2xl md:text-3xl font-semibold mb-4 leading-snug ${isDark ? "text-rc2-sand" : "text-rc2-ebony"}`}>
                     {service.title}
                   </h2>
-                  <p className="text-rc2-ebony/70 leading-relaxed mb-6">
+                  <p className={`leading-relaxed mb-6 ${isDark ? "text-rc2-sand/80" : "text-rc2-ebony/70"}`}>
                     {service.description}
                   </p>
-                  <p className="text-sm font-medium text-rc2-ebony/70 italic border-l-2 border-rc2-orange pl-4">
+                  <p className={`text-sm font-medium italic border-l-2 border-rc2-orange pl-4 ${isDark ? "text-rc2-sand/70" : "text-rc2-ebony/70"}`}>
                     {service.cta}
                   </p>
                   <Link
                     href={`/servicos/${service.slug}`}
-                    className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-rc2-orange hover:gap-4 transition-all duration-200"
+                    className={`mt-6 inline-flex items-center gap-2 text-sm font-semibold hover:gap-4 transition-all duration-200 ${isDark ? "text-rc2-orange" : "text-rc2-orange"}`}
                   >
                     Ver detalhes completos
                     <ArrowRight size={14} />
@@ -59,30 +61,31 @@ export default function ServicosPage() {
                 {/* Lists */}
                 <div className={index % 2 === 1 ? "lg:order-1" : ""}>
                   <div className="mb-6">
-                    <h3 className="rc2-label text-rc2-ebony/70 mb-3">O que pode ser implantado</h3>
+                    <h3 className={`rc2-label mb-3 ${isDark ? "text-rc2-sand/70" : "text-rc2-ebony/70"}`}>O que pode ser implantado</h3>
                     <ul className="space-y-2">
                       {service.items.map((item, i) => (
                         <li key={i} className="flex items-start gap-2.5">
-                          <Check size={14} className="text-rc2-orange shrink-0 mt-0.5" strokeWidth={2.5} />
-                          <span className="text-sm text-rc2-ebony/80">{item}</span>
+                          <Check size={14} className={`shrink-0 mt-0.5 ${isDark ? "text-rc2-orange" : "text-rc2-orange"}`} strokeWidth={2.5} />
+                          <span className={`text-sm ${isDark ? "text-rc2-sand/80" : "text-rc2-ebony/80"}`}>{item}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
                   <div>
-                    <h3 className="rc2-label text-rc2-ebony/70 mb-3">Benefícios</h3>
+                    <h3 className={`rc2-label mb-3 ${isDark ? "text-rc2-sand/70" : "text-rc2-ebony/70"}`}>Benefícios</h3>
                     <ul className="space-y-2">
                       {service.benefits.map((benefit, i) => (
                         <li key={i} className="flex items-start gap-2.5">
-                          <span className="text-rc2-orange mt-0.5 text-xs">→</span>
-                          <span className="text-sm text-rc2-ebony/80">{benefit}</span>
+                          <span className={`mt-0.5 text-xs ${isDark ? "text-rc2-orange" : "text-rc2-orange"}`}>→</span>
+                          <span className={`text-sm ${isDark ? "text-rc2-sand/80" : "text-rc2-ebony/80"}`}>{benefit}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
                 </div>
               </article>
-            ))}
+            );
+            })}
           </div>
         </div>
       </section>
