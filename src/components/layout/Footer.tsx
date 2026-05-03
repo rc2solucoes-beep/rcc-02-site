@@ -43,7 +43,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="ui-focus-ring rounded-sm text-sm text-rc2-sand/70 hover:text-rc2-sand transition-colors"
+                    className="ui-focus-ring rounded-sm text-sm text-rc2-sand/70 hover:text-rc2-sand hover:underline transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -60,7 +60,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="ui-focus-ring rounded-sm text-sm text-rc2-sand/70 hover:text-rc2-sand transition-colors"
+                    className="ui-focus-ring rounded-sm text-sm text-rc2-sand/70 hover:text-rc2-sand hover:underline transition-colors"
                   >
                     {link.label}
                   </Link>

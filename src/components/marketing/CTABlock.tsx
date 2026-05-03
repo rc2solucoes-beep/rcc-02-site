@@ -61,8 +61,8 @@ export function CTABlock({
             href={primaryHref}
             className={cn(
               buttonVariants({ variant: "default" }),
-              "font-semibold tracking-wide uppercase text-xs px-8 h-11 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90",
-              !isDark && "bg-rc2-sand text-rc2-orange hover:bg-rc2-sand/90"
+              "ui-focus-ring font-semibold tracking-wide uppercase text-xs px-8 h-11 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90 active:bg-rc2-orange active:ring-1 active:ring-rc2-orange/50 transition-all duration-150",
+              !isDark && "bg-rc2-sand text-rc2-orange hover:bg-rc2-sand/90 active:bg-rc2-sand active:ring-rc2-orange/50"
             )}
           >
             {primaryLabel}
@@ -75,8 +75,8 @@ export function CTABlock({
               className={cn(
                 "ui-focus-ring rounded-sm px-6 h-11 inline-flex items-center gap-1.5 border font-medium text-sm transition-all duration-200",
                 isDark
-                  ? "border-rc2-sand/40 text-rc2-sand hover:border-rc2-sand/80 hover:bg-rc2-sand/10"
-                  : "border-rc2-ebony/40 text-rc2-ebony hover:border-rc2-ebony/80 hover:bg-rc2-ebony/10"
+                  ? "border-rc2-sand/40 text-rc2-sand hover:border-rc2-sand/80 hover:bg-rc2-sand/10 active:bg-rc2-sand/20 active:border-rc2-sand/90"
+                  : "border-rc2-ebony/40 text-rc2-ebony hover:border-rc2-ebony/80 hover:bg-rc2-ebony/10 active:bg-rc2-ebony/20 active:border-rc2-ebony/90"
               )}
             >
               {secondaryLabel}

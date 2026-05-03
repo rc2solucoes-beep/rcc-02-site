@@ -186,6 +186,21 @@
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rc2-orange focus-visible:ring-offset-2;
   }
 
+  /* Focus ring — variante sutil para inputs e áreas densas */
+  .ui-focus-ring-subtle {
+    @apply focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-rc2-orange focus-visible:ring-offset-1;
+  }
+
+  /* Active state — para botões e links em estado pressionado/ativo */
+  .state-active {
+    @apply ring-1 ring-rc2-orange/20 bg-rc2-orange/8;
+  }
+
+  /* Pressed state — para botões no mousedown */
+  .state-pressed {
+    @apply bg-rc2-orange/20 ring-1 ring-rc2-orange/30;
+  }
+
   /* Caption / rodapé */
   .rc2-caption {
     font-family: var(--font-barlow), sans-serif;
