@@ -32,7 +32,7 @@ export default function ContatoPage() {
             </p>
 
             {/* What you get */}
-            <div className="p-6 border border-border bg-white/40">
+            <div className="p-6 border border-[var(--surface-2)] bg-[var(--surface-1)] rounded-lg">
               <h2 className="text-sm font-semibold text-rc2-ebony mb-4 uppercase tracking-wide">
                 O que você recebe
               </h2>

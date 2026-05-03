@@ -15,6 +15,12 @@
   --color-rc2-orange: #FF5F1F;  /* Safety Orange — CTA, detalhe logo (máx 10%) */
   --color-rc2-ebony:  #1E1610;  /* Ébano Quente — texto corrido */
 
+  /* Surface Scale — contraste tonal progressivo */
+  --color-surface-0: #F5F0E8;  /* Base page — Areia pura */
+  --color-surface-1: #FDFBF8;  /* Card/Bloco — ligeiramente mais claro */
+  --color-surface-2: #E8E2D8;  /* Container/Seção — mais escuro, define área */
+  --color-surface-3: #D4CCB8;  /* Destaque/Divider — ainda mais escuro */
+
   /* shadcn semantic tokens mapeados para RC2 */
   --color-background:         var(--background);
   --color-foreground:         var(--foreground);
@@ -86,6 +92,12 @@
   --border: #D4CCB8;
   --input:  #D4CCB8;
   --ring:   #FF5F1F;
+
+  /* Surface Scale */
+  --surface-0: #F5F0E8;
+  --surface-1: #FDFBF8;
+  --surface-2: #E8E2D8;
+  --surface-3: #D4CCB8;
 
   /* Radius base (shadcn usa 0.625rem por padrão) */
   --radius: 0.375rem;

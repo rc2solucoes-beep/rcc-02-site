@@ -84,9 +84,9 @@ export default function SolucoesComIAPage() {
 
       <section className="bg-rc2-sand py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {blocks.map((block) => (
-              <div key={block.label} className="bg-rc2-sand p-8 md:p-10">
+              <div key={block.label} className="bg-[var(--surface-1)] border border-[var(--surface-2)] rounded-lg p-8 md:p-10">
                 <SectionLabel className="block mb-3">{block.label}</SectionLabel>
                 <h2 className="text-xl md:text-2xl font-semibold text-rc2-ebony mb-2">
                   {block.title}

@@ -31,7 +31,7 @@ export default function ServicosPage() {
               <article
                 key={service.slug}
                 id={service.slug}
-                className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 pb-16 border-b border-border last:border-b-0 last:pb-0"
+                className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 p-8 md:p-10 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 last:border-b-0 last:pb-0 rounded-lg bg-[var(--surface-1)] border border-[var(--surface-2)]"
               >
                 {/* Content */}
                 <div className={index % 2 === 1 ? "lg:order-2" : ""}>
