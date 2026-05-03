@@ -28,7 +28,7 @@ const STATUS_LABEL: Record<string, string> = {
   "Automações com IA":       "IA",
   "Agentes de IA internos":  "Agentes",
   "Integrações com n8n/APIs":"Integrações",
-  "E-commerce":              "E-comm",
+  "E-commerce":              "E-commerce",
   "Site ou landing page":    "Site",
   "Ainda não sei":           "?",
 };

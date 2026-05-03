@@ -57,7 +57,7 @@ export default async function BlogPage() {
           {posts.length === 0 ? (
             <div className="text-center py-24">
               <SectionLabel className="mb-4">Em breve</SectionLabel>
-              <p className="text-rc2-ebony/70 text-lg">Novos conteúdos chegando em breve.</p>
+              <p className="text-rc2-ebony/70 text-lg">Estamos preparando novos conteúdos. Em breve, publicaremos novidades por aqui.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

@@ -11,10 +11,10 @@ const footerLinks = {
     { href: "/contato", label: "Contato" },
   ],
   servicos: [
-    { href: "/servicos/automacao-de-atendimento", label: "Automação de Atendimento" },
-    { href: "/servicos/integracao-de-sistemas", label: "Integração de Sistemas" },
-    { href: "/servicos/operacoes-digitais", label: "Operações Digitais" },
-    { href: "/solucoes-com-ia", label: "Soluções com IA" },
+    { href: "/servicos/automacoes-com-ia", label: "Automações com IA" },
+    { href: "/servicos/agentes-de-ia", label: "Agentes de IA Internos" },
+    { href: "/servicos/automacao-de-processos", label: "Integrações e n8n" },
+    { href: "/servicos/e-commerce", label: "E-commerce" },
   ],
 };
 
