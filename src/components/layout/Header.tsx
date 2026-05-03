@@ -36,10 +36,10 @@ export function Header() {
                 href={link.href}
                 aria-current={isActive(link.href) ? "page" : undefined}
                 className={cn(
-                  "ui-focus-ring rounded-sm text-sm transition-colors",
+                  "ui-focus-ring rounded-full text-sm transition-colors px-3 py-1",
                   isActive(link.href)
-                    ? "font-semibold text-rc2-orange underline underline-offset-4 decoration-rc2-orange"
-                    : "font-medium text-rc2-ebony hover:text-rc2-orange"
+                    ? "font-semibold text-rc2-orange bg-rc2-orange/10"
+                    : "font-medium text-rc2-ebony hover:text-rc2-orange hover:bg-rc2-ebony/5"
                 )}
               >
                 {link.label}

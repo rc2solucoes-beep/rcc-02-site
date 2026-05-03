@@ -5,6 +5,7 @@ interface PageHeroProps {
   label?: string;
   title: string;
   description?: string;
+  action?: React.ReactNode;
   variant?: "light" | "dark";
   className?: string;
 }
@@ -13,6 +14,7 @@ export function PageHero({
   label,
   title,
   description,
+  action,
   variant = "light",
   className,
 }: PageHeroProps) {
@@ -49,6 +51,11 @@ export function PageHero({
           >
             {description}
           </p>
+        )}
+        {action && (
+          <div className="mt-8">
+            {action}
+          </div>
         )}
       </div>
     </section>

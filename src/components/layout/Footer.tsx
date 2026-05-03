@@ -22,6 +22,8 @@ const legalLinks = [
 export function Footer() {
   return (
     <footer className="bg-rc2-forest text-rc2-sand">
+      {/* Transição tonal do conteúdo principal */}
+      <div className="h-px bg-gradient-to-r from-transparent via-surface-3 to-transparent opacity-40" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           {/* Brand */}
