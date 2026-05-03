@@ -9,6 +9,7 @@ interface CTABlockProps {
   primaryHref?: string;
   secondaryLabel?: string;
   secondaryHref?: string;
+  hideSecondary?: boolean;
   variant?: "dark" | "orange";
   className?: string;
 }
@@ -22,6 +23,7 @@ export function CTABlock({
   primaryHref = "/contato",
   secondaryLabel = "Falar pelo WhatsApp",
   secondaryHref = WHATSAPP_URL,
+  hideSecondary = false,
   variant = "dark",
   className,
 }: CTABlockProps) {
@@ -65,17 +67,19 @@ export function CTABlock({
           >
             {primaryLabel}
           </Link>
-          <Link
-            href={secondaryHref}
-            target={secondaryHref.startsWith("http") ? "_blank" : undefined}
-            rel={secondaryHref.startsWith("http") ? "noopener noreferrer" : undefined}
-            className={cn(
-              "ui-focus-ring rounded-sm text-sm font-medium underline underline-offset-4 transition-opacity hover:opacity-70",
-              isDark ? "text-rc2-sand/60" : "text-rc2-sand/90"
-            )}
-          >
-            {secondaryLabel} →
-          </Link>
+          {!hideSecondary && (
+            <Link
+              href={secondaryHref}
+              target={secondaryHref.startsWith("http") ? "_blank" : undefined}
+              rel={secondaryHref.startsWith("http") ? "noopener noreferrer" : undefined}
+              className={cn(
+                "ui-focus-ring rounded-sm text-sm font-medium underline underline-offset-4 transition-opacity hover:opacity-70",
+                isDark ? "text-rc2-sand/60" : "text-rc2-sand/90"
+              )}
+            >
+              {secondaryLabel} →
+            </Link>
+          )}
         </div>
       </div>
     </section>

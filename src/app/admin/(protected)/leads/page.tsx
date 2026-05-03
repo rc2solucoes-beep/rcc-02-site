@@ -25,12 +25,12 @@ function formatDate(iso: string) {
 }
 
 const STATUS_LABEL: Record<string, string> = {
-  "Automações com IA":       "IA",
-  "Agentes de IA internos":  "Agentes",
+  "Automações com IA":       "Automações com IA",
+  "Agentes de IA internos":  "Agentes de IA",
   "Integrações com n8n/APIs":"Integrações",
-  "E-commerce":              "E-comm",
-  "Site ou landing page":    "Site",
-  "Ainda não sei":           "?",
+  "E-commerce":              "E-commerce",
+  "Site ou landing page":    "Site/Landing Page",
+  "Ainda não sei":           "Não definido",
 };
 
 export default async function LeadsPage() {
@@ -44,8 +44,17 @@ export default async function LeadsPage() {
       />
       <div className="p-4 md:p-8">
         {leads.length === 0 ? (
-          <div className="bg-white border border-border p-12 text-center text-rc2-ebony/50 text-sm">
-            Nenhum lead ainda.
+          <div className="bg-white border border-border p-12 text-center space-y-4">
+            <p className="text-rc2-ebony/50 text-sm">Nenhum lead ainda.</p>
+            <p className="text-rc2-ebony/60 text-sm max-w-md mx-auto">
+              Leads serão exibidos aqui quando usuários preencherem o formulário de contato.
+            </p>
+            <a
+              href="/contato"
+              className="inline-block mt-4 px-6 h-10 bg-rc2-orange text-rc2-sand text-sm font-semibold rounded hover:bg-rc2-orange/90 transition-colors"
+            >
+              Acessar formulário de contato
+            </a>
           </div>
         ) : (
           <>

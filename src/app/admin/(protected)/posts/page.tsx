@@ -53,7 +53,7 @@ export default async function PostsPage() {
           </Link>
         }
       />
-      <div className="p-8">
+      <div className="p-4 md:p-6 lg:p-8">
         {posts.length === 0 ? (
           <div className="bg-white border border-border p-12 text-center text-rc2-ebony/50 text-sm">
             Nenhum post ainda.{" "}

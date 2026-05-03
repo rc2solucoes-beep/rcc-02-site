@@ -52,7 +52,7 @@ export default async function SettingsPage({ searchParams }: Props) {
           ✓ Configurações salvas com sucesso.
         </div>
       )}
-      <form action={saveSettings} className="p-8 space-y-5 max-w-xl">
+      <form action={saveSettings} className="p-4 md:p-6 lg:p-8 space-y-5 max-w-xl">
         {SETTING_KEYS.map(({ key, label, type, placeholder }) => (
           <div key={key}>
             <label htmlFor={key} className="block text-sm font-medium text-rc2-ebony mb-1.5">{label}</label>

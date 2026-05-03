@@ -6,7 +6,7 @@ interface AdminHeaderProps {
 
 export function AdminHeader({ title, description, action }: AdminHeaderProps) {
   return (
-    <div className="flex items-start justify-between gap-4 px-8 py-6 border-b border-border bg-white">
+    <div className="flex items-start justify-between gap-4 px-4 sm:px-6 lg:px-8 py-6 border-b border-border bg-white">
       <div>
         <h1 className="text-xl font-semibold text-rc2-ebony">{title}</h1>
         {description && (
