@@ -75,10 +75,10 @@ export default function HomePage() {
       </section>
 
       {/* ── Para quem é ── */}
-      <section className="bg-rc2-ink py-16 md:py-20">
+      <section className="bg-rc2-ink py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionLabel className="block mb-4 text-rc2-orange">Para quem é</SectionLabel>
-          <h2 className="text-2xl md:text-3xl font-semibold text-rc2-sand mb-8 max-w-lg">
+          <SectionLabel className="block mb-5 text-rc2-orange">Para quem é</SectionLabel>
+          <h2 className="text-3xl md:text-4xl font-semibold text-rc2-sand mb-10 max-w-lg leading-snug">
             Sua empresa precisa da RC2 se você:
           </h2>
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-3xl">
@@ -97,10 +97,10 @@ export default function HomePage() {
       </section>
 
       {/* ── O que entregamos ── */}
-      <section id="servicos" className="bg-rc2-sand py-16 md:py-20">
+      <section id="servicos" className="bg-rc2-sand py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionLabel className="block mb-4">O que entregamos</SectionLabel>
-          <h2 className="text-2xl md:text-3xl font-semibold text-rc2-ebony mb-10 max-w-lg">
+          <SectionLabel className="block mb-5">O que entregamos</SectionLabel>
+          <h2 className="text-3xl md:text-4xl font-semibold text-rc2-ebony mb-12 max-w-2xl leading-snug">
             Cinco serviços para transformar sua operação digital.
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

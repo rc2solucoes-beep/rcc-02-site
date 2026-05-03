@@ -107,8 +107,8 @@
   --text-secondary: #6B5E52;     /* Secondary text — 60% contrast, legível */
   --text-tertiary:  #8B7D77;     /* Tertiary text — 50% contrast, suportivo */
 
-  /* Radius base (shadcn usa 0.625rem por padrão) */
-  --radius: 0.375rem;
+  /* Radius base — recalibrado para contemporâneo (era 0.375rem/3px) */
+  --radius: 0.5rem;
 }
 
 /* RC2 não usa tema escuro — a marca opera em luz */

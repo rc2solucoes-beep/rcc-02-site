@@ -25,7 +25,7 @@ export function ServiceCard({ service, className }: ServiceCardProps) {
       </p>
       <Link
         href={`/servicos/${service.slug}`}
-        className="ui-focus-ring rounded-sm mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-rc2-orange hover:gap-3 transition-all duration-200"
+        className="ui-focus-ring rounded-md mt-5 inline-flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-rc2-orange bg-rc2-orange/5 hover:bg-rc2-orange/10 active:bg-rc2-orange/20 hover:gap-3 transition-all duration-200"
       >
         Ver detalhes
         <ArrowRight size={14} />
