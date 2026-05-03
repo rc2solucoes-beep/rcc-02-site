@@ -73,11 +73,14 @@ export function CTABlock({
               target={secondaryHref.startsWith("http") ? "_blank" : undefined}
               rel={secondaryHref.startsWith("http") ? "noopener noreferrer" : undefined}
               className={cn(
-                "ui-focus-ring rounded-sm text-sm font-medium underline underline-offset-4 transition-opacity hover:opacity-70",
-                isDark ? "text-rc2-sand/60" : "text-rc2-sand/90"
+                "ui-focus-ring rounded-sm px-6 h-11 inline-flex items-center gap-1.5 border font-medium text-sm transition-all duration-200",
+                isDark
+                  ? "border-rc2-sand/40 text-rc2-sand hover:border-rc2-sand/80 hover:bg-rc2-sand/10"
+                  : "border-rc2-ebony/40 text-rc2-ebony hover:border-rc2-ebony/80 hover:bg-rc2-ebony/10"
               )}
             >
-              {secondaryLabel} →
+              {secondaryLabel}
+              <span>→</span>
             </Link>
           )}
         </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/marketing/ContactForm";
+import { CTABlock } from "@/components/marketing/CTABlock";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 
 export const metadata: Metadata = {
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 
 export default function ContatoPage() {
   return (
+    <>
     <section className="bg-rc2-sand py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
@@ -73,5 +75,15 @@ export default function ContatoPage() {
         </div>
       </div>
     </section>
+
+      <CTABlock
+        title="Não consegue preencher agora?"
+        description="Chame a gente pelo WhatsApp e vamos agendar um diagnóstico em tempo real."
+        primaryLabel="Falar pelo WhatsApp"
+        primaryHref="https://wa.me/5511988028550"
+        hideSecondary={true}
+        variant="dark"
+      />
+    </>
   );
 }
