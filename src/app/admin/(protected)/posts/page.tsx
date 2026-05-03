@@ -42,7 +42,7 @@ export default async function PostsPage() {
     <>
       <AdminHeader
         title="Posts"
-        description={`${posts.length} posts`}
+        description={`${posts.length} publicações`}
         action={
           <Link
             href="/admin/posts/novo"

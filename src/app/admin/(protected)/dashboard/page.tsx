@@ -24,7 +24,7 @@ async function getStats() {
 const cards = [
   { label: "Posts publicados", key: "postsTotal" as const, icon: FileText, href: "/admin/posts" },
   { label: "Leads totais",     key: "leadsTotal" as const, icon: Users,    href: "/admin/leads" },
-  { label: "Leads esta semana", key: "leadsWeek" as const, icon: TrendingUp, href: "/admin/leads" },
+  { label: "Leads desta semana", key: "leadsWeek" as const, icon: TrendingUp, href: "/admin/leads" },
 ];
 
 export default async function DashboardPage() {
