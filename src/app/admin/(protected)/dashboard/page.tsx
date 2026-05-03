@@ -36,7 +36,7 @@ export default async function DashboardPage() {
       <div className="p-8">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           {cards.map(({ label, key, icon: Icon, href }) => (
-            <a key={key} href={href} className="bg-white border border-border p-6 hover:border-rc2-orange transition-colors group">
+            <a key={key} href={href} className="bg-white border border-border rounded-lg p-6 shadow-sm hover:shadow-md hover:border-rc2-orange hover:-translate-y-1 transition-all group">
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-xs font-medium text-rc2-ebony/50 uppercase tracking-wider mb-1">{label}</p>
@@ -48,7 +48,7 @@ export default async function DashboardPage() {
           ))}
         </div>
 
-        <div className="mt-8 bg-white border border-border p-6">
+        <div className="mt-8 bg-white border border-border rounded-lg p-6 shadow-sm">
           <h2 className="text-sm font-semibold text-rc2-ebony mb-3">Acesso rápido</h2>
           <div className="flex flex-wrap gap-3">
             <Link

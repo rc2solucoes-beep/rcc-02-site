@@ -103,18 +103,17 @@ export default function HomePage() {
           <h2 className="text-2xl md:text-3xl font-semibold text-rc2-ebony mb-10 max-w-lg">
             Cinco serviços para transformar sua operação digital.
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {services.map((service) => (
               <ServiceCard
                 key={service.slug}
                 service={service}
-                className="bg-rc2-sand"
               />
             ))}
             {/* 6º card — CTA */}
             <Link
               href="/contato"
-              className="group flex flex-col justify-between p-6 bg-rc2-orange hover:bg-rc2-orange/90 transition-colors duration-200"
+              className="group flex flex-col justify-between p-6 rounded-lg bg-rc2-orange shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200"
             >
               <div>
                 <span className="block text-xs font-medium uppercase tracking-widest text-rc2-sand/70 mb-3">
