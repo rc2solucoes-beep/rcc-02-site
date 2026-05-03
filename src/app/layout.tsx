@@ -111,6 +111,7 @@ export default function RootLayout({
     <html
       lang="pt-BR"
       className={`h-full ${barlow.variable} ${barlowCondensed.variable}`}
+      suppressHydrationWarning
     >
       <head>
         <script
