@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   title: "Soluções com IA",
   description:
     "Descubra como a IA pode ajudar sua empresa na prática: atendimento, vendas, operação e integração com sistemas. RC2 Soluções.",
+  alternates: { canonical: "https://rc2solucoes.com.br/solucoes-com-ia" },
+  openGraph: { url: "https://rc2solucoes.com.br/solucoes-com-ia" },
 };
 
 const blocks = [

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ServiceCard } from "@/components/marketing/ServiceCard";
 import { CTABlock } from "@/components/marketing/CTABlock";
@@ -12,6 +12,12 @@ export const metadata: Metadata = {
   title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
   description:
     "Consultoria especializada em IA, automações e operações digitais para pequenas e médias empresas. Automatize atendimento, integre sistemas e escale sua operação.",
+  alternates: { canonical: "https://rc2solucoes.com.br" },
+  openGraph: {
+    url: "https://rc2solucoes.com.br",
+    title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
+    description: "Consultoria especializada em IA, automações e operações digitais para PMEs. Diagnóstico gratuito.",
+  },
 };
 
 const forWhomItems = [
@@ -105,6 +111,27 @@ export default function HomePage() {
                 className="bg-rc2-sand"
               />
             ))}
+            {/* 6º card — CTA */}
+            <Link
+              href="/contato"
+              className="group flex flex-col justify-between p-6 bg-rc2-orange hover:bg-rc2-orange/90 transition-colors duration-200"
+            >
+              <div>
+                <span className="block text-xs font-medium uppercase tracking-widest text-rc2-sand/70 mb-3">
+                  Próximo passo
+                </span>
+                <h3 className="text-lg font-semibold text-rc2-sand mb-3 leading-snug">
+                  Não sabe por onde começar?
+                </h3>
+                <p className="text-sm text-rc2-sand/80 leading-relaxed">
+                  Diagnóstico gratuito para mapear gargalos e oportunidades de automação na sua operação.
+                </p>
+              </div>
+              <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-rc2-sand group-hover:gap-3 transition-all duration-200">
+                Solicitar diagnóstico
+                <ArrowRight size={14} />
+              </span>
+            </Link>
           </div>
         </div>
       </section>

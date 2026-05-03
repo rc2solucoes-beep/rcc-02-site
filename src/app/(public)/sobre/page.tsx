@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   title: "Sobre a RC2",
   description:
     "Fundada por Robson Azevedo, com mais de 20 anos de experiência em TI, e-commerce e transformação digital. Conheça a RC2 Soluções.",
+  alternates: { canonical: "https://rc2solucoes.com.br/sobre" },
+  openGraph: { url: "https://rc2solucoes.com.br/sobre" },
 };
 
 const steps: Step[] = [

@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   title: "Serviços",
   description:
     "Automações com IA, agentes inteligentes, integrações com n8n, e-commerce e sites para PMEs. Conheça as soluções da RC2 Soluções.",
+  alternates: { canonical: "https://rc2solucoes.com.br/servicos" },
+  openGraph: { url: "https://rc2solucoes.com.br/servicos" },
 };
 
 export default function ServicosPage() {

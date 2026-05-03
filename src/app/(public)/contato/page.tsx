@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   title: "Contato — Solicite um Diagnóstico",
   description:
     "Preencha o formulário e receba um diagnóstico gratuito de oportunidades de IA e automação para sua empresa.",
+  alternates: { canonical: "https://rc2solucoes.com.br/contato" },
+  openGraph: { url: "https://rc2solucoes.com.br/contato" },
 };
 
 export default function ContatoPage() {
