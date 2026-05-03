@@ -8,10 +8,10 @@ const footerLinks = {
     { href: "/contato", label: "Contato" },
   ],
   servicos: [
-    { href: "/servicos/automacao-de-atendimento", label: "Automação de Atendimento" },
-    { href: "/servicos/integracao-de-sistemas", label: "Integração de Sistemas" },
-    { href: "/servicos/operacoes-digitais", label: "Operações Digitais" },
-    { href: "/solucoes-com-ia", label: "Soluções com IA" },
+    { href: "/servicos/automacoes-com-ia", label: "Automações com IA" },
+    { href: "/servicos/agentes-de-ia", label: "Agentes de IA" },
+    { href: "/servicos/automacao-de-processos", label: "Integrações e Automações" },
+    { href: "/servicos/sites-e-landing-pages", label: "Sites Inteligentes" },
   ],
 };
 
@@ -97,7 +97,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 pt-6 border-t border-rc2-sand/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="rc2-caption text-rc2-sand/60 text-center sm:text-left">
-            © 2025 RC2 Soluções. Todos os direitos reservados.
+            © 2026 RC2 Soluções. Todos os direitos reservados.
           </p>
           <div className="flex gap-6">
             {legalLinks.map((link) => (
