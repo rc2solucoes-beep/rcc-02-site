@@ -11,11 +11,18 @@ function hashIp(ip: string): string {
 }
 
 function getIp(req: NextRequest): string {
-  return (
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    req.headers.get("x-real-ip") ??
-    "unknown"
-  );
+  // Vercel/Cloudflare sets CF-Connecting-IP (real client IP)
+  // X-Forwarded-For is second-order; split to get first (leftmost) IP
+  // which is the actual client before proxy chain
+  const cfConnectingIp = req.headers.get("cf-connecting-ip");
+  if (cfConnectingIp) return cfConnectingIp;
+
+  const xForwardedFor = req.headers.get("x-forwarded-for");
+  if (xForwardedFor) {
+    return xForwardedFor.split(",")[0]?.trim() ?? "unknown";
+  }
+
+  return req.headers.get("x-real-ip") ?? "unknown";
 }
 
 // ─── Turnstile verification ───────────────────────────────────────────────────
