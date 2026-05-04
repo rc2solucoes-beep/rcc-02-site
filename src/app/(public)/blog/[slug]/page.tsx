@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import DOMPurify from "isomorphic-dompurify";
 import { createServiceClient } from "@/lib/supabase/server";
 import type { Post } from "@/lib/types/post";
 
@@ -141,7 +142,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <div className="container mx-auto max-w-3xl px-4 py-16">
           <div
             className="prose prose-rc2 max-w-none"
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
           />
 
           {/* Footer do post */}
