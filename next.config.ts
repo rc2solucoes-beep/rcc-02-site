@@ -2,11 +2,11 @@ import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV === "development";
 
-// CSP directivies — allow Turnstile, Supabase, Resend tracking pixel, Google Fonts
+// CSP directivies — allow Turnstile, Supabase, Google Tag Manager, Google Fonts
 const cspDirectives = [
   "default-src 'self'",
-  // Scripts: self + Turnstile + inline scripts (Next.js hydration)
-  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://challenges.cloudflare.com`,
+  // Scripts: self + Turnstile + GTM + inline scripts (Next.js hydration)
+  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com`,
   // Styles: self + Google Fonts
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   // Fonts: self + Google Fonts CDN
@@ -15,8 +15,8 @@ const cspDirectives = [
   "img-src 'self' data: blob: https:",
   // Frames: Turnstile widget
   "frame-src https://challenges.cloudflare.com",
-  // Connections: self + Supabase + Cloudflare Turnstile
-  "connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com",
+  // Connections: self + Supabase + Cloudflare Turnstile + GTM
+  "connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com",
   // Base URI restriction
   "base-uri 'self'",
   // Form action: self only
