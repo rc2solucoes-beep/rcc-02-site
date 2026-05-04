@@ -1,18 +1,31 @@
 import { z } from "zod";
 
-export const contactSchema = z.object({
+// Step 1: Low-friction initial contact
+export const contactStep1Schema = z.object({
   name:     z.string().min(2, "Nome obrigatório"),
-  company:  z.string().min(2, "Empresa obrigatória"),
   email:    z.string().email("E-mail inválido"),
   whatsapp: z.string().min(10, "WhatsApp obrigatório (com DDD)"),
+  message:  z.string().min(10, "Descreva seu desafio (mínimo 10 caracteres)"),
+  website:  z.string().max(0, "Spam detectado").optional(),
+});
+
+export type ContactStep1Data = z.infer<typeof contactStep1Schema>;
+
+// Step 2: Qualification details
+export const contactStep2Schema = z.object({
+  company:  z.string().min(2, "Empresa obrigatória"),
   segment:  z.string().min(2, "Segmento obrigatório"),
   size:     z.string().min(1, "Selecione o número de colaboradores"),
   solution: z.string().min(1, "Selecione uma solução"),
-  message:  z.string().min(10, "Descreva seu desafio (mínimo 10 caracteres)"),
-  // Honeypot — deve estar vazio; robôs preenchem
-  website:  z.string().max(0, "Spam detectado").optional(),
-  // Turnstile token — obrigatório
-  turnstileToken: z.string().min(1, "Verificação de segurança obrigatória"),
 });
+
+export type ContactStep2Data = z.infer<typeof contactStep2Schema>;
+
+// Complete form (all steps + verification)
+export const contactSchema = contactStep1Schema.merge(
+  contactStep2Schema.extend({
+    turnstileToken: z.string().min(1, "Verificação de segurança obrigatória"),
+  })
+);
 
 export type ContactFormData = z.infer<typeof contactSchema>;

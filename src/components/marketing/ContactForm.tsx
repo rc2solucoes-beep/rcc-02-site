@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Turnstile } from "@marsidev/react-turnstile";
-import { contactSchema, type ContactFormData } from "@/lib/validations/contact";
+import { contactStep1Schema, contactStep2Schema, contactSchema, type ContactStep1Data, type ContactStep2Data, type ContactFormData } from "@/lib/validations/contact";
 import { cn } from "@/lib/utils";
+import { ChevronRight, ChevronLeft } from "lucide-react";
 
 const solutionOptions = [
   "Automações com IA",
@@ -52,16 +53,42 @@ const TURNSTILE_SITE_KEY =
   process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "1x00000000000000000000AA";
 
 export function ContactForm() {
+  const [step, setStep] = useState<1 | 2>(1);
   const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState<string | null>(null);
+  const [step1Data, setStep1Data] = useState<Partial<ContactStep1Data>>({});
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<ContactFormData>({ resolver: zodResolver(contactSchema) });
+    watch,
+    trigger,
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+    mode: "onBlur",
+  });
+
+  const handleStep1Next = async () => {
+    const isValid = await trigger(["name", "email", "whatsapp", "message", "website"]);
+    if (isValid) {
+      const formData = watch();
+      setStep1Data({
+        name: formData.name,
+        email: formData.email,
+        whatsapp: formData.whatsapp,
+        message: formData.message,
+        website: formData.website,
+      });
+      setStep(2);
+    }
+  };
+
+  const handleStep1Back = () => {
+    setStep(1);
+  };
 
   const onSubmit = async (data: ContactFormData) => {
     setServerError(null);
@@ -92,9 +119,31 @@ export function ContactForm() {
     }
   };
 
+  // Progress bar component
+  const ProgressBar = () => (
+    <div className="mb-8">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <div className={cn("text-sm font-semibold", step === 1 ? "text-rc2-orange" : "text-rc2-ebony/40")}>
+            Etapa 1
+          </div>
+          <div className={cn("w-24 h-1 rounded-full", step >= 1 ? "bg-rc2-orange" : "bg-rc2-ebony/10")} />
+          <div className={cn("text-sm font-semibold", step === 2 ? "text-rc2-orange" : "text-rc2-ebony/40")}>
+            Etapa 2
+          </div>
+        </div>
+        <span className="text-xs text-rc2-ebony/60">~1 min</span>
+      </div>
+      <p className="text-xs text-rc2-ebony/70">{step === 1 ? "Informações iniciais" : "Detalhes da empresa"}</p>
+    </div>
+  );
+
   if (submitted) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
+        <div className="inline-block rounded-full bg-rc2-orange/10 p-3 mb-4">
+          <span className="text-3xl">✓</span>
+        </div>
         <span className="rc2-label block mb-4 text-rc2-orange">Recebido</span>
         <h2 className="text-2xl font-semibold text-rc2-ebony mb-3">
           Diagnóstico solicitado com sucesso!
@@ -116,8 +165,8 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
-      {/* Honeypot — deve estar vazio */}
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
+      {/* Honeypot */}
       <input
         type="text"
         tabIndex={-1}
@@ -127,150 +176,177 @@ export function ContactForm() {
         {...register("website")}
       />
 
-      {/* Nome + Empresa */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <Label htmlFor="name" required>Nome</Label>
-          <input
-            id="name"
-            type="text"
-            placeholder="Seu nome completo"
-            className={cn(inputBase, errors.name && "border-destructive")}
-            {...register("name")}
-          />
-          <FieldError message={errors.name?.message} />
-        </div>
-        <div>
-          <Label htmlFor="company" required>Empresa</Label>
-          <input
-            id="company"
-            type="text"
-            placeholder="Nome da empresa"
-            className={cn(inputBase, errors.company && "border-destructive")}
-            {...register("company")}
-          />
-          <FieldError message={errors.company?.message} />
-        </div>
-      </div>
+      {/* Progress bar */}
+      <ProgressBar />
 
-      {/* E-mail + WhatsApp */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <Label htmlFor="email" required>E-mail</Label>
-          <input
-            id="email"
-            type="email"
-            placeholder="seu@email.com"
-            className={cn(inputBase, errors.email && "border-destructive")}
-            {...register("email")}
-          />
-          <FieldError message={errors.email?.message} />
-        </div>
-        <div>
-          <Label htmlFor="whatsapp" required>WhatsApp</Label>
-          <input
-            id="whatsapp"
-            type="tel"
-            placeholder="(11) 99999-9999"
-            className={cn(inputBase, errors.whatsapp && "border-destructive")}
-            {...register("whatsapp")}
-          />
-          <FieldError message={errors.whatsapp?.message} />
-        </div>
-      </div>
+      {/* STEP 1: Low-friction initial contact */}
+      {step === 1 && (
+        <>
+          <div>
+            <Label htmlFor="name" required>Seu nome</Label>
+            <input
+              id="name"
+              type="text"
+              placeholder="Seu nome completo"
+              className={cn(inputBase, errors.name && "border-destructive")}
+              {...register("name")}
+            />
+            <FieldError message={errors.name?.message} />
+          </div>
 
-      {/* Segmento + Tamanho */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <Label htmlFor="segment" required>Segmento da empresa</Label>
-          <input
-            id="segment"
-            type="text"
-            placeholder="Ex: Varejo, Saúde, Logística..."
-            className={cn(inputBase, errors.segment && "border-destructive")}
-            {...register("segment")}
-          />
-          <FieldError message={errors.segment?.message} />
-        </div>
-        <div>
-          <Label htmlFor="size" required>Número aproximado de colaboradores</Label>
-          <select
-            id="size"
-            className={cn(inputBase, "cursor-pointer", errors.size && "border-destructive")}
-            {...register("size")}
-            defaultValue=""
-          >
-            <option value="" disabled>Selecione...</option>
-            {sizeOptions.map((opt) => (
-              <option key={opt} value={opt}>{opt}</option>
-            ))}
-          </select>
-          <FieldError message={errors.size?.message} />
-        </div>
-      </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <Label htmlFor="email" required>E-mail</Label>
+              <input
+                id="email"
+                type="email"
+                placeholder="seu@email.com"
+                className={cn(inputBase, errors.email && "border-destructive")}
+                {...register("email")}
+              />
+              <FieldError message={errors.email?.message} />
+            </div>
+            <div>
+              <Label htmlFor="whatsapp" required>WhatsApp</Label>
+              <input
+                id="whatsapp"
+                type="tel"
+                placeholder="(11) 99999-9999"
+                className={cn(inputBase, errors.whatsapp && "border-destructive")}
+                {...register("whatsapp")}
+              />
+              <FieldError message={errors.whatsapp?.message} />
+            </div>
+          </div>
 
-      {/* Solução */}
-      <div>
-        <Label htmlFor="solution" required>Qual solução você procura?</Label>
-        <select
-          id="solution"
-          className={cn(inputBase, "cursor-pointer", errors.solution && "border-destructive")}
-          {...register("solution")}
-          defaultValue=""
-        >
-          <option value="" disabled>Selecione...</option>
-          {solutionOptions.map((opt) => (
-            <option key={opt} value={opt}>{opt}</option>
-          ))}
-        </select>
-        <FieldError message={errors.solution?.message} />
-      </div>
+          <div>
+            <Label htmlFor="message" required>Qual é seu principal desafio?</Label>
+            <textarea
+              id="message"
+              rows={4}
+              placeholder="Conte um pouco sobre o que você precisa resolver ou automatizar..."
+              className={cn(inputBase, "resize-none", errors.message && "border-destructive")}
+              {...register("message")}
+            />
+            <FieldError message={errors.message?.message} />
+          </div>
 
-      {/* Mensagem */}
-      <div>
-        <Label htmlFor="message" required>Descreva rapidamente seu desafio</Label>
-        <textarea
-          id="message"
-          rows={5}
-          placeholder="Conte um pouco sobre o que você precisa resolver ou automatizar..."
-          className={cn(inputBase, "resize-none", errors.message && "border-destructive")}
-          {...register("message")}
-        />
-        <FieldError message={errors.message?.message} />
-      </div>
-
-      {/* Turnstile */}
-      <Turnstile
-        siteKey={TURNSTILE_SITE_KEY}
-        onSuccess={(token) => { setTurnstileToken(token); setTurnstileError(null); }}
-        onError={() => { setTurnstileToken(null); setTurnstileError("Falha na verificação de segurança. Recarregue a página."); }}
-        onExpire={() => { setTurnstileToken(null); setTurnstileError("Verificação expirada. Por favor, complete novamente."); }}
-        options={{ theme: "light", language: "pt-BR" }}
-      />
-
-      {/* Turnstile error */}
-      <div aria-live="polite">
-        {turnstileError && (
-          <p className="text-xs text-destructive" role="alert">{turnstileError}</p>
-        )}
-      </div>
-
-      {/* Server error */}
-      {serverError && (
-        <p className="text-sm text-destructive bg-destructive/5 border border-destructive/20 px-4 py-3" role="alert">
-          {serverError}
-        </p>
+          <div className="mt-8 flex gap-3">
+            <button
+              type="button"
+              onClick={handleStep1Next}
+              className="ui-focus-ring flex-1 px-10 h-12 bg-rc2-orange text-rc2-sand font-semibold tracking-wide uppercase text-xs hover:bg-rc2-orange/90 active:bg-rc2-orange active:ring-1 active:ring-rc2-orange/50 transition-all duration-150 rounded-md flex items-center justify-center gap-2"
+            >
+              Próximo
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        </>
       )}
 
-      <div className="mt-8 flex flex-col sm:flex-row gap-3">
-        <button
-          type="submit"
-          disabled={!turnstileToken || isSubmitting}
-          className="ui-focus-ring w-full sm:flex-1 px-10 h-12 bg-rc2-orange text-rc2-sand font-semibold tracking-wide uppercase text-xs hover:bg-rc2-orange/90 active:bg-rc2-orange active:ring-1 active:ring-rc2-orange/50 transition-all duration-150 disabled:opacity-60 disabled:cursor-not-allowed rounded-md"
-        >
-          {isSubmitting ? "Enviando..." : "Solicitar diagnóstico"}
-        </button>
-      </div>
+      {/* STEP 2: Qualification details + submission */}
+      {step === 2 && (
+        <>
+          <div>
+            <Label htmlFor="company" required>Empresa</Label>
+            <input
+              id="company"
+              type="text"
+              placeholder="Nome da empresa"
+              className={cn(inputBase, errors.company && "border-destructive")}
+              {...register("company")}
+            />
+            <FieldError message={errors.company?.message} />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <Label htmlFor="segment" required>Segmento</Label>
+              <input
+                id="segment"
+                type="text"
+                placeholder="Ex: Varejo, Saúde, Logística..."
+                className={cn(inputBase, errors.segment && "border-destructive")}
+                {...register("segment")}
+              />
+              <FieldError message={errors.segment?.message} />
+            </div>
+            <div>
+              <Label htmlFor="size" required>Porte (colaboradores)</Label>
+              <select
+                id="size"
+                className={cn(inputBase, "cursor-pointer", errors.size && "border-destructive")}
+                {...register("size")}
+                defaultValue=""
+              >
+                <option value="" disabled>Selecione...</option>
+                {sizeOptions.map((opt) => (
+                  <option key={opt} value={opt}>{opt}</option>
+                ))}
+              </select>
+              <FieldError message={errors.size?.message} />
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="solution" required>Qual solução você procura?</Label>
+            <select
+              id="solution"
+              className={cn(inputBase, "cursor-pointer", errors.solution && "border-destructive")}
+              {...register("solution")}
+              defaultValue=""
+            >
+              <option value="" disabled>Selecione...</option>
+              {solutionOptions.map((opt) => (
+                <option key={opt} value={opt}>{opt}</option>
+              ))}
+            </select>
+            <FieldError message={errors.solution?.message} />
+          </div>
+
+          {/* Turnstile */}
+          <Turnstile
+            siteKey={TURNSTILE_SITE_KEY}
+            onSuccess={(token) => { setTurnstileToken(token); setTurnstileError(null); }}
+            onError={() => { setTurnstileToken(null); setTurnstileError("Falha na verificação de segurança. Recarregue a página."); }}
+            onExpire={() => { setTurnstileToken(null); setTurnstileError("Verificação expirada. Por favor, complete novamente."); }}
+            options={{ theme: "light", language: "pt-BR" }}
+          />
+
+          {/* Errors */}
+          <div aria-live="polite">
+            {turnstileError && (
+              <p className="text-xs text-destructive" role="alert">{turnstileError}</p>
+            )}
+          </div>
+
+          {serverError && (
+            <p className="text-sm text-destructive bg-destructive/5 border border-destructive/20 px-4 py-3" role="alert">
+              {serverError}
+            </p>
+          )}
+
+          {/* Action buttons */}
+          <div className="mt-8 flex gap-3">
+            <button
+              type="button"
+              onClick={handleStep1Back}
+              disabled={isSubmitting}
+              className="ui-focus-ring px-6 h-12 border border-border text-rc2-ebony font-semibold tracking-wide uppercase text-xs hover:bg-surface-1 active:ring-1 active:ring-rc2-orange/50 transition-all duration-150 rounded-md flex items-center justify-center gap-2 disabled:opacity-60"
+            >
+              <ChevronLeft size={16} />
+              Voltar
+            </button>
+            <button
+              type="submit"
+              disabled={!turnstileToken || isSubmitting}
+              className="ui-focus-ring flex-1 px-10 h-12 bg-rc2-orange text-rc2-sand font-semibold tracking-wide uppercase text-xs hover:bg-rc2-orange/90 active:bg-rc2-orange active:ring-1 active:ring-rc2-orange/50 transition-all duration-150 disabled:opacity-60 disabled:cursor-not-allowed rounded-md"
+            >
+              {isSubmitting ? "Enviando..." : "Solicitar diagnóstico"}
+            </button>
+          </div>
+        </>
+      )}
 
       <p className="text-xs text-rc2-ebony/70">
         Ao enviar, você concorda com nossa{" "}
