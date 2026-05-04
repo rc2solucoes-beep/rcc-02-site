@@ -128,15 +128,13 @@ export async function POST(req: NextRequest) {
   const ip = getIp(req);
   const ipHash = hashIp(ip);
 
-  // 3. Turnstile verification
-  if (turnstileToken) {
-    const valid = await verifyTurnstile(turnstileToken, ip);
-    if (!valid) {
-      return NextResponse.json(
-        { error: "Verificação de segurança falhou. Recarregue a página e tente novamente." },
-        { status: 400 }
-      );
-    }
+  // 3. Turnstile verification (always required)
+  const valid = await verifyTurnstile(turnstileToken, ip);
+  if (!valid) {
+    return NextResponse.json(
+      { error: "Verificação de segurança falhou. Recarregue a página e tente novamente." },
+      { status: 400 }
+    );
   }
 
   // 4. Rate limit

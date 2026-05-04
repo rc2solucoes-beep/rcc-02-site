@@ -11,8 +11,8 @@ export const contactSchema = z.object({
   message:  z.string().min(10, "Descreva seu desafio (mínimo 10 caracteres)"),
   // Honeypot — deve estar vazio; robôs preenchem
   website:  z.string().max(0, "Spam detectado").optional(),
-  // Turnstile token — obrigatório em produção
-  turnstileToken: z.string().optional(),
+  // Turnstile token — obrigatório
+  turnstileToken: z.string().min(1, "Verificação de segurança obrigatória"),
 });
 
 export type ContactFormData = z.infer<typeof contactSchema>;
