@@ -5,6 +5,7 @@ import Link from "next/link";
 import { services, getServiceBySlug } from "@/lib/content/services";
 import { PageHero } from "@/components/marketing/PageHero";
 import { CTABlock } from "@/components/marketing/CTABlock";
+import { PageAnchorNav } from "@/components/marketing/PageAnchorNav";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { buttonVariants } from "@/components/ui/button";
@@ -79,7 +80,7 @@ export default async function ServicePage({ params }: Props) {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
             {/* O que pode ser implantado */}
-            <div>
+            <div id="items">
               <SectionLabel className="block mb-4">O que pode ser implantado</SectionLabel>
               <ul className="space-y-3">
                 {service.items.map((item, i) => (
@@ -97,7 +98,7 @@ export default async function ServicePage({ params }: Props) {
             </div>
 
             {/* Benefícios */}
-            <div>
+            <div id="benefits">
               <SectionLabel className="block mb-4">Benefícios</SectionLabel>
               <ul className="space-y-3 mb-8">
                 {service.benefits.map((benefit, i) => (
@@ -126,8 +127,22 @@ export default async function ServicePage({ params }: Props) {
             </div>
           </div>
 
+          {/* Repeated CTA before navigation */}
+          <div className="mt-12 mb-8 md:hidden">
+            <Link
+              href="/contato"
+              className={cn(
+                buttonVariants({ variant: "default" }),
+                "w-full font-semibold tracking-wide uppercase text-xs h-12 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90"
+              )}
+            >
+              Solicitar diagnóstico
+            </Link>
+          </div>
+
           {/* Navigation between services */}
           <nav
+            id="navigation"
             aria-label="Navegação entre serviços"
             className="mt-16 pt-8 border-t border-border flex flex-col sm:flex-row items-start justify-between gap-6"
           >
@@ -162,6 +177,14 @@ export default async function ServicePage({ params }: Props) {
           </nav>
         </div>
       </section>
+
+      <PageAnchorNav
+        items={[
+          { id: "items", label: "O que pode ser implantado" },
+          { id: "benefits", label: "Benefícios" },
+          { id: "navigation", label: "Navegação" },
+        ]}
+      />
 
       <CTABlock
         title="Esse serviço faz sentido para você?"
