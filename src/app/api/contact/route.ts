@@ -125,9 +125,33 @@ async function sendLeadEmail(data: {
   });
 }
 
+// ─── CSRF validation ──────────────────────────────────────────────────────────
+
+function isValidOrigin(origin: string | null): boolean {
+  if (!origin) return false;
+  try {
+    const url = new URL(origin);
+    return (
+      url.hostname === "rc2solucoes.com.br" ||
+      url.hostname === "localhost" ||
+      url.hostname === "127.0.0.1"
+    );
+  } catch {
+    return false;
+  }
+}
+
 // ─── Route handler ────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
+  const origin = req.headers.get("origin");
+  if (!isValidOrigin(origin)) {
+    return NextResponse.json(
+      { error: "Requisição rejeitada." },
+      { status: 403 }
+    );
+  }
+
   let body: unknown;
 
   try {
