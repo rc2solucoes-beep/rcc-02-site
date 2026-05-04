@@ -59,6 +59,19 @@ async function isRateLimited(email: string, ipHash: string): Promise<boolean> {
   }
 }
 
+// ─── HTML escaping ────────────────────────────────────────────────────────────
+
+function escapeHtml(text: string): string {
+  const map: Record<string, string> = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  };
+  return text.replace(/[&<>"']/g, (char) => map[char]);
+}
+
 // ─── Email notification ───────────────────────────────────────────────────────
 
 async function sendLeadEmail(data: {
@@ -78,21 +91,34 @@ async function sendLeadEmail(data: {
 
   const resend = new Resend(apiKey);
 
+  const escaped = {
+    name: escapeHtml(data.name),
+    company: escapeHtml(data.company),
+    email: escapeHtml(data.email),
+    whatsapp: escapeHtml(data.whatsapp),
+    segment: escapeHtml(data.segment),
+    size: escapeHtml(data.size),
+    solution: escapeHtml(data.solution),
+    message: escapeHtml(data.message),
+  };
+
+  const whatsappNumbers = data.whatsapp.replace(/\D/g, "");
+
   await resend.emails.send({
     from: "RC2 Soluções <notificacoes@rc2solucoes.com.br>",
     to,
-    subject: `Novo lead: ${data.name} — ${data.company}`,
+    subject: `Novo lead: ${escaped.name} — ${escaped.company}`,
     html: `
       <h2>Novo diagnóstico solicitado</h2>
       <table cellpadding="8" style="border-collapse:collapse;width:100%;font-family:sans-serif;font-size:14px;">
-        <tr><td style="font-weight:bold;width:160px;">Nome</td><td>${data.name}</td></tr>
-        <tr style="background:#f5f5f5"><td style="font-weight:bold;">Empresa</td><td>${data.company}</td></tr>
-        <tr><td style="font-weight:bold;">E-mail</td><td><a href="mailto:${data.email}">${data.email}</a></td></tr>
-        <tr style="background:#f5f5f5"><td style="font-weight:bold;">WhatsApp</td><td><a href="https://wa.me/${data.whatsapp.replace(/\D/g, "")}">${data.whatsapp}</a></td></tr>
-        <tr><td style="font-weight:bold;">Segmento</td><td>${data.segment}</td></tr>
-        <tr style="background:#f5f5f5"><td style="font-weight:bold;">Porte</td><td>${data.size}</td></tr>
-        <tr><td style="font-weight:bold;">Solução</td><td>${data.solution}</td></tr>
-        <tr style="background:#f5f5f5"><td style="font-weight:bold;">Desafio</td><td>${data.message}</td></tr>
+        <tr><td style="font-weight:bold;width:160px;">Nome</td><td>${escaped.name}</td></tr>
+        <tr style="background:#f5f5f5"><td style="font-weight:bold;">Empresa</td><td>${escaped.company}</td></tr>
+        <tr><td style="font-weight:bold;">E-mail</td><td><a href="mailto:${escaped.email}">${escaped.email}</a></td></tr>
+        <tr style="background:#f5f5f5"><td style="font-weight:bold;">WhatsApp</td><td><a href="https://wa.me/${whatsappNumbers}">${escaped.whatsapp}</a></td></tr>
+        <tr><td style="font-weight:bold;">Segmento</td><td>${escaped.segment}</td></tr>
+        <tr style="background:#f5f5f5"><td style="font-weight:bold;">Porte</td><td>${escaped.size}</td></tr>
+        <tr><td style="font-weight:bold;">Solução</td><td>${escaped.solution}</td></tr>
+        <tr style="background:#f5f5f5"><td style="font-weight:bold;">Desafio</td><td>${escaped.message}</td></tr>
       </table>
       <p style="margin-top:24px;font-size:12px;color:#888;">Enviado via rc2solucoes.com.br</p>
     `,
