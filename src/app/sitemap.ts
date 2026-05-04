@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { createServiceClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
 
 const BASE_URL = "https://rc2solucoes.com.br";
 
@@ -21,7 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let postRoutes: MetadataRoute.Sitemap = [];
 
   try {
-    const supabase = createServiceClient();
+    const supabase = createPublicClient();
     const { data: posts } = await supabase
       .from("posts")
       .select("slug,updated_at")

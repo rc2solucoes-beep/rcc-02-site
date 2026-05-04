@@ -3,14 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import DOMPurify from "isomorphic-dompurify";
-import { createServiceClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
 import type { Post } from "@/lib/types/post";
 
 export const revalidate = 60;
 
 async function getPost(slug: string): Promise<Post | null> {
   try {
-    const supabase = createServiceClient();
+    const supabase = createPublicClient();
     const { data } = await supabase
       .from("posts")
       .select("*")
@@ -25,7 +25,7 @@ async function getPost(slug: string): Promise<Post | null> {
 
 async function getAllSlugs(): Promise<string[]> {
   try {
-    const supabase = createServiceClient();
+    const supabase = createPublicClient();
     const { data } = await supabase
       .from("posts")
       .select("slug")

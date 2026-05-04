@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { createServiceClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
 import { PageHero } from "@/components/marketing/PageHero";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import type { Post } from "@/lib/types/post";
@@ -21,7 +21,7 @@ export const revalidate = 60;
 
 async function getPosts(): Promise<Post[]> {
   try {
-    const supabase = createServiceClient();
+    const supabase = createPublicClient();
     const { data } = await supabase
       .from("posts")
       .select("id,slug,title,summary,cover_url,published_at,created_at,updated_at,content,status")
