@@ -53,9 +53,11 @@ async function isRateLimited(email: string, ipHash: string): Promise<boolean> {
       .gte("created_at", oneHourAgo);
 
     return (count ?? 0) >= 3;
-  } catch {
-    // If Supabase is not configured, skip rate limiting
-    return false;
+  } catch (err) {
+    // Rate limit check failed — deny by default (fail-closed pattern)
+    // Prevents DoS if database becomes unavailable
+    console.error("[rate-limit] Failed to check rate limit:", err);
+    return true;
   }
 }
 
