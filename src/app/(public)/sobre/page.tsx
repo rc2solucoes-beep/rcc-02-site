@@ -3,6 +3,9 @@ import { PageHero } from "@/components/marketing/PageHero";
 import { CTABlock } from "@/components/marketing/CTABlock";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { StepList, type Step } from "@/components/marketing/StepList";
+import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
+
+const BASE_URL = "https://rc2solucoes.com.br";
 
 export const metadata: Metadata = {
   title: "Sobre a RC2",
@@ -40,9 +43,34 @@ const steps: Step[] = [
   },
 ];
 
-export default function SobrePage() {
+export default async function SobrePage() {
+  let schemaWebPage;
+
+  try {
+    const settings = await getOrgSettings();
+    schemaWebPage = getWebPageSchema(
+      settings,
+      {
+        title: "Sobre a RC2",
+        description:
+          "Fundada por Robson Azevedo, com mais de 20 anos de experiência em TI, e-commerce e transformação digital. Conheça a RC2 Soluções.",
+        url: `${BASE_URL}/sobre`,
+        keywords: "sobre RC2, consultoria, IA, automação, transformação digital, Robson Azevedo, time",
+        image: `${BASE_URL}/og-image.png`,
+      },
+      BASE_URL
+    );
+  } catch (error) {
+    console.error("Error loading schema:", error);
+    schemaWebPage = { "@context": "https://schema.org", "@type": "WebPage" };
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+      />
       <PageHero
         label="Sobre a RC2"
         title="Tecnologia que funciona. Operação que entrega."

@@ -6,6 +6,9 @@ import { services } from "@/lib/content/services";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
+
+const BASE_URL = "https://rc2solucoes.com.br";
 
 export const metadata: Metadata = {
   title: "Serviços",
@@ -15,9 +18,34 @@ export const metadata: Metadata = {
   openGraph: { url: "https://rc2solucoes.com.br/servicos" },
 };
 
-export default function ServicosPage() {
+export default async function ServicosPage() {
+  let schemaWebPage;
+
+  try {
+    const settings = await getOrgSettings();
+    schemaWebPage = getWebPageSchema(
+      settings,
+      {
+        title: "Serviços",
+        description:
+          "Automações com IA, agentes inteligentes, integrações com n8n, e-commerce e sites para PMEs. Conheça as soluções da RC2 Soluções.",
+        url: `${BASE_URL}/servicos`,
+        keywords: "serviços, automação, IA, integrações, e-commerce, sites, consultoria, PME, n8n, agentes inteligentes",
+        image: `${BASE_URL}/og-image.png`,
+      },
+      BASE_URL
+    );
+  } catch (error) {
+    console.error("Error loading schema:", error);
+    schemaWebPage = { "@context": "https://schema.org", "@type": "WebPage" };
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+      />
       <PageHero
         label="Serviços"
         title="Cinco soluções para transformar sua operação digital."

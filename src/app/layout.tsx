@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 import Script from "next/script";
+import { getOrgSettings, getOrganizationSchema, getLocalBusinessSchema } from "@/lib/schema";
 import "./globals.css";
 
 const barlow = Barlow({
@@ -75,21 +76,6 @@ export const metadata: Metadata = {
   },
 };
 
-const schemaOrganization = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "RC2 Soluções",
-  url: BASE_URL,
-  logo: `${BASE_URL}/images/logo-base.png`,
-  contactPoint: {
-    "@type": "ContactPoint",
-    contactType: "customer service",
-    availableLanguage: "Portuguese",
-    url: `${BASE_URL}/contato`,
-  },
-  sameAs: [],
-};
-
 const schemaWebSite = {
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -97,11 +83,35 @@ const schemaWebSite = {
   url: BASE_URL,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let schemaOrganization, schemaLocalBusiness;
+
+  try {
+    const settings = await getOrgSettings();
+    schemaOrganization = getOrganizationSchema(settings, BASE_URL);
+    schemaLocalBusiness = getLocalBusinessSchema(settings, BASE_URL);
+  } catch (error) {
+    console.error("Error loading organization settings:", error);
+    schemaOrganization = {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "RC2 Soluções",
+      url: BASE_URL,
+      logo: `${BASE_URL}/images/logo-base.png`,
+    };
+    schemaLocalBusiness = {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      name: "RC2 Soluções",
+      url: BASE_URL,
+      logo: `${BASE_URL}/images/logo-base.png`,
+    };
+  }
+
   return (
     <html
       lang="pt-BR"
@@ -111,6 +121,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrganization) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaLocalBusiness) }}
         />
         <script
           type="application/ld+json"

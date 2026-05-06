@@ -5,6 +5,9 @@ import { createPublicClient } from "@/lib/supabase/server";
 import { PageHero } from "@/components/marketing/PageHero";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import type { Post } from "@/lib/types/post";
+import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
+
+const BASE_URL = "https://rc2solucoes.com.br";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -42,9 +45,32 @@ function formatDate(iso: string | null) {
 
 export default async function BlogPage() {
   const posts = await getPosts();
+  let schemaWebPage;
+
+  try {
+    const settings = await getOrgSettings();
+    schemaWebPage = getWebPageSchema(
+      settings,
+      {
+        title: "Blog",
+        description: "Conteúdo sobre automação, IA e operações digitais para pequenas e médias empresas.",
+        url: `${BASE_URL}/blog`,
+        keywords: "blog, artigos, IA, automação, tendências, operações digitais, tecnologia, PME",
+        image: `${BASE_URL}/og-image.png`,
+      },
+      BASE_URL
+    );
+  } catch (error) {
+    console.error("Error loading schema:", error);
+    schemaWebPage = { "@context": "https://schema.org", "@type": "WebPage" };
+  }
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+      />
       <PageHero
         label="Blog"
         title="Insights sobre automação e IA"

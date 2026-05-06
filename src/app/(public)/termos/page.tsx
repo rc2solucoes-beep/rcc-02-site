@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/marketing/PageHero";
+import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
+
+const BASE_URL = "https://rc2solucoes.com.br";
 
 export const metadata: Metadata = {
   title: "Termos de Uso",
@@ -8,9 +11,34 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function TermosPage() {
+export default async function TermosPage() {
+  let schemaWebPage;
+
+  try {
+    const settings = await getOrgSettings();
+    schemaWebPage = getWebPageSchema(
+      settings,
+      {
+        title: "Termos de Uso",
+        description:
+          "Termos de Uso do site RC2 Soluções — condições de acesso e utilização.",
+        url: `${BASE_URL}/termos`,
+        keywords: "termos de uso, condições, acesso, site, políticas",
+        image: `${BASE_URL}/og-image.png`,
+      },
+      BASE_URL
+    );
+  } catch (error) {
+    console.error("Error loading schema:", error);
+    schemaWebPage = { "@context": "https://schema.org", "@type": "WebPage" };
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+      />
       <PageHero
         label="Legal"
         title="Termos de Uso"

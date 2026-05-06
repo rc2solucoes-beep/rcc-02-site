@@ -5,6 +5,9 @@ import { notFound } from "next/navigation";
 import DOMPurify from "isomorphic-dompurify";
 import { createPublicClient } from "@/lib/supabase/server";
 import type { Post } from "@/lib/types/post";
+import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
+
+const BASE_URL = "https://rc2solucoes.com.br";
 
 export const revalidate = 60;
 
@@ -77,6 +80,26 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const post = await getPost(slug);
   if (!post) notFound();
 
+  let schemaWebPage;
+
+  try {
+    const settings = await getOrgSettings();
+    schemaWebPage = getWebPageSchema(
+      settings,
+      {
+        title: post.title,
+        description: post.summary,
+        url: `${BASE_URL}/blog/${slug}`,
+        keywords: "artigo, blog, IA, automação, tendências, operações digitais",
+        image: post.cover_url ?? undefined,
+      },
+      BASE_URL
+    );
+  } catch (error) {
+    console.error("Error loading schema:", error);
+    schemaWebPage = { "@context": "https://schema.org", "@type": "WebPage" };
+  }
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -88,12 +111,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     author: {
       "@type": "Organization",
       name: "RC2 Soluções",
-      url: "https://rc2solucoes.com.br",
+      url: BASE_URL,
     },
     publisher: {
       "@type": "Organization",
       name: "RC2 Soluções",
-      url: "https://rc2solucoes.com.br",
+      url: BASE_URL,
     },
   };
 

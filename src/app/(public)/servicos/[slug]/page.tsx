@@ -10,6 +10,7 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
 const BASE_URL = "https://rc2solucoes.com.br";
 
@@ -45,6 +46,26 @@ export default async function ServicePage({ params }: Props) {
   const next = services[currentIndex + 1];
   const prev = services[currentIndex - 1];
 
+  let schemaWebPage;
+
+  try {
+    const settings = await getOrgSettings();
+    schemaWebPage = getWebPageSchema(
+      settings,
+      {
+        title: service.title,
+        description: service.summary,
+        url: `${BASE_URL}/servicos/${slug}`,
+        keywords: service.keywords,
+        image: `${BASE_URL}/og-image.png`,
+      },
+      BASE_URL
+    );
+  } catch (error) {
+    console.error("Error loading schema:", error);
+    schemaWebPage = { "@context": "https://schema.org", "@type": "WebPage" };
+  }
+
   const schemaService = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -61,6 +82,10 @@ export default async function ServicePage({ params }: Props) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaService) }}

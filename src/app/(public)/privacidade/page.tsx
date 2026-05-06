@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/marketing/PageHero";
+import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
+
+const BASE_URL = "https://rc2solucoes.com.br";
 
 export const metadata: Metadata = {
   title: "Política de Privacidade",
@@ -8,9 +11,34 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function PrivacidadePage() {
+export default async function PrivacidadePage() {
+  let schemaWebPage;
+
+  try {
+    const settings = await getOrgSettings();
+    schemaWebPage = getWebPageSchema(
+      settings,
+      {
+        title: "Política de Privacidade",
+        description:
+          "Política de Privacidade da RC2 Soluções — como coletamos, usamos e protegemos seus dados pessoais, em conformidade com a LGPD.",
+        url: `${BASE_URL}/privacidade`,
+        keywords: "privacidade, LGPD, dados pessoais, proteção de dados",
+        image: `${BASE_URL}/og-image.png`,
+      },
+      BASE_URL
+    );
+  } catch (error) {
+    console.error("Error loading schema:", error);
+    schemaWebPage = { "@context": "https://schema.org", "@type": "WebPage" };
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+      />
       <PageHero
         label="Legal"
         title="Política de Privacidade"

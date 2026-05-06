@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/marketing/PageHero";
 import { CTABlock } from "@/components/marketing/CTABlock";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
+
+const BASE_URL = "https://rc2solucoes.com.br";
 
 export const metadata: Metadata = {
   title: "Soluções com IA",
@@ -73,9 +76,34 @@ const blocks = [
   },
 ];
 
-export default function SolucoesComIAPage() {
+export default async function SolucoesComIAPage() {
+  let schemaWebPage;
+
+  try {
+    const settings = await getOrgSettings();
+    schemaWebPage = getWebPageSchema(
+      settings,
+      {
+        title: "Soluções com IA",
+        description:
+          "Descubra como a IA pode ajudar sua empresa na prática: atendimento, vendas, operação e integração com sistemas. RC2 Soluções.",
+        url: `${BASE_URL}/solucoes-com-ia`,
+        keywords: "soluções com IA, casos de uso, RPA, automação, inteligência artificial prática, IA para empresas",
+        image: `${BASE_URL}/og-image.png`,
+      },
+      BASE_URL
+    );
+  } catch (error) {
+    console.error("Error loading schema:", error);
+    schemaWebPage = { "@context": "https://schema.org", "@type": "WebPage" };
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+      />
       <PageHero
         label="Soluções com IA"
         title="Como a IA pode ajudar sua empresa na prática"

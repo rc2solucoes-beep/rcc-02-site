@@ -7,6 +7,7 @@ export type Service = {
   items: string[];
   benefits: string[];
   cta: string;
+  keywords: string;
 };
 
 export const services: Service[] = [
@@ -38,6 +39,7 @@ export const services: Service[] = [
       "Operação funcionando mesmo fora do horário comercial",
     ],
     cta: "Transforme seu atendimento em uma operação inteligente, automatizada e preparada para vender mais.",
+    keywords: "automação de atendimento, chatbot IA, WhatsApp automatizado, qualificação de leads, atendimento 24/7, automação de vendas, contato automático, inteligência artificial para atendimento",
   },
   {
     slug: "agentes-de-ia",
@@ -68,6 +70,7 @@ export const services: Service[] = [
       "Mais tempo para decisões estratégicas",
     ],
     cta: "Coloque a IA para trabalhar dentro da sua empresa, apoiando pessoas e acelerando processos.",
+    keywords: "agentes de IA, assistentes inteligentes, automação interna, RPA, análise de dados, IA para empresas, automação de processos internos, agentes conversacionais",
   },
   {
     slug: "automacao-de-processos",
@@ -98,6 +101,7 @@ export const services: Service[] = [
       "Equipe focada no que realmente importa",
     ],
     cta: "Se uma tarefa é repetitiva, provavelmente ela pode ser automatizada.",
+    keywords: "n8n automação, integrações de sistemas, API automação, automação de dados, integrações CRM, automação de processos, fluxos automatizados, zapier alternativa",
   },
   {
     slug: "e-commerce",
@@ -128,6 +132,7 @@ export const services: Service[] = [
       "Base preparada para campanhas e crescimento",
     ],
     cta: "Não criamos apenas lojas virtuais. Estruturamos operações digitais para vender com consistência.",
+    keywords: "e-commerce, loja virtual, Shopify, WooCommerce, plataforma de vendas, integração ERP, automação logística, pagamento online, D2C, operação digital",
   },
   {
     slug: "sites-e-landing-pages",
@@ -158,6 +163,7 @@ export const services: Service[] = [
       "Base pronta para campanhas",
     ],
     cta: "Transforme seu site em um canal ativo de vendas, atendimento e relacionamento.",
+    keywords: "desenvolvimento de sites, landing pages, captação de leads, site inteligente, chatbot website, formulários dinâmicos, integração WhatsApp site, conversão de visitantes",
   },
 ];
 

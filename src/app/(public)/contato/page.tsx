@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { ContactForm } from "@/components/marketing/ContactForm";
 import { CTABlock } from "@/components/marketing/CTABlock";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
+
+const BASE_URL = "https://rc2solucoes.com.br";
 
 export const metadata: Metadata = {
   title: "Contato — Solicite um Diagnóstico",
@@ -11,9 +14,34 @@ export const metadata: Metadata = {
   openGraph: { url: "https://rc2solucoes.com.br/contato" },
 };
 
-export default function ContatoPage() {
+export default async function ContatoPage() {
+  let schemaWebPage;
+
+  try {
+    const settings = await getOrgSettings();
+    schemaWebPage = getWebPageSchema(
+      settings,
+      {
+        title: "Contato — Solicite um Diagnóstico",
+        description:
+          "Preencha o formulário e receba um diagnóstico gratuito de oportunidades de IA e automação para sua empresa.",
+        url: `${BASE_URL}/contato`,
+        keywords: "contato, diagnóstico gratuito, consultoria, IA, automação, oportunidades",
+        image: `${BASE_URL}/og-image.png`,
+      },
+      BASE_URL
+    );
+  } catch (error) {
+    console.error("Error loading schema:", error);
+    schemaWebPage = { "@context": "https://schema.org", "@type": "WebPage" };
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+      />
     <section className="bg-rc2-sand py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">

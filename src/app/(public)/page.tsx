@@ -7,6 +7,7 @@ import { CTABlock } from "@/components/marketing/CTABlock";
 import { buttonVariants } from "@/components/ui/button";
 import { services } from "@/lib/content/services";
 import { cn } from "@/lib/utils";
+import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
@@ -30,9 +31,36 @@ const forWhomItems = [
   "Precisa modernizar site, landing pages ou canais digitais.",
 ];
 
-export default function HomePage() {
+const BASE_URL = "https://rc2solucoes.com.br";
+
+export default async function HomePage() {
+  let schemaWebPage;
+
+  try {
+    const settings = await getOrgSettings();
+    schemaWebPage = getWebPageSchema(
+      settings,
+      {
+        title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
+        description:
+          "Consultoria especializada em IA, automações e operações digitais para pequenas e médias empresas. Automatize atendimento, integre sistemas e escale sua operação.",
+        url: BASE_URL,
+        keywords: "IA, automação, consultoria digital, PME, n8n, agentes de IA, e-commerce, atendimento automático, integrações",
+        image: `${BASE_URL}/og-image.png`,
+      },
+      BASE_URL
+    );
+  } catch (error) {
+    console.error("Error loading schema:", error);
+    schemaWebPage = { "@context": "https://schema.org", "@type": "WebPage" };
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+      />
       {/* ── Hero ── */}
       <section className="bg-rc2-sand py-20 md:py-28 lg:py-36">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

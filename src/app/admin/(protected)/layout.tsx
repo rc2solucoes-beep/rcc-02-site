@@ -11,26 +11,42 @@ async function isUserAdmin(userId: string): Promise<boolean> {
       .eq("id", userId)
       .single();
     return !!data;
-  } catch {
+  } catch (error) {
+    console.error("[AdminLayout] Error checking admin status:", error);
     return false;
   }
 }
 
 export default async function ProtectedAdminLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createSessionClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  try {
+    const supabase = await createSessionClient();
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
-  if (!session) redirect("/admin");
+    if (sessionError) {
+      console.error("[AdminLayout] Session error:", sessionError);
+      redirect("/admin");
+    }
 
-  const isAdmin = await isUserAdmin(session.user.id);
-  if (!isAdmin) redirect("/admin");
+    if (!session) {
+      redirect("/admin");
+    }
 
-  return (
-    <div className="flex min-h-screen bg-zinc-50">
-      <AdminSidebar />
-      <main className="flex-1 flex flex-col min-w-0">
-        {children}
-      </main>
-    </div>
-  );
+    const isAdmin = await isUserAdmin(session.user.id);
+    if (!isAdmin) {
+      console.warn(`[AdminLayout] User ${session.user.email} is not an admin`);
+      redirect("/admin");
+    }
+
+    return (
+      <div className="flex min-h-screen bg-zinc-50">
+        <AdminSidebar />
+        <main className="flex-1 flex flex-col min-w-0">
+          {children}
+        </main>
+      </div>
+    );
+  } catch (error) {
+    console.error("[AdminLayout] Unexpected error:", error);
+    redirect("/admin");
+  }
 }
