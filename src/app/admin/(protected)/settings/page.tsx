@@ -12,10 +12,12 @@ const SETTING_KEYS = [
   { key: "phone",          label: "Telefone (+55...)",     type: "tel",    placeholder: "+5511988028550" },
 
   // Localização
-  { key: "address",        label: "Endereço completo",     type: "text",   placeholder: "Rua/Avenida, Nº, Bairro, São Paulo, SP" },
-  { key: "address_lat",    label: "Latitude (Google Maps)", type: "number", placeholder: "-23.5505", step: "0.0001" },
-  { key: "address_lng",    label: "Longitude (Google Maps)", type: "number", placeholder: "-46.6333", step: "0.0001" },
-  { key: "business_area",  label: "Área de atuação",       type: "text",   placeholder: "São Paulo, SP ou Brasil" },
+  { key: "address",          label: "Endereço completo",     type: "text",   placeholder: "Rua/Avenida, Nº, Bairro, São Paulo, SP" },
+  { key: "postal_code",      label: "CEP",                   type: "text",   placeholder: "07100-500" },
+  { key: "address_locality", label: "Cidade/Localidade",     type: "text",   placeholder: "Guarulhos" },
+  { key: "address_lat",      label: "Latitude (Google Maps)", type: "number", placeholder: "-23.5505", step: "0.0001" },
+  { key: "address_lng",      label: "Longitude (Google Maps)", type: "number", placeholder: "-46.6333", step: "0.0001" },
+  { key: "business_area",    label: "Área de atuação",       type: "text",   placeholder: "São Paulo, SP ou Brasil" },
 
   // Redes e perfis
   { key: "instagram_url",  label: "URL do Instagram",      type: "url",    placeholder: "https://instagram.com/..." },

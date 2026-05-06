@@ -3,6 +3,8 @@ export interface OrgSettings {
   whatsapp: string;
   phone: string;
   address: string;
+  postal_code?: string;
+  address_locality?: string;
   address_lat?: string | number;
   address_lng?: string | number;
   business_area: string;

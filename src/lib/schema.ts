@@ -32,6 +32,8 @@ export async function getOrgSettings(): Promise<OrgSettings> {
     whatsapp: settings.whatsapp || "",
     phone: settings.phone || "",
     address: settings.address || "",
+    postal_code: settings.postal_code,
+    address_locality: settings.address_locality,
     address_lat: settings.address_lat || "",
     address_lng: settings.address_lng || "",
     business_area: settings.business_area || "",
@@ -82,6 +84,8 @@ export function getOrganizationSchema(
     ? {
         "@type": "PostalAddress" as const,
         streetAddress: settings.address,
+        addressLocality: settings.address_locality || undefined,
+        postalCode: settings.postal_code || undefined,
         addressCountry: "BR",
       }
     : undefined;
@@ -121,6 +125,8 @@ export function getLocalBusinessSchema(
     ? {
         "@type": "PostalAddress" as const,
         streetAddress: settings.address,
+        addressLocality: settings.address_locality || undefined,
+        postalCode: settings.postal_code || undefined,
         addressCountry: "BR",
       }
     : undefined;
