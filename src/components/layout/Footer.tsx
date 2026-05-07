@@ -29,7 +29,7 @@ export function Footer() {
           {/* Brand */}
           <div className="sm:col-span-2 md:col-span-1">
             <Logo variant="dark" />
-            <p className="mt-4 text-sm text-rc2-sand/70 leading-relaxed max-w-xs">
+            <p className="mt-4 text-sm text-rc2-sand/85 leading-relaxed max-w-xs">
               Consultoria especializada em IA, automações e operações digitais
               para pequenas e médias empresas.
             </p>
@@ -37,13 +37,13 @@ export function Footer() {
 
           {/* Empresa */}
           <div>
-            <h3 className="rc2-label text-rc2-sand/60 mb-4">Empresa</h3>
+            <h3 className="rc2-label text-rc2-sand/85 mb-4">Empresa</h3>
             <ul className="space-y-2">
               {footerLinks.empresa.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="ui-focus-ring rounded-sm text-sm text-rc2-sand/70 hover:text-rc2-sand hover:underline transition-colors"
+                    className="ui-focus-ring rounded-sm text-sm text-rc2-sand/85 hover:text-rc2-sand hover:underline transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -54,13 +54,13 @@ export function Footer() {
 
           {/* Serviços */}
           <div>
-            <h3 className="rc2-label text-rc2-sand/60 mb-4">Serviços</h3>
+            <h3 className="rc2-label text-rc2-sand/85 mb-4">Serviços</h3>
             <ul className="space-y-2">
               {footerLinks.servicos.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="ui-focus-ring rounded-sm text-sm text-rc2-sand/70 hover:text-rc2-sand hover:underline transition-colors"
+                    className="ui-focus-ring rounded-sm text-sm text-rc2-sand/85 hover:text-rc2-sand hover:underline transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -71,14 +71,14 @@ export function Footer() {
 
           {/* Contato */}
           <div>
-            <h3 className="rc2-label text-rc2-sand/60 mb-4">Contato</h3>
+            <h3 className="rc2-label text-rc2-sand/85 mb-4">Contato</h3>
             <ul className="space-y-2">
               <li>
                 <a
                   href="https://wa.me/5511988028550"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-rc2-sand/70 hover:text-rc2-sand transition-colors"
+                  className="text-sm text-rc2-sand/85 hover:text-rc2-sand transition-colors"
                 >
                   WhatsApp
                 </a>
@@ -86,7 +86,7 @@ export function Footer() {
               <li>
                 <a
                   href="mailto:contato@rc2solucoes.com.br"
-                  className="text-sm text-rc2-sand/70 hover:text-rc2-sand transition-colors"
+                  className="text-sm text-rc2-sand/85 hover:text-rc2-sand transition-colors"
                 >
                   contato@rc2solucoes.com.br
                 </a>
@@ -97,7 +97,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-12 pt-6 border-t border-rc2-sand/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="rc2-caption text-rc2-sand/60 text-center sm:text-left">
+          <p className="rc2-caption text-rc2-sand/85 text-center sm:text-left">
             © 2026 RC2 Soluções. Todos os direitos reservados.
           </p>
           <div className="flex gap-6">
@@ -105,7 +105,7 @@ export function Footer() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="ui-focus-ring rounded-sm rc2-caption text-rc2-sand/60 hover:text-rc2-sand transition-colors"
+                className="ui-focus-ring rounded-sm rc2-caption text-rc2-sand/85 hover:text-rc2-sand transition-colors"
               >
                 {link.label}
               </Link>
