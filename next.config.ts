@@ -13,8 +13,8 @@ const cspDirectives = [
   "font-src 'self' https://fonts.gstatic.com",
   // Images: self + data URIs + Supabase storage + any HTTPS (for OG images from posts)
   "img-src 'self' data: blob: https:",
-  // Frames: Turnstile widget
-  "frame-src https://challenges.cloudflare.com",
+  // Frames: Turnstile widget + Google Maps embed
+  "frame-src https://challenges.cloudflare.com https://www.google.com",
   // Connections: self + Supabase + Cloudflare Turnstile + GTM
   "connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com",
   // Base URI restriction
