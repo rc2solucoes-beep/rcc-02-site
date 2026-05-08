@@ -4,6 +4,7 @@ import { Check, ArrowRight } from "lucide-react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ServiceCard } from "@/components/marketing/ServiceCard";
 import { CTABlock } from "@/components/marketing/CTABlock";
+import { GoogleReviews } from "@/components/GoogleReviews";
 import { buttonVariants } from "@/components/ui/button";
 import { services } from "@/lib/content/services";
 import { cn } from "@/lib/utils";
@@ -185,6 +186,30 @@ export default async function HomePage() {
             Mais de 20 anos de experiência em tecnologia, operações digitais,
             e-commerce, automações e gestão de equipes.
           </p>
+        </div>
+      </section>
+
+      {/* ── Avaliações ── */}
+      <section className="bg-rc2-sand py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionLabel className="block mb-5">O que os clientes dizem</SectionLabel>
+          <h2 className="text-3xl md:text-4xl font-semibold text-rc2-ebony mb-12 text-center">
+            Avaliações de clientes satisfeitos
+          </h2>
+          <div className="flex justify-center">
+            <GoogleReviews />
+          </div>
+          <div className="mt-8 text-center">
+            <Link
+              href="/avaliacoes"
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "font-semibold tracking-wide uppercase text-xs px-8 h-12 border-rc2-ebony text-rc2-ebony hover:bg-rc2-ebony hover:text-rc2-sand"
+              )}
+            >
+              Ver mais avaliações e cases
+            </Link>
+          </div>
         </div>
       </section>
 

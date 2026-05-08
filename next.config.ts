@@ -15,8 +15,8 @@ const cspDirectives = [
   "img-src 'self' data: blob: https:",
   // Frames: Turnstile widget + Google Maps embed
   "frame-src https://challenges.cloudflare.com https://www.google.com",
-  // Connections: self + Supabase + Cloudflare Turnstile + GTM
-  "connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com",
+  // Connections: self + Supabase + Cloudflare Turnstile + GTM + Google Places
+  "connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://places.googleapis.com",
   // Base URI restriction
   "base-uri 'self'",
   // Form action: self only

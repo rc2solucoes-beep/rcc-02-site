@@ -1,16 +1,128 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { Star } from "lucide-react";
+import type { PlaceDetails } from "@/lib/types/google";
+
 export function GoogleReviews() {
+  const [place, setPlace] = useState<PlaceDetails | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchReviews() {
+      try {
+        const res = await fetch("/api/google/places");
+        if (!res.ok) throw new Error("Failed to fetch reviews");
+        const data = await res.json();
+        setPlace(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Unknown error");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchReviews();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="w-full h-96 bg-gray-200 animate-pulse rounded-lg" />
+    );
+  }
+
+  if (error || !place) {
+    return (
+      <div className="w-full text-center py-12">
+        <p className="text-gray-600">
+          Não conseguimos carregar as avaliações no momento.
+        </p>
+        <a
+          href="https://www.google.com/maps/search/RC2+Solu%C3%A7%C3%B5es"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-block text-rc2-orange hover:underline"
+        >
+          Ver no Google Maps →
+        </a>
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full rounded-lg overflow-hidden shadow-sm">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.4419999999998!2d-46.5319294!3d-23.4424534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cef52583ad1a8d%3A0xf9d6abeb964d95b2!2sRC2%20Solu%C3%A7%C3%B5es!5e0!3m2!1spt-BR!2sbr!4v1715158800000"
-        width="100%"
-        height="450"
-        style={{ border: 0 }}
-        allowFullScreen
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-        title="RC2 Soluções no Google Maps"
-      />
+    <div className="w-full space-y-8">
+      {/* Resumo das Avaliações */}
+      <div className="text-center">
+        <div className="flex items-center justify-center gap-2 mb-2">
+          <div className="flex gap-0.5">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                size={20}
+                className={
+                  i < Math.round(place.rating)
+                    ? "fill-yellow-400 text-yellow-400"
+                    : "text-gray-300"
+                }
+              />
+            ))}
+          </div>
+          <span className="text-2xl font-bold">{place.rating.toFixed(1)}</span>
+        </div>
+        <p className="text-gray-600">
+          {place.userRatingCount} avaliações no Google
+        </p>
+      </div>
+
+      {/* Lista de Reviews */}
+      <div className="space-y-4">
+        {place.reviews.map((review, i) => (
+          <div
+            key={i}
+            className="border border-gray-200 rounded-lg p-4 space-y-2"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="font-semibold text-rc2-ebony">
+                  {review.authorAttribution.displayName}
+                </p>
+                <div className="flex gap-0.5 mt-1">
+                  {[...Array(5)].map((_, j) => (
+                    <Star
+                      key={j}
+                      size={14}
+                      className={
+                        j < review.rating
+                          ? "fill-yellow-400 text-yellow-400"
+                          : "text-gray-300"
+                      }
+                    />
+                  ))}
+                </div>
+              </div>
+              <time className="text-sm text-gray-500 whitespace-nowrap">
+                {new Date(review.publishTime).toLocaleDateString("pt-BR")}
+              </time>
+            </div>
+            <p className="text-gray-700 text-sm leading-relaxed">
+              {review.text}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* Link para ver mais */}
+      <div className="text-center pt-4">
+        <a
+          href="https://www.google.com/maps/search/RC2+Solu%C3%A7%C3%B5es"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block px-6 py-2 border border-rc2-ebony text-rc2-ebony hover:bg-rc2-ebony hover:text-rc2-sand transition-colors rounded"
+        >
+          Ver todas as avaliações no Google →
+        </a>
+      </div>
     </div>
   );
 }
