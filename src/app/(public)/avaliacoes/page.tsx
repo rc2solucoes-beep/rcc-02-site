@@ -1,4 +1,5 @@
 import { GoogleReviews } from "@/components/GoogleReviews";
+import { SectionLabel } from "@/components/ui/SectionLabel";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 import type { WebPageInfo } from "@/lib/types/schema";
 
@@ -35,36 +36,30 @@ export default async function AvaliacoesPage() {
       <main id="main-content">
         <section className="bg-rc2-sand py-16 md:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
+            <div className="mb-12">
+              <SectionLabel className="block mb-5">Avaliações & Cases</SectionLabel>
               <h1 className="text-4xl md:text-5xl font-bold text-rc2-ebony mb-4">
-                Avaliações & Cases
+                O que nossos clientes estão dizendo
               </h1>
-              <p className="text-lg text-rc2-ebony/70 max-w-2xl mx-auto">
-                Veja o que nossos clientes estão dizendo e conheça os resultados reais que alcançamos com nossas soluções de IA e automação.
+              <p className="text-lg text-rc2-ebony/70 max-w-2xl">
+                Resultados reais de empresas que modernizaram atendimento, vendas e operação com a RC2.
               </p>
             </div>
+            <GoogleReviews columns={2} />
           </div>
         </section>
 
-        <section className="py-16 md:py-24 bg-white">
+        <section className="py-16 md:py-24 bg-rc2-ink">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-rc2-ebony mb-12 text-center">
-              Avaliações dos Clientes
-            </h2>
-            <div className="flex justify-center">
-              <GoogleReviews />
+            <SectionLabel className="block mb-5 text-rc2-orange">Cases de Sucesso</SectionLabel>
+            <div className="max-w-2xl border-l-2 border-rc2-orange pl-8">
+              <h3 className="text-xl font-semibold text-rc2-sand mb-4">
+                Construído com IA na prática
+              </h3>
+              <p className="text-rc2-sand/70 leading-relaxed">
+                Este site foi desenvolvido aplicando vibecode, engenharia de prompt e ferramentas modernas de IA. A mesma lógica usada aqui — clareza, velocidade, automação e execução prática — é aplicada nos projetos da RC2 para empresas que querem modernizar atendimento, vendas e operação.
+              </p>
             </div>
-          </div>
-        </section>
-
-        <section className="py-16 md:py-24 bg-rc2-sand">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-rc2-ebony mb-12 text-center">
-              Cases de Sucesso
-            </h2>
-            <p className="text-center text-rc2-ebony/70 max-w-2xl mx-auto">
-              Em breve, compartilharemos detalhes de projetos que transformaram operações e impulsionaram crescimento para nossos clientes.
-            </p>
           </div>
         </section>
       </main>

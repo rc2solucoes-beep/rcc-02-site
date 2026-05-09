@@ -193,12 +193,10 @@ export default async function HomePage() {
       <section className="bg-rc2-sand py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionLabel className="block mb-5">O que os clientes dizem</SectionLabel>
-          <h2 className="text-3xl md:text-4xl font-semibold text-rc2-ebony mb-12 text-center">
+          <h2 className="text-3xl md:text-4xl font-semibold text-rc2-ebony mb-12">
             Avaliações de clientes satisfeitos
           </h2>
-          <div className="flex justify-center">
-            <GoogleReviews />
-          </div>
+          <GoogleReviews maxReviews={4} showGoogleLink={false} columns={2} />
           <div className="mt-8 text-center">
             <Link
               href="/avaliacoes"
