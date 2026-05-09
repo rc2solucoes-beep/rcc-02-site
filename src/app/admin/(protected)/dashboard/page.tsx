@@ -5,6 +5,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { FileText, Users, TrendingUp } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 async function getStats() {
   try {
     const supabase = await createSessionClient();
