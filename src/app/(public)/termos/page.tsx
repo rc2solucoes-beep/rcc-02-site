@@ -42,7 +42,7 @@ export default async function TermosPage() {
       <PageHero
         label="Legal"
         title="Termos de Uso"
-        description="Última atualização: maio de 2025"
+        description="Última atualização: maio de 2026"
       />
 
       <section className="bg-rc2-sand py-16">
