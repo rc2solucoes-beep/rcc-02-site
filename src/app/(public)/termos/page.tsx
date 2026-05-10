@@ -48,10 +48,6 @@ export default async function TermosPage() {
       <section className="bg-rc2-sand py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="prose prose-neutral max-w-none text-rc2-ebony/80 leading-relaxed space-y-8">
-            <div className="p-4 border-l-2 border-rc2-orange bg-rc2-orange/5 text-sm text-rc2-ebony/60">
-              <strong>Aviso:</strong> Os campos de CNPJ e endereço serão preenchidos antes da publicação em produção.
-            </div>
-
             <section>
               <h2 className="text-xl font-semibold text-rc2-ebony mb-3">1. Aceitação dos termos</h2>
               <p>
@@ -62,7 +58,7 @@ export default async function TermosPage() {
             <section>
               <h2 className="text-xl font-semibold text-rc2-ebony mb-3">2. Sobre a RC2 Soluções</h2>
               <p>
-                RC2 Soluções, CNPJ: <span className="text-rc2-orange">[PREENCHER]</span>, sediada em <span className="text-rc2-orange">[PREENCHER]</span>, prestadora de serviços de consultoria em tecnologia, IA, automações e operações digitais.
+                RC2 Soluções, CNPJ: 10.604.725/0001-42, sediada em Avenida Nova América, 202, Jardim Santa Cecília, Guarulhos/SP, prestadora de serviços de consultoria em tecnologia, IA, automações e operações digitais.
               </p>
             </section>
 
@@ -108,7 +104,7 @@ export default async function TermosPage() {
             <section>
               <h2 className="text-xl font-semibold text-rc2-ebony mb-3">8. Lei aplicável e foro</h2>
               <p>
-                Estes Termos são regidos pela legislação brasileira. Fica eleito o foro da comarca de <span className="text-rc2-orange">[PREENCHER cidade/estado]</span> para dirimir eventuais controvérsias.
+                Estes Termos são regidos pela legislação brasileira. Fica eleito o foro da comarca de Guarulhos/SP para dirimir eventuais controvérsias.
               </p>
             </section>
 

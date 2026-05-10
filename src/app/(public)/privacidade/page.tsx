@@ -48,14 +48,10 @@ export default async function PrivacidadePage() {
       <section className="bg-rc2-sand py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="prose prose-neutral max-w-none text-rc2-ebony/80 leading-relaxed space-y-8">
-            <div className="p-4 border-l-2 border-rc2-orange bg-rc2-orange/5 text-sm text-rc2-ebony/60">
-              <strong>Aviso:</strong> Os campos de CNPJ e endereço serão preenchidos antes da publicação em produção.
-            </div>
-
             <section>
               <h2 className="text-xl font-semibold text-rc2-ebony mb-3">1. Quem somos</h2>
               <p>
-                A RC2 Soluções (CNPJ: <span className="text-rc2-orange">[PREENCHER]</span>, endereço: <span className="text-rc2-orange">[PREENCHER]</span>) é controladora dos dados pessoais tratados por meio deste site.
+                A RC2 Soluções (CNPJ: 10.604.725/0001-42, endereço: Avenida Nova América, 202, Jardim Santa Cecília, Guarulhos/SP) é controladora dos dados pessoais tratados por meio deste site.
               </p>
               <p>
                 Contato do responsável: <a href="mailto:contato@rc2solucoes.com.br" className="text-rc2-orange underline">contato@rc2solucoes.com.br</a>
