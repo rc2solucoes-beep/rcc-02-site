@@ -62,6 +62,18 @@ export async function createPost(prevState: PostFormState, formData: FormData): 
     og_description: formData.get("og_description") as string || null,
     // Relacionamento
     related_post_ids: formData.get("related_post_ids") ? (formData.get("related_post_ids") as string).split(",").filter(Boolean) : null,
+    // FAQ
+    faq_items: (() => {
+      const raw = formData.get("faq_items") as string;
+      if (!raw || raw === "null") return null;
+      try { return JSON.parse(raw); } catch { return null; }
+    })(),
+    // CTA
+    cta_block: (() => {
+      const raw = formData.get("cta_block") as string;
+      if (!raw || raw === "null") return null;
+      try { return JSON.parse(raw); } catch { return null; }
+    })(),
   };
 
   const parsed = CreatePostSchema.safeParse(raw);
@@ -136,6 +148,18 @@ export async function updatePost(id: string, prevState: PostFormState, formData:
     og_description: formData.get("og_description") as string || null,
     // Relacionamento
     related_post_ids: formData.get("related_post_ids") ? (formData.get("related_post_ids") as string).split(",").filter(Boolean) : null,
+    // FAQ
+    faq_items: (() => {
+      const raw = formData.get("faq_items") as string;
+      if (!raw || raw === "null") return null;
+      try { return JSON.parse(raw); } catch { return null; }
+    })(),
+    // CTA
+    cta_block: (() => {
+      const raw = formData.get("cta_block") as string;
+      if (!raw || raw === "null") return null;
+      try { return JSON.parse(raw); } catch { return null; }
+    })(),
   };
 
   const parsed = CreatePostSchema.safeParse(raw);

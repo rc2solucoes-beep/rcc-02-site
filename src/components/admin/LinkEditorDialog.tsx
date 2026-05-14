@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { X } from "lucide-react";
 
 interface Post {
@@ -28,8 +28,11 @@ export function LinkEditorDialog({
   initialUrl = "",
   selectedText = "",
 }: LinkEditorDialogProps) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const urlInputRef = useRef<HTMLInputElement>(null);
+
   const [url, setUrl] = useState(initialUrl);
-  const [openInNewTab, setOpenInNewTab] = useState(initialUrl?.includes("http"));
+  const [openInNewTab, setOpenInNewTab] = useState(false);
   const [linkType, setLinkType] = useState<"external" | "internal">(
     initialUrl?.startsWith("http") ? "external" : "internal"
   );
@@ -37,6 +40,51 @@ export function LinkEditorDialog({
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
   const [urlError, setUrlError] = useState<string>("");
+
+  // Sync state when dialog opens or link changes
+  useEffect(() => {
+    if (isOpen) {
+      setUrl(initialUrl);
+      setUrlError("");
+
+      // Determine if external or internal
+      const isExternal = initialUrl?.startsWith("http") ?? false;
+      setLinkType(isExternal ? "external" : "internal");
+
+      // Extract slug if internal link
+      if (!isExternal && initialUrl?.startsWith("/blog/")) {
+        const slug = initialUrl.replace("/blog/", "");
+        setSelectedPostSlug(slug);
+      } else {
+        setSelectedPostSlug("");
+      }
+
+      // Check if link currently has target="_blank" to set openInNewTab
+      // For now, we'll keep it false as default
+      setOpenInNewTab(false);
+
+      // Focus the appropriate input when dialog opens
+      setTimeout(() => {
+        if (urlInputRef.current) {
+          urlInputRef.current.focus();
+        }
+      }, 0);
+    }
+  }, [isOpen, initialUrl]);
+
+  // Handle escape key to close dialog
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isOpen, onClose]);
 
   // Fetch posts for internal link picker
   useEffect(() => {
@@ -129,14 +177,19 @@ export function LinkEditorDialog({
 
   return (
     <>
-      {/* Overlay */}
+      {/* Overlay - click to close */}
       <div
         className="fixed inset-0 bg-black/50 z-40"
         onClick={onClose}
       />
 
-      {/* Dialog */}
-      <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg z-50 w-full max-w-md p-6">
+      {/* Dialog - stop propagation so overlay onClick doesn't fire */}
+      <div
+        ref={dialogRef}
+        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg z-50 w-full max-w-md p-6"
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold text-rc2-ebony">
@@ -167,7 +220,8 @@ export function LinkEditorDialog({
           </label>
           <div className="flex gap-2">
             <button
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setLinkType("external");
                 setSelectedPostSlug("");
               }}
@@ -180,7 +234,10 @@ export function LinkEditorDialog({
               Externo
             </button>
             <button
-              onClick={() => setLinkType("internal")}
+              onClick={(e) => {
+                e.stopPropagation();
+                setLinkType("internal");
+              }}
               className={`flex-1 px-3 py-2 rounded text-sm font-medium transition-colors ${
                 linkType === "internal"
                   ? "bg-rc2-orange text-white"
@@ -199,11 +256,18 @@ export function LinkEditorDialog({
               URL
             </label>
             <input
+              ref={urlInputRef}
               type="text"
               value={url}
               onChange={(e) => {
                 setUrl(e.target.value);
                 setUrlError("");
+              }}
+              onKeyDown={(e) => {
+                e.stopPropagation();
+                if (e.key === "Enter") {
+                  handleSave();
+                }
               }}
               placeholder="https://exemplo.com"
               className="w-full border border-border bg-white px-3 py-2.5 text-sm rounded outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors"
@@ -223,7 +287,11 @@ export function LinkEditorDialog({
             ) : posts.length > 0 ? (
               <select
                 value={selectedPostSlug}
-                onChange={(e) => setSelectedPostSlug(e.target.value)}
+                onChange={(e) => {
+                  e.stopPropagation();
+                  setSelectedPostSlug(e.target.value);
+                }}
+                onMouseDown={(e) => e.stopPropagation()}
                 className="w-full border border-border bg-white px-3 py-2.5 text-sm rounded outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors"
               >
                 <option value="">-- Selecione um post --</option>
@@ -251,12 +319,15 @@ export function LinkEditorDialog({
         )}
 
         {/* Open in New Tab */}
-        <div className="mb-6 flex items-center gap-2">
+        <div className="mb-6 flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
           <input
             type="checkbox"
             id="openInNewTab"
             checked={openInNewTab}
-            onChange={(e) => setOpenInNewTab(e.target.checked)}
+            onChange={(e) => {
+              e.stopPropagation();
+              setOpenInNewTab(e.target.checked);
+            }}
             className="w-4 h-4 cursor-pointer"
           />
           <label htmlFor="openInNewTab" className="text-sm text-rc2-ebony/70 cursor-pointer">

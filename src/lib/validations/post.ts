@@ -73,8 +73,32 @@ export const PostRelatedSchema = z.object({
   related_post_ids: z.array(z.string().uuid()).optional().nullable(),
 });
 
+export const FaqItemSchema = z.object({
+  question: z.string().min(1, "Pergunta é obrigatória"),
+  answer: z.string().min(1, "Resposta é obrigatória"),
+});
+
+export const CtaButtonSchema = z.object({
+  text: z.string().min(1),
+  url: z.string().min(1),
+});
+
+export const CtaBlockSchema = z.object({
+  type: z.enum(["service", "contact", "next_steps"]),
+  title: z.string().min(1, "Título do CTA é obrigatório"),
+  description: z.string().optional(),
+  primaryButton: CtaButtonSchema.optional(),
+  secondaryButton: CtaButtonSchema.optional(),
+  items: z.array(z.string()).optional(),
+});
+
+export const PostFaqSchema = z.object({
+  faq_items: z.array(FaqItemSchema).optional().nullable(),
+  cta_block: CtaBlockSchema.optional().nullable(),
+});
+
 // Schema completo para criar/atualizar post
-export const CreatePostSchema = PostContentSchema.merge(PostSeoSchema).merge(PostPublicationSchema).merge(PostAuthorSchema).merge(PostImageSchema).merge(PostRelatedSchema);
+export const CreatePostSchema = PostContentSchema.merge(PostSeoSchema).merge(PostPublicationSchema).merge(PostAuthorSchema).merge(PostImageSchema).merge(PostRelatedSchema).merge(PostFaqSchema);
 
 export type CreatePostInput = z.infer<typeof CreatePostSchema>;
 export type PostContent = z.infer<typeof PostContentSchema>;

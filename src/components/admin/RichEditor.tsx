@@ -5,6 +5,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Image from "@tiptap/extension-image";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   Bold, Italic, Strikethrough, Code, Heading2, Heading3,
   List, ListOrdered, Quote, Minus, Undo, Redo, Link as LinkIcon,
@@ -111,10 +112,23 @@ function EditorToolbar({ editor, onLinkClick }: EditorToolbarProps) {
   );
 }
 
+interface DialogState {
+  isOpen: boolean;
+  selectedText: string;
+  initialUrl: string;
+}
+
 export function RichEditor({ content, onChange, placeholder = "Escreva o conteúdo do post..." }: RichEditorProps) {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedText, setSelectedText] = useState("");
-  const [initialUrl, setInitialUrl] = useState("");
+  const [dialog, setDialog] = useState<DialogState>({
+    isOpen: false,
+    selectedText: "",
+    initialUrl: "",
+  });
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const editor = useEditor({
     extensions: [
@@ -152,9 +166,12 @@ export function RichEditor({ content, onChange, placeholder = "Escreva o conteú
     const isLink = editor.isActive("link");
     const currentLink = isLink ? editor.getAttributes("link").href : "";
 
-    setSelectedText(text || "");
-    setInitialUrl(currentLink);
-    setDialogOpen(true);
+    // Update all dialog state in one call to prevent re-render issues
+    setDialog({
+      isOpen: true,
+      selectedText: text || "",
+      initialUrl: currentLink,
+    });
   };
 
   const handleSaveLink = (url: string, openInNewTab: boolean) => {
@@ -175,17 +192,22 @@ export function RichEditor({ content, onChange, placeholder = "Escreva o conteú
     editor.chain().focus().deleteSelection().run();
   };
 
+  const linkDialog = (
+    <LinkEditorDialog
+      isOpen={dialog.isOpen}
+      onClose={() => setDialog(prev => ({ ...prev, isOpen: false }))}
+      onSave={handleSaveLink}
+      onRemove={handleRemoveLink}
+      onDelete={handleDeleteAll}
+      initialUrl={dialog.initialUrl}
+      selectedText={dialog.selectedText}
+    />
+  );
+
   return (
     <>
-      <LinkEditorDialog
-        isOpen={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        onSave={handleSaveLink}
-        onRemove={handleRemoveLink}
-        onDelete={handleDeleteAll}
-        initialUrl={initialUrl}
-        selectedText={selectedText}
-      />
+      {/* Portal: renders dialog in document.body, completely outside TipTap's DOM tree */}
+      {mounted && createPortal(linkDialog, document.body)}
       <div className="border border-border rounded overflow-hidden">
         {/* Top Toolbar */}
         <div className="border-b border-border">

@@ -8,7 +8,9 @@ import { PublicationTab } from "@/components/admin/PostFormTabs/PublicationTab";
 import { AuthorTab } from "@/components/admin/PostFormTabs/AuthorTab";
 import { ImageTab } from "@/components/admin/PostFormTabs/ImageTab";
 import { RelatedTab } from "@/components/admin/PostFormTabs/RelatedTab";
-import type { Post } from "@/lib/types/post";
+import { FaqTab } from "@/components/admin/PostFormTabs/FaqTab";
+import { CtaTab } from "@/components/admin/PostFormTabs/CtaTab";
+import type { Post, FaqItem, CtaBlock } from "@/lib/types/post";
 import type { PostFormState } from "@/app/admin/(protected)/posts/actions";
 import { slugify } from "@/lib/utils";
 
@@ -21,7 +23,7 @@ const initialState: PostFormState = {};
 
 const inputBase = "w-full border border-border bg-rc2-sand px-3 py-2.5 text-sm text-rc2-ebony placeholder:text-rc2-ebony/40 outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors";
 
-type TabKey = "conteudo" | "seo" | "publicacao" | "autor" | "imagem" | "relacionados";
+type TabKey = "conteudo" | "seo" | "publicacao" | "autor" | "imagem" | "relacionados" | "faq" | "cta";
 
 interface PostFormData {
   [key: string]: string;
@@ -115,6 +117,32 @@ export function PostFormRefactored({ post, action }: PostFormProps) {
 
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(!!post);
 
+  // FAQ items — gerenciado separadamente por ser estrutura complexa
+  const [faqItems, setFaqItems] = useState<FaqItem[]>(() => {
+    const raw = post?.faq_items;
+    if (!raw) return [];
+    // post.faq_items pode vir como string JSON (sanitização do servidor)
+    if (typeof raw === "string") {
+      try { return JSON.parse(raw); } catch { return []; }
+    }
+    if (Array.isArray(raw)) {
+      return raw.map((item) =>
+        typeof item === "string" ? JSON.parse(item) : item
+      );
+    }
+    return [];
+  });
+
+  // CTA block — gerenciado separadamente por ser estrutura complexa
+  const [ctaBlock, setCtaBlock] = useState<CtaBlock | null>(() => {
+    const raw = post?.cta_block;
+    if (!raw) return null;
+    if (typeof raw === "string") {
+      try { return JSON.parse(raw); } catch { return null; }
+    }
+    return raw as CtaBlock;
+  });
+
   // Handler para atualizar qualquer campo
   const handleFieldChange = (field: keyof PostFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -135,6 +163,13 @@ export function PostFormRefactored({ post, action }: PostFormProps) {
     Object.entries(formData).forEach(([key, value]) => {
       fd.append(key, value);
     });
+    // FAQ: serializa como JSON, filtrando itens sem conteúdo
+    const validFaqItems = faqItems.filter(
+      (item) => item.question.trim() && item.answer.trim()
+    );
+    fd.append("faq_items", JSON.stringify(validFaqItems.length ? validFaqItems : null));
+    // CTA: serializa como JSON
+    fd.append("cta_block", JSON.stringify(ctaBlock ?? null));
     return formAction(fd);
   };
 
@@ -145,6 +180,8 @@ export function PostFormRefactored({ post, action }: PostFormProps) {
     { key: "autor" as TabKey, label: "Autor" },
     { key: "imagem" as TabKey, label: "Imagem & Social" },
     { key: "relacionados" as TabKey, label: "Posts Relacionados" },
+    { key: "faq" as TabKey, label: faqItems.length > 0 ? `FAQ (${faqItems.length})` : "FAQ" },
+    { key: "cta" as TabKey, label: ctaBlock ? "CTA ✓" : "CTA" },
   ];
 
   return (
@@ -261,6 +298,12 @@ export function PostFormRefactored({ post, action }: PostFormProps) {
         {activeTab === "autor" && <AuthorTab formData={formData} onChange={handleFieldChange} />}
         {activeTab === "imagem" && <ImageTab formData={formData} onChange={handleFieldChange} />}
         {activeTab === "relacionados" && <RelatedTab formData={formData} onChange={handleFieldChange} currentPostId={post?.id} />}
+        {activeTab === "faq" && (
+          <FaqTab faqItems={faqItems} onChange={setFaqItems} />
+        )}
+        {activeTab === "cta" && (
+          <CtaTab ctaBlock={ctaBlock} onChange={setCtaBlock} />
+        )}
       </div>
 
       {/* Ações do Formulário */}

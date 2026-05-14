@@ -20,17 +20,14 @@ export function TableOfContents({ contentHtml, isMobile = false }: TableOfConten
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // Parse HTML string to extract headings
     const parser = new DOMParser();
     const doc = parser.parseFromString(contentHtml, "text/html");
 
-    // Only extract h2 headings (not h3) to keep TOC compact and scannable
     const headingElements = Array.from(doc.querySelectorAll("h2"));
     const extractedHeadings: Heading[] = headingElements.map((el, idx) => {
       const level = 2 as const;
       const text = el.textContent || "";
       const id = el.id || `heading-${idx}`;
-
       return { id, text, level };
     });
 
@@ -38,7 +35,6 @@ export function TableOfContents({ contentHtml, isMobile = false }: TableOfConten
   }, [contentHtml]);
 
   useEffect(() => {
-    // Update active heading on scroll
     const handleScroll = () => {
       const headingElements = headings.map(h => document.getElementById(h.id));
       const scrollPosition = window.scrollY + 100;
@@ -69,28 +65,28 @@ export function TableOfContents({ contentHtml, isMobile = false }: TableOfConten
   // Mobile collapsible version
   if (isMobile) {
     return (
-      <div className="mb-6 border border-border rounded">
+      <div className="mb-6 border border-border rounded bg-white overflow-hidden">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between px-4 py-3 bg-rc2-sand/50 hover:bg-rc2-sand transition-colors"
+          className="w-full flex items-center justify-between px-5 py-4 hover:bg-rc2-ebony/[0.02] transition-colors"
         >
-          <span className="text-sm font-medium text-rc2-ebony">Neste artigo</span>
+          <span className="text-xs font-semibold text-rc2-ebony/50 uppercase tracking-widest">
+            Neste artigo
+          </span>
           <ChevronDown
-            size={16}
-            className={`text-rc2-ebony/60 transition-transform ${
-              isOpen ? "rotate-180" : ""
-            }`}
+            size={14}
+            className={`text-rc2-ebony/40 transition-transform ${isOpen ? "rotate-180" : ""}`}
           />
         </button>
 
         {isOpen && (
-          <nav className="px-4 py-3 border-t border-border bg-white space-y-1.5 max-h-96 overflow-y-auto">
-            <ul className="space-y-1.5">
+          <nav className="border-t border-border bg-white max-h-80 overflow-y-auto">
+            <ul className="p-3 space-y-0.5">
               {headings.map((heading) => (
                 <li key={heading.id}>
                   <button
                     onClick={() => handleClick(heading.id)}
-                    className={`text-sm w-full text-left px-2 py-1.5 rounded transition-colors ${
+                    className={`text-sm w-full text-left px-3 py-2 rounded transition-colors ${
                       activeId === heading.id
                         ? "text-rc2-orange font-medium bg-rc2-orange/5"
                         : "text-rc2-ebony/70 hover:text-rc2-ebony hover:bg-rc2-ebony/5"
@@ -110,27 +106,31 @@ export function TableOfContents({ contentHtml, isMobile = false }: TableOfConten
   // Desktop sticky sidebar version
   return (
     <aside className="sticky top-20 h-fit">
-      <nav className="border border-border rounded p-4 bg-rc2-sand/30">
-        <h3 className="text-xs font-medium text-rc2-ebony/60 uppercase tracking-widest mb-3">
-          Neste artigo
-        </h3>
-        <ul className="space-y-1.5">
-          {headings.map((heading) => (
-            <li key={heading.id}>
-              <button
-                onClick={() => handleClick(heading.id)}
-                className={`text-sm w-full text-left px-2 py-1.5 rounded transition-colors ${
-                  activeId === heading.id
-                    ? "text-rc2-orange font-medium bg-rc2-orange/5"
-                    : "text-rc2-ebony/70 hover:text-rc2-ebony hover:bg-rc2-ebony/5"
-                }`}
-              >
-                {heading.text}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <div className="border border-border rounded bg-white overflow-hidden">
+        <div className="px-5 py-4 border-b border-border">
+          <h3 className="text-xs font-semibold text-rc2-ebony/50 uppercase tracking-widest">
+            Neste artigo
+          </h3>
+        </div>
+        <nav className="p-3">
+          <ul className="space-y-0.5">
+            {headings.map((heading) => (
+              <li key={heading.id}>
+                <button
+                  onClick={() => handleClick(heading.id)}
+                  className={`text-sm w-full text-left px-3 py-2 rounded transition-colors ${
+                    activeId === heading.id
+                      ? "text-rc2-orange font-medium bg-rc2-orange/5"
+                      : "text-rc2-ebony/70 hover:text-rc2-ebony hover:bg-rc2-ebony/5"
+                  }`}
+                >
+                  {heading.text}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
     </aside>
   );
 }

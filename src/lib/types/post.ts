@@ -3,6 +3,28 @@ export type PostCategory = "Tecnologia" | "Automação" | "Gestão Empresarial" 
 export type ContentType = "artigo" | "guia" | "tutorial" | "case" | "notícia";
 export type SeoIndexStatus = "index" | "noindex" | "nofollow";
 
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+export type CtaType = "service" | "contact" | "next_steps";
+
+export interface CtaButton {
+  text: string;
+  url: string;
+}
+
+export interface CtaBlock {
+  type: CtaType;
+  title: string;
+  description?: string;
+  primaryButton?: CtaButton;
+  secondaryButton?: CtaButton;
+  /** lista de próximos passos (usado no tipo next_steps) */
+  items?: string[];
+}
+
 export interface Post {
   id: string;
   slug: string;
@@ -44,6 +66,10 @@ export interface Post {
 
   // Relacionamento
   related_post_ids: string[] | null;
+
+  // FAQ e CTA
+  faq_items: FaqItem[] | null;
+  cta_block: CtaBlock | null;
 }
 
 export interface Lead {
