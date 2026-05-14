@@ -109,18 +109,18 @@ npx playwright install
 - RC2 Brand System Skill guiando todas as decisões visuais
 
 **Tarefas técnicas:**
-- [ ] Configurar tokens de cor no `tailwind.config.ts` (paleta RC2 completa)
-- [ ] Configurar fonte Barlow (Google Fonts ou local — preferir local para performance)
-- [ ] Configurar escala tipográfica (Display, H1, H2, H3, Body, Label, Caption)
-- [ ] Configurar espaçamentos e grid RC2
-- [ ] Criar componente `<Button>` (primário Safety Orange, secundário outline)
-- [ ] Criar componente `<SectionLabel>` (eyebrow uppercase)
-- [ ] Criar componente `<Logo>` com as variações do Brand Guide
-- [ ] Implementar `<Header>` com menu e CTA destacado
-- [ ] Implementar `<Footer>` com links, redes e LGPD
-- [ ] Criar página 404 (`not-found.tsx`)
-- [ ] Validar contraste de cores (WCAG AA)
-- [ ] Validar responsividade (mobile, tablet, desktop)
+- [x] Configurar tokens de cor no `tailwind.config.ts` (paleta RC2 completa)
+- [x] Configurar fonte Barlow (Google Fonts ou local — preferir local para performance)
+- [x] Configurar escala tipográfica (Display, H1, H2, H3, Body, Label, Caption)
+- [x] Configurar espaçamentos e grid RC2
+- [x] Criar componente `<Button>` (primário Safety Orange, secundário outline)
+- [x] Criar componente `<SectionLabel>` (eyebrow uppercase)
+- [x] Criar componente `<Logo>` com as variações do Brand Guide
+- [x] Implementar `<Header>` com menu e CTA destacado
+- [x] Implementar `<Footer>` com links, redes e LGPD
+- [x] Criar página 404 (`not-found.tsx`)
+- [x] Validar contraste de cores (WCAG AA)
+- [x] Validar responsividade (mobile, tablet, desktop)
 
 **Ferramentas:**
 - RC2 Brand System Skill
@@ -137,11 +137,11 @@ npx playwright install
 **Dependências:** Fase 1
 
 **Critérios de aceite:**
-- [ ] Tokens RC2 aplicados e funcionando no Tailwind
-- [ ] Header e Footer renderizando corretamente em mobile e desktop
-- [ ] Contraste WCAG AA validado
-- [ ] Lighthouse Acessibilidade 90+ no layout base
-- [ ] Lint e typecheck passando
+- [x] Tokens RC2 aplicados e funcionando no Tailwind
+- [x] Header e Footer renderizando corretamente em mobile e desktop
+- [x] Contraste WCAG AA validado
+- [x] Lighthouse Acessibilidade 90+ no layout base
+- [x] Lint e typecheck passando
 
 **Riscos:**
 - Logo fornecido pode não ser o Signal Interrupt final — usar provisoriamente e substituir quando confirmado

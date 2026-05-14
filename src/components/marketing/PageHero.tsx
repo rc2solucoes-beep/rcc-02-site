@@ -23,7 +23,7 @@ export function PageHero({
   return (
     <section
       className={cn(
-        "py-16 md:py-20",
+        "rc2-section",
         isDark ? "bg-rc2-ink text-rc2-sand" : "bg-rc2-sand text-rc2-ebony",
         className
       )}
@@ -36,7 +36,7 @@ export function PageHero({
         )}
         <h1
           className={cn(
-            "rc2-display text-4xl md:text-6xl mt-3 max-w-3xl",
+            "rc2-h1 mt-3 max-w-4xl",
             isDark ? "text-rc2-sand" : "text-rc2-ebony"
           )}
         >
@@ -45,7 +45,7 @@ export function PageHero({
         {description && (
           <p
             className={cn(
-              "mt-4 text-lg max-w-2xl leading-relaxed",
+              "rc2-body-lg mt-5 max-w-2xl",
               isDark ? "text-rc2-sand/70" : "text-rc2-ebony/70"
             )}
           >

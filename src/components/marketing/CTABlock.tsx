@@ -32,7 +32,7 @@ export function CTABlock({
   return (
     <section
       className={cn(
-        "py-16 md:py-20",
+        "rc2-section",
         isDark ? "bg-rc2-ink" : "bg-rc2-orange",
         className
       )}
@@ -40,7 +40,7 @@ export function CTABlock({
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
         <h2
           className={cn(
-            "rc2-display text-3xl md:text-5xl max-w-3xl mx-auto",
+            "rc2-h2 rc2-display max-w-3xl mx-auto",
             isDark ? "text-rc2-sand" : "text-rc2-sand"
           )}
         >
@@ -49,7 +49,7 @@ export function CTABlock({
         {description && (
           <p
             className={cn(
-              "mt-4 text-lg max-w-2xl mx-auto leading-relaxed",
+              "rc2-body mt-4 max-w-2xl mx-auto",
               isDark ? "text-rc2-sand/70" : "text-rc2-sand/90"
             )}
           >
@@ -73,7 +73,7 @@ export function CTABlock({
               target={secondaryHref.startsWith("http") ? "_blank" : undefined}
               rel={secondaryHref.startsWith("http") ? "noopener noreferrer" : undefined}
               className={cn(
-                "ui-focus-ring rounded-sm px-6 h-11 inline-flex items-center gap-1.5 border font-medium text-sm transition-all duration-200",
+                "ui-focus-ring rounded-lg px-6 h-11 inline-flex items-center gap-1.5 border font-medium text-sm transition-all duration-200",
                 isDark
                   ? "border-rc2-sand/40 text-rc2-sand hover:border-rc2-sand/80 hover:bg-rc2-sand/10 active:bg-rc2-sand/20 active:border-rc2-sand/90"
                   : "border-rc2-ebony/40 text-rc2-ebony hover:border-rc2-ebony/80 hover:bg-rc2-ebony/10 active:bg-rc2-ebony/20 active:border-rc2-ebony/90"

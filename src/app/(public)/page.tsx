@@ -5,6 +5,7 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ServiceCard } from "@/components/marketing/ServiceCard";
 import { CTABlock } from "@/components/marketing/CTABlock";
 import { GoogleReviews } from "@/components/GoogleReviews";
+import { HeroActions } from "@/components/marketing/HeroActions";
 import { buttonVariants } from "@/components/ui/button";
 import { services } from "@/lib/content/services";
 import { cn } from "@/lib/utils";
@@ -23,18 +24,29 @@ export const metadata: Metadata = {
 };
 
 const forWhomItems = [
-  "Recebe muitos contatos pelo WhatsApp e perde oportunidades.",
-  "Tem equipe sobrecarregada com tarefas repetitivas.",
-  "Usa muitas planilhas e sistemas que não conversam entre si.",
-  "Quer usar IA, mas não sabe por onde começar.",
-  "Tem atendimento lento, desorganizado ou sem padronização.",
-  "Quer vender online com uma estrutura mais profissional.",
-  "Precisa modernizar site, landing pages ou canais digitais.",
+  "Muitos contatos no WhatsApp e pouca conversão em vendas.",
+  "Equipe presa em tarefas repetitivas e manuais.",
+  "Planilhas e sistemas desconectados gerando retrabalho.",
+  "Quero aplicar IA, mas preciso de um plano claro.",
+  "Atendimento lento, sem padrão e sem previsibilidade.",
+  "Operação digital precisa escalar com mais controle.",
+];
+
+const socialProofItems = [
+  "+20 anos em tecnologia e operações digitais",
+  "Especialistas em IA, automações e integração de sistemas",
+  "Diagnóstico prático com próximos passos acionáveis",
 ];
 
 const BASE_URL = "https://rc2solucoes.com.br";
 
-export default async function HomePage() {
+type Props = {
+  searchParams: Promise<{ hero?: string }>;
+};
+
+export default async function HomePage({ searchParams }: Props) {
+  const { hero } = await searchParams;
+  const heroVariant = hero === "b" ? "b" : "a";
   let schemaWebPage;
 
   try {
@@ -63,62 +75,63 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
       />
       {/* ── Hero ── */}
-      <section className="bg-rc2-sand py-20 md:py-28 lg:py-36">
+      <section className="bg-rc2-sand rc2-section md:py-28 lg:py-36">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionLabel className="block mb-5">
             Consultoria em IA e Automações para PMEs
           </SectionLabel>
-          <h1 className="rc2-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-rc2-ebony max-w-4xl leading-none">
+          <h1 className="rc2-h1 text-rc2-ebony max-w-4xl">
             IA, automações e operações digitais para empresas que querem ganhar
             eficiência e vender mais.
           </h1>
-          <p className="mt-6 text-lg md:text-xl text-rc2-ebony/70 max-w-2xl leading-relaxed">
+          <p className="rc2-body-lg mt-6 text-rc2-ebony/75 max-w-2xl">
             A RC2 Soluções ajuda empresas a automatizar atendimentos, criar
             agentes de IA, integrar sistemas, estruturar processos digitais e
             vender melhor pela internet.
           </p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-4">
-            <Link
-              href="/contato"
-              className={cn(
-                buttonVariants({ variant: "default" }),
-                "font-semibold tracking-wide uppercase text-xs px-8 h-12 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90"
-              )}
-            >
-              Solicitar diagnóstico
-            </Link>
-            <Link
-              href="/servicos"
-              className={cn(
-                buttonVariants({ variant: "outline" }),
-                "font-semibold tracking-wide uppercase text-xs px-8 h-12 border-rc2-ebony text-rc2-ebony hover:bg-rc2-ebony hover:text-rc2-sand"
-              )}
-            >
-              Conhecer soluções
-            </Link>
-          </div>
-          <p className="mt-8 rc2-caption text-rc2-ebony/70 italic">
-            "Tecnologia que funciona. Operação que entrega."
+
+          {heroVariant === "b" && (
+            <div className="mt-7 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-4xl">
+              {socialProofItems.map((item) => (
+                <div
+                  key={item}
+                  className="rounded-lg border border-rc2-ebony/10 bg-[var(--surface-1)] px-4 py-3 text-sm text-rc2-ebony/85 shadow-sm"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
+          )}
+
+          <HeroActions variant={heroVariant} />
+
+          <p className="mt-5 text-sm text-rc2-ebony/70">
+            {heroVariant === "b"
+              ? "Diagnóstico inicial com mapa de oportunidades."
+              : "Sem compromisso. Retorno em até 1 dia útil."}
+          </p>
+          <p className="mt-6 rc2-caption text-rc2-ebony/70 italic">
+            &ldquo;Tecnologia que funciona. Operação que entrega.&rdquo;
           </p>
         </div>
       </section>
 
       {/* ── Para quem é ── */}
-      <section className="bg-rc2-ink py-16 md:py-24">
+      <section className="bg-rc2-ink rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionLabel className="block mb-5 text-rc2-orange">Para quem é</SectionLabel>
-          <h2 className="text-3xl md:text-4xl font-semibold text-rc2-sand mb-10 max-w-lg leading-snug">
+          <h2 className="rc2-h2 text-rc2-sand mb-10 max-w-lg">
             Sua empresa precisa da RC2 se você:
           </h2>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-3xl">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {forWhomItems.map((item, i) => (
-              <li key={i} className="flex items-start gap-3">
+              <li key={i} className="rc2-card flex items-start gap-3 !border-rc2-sand/30 !bg-rc2-sand/12 px-4 py-3">
                 <Check
                   size={16}
                   className="text-rc2-orange shrink-0 mt-0.5"
                   strokeWidth={2.5}
                 />
-                <span className="text-sm text-rc2-sand/80 leading-relaxed">{item}</span>
+                <span className="text-sm text-rc2-sand leading-relaxed">{item}</span>
               </li>
             ))}
           </ul>
@@ -126,10 +139,10 @@ export default async function HomePage() {
       </section>
 
       {/* ── O que entregamos ── */}
-      <section id="servicos" className="bg-rc2-sand py-16 md:py-24">
+      <section id="servicos" className="bg-rc2-sand rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionLabel className="block mb-5">O que entregamos</SectionLabel>
-          <h2 className="text-3xl md:text-4xl font-semibold text-rc2-ebony mb-12 max-w-2xl leading-snug">
+          <h2 className="rc2-h2 text-rc2-ebony mb-12 max-w-2xl">
             Cinco serviços para transformar sua operação digital.
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -142,7 +155,7 @@ export default async function HomePage() {
             {/* 6º card — CTA */}
             <Link
               href="/contato"
-              className="group flex flex-col justify-between p-6 rounded-lg bg-rc2-orange shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200"
+              className="group rc2-card rc2-card-hover flex flex-col justify-between p-6 bg-rc2-orange border-rc2-orange"
             >
               <div>
                 <span className="block text-xs font-medium uppercase tracking-widest text-rc2-sand/70 mb-3">
@@ -165,10 +178,10 @@ export default async function HomePage() {
       </section>
 
       {/* ── Diferencial ── */}
-      <section className="bg-rc2-forest py-16 md:py-20">
+      <section className="bg-rc2-forest rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 max-w-3xl">
           <SectionLabel className="block mb-5 text-rc2-orange">Diferencial</SectionLabel>
-          <h2 className="rc2-display text-3xl md:text-5xl text-rc2-sand mb-6">
+          <h2 className="rc2-h2 rc2-display text-rc2-sand mb-6">
             Tecnologia com visão de operação.
           </h2>
           <p className="text-rc2-sand/80 text-lg leading-relaxed mb-6">
@@ -190,10 +203,10 @@ export default async function HomePage() {
       </section>
 
       {/* ── Avaliações ── */}
-      <section className="bg-rc2-sand py-16 md:py-24">
+      <section className="bg-rc2-sand rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionLabel className="block mb-5">O que os clientes dizem</SectionLabel>
-          <h2 className="text-3xl md:text-4xl font-semibold text-rc2-ebony mb-12">
+          <h2 className="rc2-h2 text-rc2-ebony mb-12">
             Avaliações de clientes satisfeitos
           </h2>
           <GoogleReviews maxReviews={4} showGoogleLink={false} columns={2} />

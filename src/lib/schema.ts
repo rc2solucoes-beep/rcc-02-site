@@ -58,7 +58,7 @@ export function getOrganizationSchema(
   if (settings.youtube_url) sameAs.push(settings.youtube_url);
   if (settings.gmb_url) sameAs.push(settings.gmb_url);
 
-  const contactPoints = [];
+  const contactPoints: NonNullable<Organization["contactPoint"]> = [];
 
   if (settings.contact_email) {
     contactPoints.push({
@@ -105,7 +105,7 @@ export function getOrganizationSchema(
     address: address,
     areaServed: areaServed,
     sameAs: sameAs.length > 0 ? sameAs : undefined,
-    contactPoint: contactPoints as any,
+    contactPoint: contactPoints.length > 0 ? contactPoints : undefined,
   };
 }
 

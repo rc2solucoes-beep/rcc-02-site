@@ -47,7 +47,7 @@ test.describe("Navegação pública", () => {
   test("página 404 exibe mensagem correta", async ({ page }) => {
     const response = await page.goto("/pagina-que-nao-existe");
     expect(response?.status()).toBe(404);
-    await expect(page.getByText(/404/)).toBeVisible();
+    await expect(page.getByText("404", { exact: true })).toBeVisible();
     await expect(page.getByRole("link", { name: /Voltar ao início/i })).toBeVisible();
   });
 });
@@ -63,7 +63,7 @@ test.describe("Menu mobile", () => {
     // Abre
     await hamburger.click();
     await expect(page.getByRole("button", { name: /Fechar menu/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: /Serviços/i }).nth(1)).toBeVisible();
+    await expect(page.getByRole("link", { name: /Serviços/i }).last()).toBeVisible();
 
     // Fecha
     await page.getByRole("button", { name: /Fechar menu/i }).click();

@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { trackEvent } from "@/lib/tracking";
 
 const navLinks = [
   { href: "/", label: "Início" },
@@ -18,12 +19,27 @@ const navLinks = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 bg-rc2-sand/95 backdrop-blur-sm border-b border-border">
+    <header
+      className={cn(
+        "sticky top-0 z-50 backdrop-blur-sm border-b transition-all duration-200",
+        scrolled
+          ? "bg-rc2-sand/98 border-rc2-ebony/15 shadow-sm"
+          : "bg-rc2-sand/95 border-border"
+      )}
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Logo />
@@ -47,9 +63,10 @@ export function Header() {
             ))}
             <Link
               href="/contato"
+              onClick={() => trackEvent("cta_click_header", { location: "header", label: "diagnostico_gratuito" })}
               className={cn(
                 buttonVariants({ variant: "default" }),
-                "ml-2 font-semibold tracking-wide uppercase text-xs px-5 h-9 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90"
+                "ml-2 font-semibold tracking-wide uppercase text-xs px-5 h-9 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90 shadow-sm ring-1 ring-rc2-orange/20"
               )}
             >
               Diagnóstico Gratuito
@@ -90,11 +107,14 @@ export function Header() {
             ))}
             <Link
               href="/contato"
+              onClick={() => {
+                trackEvent("cta_click_header", { location: "header_mobile", label: "diagnostico_gratuito" });
+                setOpen(false);
+              }}
               className={cn(
                 buttonVariants({ variant: "default" }),
                 "mt-3 font-semibold tracking-wide uppercase text-xs w-full justify-center bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90"
               )}
-              onClick={() => setOpen(false)}
             >
               Diagnóstico Gratuito
             </Link>

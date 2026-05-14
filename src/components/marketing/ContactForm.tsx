@@ -7,6 +7,7 @@ import { Turnstile } from "@marsidev/react-turnstile";
 import { contactStep1Schema, contactStep2Schema, contactSchema, type ContactStep1Data, type ContactStep2Data, type ContactFormData } from "@/lib/validations/contact";
 import { cn } from "@/lib/utils";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import { trackEvent } from "@/lib/tracking";
 
 const solutionOptions = [
   "Automações com IA",
@@ -55,6 +56,7 @@ const TURNSTILE_SITE_KEY =
 export function ContactForm() {
   const [step, setStep] = useState<1 | 2>(1);
   const [submitted, setSubmitted] = useState(false);
+  const [step1Started, setStep1Started] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState<string | null>(null);
@@ -82,6 +84,7 @@ export function ContactForm() {
         message: formData.message,
         website: formData.website,
       });
+      trackEvent("contact_step1_complete", { step: 1 });
       setStep(2);
     }
   };
@@ -113,6 +116,8 @@ export function ContactForm() {
         return;
       }
 
+      trackEvent("contact_step2_complete", { step: 2 });
+      trackEvent("contact_submit_success");
       setSubmitted(true);
     } catch {
       setServerError("Falha de conexão. Verifique sua internet e tente novamente.");
@@ -165,7 +170,18 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      onFocusCapture={(event) => {
+        if (step !== 1 || step1Started) return;
+        const target = event.target as HTMLElement;
+        if (!["name", "email", "whatsapp", "message"].includes(target.id)) return;
+        setStep1Started(true);
+        trackEvent("contact_step1_start", { step: 1 });
+      }}
+      noValidate
+      className="space-y-6"
+    >
       {/* Honeypot */}
       <input
         type="text"

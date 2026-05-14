@@ -57,6 +57,14 @@ type Props = {
   searchParams: Promise<{ saved?: string }>;
 };
 
+type SettingField = {
+  key: string;
+  label: string;
+  type: string;
+  placeholder: string;
+  step?: string;
+};
+
 export default async function SettingsPage({ searchParams }: Props) {
   const settings = await getSettings();
   const { saved } = await searchParams;
@@ -70,7 +78,7 @@ export default async function SettingsPage({ searchParams }: Props) {
         </div>
       )}
       <form action={saveSettings} className="p-4 md:p-6 lg:p-8 space-y-5 max-w-xl">
-        {SETTING_KEYS.map(({ key, label, type, placeholder, step }: any) => (
+        {SETTING_KEYS.map(({ key, label, type, placeholder, step }: SettingField) => (
           <div key={key}>
             <label htmlFor={key} className="block text-sm font-medium text-rc2-ebony mb-1.5">{label}</label>
             <input

@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { RichEditor } from "@/components/admin/RichEditor";
 import type { Post } from "@/lib/types/post";
 import type { PostFormState } from "@/app/admin/(protected)/posts/actions";
@@ -29,13 +30,6 @@ export function PostForm({ post, action }: PostFormProps) {
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(!!post);
   const contentInputRef = useRef<HTMLInputElement>(null);
 
-  // Auto-generate slug from title
-  useEffect(() => {
-    if (!slugManuallyEdited && title) {
-      setSlug(slugify(title));
-    }
-  }, [title, slugManuallyEdited]);
-
   // Sync content to hidden input
   useEffect(() => {
     if (contentInputRef.current) {
@@ -55,7 +49,11 @@ export function PostForm({ post, action }: PostFormProps) {
         <input
           id="title" name="title" type="text" required
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => {
+            const nextTitle = e.target.value;
+            setTitle(nextTitle);
+            if (!slugManuallyEdited) setSlug(slugify(nextTitle));
+          }}
           className={inputBase}
           placeholder="Título do post"
         />
@@ -132,9 +130,9 @@ export function PostForm({ post, action }: PostFormProps) {
         >
           {pending ? "Salvando..." : "Salvar post"}
         </button>
-        <a href="/admin/posts" className="px-4 h-11 flex items-center text-sm text-rc2-ebony/60 hover:text-rc2-ebony transition-colors">
+        <Link href="/admin/posts" className="px-4 h-11 flex items-center text-sm text-rc2-ebony/60 hover:text-rc2-ebony transition-colors">
           Cancelar
-        </a>
+        </Link>
       </div>
     </form>
   );

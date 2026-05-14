@@ -52,7 +52,7 @@ export default async function ServicosPage() {
         description="Da automação de atendimento à estruturação de e-commerce — a RC2 atua em toda a cadeia da transformação digital para PMEs."
       />
 
-      <section className="bg-rc2-sand py-16 md:py-20">
+      <section className="bg-rc2-sand rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="space-y-16">
             {services.map((service, index) => {
@@ -61,14 +61,14 @@ export default async function ServicosPage() {
               <article
                 key={service.slug}
                 id={service.slug}
-                className={`grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 p-8 md:p-10 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 last:border-b-0 last:pb-0 rounded-lg border ${isDark ? "bg-rc2-forest border-rc2-forest/80" : "bg-[var(--surface-1)] border-[var(--surface-2)]"}`}
+                  className={`grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 p-8 md:p-10 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 last:border-b-0 last:pb-0 rounded-xl border ${isDark ? "bg-rc2-forest border-rc2-forest/80" : "bg-[var(--surface-1)] border-[var(--surface-2)]"}`}
               >
                 {/* Content */}
                 <div className={index % 2 === 1 ? "lg:order-2" : ""}>
                   <SectionLabel className={`block mb-3 ${isDark ? "text-rc2-orange" : ""}`}>
                     {String(index + 1).padStart(2, "0")} / {String(services.length).padStart(2, "0")}
                   </SectionLabel>
-                  <h2 className={`text-2xl md:text-3xl font-semibold mb-4 leading-snug ${isDark ? "text-rc2-sand" : "text-rc2-ebony"}`}>
+                  <h2 className={`rc2-h3 mb-4 ${isDark ? "text-rc2-sand" : "text-rc2-ebony"}`}>
                     {service.title}
                   </h2>
                   <p className={`leading-relaxed mb-6 ${isDark ? "text-rc2-sand/80" : "text-rc2-ebony/70"}`}>
@@ -79,7 +79,7 @@ export default async function ServicosPage() {
                   </p>
                   <Link
                     href={`/servicos/${service.slug}`}
-                    className={`mt-6 inline-flex items-center gap-2 text-sm font-semibold hover:gap-4 transition-all duration-200 ${isDark ? "text-rc2-orange" : "text-rc2-orange"}`}
+                    className="rc2-action-link mt-6"
                   >
                     Ver detalhes completos
                     <ArrowRight size={14} />

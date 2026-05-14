@@ -22,6 +22,22 @@ interface StatusInfo {
   };
 }
 
+interface DebugResponse {
+  status?: string;
+  message?: string;
+  error?: string;
+  session?: {
+    userId?: string;
+    email?: string;
+  };
+  adminStatus?: {
+    isAdmin?: boolean;
+  };
+  errors?: {
+    adminError?: string;
+  };
+}
+
 export default function AdminStatusPage() {
   const [status, setStatus] = useState<StatusInfo | null>(null);
   const [loading, setLoading] = useState(true);
@@ -42,15 +58,15 @@ export default function AdminStatusPage() {
         };
 
         // 2. Check server-side session
-        let serverSession: any = { status: "checking" };
-        let adminStatus: any = {};
+        let serverSession: StatusInfo["serverSession"] = { status: "checking" };
+        let adminStatus: StatusInfo["adminStatus"] = {};
 
         if (clientAuth.isLoggedIn) {
           const debugResponse = await fetch("/api/admin/debug");
-          const debugData = await debugResponse.json();
+          const debugData: DebugResponse = await debugResponse.json();
 
           serverSession = {
-            status: debugData.status,
+            status: debugData.status ?? "unknown",
             userId: debugData.session?.userId,
             email: debugData.session?.email,
             error: debugData.error || debugData.message,
