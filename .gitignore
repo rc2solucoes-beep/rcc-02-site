@@ -57,3 +57,4 @@ Thumbs.db
 # MCP and secrets
 .mcp.json
 .claude/
+.env*.local
