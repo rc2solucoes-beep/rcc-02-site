@@ -118,21 +118,7 @@ export default async function RootLayout({
       className={`h-full ${barlow.variable} ${barlowCondensed.variable}`}
     >
       <head>
-        {/* Preload critical fonts to reduce render-blocking */}
-        <link
-          rel="preload"
-          href="https://fonts.gstatic.com/s/barlow/v12/jizYREVItPoem2CA6dEcVWFBZpxpWc5zCMnN.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="https://fonts.gstatic.com/s/barlow/v12/jizaREVItPoem2CA6dEcVWFBZpxpWc5zCMnN.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
+        {/* next/font/google handles font loading automatically */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrganization) }}

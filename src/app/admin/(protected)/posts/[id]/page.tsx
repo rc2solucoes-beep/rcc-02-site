@@ -11,39 +11,68 @@ interface EditPostPageProps {
 }
 
 async function getPost(id: string): Promise<Post | null> {
-  const supabase = await createSessionClient();
-  const { data } = await supabase.from("posts").select("*").eq("id", id).single();
-  if (!data) return null;
+  try {
+    const supabase = await createSessionClient();
+    const { data, error } = await supabase.from("posts").select("*").eq("id", id).single();
 
-  // Ensure all data is JSON-serializable for Client Component
-  return {
-    ...data,
-    published_at: data.published_at ? String(data.published_at) : null,
-    updated_at: data.updated_at ? String(data.updated_at) : null,
-    created_at: data.created_at ? String(data.created_at) : null,
-    scheduled_publish_at: data.scheduled_publish_at ? String(data.scheduled_publish_at) : null,
-    related_post_ids: Array.isArray(data.related_post_ids) ? data.related_post_ids : [],
-    seo_keyword_secondary: Array.isArray(data.seo_keyword_secondary) ? data.seo_keyword_secondary : [],
-    tags: Array.isArray(data.tags) ? data.tags : [],
-  } as Post;
+    if (error) {
+      console.error("[getPost] Supabase error:", error);
+      return null;
+    }
+
+    if (!data) return null;
+
+    // Ensure all data is JSON-serializable for Client Component
+    // Sanitize every field to prevent serialization errors
+    const sanitizedPost: Record<string, any> = {};
+
+    for (const [key, value] of Object.entries(data)) {
+      if (value === null || value === undefined) {
+        sanitizedPost[key] = null;
+      } else if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+        sanitizedPost[key] = value;
+      } else if (Array.isArray(value)) {
+        // Convert arrays to arrays of primitives
+        sanitizedPost[key] = value.map(v => typeof v === "object" ? JSON.stringify(v) : v);
+      } else if (typeof value === "object") {
+        // Convert objects to JSON strings
+        sanitizedPost[key] = JSON.stringify(value);
+      } else {
+        sanitizedPost[key] = String(value);
+      }
+    }
+
+    return sanitizedPost as Post;
+  } catch (error) {
+    console.error("[getPost] Error:", error);
+    throw error;
+  }
 }
 
 export default async function EditPostPage({ params }: EditPostPageProps) {
-  const { id } = await params;
-  const post = await getPost(id);
-  if (!post) notFound();
+  try {
+    const { id } = await params;
+    const post = await getPost(id);
+    if (!post) {
+      console.warn(`[EditPostPage] Post not found: ${id}`);
+      notFound();
+    }
 
-  const updatePostWithId = updatePost.bind(null, id);
-  const deletePostWithId = deletePost.bind(null, id);
+    const updatePostWithId = updatePost.bind(null, id);
+    const deletePostWithId = deletePost.bind(null, id);
 
-  return (
-    <>
-      <AdminHeader
-        title="Editar post"
-        description={post.title}
-        action={<DeletePostButton postId={id} deleteAction={deletePostWithId} />}
-      />
-      <PostFormRefactored post={post} action={updatePostWithId} />
-    </>
-  );
+    return (
+      <>
+        <AdminHeader
+          title="Editar post"
+          description={post.title}
+          action={<DeletePostButton postId={id} deleteAction={deletePostWithId} />}
+        />
+        <PostFormRefactored post={post} action={updatePostWithId} />
+      </>
+    );
+  } catch (error) {
+    console.error("[EditPostPage] Error:", error);
+    throw error;
+  }
 }
