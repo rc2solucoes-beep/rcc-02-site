@@ -2,7 +2,16 @@ import { put } from "@vercel/blob";
 import { NextRequest, NextResponse } from "next/server";
 import { createSessionClient } from "@/lib/supabase/server";
 
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"];
+// Extensões válidas → MIME canônico
+const EXT_TO_MIME: Record<string, string> = {
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  png: "image/png",
+  webp: "image/webp",
+  gif: "image/gif",
+  avif: "image/avif",
+};
+
 const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
 
 /** Verifica se o usuário autenticado é admin */
@@ -24,12 +33,23 @@ async function getAdminSession() {
 function sanitizeFilename(raw: string): string {
   const ext = raw.split(".").pop()?.toLowerCase() ?? "jpg";
   const name = raw
-    .replace(/\.[^.]+$/, "")           // remove extensão
+    .replace(/\.[^.]+$/, "")
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")       // só letras, números e hifens
-    .replace(/^-+|-+$/g, "")           // remove hifens nas pontas
-    .slice(0, 60);                     // limita o tamanho
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
   return `${name || "imagem"}.${ext}`;
+}
+
+/** Resolve o MIME type canonicamente — usa Content-Type e cai no filename como fallback */
+function resolveMime(contentTypeHeader: string, filename: string): string | null {
+  // Tenta o Content-Type enviado pelo browser
+  const fromHeader = contentTypeHeader.split(";")[0].trim().toLowerCase();
+  if (fromHeader.startsWith("image/")) return fromHeader;
+
+  // Fallback: extensão do filename
+  const ext = filename.split(".").pop()?.toLowerCase() ?? "";
+  return EXT_TO_MIME[ext] ?? null;
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
@@ -42,42 +62,53 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   // 2. Parâmetros da query
   const { searchParams } = new URL(request.url);
   const rawFilename = searchParams.get("filename") ?? "imagem.jpg";
-  const folder = searchParams.get("folder") ?? "blog"; // blog | og | misc
+  const folder = searchParams.get("folder") ?? "blog";
 
-  // 3. Validar Content-Type
-  const contentType = request.headers.get("content-type") ?? "";
-  const mimeType = contentType.split(";")[0].trim();
-  if (!ALLOWED_TYPES.includes(mimeType)) {
+  // 3. Resolver MIME type (Content-Type header + fallback por extensão)
+  const contentTypeHeader = request.headers.get("content-type") ?? "";
+  const mimeType = resolveMime(contentTypeHeader, rawFilename);
+
+  if (!mimeType) {
     return NextResponse.json(
-      { error: `Tipo de arquivo não permitido: ${mimeType}. Use JPEG, PNG, WebP ou GIF.` },
+      { error: "Tipo de arquivo não suportado. Use JPEG, PNG, WebP, GIF ou AVIF." },
       { status: 400 }
     );
   }
 
-  // 4. Validar tamanho (via Content-Length)
-  const contentLength = parseInt(request.headers.get("content-length") ?? "0", 10);
-  if (contentLength > MAX_SIZE_BYTES) {
+  // 4. Ler body como ArrayBuffer (mais confiável que request.body stream)
+  let buffer: ArrayBuffer;
+  try {
+    buffer = await request.arrayBuffer();
+  } catch {
+    return NextResponse.json({ error: "Não foi possível ler o arquivo." }, { status: 400 });
+  }
+
+  // 5. Validar tamanho
+  if (buffer.byteLength > MAX_SIZE_BYTES) {
     return NextResponse.json(
       { error: `Arquivo muito grande. Máximo: ${MAX_SIZE_BYTES / 1024 / 1024} MB.` },
       { status: 413 }
     );
   }
 
-  // 5. Gerar path único: blog/covers/1736000000000-nome-do-arquivo.jpg
-  const sanitized = sanitizeFilename(rawFilename);
-  const timestamp = Date.now();
-  const blobPath = `${folder}/${timestamp}-${sanitized}`;
+  if (buffer.byteLength === 0) {
+    return NextResponse.json({ error: "Arquivo vazio." }, { status: 400 });
+  }
 
-  // 6. Upload para Vercel Blob
+  // 6. Gerar path único
+  const sanitized = sanitizeFilename(rawFilename);
+  const blobPath = `${folder}/${Date.now()}-${sanitized}`;
+
+  // 7. Upload para Vercel Blob
   try {
-    const blob = await put(blobPath, request.body!, {
+    const blob = await put(blobPath, buffer, {
       access: "public",
       contentType: mimeType,
     });
 
     return NextResponse.json({ url: blob.url, pathname: blob.pathname });
   } catch (err) {
-    console.error("[/api/upload] Erro no upload:", err);
+    console.error("[/api/upload] Erro no Vercel Blob:", err);
     return NextResponse.json(
       { error: "Erro ao fazer upload. Tente novamente." },
       { status: 500 }
