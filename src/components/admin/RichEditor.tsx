@@ -3,7 +3,6 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
-import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import { useEffect } from "react";
 import {
@@ -49,9 +48,10 @@ function ToolbarButton({
 export function RichEditor({ content, onChange, placeholder = "Escreva o conteúdo do post..." }: RichEditorProps) {
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        link: { openOnClick: false },
+      }),
       Placeholder.configure({ placeholder }),
-      Link.configure({ openOnClick: false }),
       Image,
     ],
     content,
