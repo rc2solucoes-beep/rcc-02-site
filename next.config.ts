@@ -63,6 +63,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       // Supabase Storage (cover images for posts)
       { protocol: "https", hostname: "*.supabase.co" },
+      // Vercel Blob Storage (uploads via admin)
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
     ],
     formats: ["image/avif", "image/webp"],
   },
