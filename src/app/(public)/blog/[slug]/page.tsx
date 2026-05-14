@@ -297,7 +297,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <div className="container mx-auto max-w-6xl px-4 py-12">
           <div className={`grid gap-8 ${showNavigation ? "grid-cols-1 lg:grid-cols-4" : "grid-cols-1 lg:grid-cols-3"}`}>
             {/* Table of Contents Desktop (1/4 em desktop, apenas se artigo é longo) */}
-            {showNavigation && <TableOfContents contentHtml={sanitizedContent} isMobile={false} />}
+            {showNavigation && <div className="hidden lg:block"><TableOfContents contentHtml={sanitizedContent} isMobile={false} /></div>}
 
             {/* Conteúdo principal (2/3 em layouts sem TOC, 2/4 em layouts com TOC) */}
             <div className={showNavigation ? "lg:col-span-2" : "lg:col-span-2"}>
