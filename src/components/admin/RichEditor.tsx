@@ -4,12 +4,13 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Image from "@tiptap/extension-image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Bold, Italic, Strikethrough, Code, Heading2, Heading3,
   List, ListOrdered, Quote, Minus, Undo, Redo, Link as LinkIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { LinkEditorDialog } from "./LinkEditorDialog";
 
 interface RichEditorProps {
   content: string;
@@ -46,6 +47,10 @@ function ToolbarButton({
 }
 
 export function RichEditor({ content, onChange, placeholder = "Escreva o conteúdo do post..." }: RichEditorProps) {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedText, setSelectedText] = useState("");
+  const [initialUrl, setInitialUrl] = useState("");
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -75,20 +80,50 @@ export function RichEditor({ content, onChange, placeholder = "Escreva o conteú
 
   if (!editor) return null;
 
-  const setLink = () => {
-    const url = window.prompt("URL do link:");
-    if (url === null) return;
-    if (url === "") {
-      editor.chain().focus().unsetLink().run();
-      return;
-    }
-    editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+  const openLinkDialog = () => {
+    // Get selected text or current link
+    const { from, to } = editor.state.selection;
+    const text = editor.state.doc.textBetween(from, to);
+    const isLink = editor.isActive("link");
+    const currentLink = isLink ? editor.getAttributes("link").href : "";
+
+    setSelectedText(text || "");
+    setInitialUrl(currentLink);
+    setDialogOpen(true);
+  };
+
+  const handleSaveLink = (url: string, openInNewTab: boolean) => {
+    const linkAttrs = {
+      href: url,
+      ...(openInNewTab && { target: "_blank", rel: "noopener noreferrer" }),
+    };
+
+    editor.chain().focus().extendMarkRange("link").setLink(linkAttrs).run();
+  };
+
+  const handleRemoveLink = () => {
+    editor.chain().focus().unsetLink().run();
+  };
+
+  const handleDeleteAll = () => {
+    editor.chain().focus().unsetLink().run();
+    editor.chain().focus().deleteSelection().run();
   };
 
   return (
-    <div className="border border-border rounded-none overflow-hidden">
-      {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-0.5 p-2 border-b border-border bg-zinc-50">
+    <>
+      <LinkEditorDialog
+        isOpen={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        onSave={handleSaveLink}
+        onRemove={handleRemoveLink}
+        onDelete={handleDeleteAll}
+        initialUrl={initialUrl}
+        selectedText={selectedText}
+      />
+      <div className="border border-border rounded-none overflow-hidden">
+        {/* Toolbar */}
+        <div className="flex flex-wrap items-center gap-0.5 p-2 border-b border-border bg-zinc-50">
         <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} active={editor.isActive("bold")} title="Negrito">
           <Bold size={15} />
         </ToolbarButton>
@@ -128,7 +163,7 @@ export function RichEditor({ content, onChange, placeholder = "Escreva o conteú
 
         <span className="w-px h-5 bg-border mx-1" />
 
-        <ToolbarButton onClick={setLink} active={editor.isActive("link")} title="Link">
+        <ToolbarButton onClick={openLinkDialog} active={editor.isActive("link")} title="Link">
           <LinkIcon size={15} />
         </ToolbarButton>
 
@@ -142,8 +177,9 @@ export function RichEditor({ content, onChange, placeholder = "Escreva o conteú
         </ToolbarButton>
       </div>
 
-      {/* Editor area */}
-      <EditorContent editor={editor} />
-    </div>
+        {/* Editor area */}
+        <EditorContent editor={editor} />
+      </div>
+    </>
   );
 }
