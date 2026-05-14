@@ -55,6 +55,7 @@ export function RichEditor({ content, onChange, placeholder = "Escreva o conteú
       Image,
     ],
     content,
+    immediatelyRender: false,
     onUpdate({ editor }) {
       onChange(editor.getHTML());
     },

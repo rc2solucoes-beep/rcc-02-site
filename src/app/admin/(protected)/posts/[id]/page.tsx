@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { createSessionClient } from "@/lib/supabase/server";
 import { AdminHeader } from "@/components/admin/AdminHeader";
-import { PostForm } from "@/components/admin/PostForm";
+import { PostFormRefactored } from "@/components/admin/PostFormRefactored";
+import { DeletePostButton } from "@/components/admin/DeletePostButton";
 import { updatePost, deletePost } from "@/app/admin/(protected)/posts/actions";
 import type { Post } from "@/lib/types/post";
 
@@ -21,27 +22,16 @@ export default async function EditPostPage({ params }: EditPostPageProps) {
   if (!post) notFound();
 
   const updatePostWithId = updatePost.bind(null, id);
+  const deletePostWithId = deletePost.bind(null, id);
 
   return (
     <>
       <AdminHeader
         title="Editar post"
         description={post.title}
-        action={
-          <form action={async () => { "use server"; await deletePost(id); }}>
-            <button
-              type="submit"
-              className="px-4 py-2 text-sm font-medium text-red-600 border border-red-200 hover:bg-red-50 transition-colors"
-              onClick={(e) => {
-                if (!confirm("Excluir este post permanentemente?")) e.preventDefault();
-              }}
-            >
-              Excluir
-            </button>
-          </form>
-        }
+        action={<DeletePostButton postId={id} deleteAction={deletePostWithId} />}
       />
-      <PostForm post={post} action={updatePostWithId} />
+      <PostFormRefactored post={post} action={updatePostWithId} />
     </>
   );
 }
