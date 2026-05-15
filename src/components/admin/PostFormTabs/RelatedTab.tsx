@@ -72,9 +72,9 @@ export function RelatedTab({ formData, onChange, currentPostId }: RelatedTabProp
         </p>
 
         {loading ? (
-          <p className="text-sm text-rc2-ebony/50">Carregando posts...</p>
+          <p className="text-sm text-[#5A4E42]">Carregando posts...</p>
         ) : allPosts.length === 0 ? (
-          <p className="text-sm text-rc2-ebony/50">Nenhum outro post disponível</p>
+          <p className="text-sm text-[#5A4E42]">Nenhum outro post disponível</p>
         ) : (
           <div className="space-y-2 max-h-96 overflow-y-auto border border-border rounded p-3 bg-rc2-sand">
             {allPosts.map((p) => (
@@ -93,7 +93,7 @@ export function RelatedTab({ formData, onChange, currentPostId }: RelatedTabProp
                   <p className="text-sm font-medium text-rc2-ebony truncate">
                     {p.title}
                   </p>
-                  <p className="text-xs text-rc2-ebony/50">
+                  <p className="text-xs text-[#5A4E42]">
                     {p.category && <span>{p.category} • </span>}
                     {p.published_at && new Date(p.published_at).toLocaleDateString("pt-BR")}
                   </p>

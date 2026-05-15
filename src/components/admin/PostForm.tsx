@@ -64,7 +64,7 @@ export function PostForm({ post, action }: PostFormProps) {
       <div>
         <label className="block text-sm font-medium text-rc2-ebony mb-1.5" htmlFor="slug">Slug</label>
         <div className="flex items-center gap-0">
-          <span className="border border-r-0 border-border bg-zinc-100 px-3 py-2.5 text-sm text-rc2-ebony/50 whitespace-nowrap">/blog/</span>
+          <span className="border border-r-0 border-border bg-zinc-100 px-3 py-2.5 text-sm text-[#5A4E42] whitespace-nowrap">/blog/</span>
           <input
             id="slug" name="slug" type="text" required
             value={slug}

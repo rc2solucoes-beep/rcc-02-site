@@ -148,13 +148,13 @@ export function CtaTab({ ctaBlock, onChange }: CtaTabProps) {
           )}
           <div>
             <h3 className="text-sm font-medium text-rc2-ebony">{currentType?.label}</h3>
-            <p className="text-xs text-rc2-ebony/50">{currentType?.description}</p>
+            <p className="text-xs text-[#5A4E42]">{currentType?.description}</p>
           </div>
         </div>
         <button
           type="button"
           onClick={() => onChange(null)}
-          className="flex items-center gap-1.5 text-xs text-rc2-ebony/50 hover:text-red-500 transition-colors"
+          className="flex items-center gap-1.5 text-xs text-[#5A4E42] hover:text-red-500 transition-colors"
           title="Remover CTA"
         >
           <X size={14} /> Remover
@@ -164,7 +164,7 @@ export function CtaTab({ ctaBlock, onChange }: CtaTabProps) {
       {/* Campos comuns */}
       <div className="space-y-4 p-4 border border-border rounded-lg bg-white">
         <div>
-          <label className="block text-xs font-semibold text-rc2-ebony/50 uppercase tracking-widest mb-1.5">
+          <label className="block text-xs font-semibold text-[#5A4E42] uppercase tracking-widest mb-1.5">
             Título *
           </label>
           <input
@@ -177,7 +177,7 @@ export function CtaTab({ ctaBlock, onChange }: CtaTabProps) {
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-rc2-ebony/50 uppercase tracking-widest mb-1.5">
+          <label className="block text-xs font-semibold text-[#5A4E42] uppercase tracking-widest mb-1.5">
             Descrição
           </label>
           <textarea
@@ -192,12 +192,12 @@ export function CtaTab({ ctaBlock, onChange }: CtaTabProps) {
         {/* Botão primário (todos os tipos) */}
         {ctaBlock.type !== "next_steps" && (
           <div className="space-y-3">
-            <p className="text-xs font-semibold text-rc2-ebony/50 uppercase tracking-widest">
+            <p className="text-xs font-semibold text-[#5A4E42] uppercase tracking-widest">
               Botão Principal
             </p>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs text-rc2-ebony/50 mb-1">Texto</label>
+                <label className="block text-xs text-[#5A4E42] mb-1">Texto</label>
                 <input
                   type="text"
                   value={ctaBlock.primaryButton?.text ?? ""}
@@ -207,7 +207,7 @@ export function CtaTab({ ctaBlock, onChange }: CtaTabProps) {
                 />
               </div>
               <div>
-                <label className="block text-xs text-rc2-ebony/50 mb-1">URL</label>
+                <label className="block text-xs text-[#5A4E42] mb-1">URL</label>
                 <input
                   type="text"
                   value={ctaBlock.primaryButton?.url ?? ""}
@@ -223,7 +223,7 @@ export function CtaTab({ ctaBlock, onChange }: CtaTabProps) {
         {/* Botão secundário (só para service) */}
         {ctaBlock.type === "service" && (
           <div className="space-y-3">
-            <p className="text-xs font-semibold text-rc2-ebony/50 uppercase tracking-widest">
+            <p className="text-xs font-semibold text-[#5A4E42] uppercase tracking-widest">
               Botão Secundário{" "}
               <span className="font-normal normal-case tracking-normal text-rc2-ebony/40">
                 (opcional)
@@ -231,7 +231,7 @@ export function CtaTab({ ctaBlock, onChange }: CtaTabProps) {
             </p>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs text-rc2-ebony/50 mb-1">Texto</label>
+                <label className="block text-xs text-[#5A4E42] mb-1">Texto</label>
                 <input
                   type="text"
                   value={ctaBlock.secondaryButton?.text ?? ""}
@@ -241,7 +241,7 @@ export function CtaTab({ ctaBlock, onChange }: CtaTabProps) {
                 />
               </div>
               <div>
-                <label className="block text-xs text-rc2-ebony/50 mb-1">URL</label>
+                <label className="block text-xs text-[#5A4E42] mb-1">URL</label>
                 <input
                   type="text"
                   value={ctaBlock.secondaryButton?.url ?? ""}
@@ -258,7 +258,7 @@ export function CtaTab({ ctaBlock, onChange }: CtaTabProps) {
         {ctaBlock.type === "next_steps" && (
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <p className="text-xs font-semibold text-rc2-ebony/50 uppercase tracking-widest">
+              <p className="text-xs font-semibold text-[#5A4E42] uppercase tracking-widest">
                 Passos
               </p>
               <button

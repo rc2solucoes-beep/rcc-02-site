@@ -79,7 +79,7 @@ export function PublicationTab({ formData, onChange }: PublicationTabProps) {
           onChange={(e) => onChange("updated_at", e.target.value)}
           className={inputBase}
         />
-        <p className="text-xs text-rc2-ebony/50 mt-1">Atualizada automaticamente ao salvar</p>
+        <p className="text-xs text-[#5A4E42] mt-1">Atualizada automaticamente ao salvar</p>
       </div>
 
       {/* Agendamento de Publicação */}
@@ -95,7 +95,7 @@ export function PublicationTab({ formData, onChange }: PublicationTabProps) {
           onChange={(e) => onChange("scheduled_publish_at", e.target.value)}
           className={inputBase}
         />
-        <p className="text-xs text-rc2-ebony/50 mt-1">Deixe vazio para publicar manualmente</p>
+        <p className="text-xs text-[#5A4E42] mt-1">Deixe vazio para publicar manualmente</p>
       </div>
 
       {/* Categoria Principal */}
@@ -154,7 +154,7 @@ export function PublicationTab({ formData, onChange }: PublicationTabProps) {
           className={inputBase}
           placeholder="Separadas por vírgula. Ex: RPA, automação, processos"
         />
-        <p className="text-xs text-rc2-ebony/50 mt-1">Tags para melhor organização e descoberta</p>
+        <p className="text-xs text-[#5A4E42] mt-1">Tags para melhor organização e descoberta</p>
       </div>
 
       {/* Tempo de Leitura */}
@@ -172,7 +172,7 @@ export function PublicationTab({ formData, onChange }: PublicationTabProps) {
           className={inputBase}
           placeholder="Ex: 5"
         />
-        <p className="text-xs text-rc2-ebony/50 mt-1">Deixe vazio para calcular automaticamente</p>
+        <p className="text-xs text-[#5A4E42] mt-1">Deixe vazio para calcular automaticamente</p>
       </div>
     </div>
   );

@@ -72,7 +72,7 @@ export function FaqTab({ faqItems, onChange }: FaqTabProps) {
       {faqItems.length === 0 ? (
         <div className="border-2 border-dashed border-border rounded-lg p-10 text-center">
           <HelpCircle size={28} className="mx-auto mb-3 text-rc2-ebony/20" />
-          <p className="text-sm font-medium text-rc2-ebony/50 mb-1">
+          <p className="text-sm font-medium text-[#5A4E42] mb-1">
             Nenhuma pergunta adicionada
           </p>
           <p className="text-xs text-rc2-ebony/40 mb-4">
@@ -135,7 +135,7 @@ export function FaqTab({ faqItems, onChange }: FaqTabProps) {
               {expandedIndex === index && (
                 <div className="p-4 space-y-4 bg-white border-t border-border">
                   <div>
-                    <label className="block text-xs font-semibold text-rc2-ebony/50 uppercase tracking-widest mb-1.5">
+                    <label className="block text-xs font-semibold text-[#5A4E42] uppercase tracking-widest mb-1.5">
                       Pergunta
                     </label>
                     <input
@@ -147,7 +147,7 @@ export function FaqTab({ faqItems, onChange }: FaqTabProps) {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-rc2-ebony/50 uppercase tracking-widest mb-1.5">
+                    <label className="block text-xs font-semibold text-[#5A4E42] uppercase tracking-widest mb-1.5">
                       Resposta
                     </label>
                     <textarea

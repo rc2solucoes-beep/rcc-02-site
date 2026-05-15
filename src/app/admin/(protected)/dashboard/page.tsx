@@ -41,7 +41,7 @@ export default async function DashboardPage() {
             <a key={key} href={href} className="bg-white border border-border rounded-lg p-6 shadow-sm hover:shadow-md hover:border-rc2-orange hover:-translate-y-1 transition-all group">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-xs font-medium text-rc2-ebony/50 uppercase tracking-wider mb-1">{label}</p>
+                  <p className="text-xs font-medium text-[#5A4E42] uppercase tracking-wider mb-1">{label}</p>
                   <p className="text-3xl font-bold text-rc2-ebony">{stats[key]}</p>
                 </div>
                 <Icon size={20} className="text-rc2-orange/60 group-hover:text-rc2-orange transition-colors" />

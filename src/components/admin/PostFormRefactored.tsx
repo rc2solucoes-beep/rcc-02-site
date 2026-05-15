@@ -240,7 +240,7 @@ export function PostFormRefactored({ post, action }: PostFormProps) {
                 Slug
               </label>
               <div className="flex items-center gap-0">
-                <span className="border border-r-0 border-border bg-zinc-100 px-3 py-2.5 text-sm text-rc2-ebony/50 whitespace-nowrap">
+                <span className="border border-r-0 border-border bg-zinc-100 px-3 py-2.5 text-sm text-[#5A4E42] whitespace-nowrap">
                   /blog/
                 </span>
                 <input
@@ -275,7 +275,7 @@ export function PostFormRefactored({ post, action }: PostFormProps) {
                 className={`${inputBase} resize-none`}
                 placeholder="Breve descrição para listagem do blog"
               />
-              <p className="text-xs text-rc2-ebony/50 mt-1">
+              <p className="text-xs text-[#5A4E42] mt-1">
                 Este resumo aparece no card do blog, não confundir com meta description
               </p>
               <FieldError errors={state.errors} field="summary" />

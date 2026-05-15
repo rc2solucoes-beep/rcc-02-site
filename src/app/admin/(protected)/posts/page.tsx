@@ -55,7 +55,7 @@ export default async function PostsPage() {
       />
       <div className="p-4 md:p-6 lg:p-8">
         {posts.length === 0 ? (
-          <div className="bg-white border border-border p-12 text-center text-rc2-ebony/50 text-sm">
+          <div className="bg-white border border-border p-12 text-center text-[#5A4E42] text-sm">
             Nenhum post ainda.{" "}
             <Link href="/admin/posts/novo" className="text-rc2-orange underline">
               Criar o primeiro
@@ -73,7 +73,7 @@ export default async function PostsPage() {
                     <span className="text-xs text-rc2-ebony/40">{formatDate(post.created_at)}</span>
                   </div>
                   <p className="font-medium text-rc2-ebony truncate">{post.title}</p>
-                  <p className="text-xs text-rc2-ebony/50 truncate">/{post.slug}</p>
+                  <p className="text-xs text-[#5A4E42] truncate">/{post.slug}</p>
                 </div>
                 <Link
                   href={`/admin/posts/${post.id}`}

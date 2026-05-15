@@ -45,7 +45,7 @@ export default async function LeadsPage() {
       <div className="p-4 md:p-8">
         {leads.length === 0 ? (
           <div className="bg-white border border-border p-12 text-center space-y-4">
-            <p className="text-rc2-ebony/50 text-sm">Nenhum lead ainda.</p>
+            <p className="text-[#5A4E42] text-sm">Nenhum lead ainda.</p>
             <p className="text-rc2-ebony/60 text-sm max-w-md mx-auto">
               Leads serão exibidos aqui quando usuários preencherem o formulário de contato.
             </p>
@@ -115,7 +115,7 @@ export default async function LeadsPage() {
                           {STATUS_LABEL[lead.solution] ?? lead.solution}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-rc2-ebony/50 whitespace-nowrap text-xs">{formatDate(lead.created_at)}</td>
+                      <td className="px-4 py-3 text-[#5A4E42] whitespace-nowrap text-xs">{formatDate(lead.created_at)}</td>
                     </tr>
                   ))}
                 </tbody>
