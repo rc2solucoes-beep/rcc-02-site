@@ -41,7 +41,7 @@ export function SeoTab({ formData, onChange }: SeoTabProps) {
           className={inputBase}
           placeholder="Ex: automação de processos"
         />
-        <p className="text-xs text-[#5A4E42] mt-1">
+        <p className="text-xs text-muted-foreground mt-1">
           A palavra-chave mais importante para o seu artigo (máx 60 caracteres)
         </p>
       </div>
@@ -61,7 +61,7 @@ export function SeoTab({ formData, onChange }: SeoTabProps) {
           className={inputBase}
           placeholder="Título para os motores de busca"
         />
-        <p className="text-xs text-[#5A4E42] mt-1">
+        <p className="text-xs text-muted-foreground mt-1">
           Aparece como título nos resultados do Google (máx 60 caracteres)
         </p>
       </div>
@@ -81,7 +81,7 @@ export function SeoTab({ formData, onChange }: SeoTabProps) {
           className={`${inputBase} resize-none`}
           placeholder="Descrição que aparece nos resultados de busca"
         />
-        <p className="text-xs text-[#5A4E42] mt-1">
+        <p className="text-xs text-muted-foreground mt-1">
           Aparece como descrição nos resultados do Google (máx 160 caracteres)
         </p>
       </div>
@@ -102,7 +102,7 @@ export function SeoTab({ formData, onChange }: SeoTabProps) {
           <option value="noindex">Noindex (não indexar)</option>
           <option value="nofollow">Nofollow (não seguir links)</option>
         </select>
-        <p className="text-xs text-[#5A4E42] mt-1">
+        <p className="text-xs text-muted-foreground mt-1">
           Controla como os motores de busca tratam esta página
         </p>
       </div>
@@ -121,7 +121,7 @@ export function SeoTab({ formData, onChange }: SeoTabProps) {
           className={inputBase}
           placeholder="Separadas por vírgula. Ex: RPA, otimização, processos"
         />
-        <p className="text-xs text-[#5A4E42] mt-1">
+        <p className="text-xs text-muted-foreground mt-1">
           Outras palavras-chave relacionadas (separadas por vírgula)
         </p>
       </div>

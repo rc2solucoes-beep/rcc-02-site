@@ -54,7 +54,7 @@ export default async function PrivacidadePage() {
                 A RC2 Soluções (CNPJ: 10.604.725/0001-42, endereço: Avenida Nova América, 202, Jardim Santa Cecília, Guarulhos/SP) é controladora dos dados pessoais tratados por meio deste site.
               </p>
               <p>
-                Contato do responsável: <a href="mailto:contato@rc2solucoes.com.br" className="text-rc2-orange underline">contato@rc2solucoes.com.br</a>
+                Contato do responsável: <a href="mailto:contato@rc2solucoes.com.br" className="text-rc2-orange-text underline">contato@rc2solucoes.com.br</a>
               </p>
             </section>
 
@@ -110,7 +110,7 @@ export default async function PrivacidadePage() {
                 <li>Apresentar reclamação à ANPD</li>
               </ul>
               <p>
-                Para exercer seus direitos: <a href="mailto:contato@rc2solucoes.com.br" className="text-rc2-orange underline">contato@rc2solucoes.com.br</a>
+                Para exercer seus direitos: <a href="mailto:contato@rc2solucoes.com.br" className="text-rc2-orange-text underline">contato@rc2solucoes.com.br</a>
               </p>
             </section>
 
@@ -138,7 +138,7 @@ export default async function PrivacidadePage() {
             <section>
               <h2 className="text-xl font-semibold text-rc2-ebony mb-3">10. Contato do Encarregado (DPO)</h2>
               <p>
-                <a href="mailto:contato@rc2solucoes.com.br" className="text-rc2-orange underline">contato@rc2solucoes.com.br</a>
+                <a href="mailto:contato@rc2solucoes.com.br" className="text-rc2-orange-text underline">contato@rc2solucoes.com.br</a>
               </p>
             </section>
           </div>

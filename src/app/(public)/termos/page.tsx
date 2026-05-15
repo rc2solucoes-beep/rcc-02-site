@@ -97,7 +97,7 @@ export default async function TermosPage() {
               <h2 className="text-xl font-semibold text-rc2-ebony mb-3">7. Privacidade</h2>
               <p>
                 O tratamento de dados pessoais é regido pela nossa{" "}
-                <a href="/privacidade" className="text-rc2-orange underline">Política de Privacidade</a>, em conformidade com a LGPD (Lei nº 13.709/2018) e o Marco Civil da Internet (Lei nº 12.965/2014).
+                <a href="/privacidade" className="text-rc2-orange-text underline">Política de Privacidade</a>, em conformidade com a LGPD (Lei nº 13.709/2018) e o Marco Civil da Internet (Lei nº 12.965/2014).
               </p>
             </section>
 
@@ -112,7 +112,7 @@ export default async function TermosPage() {
               <h2 className="text-xl font-semibold text-rc2-ebony mb-3">9. Contato</h2>
               <p>
                 Para dúvidas sobre estes termos:{" "}
-                <a href="mailto:contato@rc2solucoes.com.br" className="text-rc2-orange underline">contato@rc2solucoes.com.br</a>
+                <a href="mailto:contato@rc2solucoes.com.br" className="text-rc2-orange-text underline">contato@rc2solucoes.com.br</a>
               </p>
             </section>
           </div>

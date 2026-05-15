@@ -37,7 +37,7 @@ function CharCount({ value, max }: { value: string; max: number }) {
 
 function FallbackBadge({ label }: { label: string }) {
   return (
-    <span className="inline-flex items-center gap-1 text-[11px] text-[#5A4E42] bg-rc2-ebony/[0.06] px-2 py-0.5 rounded">
+    <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground bg-rc2-ebony/[0.06] px-2 py-0.5 rounded">
       Usa: <code className="font-mono text-rc2-ebony/65">{label}</code>
     </span>
   );
@@ -182,7 +182,7 @@ function ImageField({
         </div>
       )}
 
-      {hint && <p className="text-xs text-[#5A4E42] mt-1">{hint}</p>}
+      {hint && <p className="text-xs text-muted-foreground mt-1">{hint}</p>}
     </div>
   );
 }
@@ -208,7 +208,7 @@ export function ImageTab({ formData, onChange }: ImageTabProps) {
       {/* ═══ Imagem de Capa ══════════════════════════════════════════ */}
       <section className="space-y-5">
         <div className="pb-1 border-b border-border">
-          <h3 className="text-xs font-semibold text-[#5A4E42] uppercase tracking-widest">
+          <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
             Imagem de Capa
           </h3>
           <p className="text-xs text-rc2-ebony/40 mt-0.5">
@@ -245,7 +245,7 @@ export function ImageTab({ formData, onChange }: ImageTabProps) {
             className={inputBase}
             placeholder="Descreva a imagem: o que está sendo mostrado?"
           />
-          <p className="text-xs text-[#5A4E42] mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             Obrigatório para acessibilidade (WCAG) e indexação no Google Images
           </p>
         </div>
@@ -269,7 +269,7 @@ export function ImageTab({ formData, onChange }: ImageTabProps) {
       {/* ═══ Open Graph ══════════════════════════════════════════════ */}
       <section className="space-y-5">
         <div className="pb-1 border-b border-border">
-          <h3 className="text-xs font-semibold text-[#5A4E42] uppercase tracking-widest">
+          <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
             Open Graph — Compartilhamento
           </h3>
           <p className="text-xs text-rc2-ebony/40 mt-0.5">
@@ -348,7 +348,7 @@ export function ImageTab({ formData, onChange }: ImageTabProps) {
         {/* Preview de compartilhamento */}
         {showPreview && (
           <div>
-            <p className="text-xs font-semibold text-[#5A4E42] uppercase tracking-widest mb-3">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">
               Preview de compartilhamento
             </p>
             <div className="bg-[#F0F2F5] rounded-xl p-5">

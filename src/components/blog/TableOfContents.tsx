@@ -80,7 +80,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
           onClick={() => setIsOpen(!isOpen)}
           className="w-full flex items-center justify-between px-5 py-4 hover:bg-rc2-ebony/[0.02] transition-colors"
         >
-          <span className="text-xs font-semibold text-[#5A4E42] uppercase tracking-widest">
+          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
             Neste artigo
           </span>
           <ChevronDown
@@ -102,7 +102,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
     <aside className="sticky top-20" style={{ alignSelf: "start" }}>
       <div className="border border-border rounded bg-white overflow-hidden">
         <div className="px-5 py-4 border-b border-border">
-          <h3 className="text-xs font-semibold text-[#5A4E42] uppercase tracking-widest">
+          <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
             Neste artigo
           </h3>
         </div>

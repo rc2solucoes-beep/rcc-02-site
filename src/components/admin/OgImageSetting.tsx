@@ -111,7 +111,7 @@ export function OgImageSetting({ defaultValue = "" }: OgImageSettingProps) {
         </div>
       )}
 
-      <p className="text-xs text-[#5A4E42]">
+      <p className="text-xs text-muted-foreground">
         Ideal: 1200×630 px · proporção 1.91:1 · JPEG, PNG ou WebP · Máx 10 MB
       </p>
     </div>

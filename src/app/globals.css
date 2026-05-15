@@ -319,7 +319,7 @@
     font-style: italic;
   }
   .prose-rc2 a {
-    color: #FF5F1F;
+    color: var(--color-rc2-orange-text);  /* #C94400 — 4.84:1 vs sand ✓ */
     text-decoration: underline;
     text-underline-offset: 3px;
   }

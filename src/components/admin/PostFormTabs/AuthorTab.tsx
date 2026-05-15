@@ -86,7 +86,7 @@ export function AuthorTab({ formData, onChange }: AuthorTabProps) {
           placeholder="Breve biografia do autor (máx 500 caracteres)"
           maxLength={500}
         />
-        <p className="text-xs text-[#5A4E42] mt-1">Máximo 500 caracteres</p>
+        <p className="text-xs text-muted-foreground mt-1">Máximo 500 caracteres</p>
       </div>
 
       {/* LinkedIn */}

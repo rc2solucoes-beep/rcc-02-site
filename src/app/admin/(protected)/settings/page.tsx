@@ -76,7 +76,7 @@ const inputBase =
   "w-full border border-border bg-rc2-sand px-3 py-2.5 text-sm text-rc2-ebony placeholder:text-rc2-placeholder outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors rounded";
 
 const sectionLabel =
-  "text-xs font-semibold text-[#5A4E42] uppercase tracking-widest pb-3 border-b border-border";
+  "text-xs font-semibold text-muted-foreground uppercase tracking-widest pb-3 border-b border-border";
 
 type Props = {
   searchParams: Promise<{ saved?: string }>;

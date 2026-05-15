@@ -229,7 +229,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         {/* Breadcrumbs */}
         <nav className="bg-rc2-sand border-b border-border/40">
           <div className="container mx-auto max-w-4xl px-4 py-2.5">
-            <ol className="flex items-center gap-1 text-xs md:text-sm text-[#5A4E42] flex-wrap">
+            <ol className="flex items-center gap-1 text-xs md:text-sm text-muted-foreground flex-wrap">
               <li><Link href="/" className="hover:text-rc2-orange transition-colors font-medium">Home</Link></li>
               <li className="text-rc2-ebony/30 mx-1">/</li>
               <li><Link href="/blog" className="hover:text-rc2-orange transition-colors font-medium">Blog</Link></li>
@@ -467,7 +467,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               <aside className="lg:col-span-1">
                 <div className="sticky top-20 border border-border rounded bg-white overflow-hidden">
                   <div className="px-5 py-4 border-b border-border">
-                    <h3 className="text-xs font-semibold text-[#5A4E42] uppercase tracking-widest">
+                    <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
                       Sobre o Autor
                     </h3>
                   </div>
