@@ -83,7 +83,7 @@ export default async function ServicosPage() {
                   <p className={`leading-relaxed mb-6 ${isDark ? "text-rc2-sand/80" : "text-rc2-ebony/70"}`}>
                     {service.description}
                   </p>
-                  <p className={`text-sm font-medium italic border-l-2 border-rc2-orange pl-4 ${isDark ? "text-rc2-sand/70" : "text-rc2-ebony/70"}`}>
+                  <p className={`text-sm font-medium italic border-l-2 border-rc2-orange pl-4 ${isDark ? "text-rc2-sand/85" : "text-rc2-ebony/80"}`}>
                     {service.cta}
                   </p>
                   <Link
@@ -98,7 +98,7 @@ export default async function ServicosPage() {
                 {/* Lists */}
                 <div className={index % 2 === 1 ? "lg:order-1" : ""}>
                   <div className="mb-6">
-                    <h3 className={`rc2-label mb-3 ${isDark ? "text-rc2-sand/70" : "text-rc2-ebony/70"}`}>O que pode ser implantado</h3>
+                    <h3 className={`rc2-label mb-3 ${isDark ? "text-rc2-sand/90" : "text-rc2-ebony/80"}`}>O que pode ser implantado</h3>
                     <ul className="space-y-2">
                       {service.items.map((item, i) => (
                         <li key={i} className="flex items-start gap-2.5">
@@ -109,7 +109,7 @@ export default async function ServicosPage() {
                     </ul>
                   </div>
                   <div>
-                    <h3 className={`rc2-label mb-3 ${isDark ? "text-rc2-sand/70" : "text-rc2-ebony/70"}`}>Benefícios</h3>
+                    <h3 className={`rc2-label mb-3 ${isDark ? "text-rc2-sand/90" : "text-rc2-ebony/80"}`}>Benefícios</h3>
                     <ul className="space-y-2">
                       {service.benefits.map((benefit, i) => (
                         <li key={i} className="flex items-start gap-2.5">

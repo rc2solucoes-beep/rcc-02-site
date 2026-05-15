@@ -46,7 +46,7 @@ export function PageHero({
           <p
             className={cn(
               "rc2-body-lg mt-5 max-w-2xl",
-              isDark ? "text-rc2-sand/70" : "text-rc2-ebony/70"
+              isDark ? "text-rc2-sand/85" : "text-rc2-ebony/80"
             )}
           >
             {description}

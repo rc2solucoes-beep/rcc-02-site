@@ -59,7 +59,7 @@ export default async function AvaliacoesPage() {
               <h3 className="text-xl font-semibold text-rc2-sand mb-4">
                 Construído com IA na prática
               </h3>
-              <p className="text-rc2-sand/70 leading-relaxed">
+              <p className="text-rc2-sand/85 leading-relaxed">
                 Este site foi desenvolvido aplicando vibecode, engenharia de prompt e ferramentas modernas de IA. A mesma lógica usada aqui — clareza, velocidade, automação e execução prática — é aplicada nos projetos da RC2 para empresas que querem modernizar atendimento, vendas e operação.
               </p>
             </div>

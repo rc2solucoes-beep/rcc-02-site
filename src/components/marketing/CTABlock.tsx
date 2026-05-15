@@ -50,7 +50,7 @@ export function CTABlock({
           <p
             className={cn(
               "rc2-body mt-4 max-w-2xl mx-auto",
-              isDark ? "text-rc2-sand/70" : "text-rc2-sand/90"
+              isDark ? "text-rc2-sand/85" : "text-rc2-sand/95"
             )}
           >
             {description}

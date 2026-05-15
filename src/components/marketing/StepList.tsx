@@ -39,7 +39,7 @@ export function StepList({ steps, variant = "light", className }: StepListProps)
             <p
               className={cn(
                 "text-sm leading-relaxed",
-                isDark ? "text-rc2-sand/60" : "text-rc2-ebony/60"
+                isDark ? "text-rc2-sand/85" : "text-rc2-ebony/75"
               )}
             >
               {step.description}

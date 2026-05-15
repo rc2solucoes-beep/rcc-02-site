@@ -115,7 +115,7 @@ export default async function HomePage({ searchParams }: Props) {
               ? "Diagnóstico inicial com mapa de oportunidades."
               : "Sem compromisso. Retorno em até 1 dia útil."}
           </p>
-          <p className="mt-6 rc2-caption text-rc2-ebony/70 italic">
+          <p className="mt-6 text-xs text-rc2-ebony/75 italic">
             &ldquo;Tecnologia que funciona. Operação que entrega.&rdquo;
           </p>
         </div>
@@ -189,18 +189,18 @@ export default async function HomePage({ searchParams }: Props) {
           <h2 className="rc2-h2 rc2-display text-rc2-sand mb-6">
             Tecnologia com visão de operação.
           </h2>
-          <p className="text-rc2-sand/80 text-lg leading-relaxed mb-6">
+          <p className="text-rc2-sand/90 text-lg leading-relaxed mb-6">
             A RC2 não entrega apenas ferramentas. Entregamos processos
             funcionando. Com experiência em TI, e-commerce, automação,
             atendimento omnichannel, marketing digital, integração de sistemas e
             liderança de operações digitais, a RC2 atua do diagnóstico à
             implantação.
           </p>
-          <p className="text-rc2-sand/70 italic text-sm border-l-2 border-rc2-orange pl-4">
+          <p className="text-rc2-sand/85 italic text-sm border-l-2 border-rc2-orange pl-4">
             &ldquo;A IA não substitui uma operação mal estruturada. Primeiro
             organizamos o processo. Depois automatizamos o que faz sentido.&rdquo;
           </p>
-          <p className="mt-8 rc2-caption text-rc2-sand/60">
+          <p className="mt-8 text-xs text-rc2-sand/85">
             Mais de 20 anos de experiência em tecnologia, operações digitais,
             e-commerce, automações e gestão de equipes.
           </p>

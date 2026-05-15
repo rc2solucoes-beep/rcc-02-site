@@ -264,7 +264,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <p className="text-rc2-sand/80 text-lg leading-relaxed mb-6">{post.summary}</p>
 
             {/* Meta info: data, tempo de leitura */}
-            <div className="flex flex-wrap items-center gap-4 text-sm text-rc2-sand/70">
+            <div className="flex flex-wrap items-center gap-4 text-sm text-rc2-sand/80">
               <time>{formatDate(post.published_at)}</time>
               {post.updated_at && post.updated_at !== post.published_at && (
                 <span>Atualizado em {formatDate(post.updated_at)}</span>
@@ -360,7 +360,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                         {ctaBlock.title}
                       </h3>
                       {ctaBlock.description && (
-                        <p className="text-rc2-sand/70 mb-5 text-sm">{ctaBlock.description}</p>
+                        <p className="text-rc2-sand/85 mb-5 text-sm">{ctaBlock.description}</p>
                       )}
                       {ctaBlock.items && ctaBlock.items.filter(Boolean).length > 0 && (
                         <ol className="space-y-3">
