@@ -396,7 +396,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                         {ctaBlock.secondaryButton && (
                           <Link
                             href={ctaBlock.secondaryButton.url}
-                            className="inline-block px-6 py-2.5 border border-rc2-orange text-rc2-orange font-medium rounded hover:bg-rc2-orange/5 transition-colors"
+                            className="inline-block px-6 py-2.5 border border-rc2-orange-text text-rc2-orange-text font-medium rounded hover:bg-rc2-orange-text/5 transition-colors"
                           >
                             {ctaBlock.secondaryButton.text}
                           </Link>
@@ -487,7 +487,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                       {post.author_name}
                     </h4>
                     {post.author_title && (
-                      <p className="text-sm text-rc2-orange font-medium mb-3">
+                      <p className="text-sm text-rc2-orange-text font-medium mb-3">
                         {post.author_title}
                       </p>
                     )}

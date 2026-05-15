@@ -54,8 +54,8 @@ export function Header() {
                 className={cn(
                   "ui-focus-ring rounded-full text-sm transition-all duration-200 px-3 py-1",
                   isActive(link.href)
-                    ? "font-semibold text-rc2-orange bg-rc2-orange/10 ring-1 ring-rc2-orange/20"
-                    : "font-medium text-rc2-ebony hover:text-rc2-orange hover:bg-rc2-ebony/5"
+                    ? "font-semibold text-rc2-orange-text bg-rc2-orange-text/10 ring-1 ring-rc2-orange-text/20"
+                    : "font-medium text-rc2-ebony hover:text-rc2-orange-text hover:bg-rc2-ebony/5"
                 )}
               >
                 {link.label}
@@ -97,8 +97,8 @@ export function Header() {
                 className={cn(
                   "ui-focus-ring rounded-sm py-2 text-sm transition-colors",
                   isActive(link.href)
-                    ? "font-semibold text-rc2-orange"
-                    : "font-medium text-rc2-ebony hover:text-rc2-orange"
+                    ? "font-semibold text-rc2-orange-text"
+                    : "font-medium text-rc2-ebony hover:text-rc2-orange-text"
                 )}
                 onClick={() => setOpen(false)}
               >
