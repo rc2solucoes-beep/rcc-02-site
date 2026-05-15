@@ -14,6 +14,8 @@
   --color-rc2-forest: #163020;  /* Deep Forest — rodapés, prova social (20%) */
   --color-rc2-orange: #FF5F1F;  /* Safety Orange — CTA, detalhe logo (máx 10%) */
   --color-rc2-ebony:  #1E1610;  /* Ébano Quente — texto corrido */
+  --color-rc2-placeholder: #7A6E66;  /* placeholder legível: 4.53:1 vs branco */
+  --color-orange-text:     #C94400;  /* orange para texto em fundo claro: 4.84:1 vs areia */
 
   /* Surface Scale — contraste tonal progressivo */
   --color-surface-0: #F5F0E8;  /* Base page — Areia pura */
@@ -23,7 +25,7 @@
 
   /* Text Contrast Scale — tokens semânticos para tipografia secundária */
   --color-text-secondary: #6B5E52;  /* Secondary text — 60% contrast, legível */
-  --color-text-tertiary:  #8B7D77;  /* Tertiary text — 50% contrast, suportivo */
+  --color-text-tertiary:  #6B5E52;  /* Tertiary text — 5.37:1 vs sand ✓ */
 
   /* shadcn semantic tokens mapeados para RC2 */
   --color-background:         var(--background);
@@ -105,7 +107,7 @@
 
   /* Text Contrast Scale — tokens semânticos para tipografia secundária */
   --text-secondary: #6B5E52;     /* Secondary text — 60% contrast, legível */
-  --text-tertiary:  #8B7D77;     /* Tertiary text — 50% contrast, suportivo */
+  --text-tertiary:  #6B5E52;     /* Tertiary text — 5.37:1 vs sand ✓ */
 
   /* Radius base — recalibrado para contemporâneo (era 0.375rem/3px) */
   --radius: 0.5rem;
@@ -165,6 +167,13 @@
     font-weight: 500;
     color: #1E1610;
   }
+
+  /* WCAG: accessible placeholder color (4.53:1 vs white) */
+  input::placeholder,
+  textarea::placeholder,
+  select::placeholder {
+    color: #7A6E66;
+  }
 }
 
 /* ────────────────────────────────────────────────
@@ -178,7 +187,7 @@
     text-transform: uppercase;
     letter-spacing: 0.10em;
     font-size: 0.75rem;
-    color: #FF5F1F;
+    color: #C94400;  /* 4.84:1 vs sand — dark sections override via text-rc2-orange */
   }
 
   /* Display — impacto máximo */
@@ -234,7 +243,11 @@
   }
 
   .rc2-action-link {
-    @apply inline-flex items-center gap-1.5 text-sm font-semibold text-rc2-orange transition-all duration-200 hover:gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rc2-orange focus-visible:ring-offset-2;
+    @apply inline-flex items-center gap-1.5 text-sm font-semibold
+           text-[#C94400]
+           transition-all duration-200 hover:gap-3
+           focus-visible:outline-none focus-visible:ring-2
+           focus-visible:ring-rc2-orange focus-visible:ring-offset-2;
   }
 
   /* Focus ring — aplicado a links e botões fora do shadcn */
