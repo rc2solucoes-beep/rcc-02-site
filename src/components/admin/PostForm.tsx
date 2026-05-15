@@ -20,7 +20,7 @@ function FieldError({ errors, field }: { errors?: Record<string, string[]>; fiel
   return <p className="mt-1 text-xs text-red-600">{msgs[0]}</p>;
 }
 
-const inputBase = "w-full border border-border bg-rc2-sand px-3 py-2.5 text-sm text-rc2-ebony placeholder:text-rc2-ebony/40 outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors";
+const inputBase = "w-full border border-border bg-rc2-sand px-3 py-2.5 text-sm text-rc2-ebony placeholder:text-rc2-placeholder outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors";
 
 export function PostForm({ post, action }: PostFormProps) {
   const [state, formAction, pending] = useActionState(action, initialState);

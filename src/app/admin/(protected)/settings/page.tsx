@@ -73,7 +73,7 @@ async function saveSettings(formData: FormData) {
 }
 
 const inputBase =
-  "w-full border border-border bg-rc2-sand px-3 py-2.5 text-sm text-rc2-ebony placeholder:text-rc2-ebony/40 outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors rounded";
+  "w-full border border-border bg-rc2-sand px-3 py-2.5 text-sm text-rc2-ebony placeholder:text-rc2-placeholder outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors rounded";
 
 const sectionLabel =
   "text-xs font-semibold text-rc2-ebony/50 uppercase tracking-widest pb-3 border-b border-border";

@@ -10,7 +10,7 @@ interface FaqTabProps {
 }
 
 const inputBase =
-  "w-full border border-border bg-rc2-sand px-3 py-2.5 text-sm text-rc2-ebony placeholder:text-rc2-ebony/40 outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors rounded";
+  "w-full border border-border bg-rc2-sand px-3 py-2.5 text-sm text-rc2-ebony placeholder:text-rc2-placeholder outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors rounded";
 
 export function FaqTab({ faqItems, onChange }: FaqTabProps) {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(

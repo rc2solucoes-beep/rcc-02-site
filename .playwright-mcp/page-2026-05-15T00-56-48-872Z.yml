@@ -1,0 +1,69 @@
+- generic [active] [ref=e1]:
+  - link "Pular para o conteúdo principal" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - link "RC2 Soluções" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "RC2 Soluções" [ref=e7]
+      - button "Abrir menu" [ref=e8]:
+        - img [ref=e9]
+  - main [ref=e10]:
+    - article [ref=e11]
+  - contentinfo [ref=e35]:
+    - generic [ref=e37]:
+      - generic [ref=e38]:
+        - generic [ref=e39]:
+          - link "RC2 Soluções" [ref=e40] [cursor=pointer]:
+            - /url: /
+            - img "RC2 Soluções" [ref=e41]
+          - paragraph [ref=e42]: Consultoria especializada em IA, automações e operações digitais para pequenas e médias empresas.
+        - generic [ref=e43]:
+          - heading "Empresa" [level=3] [ref=e44]
+          - list [ref=e45]:
+            - listitem [ref=e46]:
+              - link "Sobre" [ref=e47] [cursor=pointer]:
+                - /url: /sobre
+            - listitem [ref=e48]:
+              - link "Blog" [ref=e49] [cursor=pointer]:
+                - /url: /blog
+            - listitem [ref=e50]:
+              - link "Contato" [ref=e51] [cursor=pointer]:
+                - /url: /contato
+        - generic [ref=e52]:
+          - heading "Serviços" [level=3] [ref=e53]
+          - list [ref=e54]:
+            - listitem [ref=e55]:
+              - link "Automações com IA" [ref=e56] [cursor=pointer]:
+                - /url: /servicos/automacoes-com-ia
+            - listitem [ref=e57]:
+              - link "Agentes de IA Internos" [ref=e58] [cursor=pointer]:
+                - /url: /servicos/agentes-de-ia
+            - listitem [ref=e59]:
+              - link "Integrações e n8n" [ref=e60] [cursor=pointer]:
+                - /url: /servicos/automacao-de-processos
+            - listitem [ref=e61]:
+              - link "E-commerce" [ref=e62] [cursor=pointer]:
+                - /url: /servicos/e-commerce
+            - listitem [ref=e63]:
+              - link "Sites Inteligentes" [ref=e64] [cursor=pointer]:
+                - /url: /servicos/sites-e-landing-pages
+        - generic [ref=e65]:
+          - heading "Contato" [level=3] [ref=e66]
+          - list [ref=e67]:
+            - listitem [ref=e68]:
+              - link "WhatsApp" [ref=e69] [cursor=pointer]:
+                - /url: https://wa.me/5511988028550
+            - listitem [ref=e70]:
+              - link "contato@rc2solucoes.com.br" [ref=e71] [cursor=pointer]:
+                - /url: mailto:contato@rc2solucoes.com.br
+      - generic [ref=e72]:
+        - paragraph [ref=e73]: © 2026 RC2 Soluções. Todos os direitos reservados.
+        - generic [ref=e74]:
+          - link "Política de Privacidade" [ref=e75] [cursor=pointer]:
+            - /url: /privacidade
+          - link "Termos de Uso" [ref=e76] [cursor=pointer]:
+            - /url: /termos
+  - button "Open Next.js Dev Tools" [ref=e82] [cursor=pointer]:
+    - img [ref=e83]
+  - alert [ref=e86]

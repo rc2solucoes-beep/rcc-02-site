@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { Upload, Loader2, X } from "lucide-react";
 
 const inputBase =
-  "w-full border border-border bg-rc2-sand px-3 py-2.5 text-sm text-rc2-ebony placeholder:text-rc2-ebony/40 outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors rounded";
+  "w-full border border-border bg-rc2-sand px-3 py-2.5 text-sm text-rc2-ebony placeholder:text-rc2-placeholder outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors rounded";
 
 interface OgImageSettingProps {
   defaultValue?: string;
