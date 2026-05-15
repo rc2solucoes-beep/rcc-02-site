@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 import Script from "next/script";
 import { getOrgSettings, getOrganizationSchema, getLocalBusinessSchema } from "@/lib/schema";
+import { SITE_NAME, BASE_URL as SITE_BASE_URL } from "@/lib/siteMetadata";
 import "./globals.css";
 
 const barlow = Barlow({
@@ -19,7 +20,7 @@ const barlowCondensed = Barlow_Condensed({
   display: "swap",
 });
 
-const BASE_URL = "https://rc2solucoes.com.br";
+const BASE_URL = SITE_BASE_URL;
 
 export const viewport: Viewport = {
   themeColor: "#F5F0E8",
@@ -27,54 +28,56 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export const metadata: Metadata = {
-  metadataBase: new URL(BASE_URL),
-  title: {
-    default: "RC2 Soluções — IA, Automações e Operações Digitais",
-    template: "%s — RC2 Soluções",
-  },
-  description:
-    "Consultoria especializada em IA, automações e operações digitais para pequenas e médias empresas. Automatize atendimento, integre sistemas e escale sua operação.",
-  keywords: ["IA", "automação", "n8n", "agentes de IA", "e-commerce", "PME", "consultoria digital"],
-  authors: [{ name: "RC2 Soluções", url: BASE_URL }],
-  creator: "RC2 Soluções",
-  openGraph: {
-    type: "website",
-    locale: "pt_BR",
-    url: BASE_URL,
-    siteName: "RC2 Soluções",
-    title: "RC2 Soluções — IA, Automações e Operações Digitais",
+export async function generateMetadata(): Promise<Metadata> {
+  // og_image_url vem do banco — admin pode atualizar sem re-deploy
+  let ogImageUrl = "/og-image.png";
+  try {
+    const settings = await getOrgSettings();
+    if (settings.og_image_url) ogImageUrl = settings.og_image_url;
+  } catch { /* mantém fallback estático */ }
+
+  return {
+    metadataBase: new URL(BASE_URL),
+    title: {
+      default: `${SITE_NAME} — IA, Automações e Operações Digitais`,
+      template: `%s — ${SITE_NAME}`,
+    },
     description:
-      "Consultoria especializada em IA, automações e operações digitais para PMEs. Diagnóstico gratuito.",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "RC2 Soluções — IA e Automações para PMEs",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "RC2 Soluções — IA, Automações e Operações Digitais",
-    description: "Consultoria em IA, automações e operações digitais para PMEs.",
-    images: ["/og-image.png"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+      "Consultoria especializada em IA, automações e operações digitais para pequenas e médias empresas. Automatize atendimento, integre sistemas e escale sua operação.",
+    keywords: ["IA", "automação", "n8n", "agentes de IA", "e-commerce", "PME", "consultoria digital"],
+    authors: [{ name: SITE_NAME, url: BASE_URL }],
+    creator: SITE_NAME,
+    openGraph: {
+      type: "website",
+      locale: "pt_BR",
+      url: BASE_URL,
+      siteName: SITE_NAME,
+      title: `${SITE_NAME} — IA, Automações e Operações Digitais`,
+      description:
+        "Consultoria especializada em IA, automações e operações digitais para PMEs. Diagnóstico gratuito.",
+      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: `${SITE_NAME} — IA e Automações para PMEs` }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${SITE_NAME} — IA, Automações e Operações Digitais`,
+      description: "Consultoria em IA, automações e operações digitais para PMEs.",
+      images: [ogImageUrl],
+    },
+    robots: {
       index: true,
       follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
-  alternates: {
-    canonical: BASE_URL,
-  },
-};
+    alternates: {
+      canonical: BASE_URL,
+    },
+  };
+}
 
 const schemaWebSite = {
   "@context": "https://schema.org",

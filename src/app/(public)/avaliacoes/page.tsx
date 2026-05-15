@@ -1,9 +1,9 @@
+import type { Metadata } from "next";
 import { GoogleReviews } from "@/components/GoogleReviews";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
+import { buildOg, BASE_URL } from "@/lib/siteMetadata";
 import type { WebPageInfo } from "@/lib/types/schema";
-
-const BASE_URL = "https://rc2solucoes.com.br";
 
 const pageInfo: WebPageInfo = {
   title: "Avaliações e Cases — RC2 Soluções",
@@ -12,16 +12,19 @@ const pageInfo: WebPageInfo = {
   keywords: "avaliações, cases de sucesso, depoimentos, clientes satisfeitos, resultados, IA, automação",
 };
 
-export const metadata = {
-  title: pageInfo.title,
-  description: pageInfo.description,
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getOrgSettings();
+  return {
     title: pageInfo.title,
     description: pageInfo.description,
-    url: pageInfo.url,
-    type: "website",
-  },
-};
+    openGraph: buildOg({
+      title: pageInfo.title,
+      description: pageInfo.description,
+      url: pageInfo.url,
+      imageUrl: settings.og_image_url,
+    }),
+  };
+}
 
 export default async function AvaliacoesPage() {
   const settings = await getOrgSettings();

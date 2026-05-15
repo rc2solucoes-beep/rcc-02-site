@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildOg } from "@/lib/siteMetadata";
 import { ContactForm } from "@/components/marketing/ContactForm";
 import { CTABlock } from "@/components/marketing/CTABlock";
 import { SectionLabel } from "@/components/ui/SectionLabel";
@@ -6,13 +7,21 @@ import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
 const BASE_URL = "https://rc2solucoes.com.br";
 
-export const metadata: Metadata = {
-  title: "Contato — Solicite um Diagnóstico",
-  description:
-    "Preencha o formulário e receba um diagnóstico gratuito de oportunidades de IA e automação para sua empresa.",
-  alternates: { canonical: "https://rc2solucoes.com.br/contato" },
-  openGraph: { url: "https://rc2solucoes.com.br/contato" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getOrgSettings();
+  return {
+    title: "Contato — Solicite um Diagnóstico",
+    description:
+      "Preencha o formulário e receba um diagnóstico gratuito de oportunidades de IA e automação para sua empresa.",
+    alternates: { canonical: "https://rc2solucoes.com.br/contato" },
+    openGraph: buildOg({
+      url: "https://rc2solucoes.com.br/contato",
+      title: "Contato — Solicite um Diagnóstico | RC2 Soluções",
+      description: "Preencha o formulário e receba um diagnóstico gratuito de oportunidades de IA e automação para sua empresa.",
+      imageUrl: settings.og_image_url,
+    }),
+  };
+}
 
 export default async function ContatoPage() {
   let schemaWebPage;

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildOg } from "@/lib/siteMetadata";
 import Link from "next/link";
 import Image from "next/image";
 import { createPublicClient } from "@/lib/supabase/server";
@@ -9,16 +10,20 @@ import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
 const BASE_URL = "https://rc2solucoes.com.br";
 
-export const metadata: Metadata = {
-  title: "Blog",
-  description: "Conteúdo sobre automação, IA e operações digitais para pequenas e médias empresas.",
-  alternates: { canonical: "https://rc2solucoes.com.br/blog" },
-  openGraph: {
-    url: "https://rc2solucoes.com.br/blog",
-    title: "Blog — RC2 Soluções",
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getOrgSettings();
+  return {
+    title: "Blog",
     description: "Conteúdo sobre automação, IA e operações digitais para pequenas e médias empresas.",
-  },
-};
+    alternates: { canonical: "https://rc2solucoes.com.br/blog" },
+    openGraph: buildOg({
+      url: "https://rc2solucoes.com.br/blog",
+      title: "Blog — RC2 Soluções",
+      description: "Conteúdo sobre automação, IA e operações digitais para pequenas e médias empresas.",
+      imageUrl: settings.og_image_url,
+    }),
+  };
+}
 
 export const revalidate = 60;
 

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildOg } from "@/lib/siteMetadata";
 import { PageHero } from "@/components/marketing/PageHero";
 import { CTABlock } from "@/components/marketing/CTABlock";
 import { SectionLabel } from "@/components/ui/SectionLabel";
@@ -6,13 +7,21 @@ import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
 const BASE_URL = "https://rc2solucoes.com.br";
 
-export const metadata: Metadata = {
-  title: "Soluções com IA",
-  description:
-    "Descubra como a IA pode ajudar sua empresa na prática: atendimento, vendas, operação e integração com sistemas. RC2 Soluções.",
-  alternates: { canonical: "https://rc2solucoes.com.br/solucoes-com-ia" },
-  openGraph: { url: "https://rc2solucoes.com.br/solucoes-com-ia" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getOrgSettings();
+  return {
+    title: "Soluções com IA",
+    description:
+      "Descubra como a IA pode ajudar sua empresa na prática: atendimento, vendas, operação e integração com sistemas. RC2 Soluções.",
+    alternates: { canonical: "https://rc2solucoes.com.br/solucoes-com-ia" },
+    openGraph: buildOg({
+      url: "https://rc2solucoes.com.br/solucoes-com-ia",
+      title: "Soluções com IA — RC2 Soluções",
+      description: "Descubra como a IA pode ajudar sua empresa na prática: atendimento, vendas, operação e integração com sistemas. RC2 Soluções.",
+      imageUrl: settings.og_image_url,
+    }),
+  };
+}
 
 const blocks = [
   {

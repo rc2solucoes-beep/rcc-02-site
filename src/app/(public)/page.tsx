@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Check, ArrowRight } from "lucide-react";
+import { buildOg } from "@/lib/siteMetadata";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ServiceCard } from "@/components/marketing/ServiceCard";
 import { CTABlock } from "@/components/marketing/CTABlock";
@@ -11,17 +12,21 @@ import { services } from "@/lib/content/services";
 import { cn } from "@/lib/utils";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
-export const metadata: Metadata = {
-  title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
-  description:
-    "Consultoria especializada em IA, automações e operações digitais para pequenas e médias empresas. Automatize atendimento, integre sistemas e escale sua operação.",
-  alternates: { canonical: "https://rc2solucoes.com.br" },
-  openGraph: {
-    url: "https://rc2solucoes.com.br",
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getOrgSettings();
+  return {
     title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
-    description: "Consultoria especializada em IA, automações e operações digitais para PMEs. Diagnóstico gratuito.",
-  },
-};
+    description:
+      "Consultoria especializada em IA, automações e operações digitais para pequenas e médias empresas. Automatize atendimento, integre sistemas e escale sua operação.",
+    alternates: { canonical: "https://rc2solucoes.com.br" },
+    openGraph: buildOg({
+      url: "https://rc2solucoes.com.br",
+      title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
+      description: "Consultoria especializada em IA, automações e operações digitais para PMEs. Diagnóstico gratuito.",
+      imageUrl: settings.og_image_url,
+    }),
+  };
+}
 
 const forWhomItems = [
   "Muitos contatos no WhatsApp e pouca conversão em vendas.",

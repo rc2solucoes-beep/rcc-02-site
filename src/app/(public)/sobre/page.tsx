@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildOg } from "@/lib/siteMetadata";
 import { PageHero } from "@/components/marketing/PageHero";
 import { CTABlock } from "@/components/marketing/CTABlock";
 import { SectionLabel } from "@/components/ui/SectionLabel";
@@ -7,13 +8,21 @@ import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
 const BASE_URL = "https://rc2solucoes.com.br";
 
-export const metadata: Metadata = {
-  title: "Sobre a RC2",
-  description:
-    "Fundada por Robson Azevedo, com mais de 20 anos de experiência em TI, e-commerce e transformação digital. Conheça a RC2 Soluções.",
-  alternates: { canonical: "https://rc2solucoes.com.br/sobre" },
-  openGraph: { url: "https://rc2solucoes.com.br/sobre" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getOrgSettings();
+  return {
+    title: "Sobre a RC2",
+    description:
+      "Fundada por Robson Azevedo, com mais de 20 anos de experiência em TI, e-commerce e transformação digital. Conheça a RC2 Soluções.",
+    alternates: { canonical: "https://rc2solucoes.com.br/sobre" },
+    openGraph: buildOg({
+      url: "https://rc2solucoes.com.br/sobre",
+      title: "Sobre a RC2 Soluções — IA, Automações e Operações Digitais",
+      description: "Fundada por Robson Azevedo, com mais de 20 anos de experiência em TI, e-commerce e transformação digital. Conheça a RC2 Soluções.",
+      imageUrl: settings.og_image_url,
+    }),
+  };
+}
 
 const steps: Step[] = [
   {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { buildOg } from "@/lib/siteMetadata";
 import { Check, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { services, getServiceBySlug } from "@/lib/content/services";
@@ -24,14 +25,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const service = getServiceBySlug(slug);
   if (!service) return {};
+  const settings = await getOrgSettings();
   return {
     title: service.title,
     description: service.summary,
-    openGraph: {
+    openGraph: buildOg({
       title: service.title,
       description: service.summary,
       url: `${BASE_URL}/servicos/${slug}`,
-    },
+      imageUrl: settings.og_image_url,
+    }),
     alternates: { canonical: `${BASE_URL}/servicos/${slug}` },
   };
 }

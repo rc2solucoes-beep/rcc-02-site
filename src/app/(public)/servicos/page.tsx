@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildOg } from "@/lib/siteMetadata";
 import { Check } from "lucide-react";
 import { PageHero } from "@/components/marketing/PageHero";
 import { CTABlock } from "@/components/marketing/CTABlock";
@@ -10,13 +11,21 @@ import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
 const BASE_URL = "https://rc2solucoes.com.br";
 
-export const metadata: Metadata = {
-  title: "Serviços",
-  description:
-    "Automações com IA, agentes inteligentes, integrações com n8n, e-commerce e sites para PMEs. Conheça as soluções da RC2 Soluções.",
-  alternates: { canonical: "https://rc2solucoes.com.br/servicos" },
-  openGraph: { url: "https://rc2solucoes.com.br/servicos" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getOrgSettings();
+  return {
+    title: "Serviços",
+    description:
+      "Automações com IA, agentes inteligentes, integrações com n8n, e-commerce e sites para PMEs. Conheça as soluções da RC2 Soluções.",
+    alternates: { canonical: "https://rc2solucoes.com.br/servicos" },
+    openGraph: buildOg({
+      url: "https://rc2solucoes.com.br/servicos",
+      title: "Serviços — RC2 Soluções",
+      description: "Automações com IA, agentes inteligentes, integrações com n8n, e-commerce e sites para PMEs. Conheça as soluções da RC2 Soluções.",
+      imageUrl: settings.og_image_url,
+    }),
+  };
+}
 
 export default async function ServicosPage() {
   let schemaWebPage;
