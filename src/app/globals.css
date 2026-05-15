@@ -171,7 +171,7 @@
   /* WCAG: accessible placeholder color (4.53:1 vs white) */
   input::placeholder,
   textarea::placeholder {
-    color: var(--color-rc2-placeholder);  /* #7A6E66 — 4.53:1 vs white */
+    color: #7A6E66;  /* var(--color-rc2-placeholder) */
   }
 }
 
@@ -186,7 +186,7 @@
     text-transform: uppercase;
     letter-spacing: 0.10em;
     font-size: 0.75rem;
-    color: var(--color-rc2-orange-text);  /* #C94400 — 4.84:1 vs sand; dark sections override via text-rc2-orange */
+    color: #C94400;  /* var(--color-rc2-orange-text) — 4.84:1 vs sand; dark sections override via text-rc2-orange */
   }
 
   /* Display — impacto máximo */
@@ -319,7 +319,7 @@
     font-style: italic;
   }
   .prose-rc2 a {
-    color: var(--color-rc2-orange-text);  /* #C94400 — 4.84:1 vs sand ✓ */
+    color: #C94400;  /* var(--color-rc2-orange-text) — 4.84:1 vs sand ✓ */
     text-decoration: underline;
     text-underline-offset: 3px;
   }
