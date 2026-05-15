@@ -58,3 +58,9 @@ Thumbs.db
 .mcp.json
 .claude/
 .env*.local
+
+# Playwright MCP artefacts
+.playwright-mcp/
+
+# Contrast audit HTML (brainstorming artefact)
+contrast-audit.html
