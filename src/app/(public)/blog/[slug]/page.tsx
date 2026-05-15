@@ -5,13 +5,22 @@ import { notFound } from "next/navigation";
 import DOMPurify from "isomorphic-dompurify";
 import { createPublicClient } from "@/lib/supabase/server";
 import type { Post, FaqItem } from "@/lib/types/post";
-import { ExternalLink, Share2, ChevronDown } from "lucide-react";
-import { TableOfContents } from "@/components/blog/TableOfContents";
+import { ExternalLink, ChevronDown } from "lucide-react";
+import { TableOfContents, type TocHeading } from "@/components/blog/TableOfContents";
 import { BackToTopButton } from "@/components/blog/BackToTopButton";
 
 const BASE_URL = "https://rc2solucoes.com.br";
 
 export const revalidate = 60;
+
+// Extrai headings h2 do HTML sanitizado para alimentar o TOC no servidor
+function extractHeadings(html: string): TocHeading[] {
+  const matches = [...html.matchAll(/<h2[^>]+id="([^"]+)"[^>]*>([\s\S]*?)<\/h2>/gi)];
+  return matches.map((m) => ({
+    id: m[1],
+    text: m[2].replace(/<[^>]*>/g, "").trim(),
+  }));
+}
 
 // Helper function to add IDs to headings using regex (server-safe)
 function sanitizeAndAddIds(html: string): string {
@@ -132,10 +141,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   // Sanitize content and add IDs to headings
   const sanitizedContent = sanitizeAndAddIds(post.content);
 
-  // Calculate if article is long enough for TOC and back-to-top
-  // Count words as proxy for reading length
-  const wordCount = post.content.split(/\s+/).length;
-  const showNavigation = wordCount > 800;
+  // Headings extraídos no servidor — fonte de verdade para o TOC
+  const tocHeadings = extractHeadings(sanitizedContent);
+  const showNavigation = tocHeadings.length > 0;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -259,50 +267,23 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <div className="flex flex-wrap items-center gap-4 text-sm text-rc2-sand/70">
               <time>{formatDate(post.published_at)}</time>
               {post.updated_at && post.updated_at !== post.published_at && (
-                <span className="flex items-center gap-1">
-                  Atualizado em {formatDate(post.updated_at)}
-                </span>
+                <span>Atualizado em {formatDate(post.updated_at)}</span>
               )}
               {post.reading_time_minutes && (
-                <span className="flex items-center gap-1">
-                  ⏱️ {post.reading_time_minutes} min de leitura
-                </span>
+                <span>⏱️ {post.reading_time_minutes} min de leitura</span>
               )}
             </div>
           </div>
         </header>
 
-        {/* Imagem de capa */}
-        {post.cover_url && (
-          <div className="bg-rc2-ebony/5 border-b border-border">
-            <figure className="container mx-auto max-w-4xl px-4 py-12 relative aspect-video max-h-[500px] overflow-hidden rounded">
-              <Image
-                src={post.cover_url}
-                alt={post.cover_url_alt || post.title}
-                fill
-                priority
-                className="object-cover"
-                sizes="(max-width: 896px) 100vw, 896px"
-              />
-              {post.cover_url_caption && (
-                <figcaption className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs px-4 py-2">
-                  {post.cover_url_caption}
-                </figcaption>
-              )}
-            </figure>
-          </div>
-        )}
-
         {/* Conteúdo + Autor na Sidebar */}
         <div className="container mx-auto max-w-6xl px-4 py-12">
           <div className={`grid gap-8 ${showNavigation ? "grid-cols-1 lg:grid-cols-4" : "grid-cols-1 lg:grid-cols-3"}`}>
-            {/* Table of Contents Desktop (1/4 em desktop, apenas se artigo é longo) */}
-            {showNavigation && <div className="hidden lg:block"><TableOfContents contentHtml={sanitizedContent} isMobile={false} /></div>}
+            {/* Table of Contents — instância única, gerencia mobile/desktop internamente */}
+            {showNavigation && <TableOfContents headings={tocHeadings} />}
 
-            {/* Conteúdo principal (2/3 em layouts sem TOC, 2/4 em layouts com TOC) */}
+            {/* Conteúdo principal */}
             <div className={showNavigation ? "lg:col-span-2" : "lg:col-span-2"}>
-              {/* Table of Contents Mobile (collapsible, apenas se artigo é longo) */}
-              {showNavigation && <div className="lg:hidden"><TableOfContents contentHtml={sanitizedContent} isMobile={true} /></div>}
               <div
                 className="prose prose-rc2 max-w-none"
                 dangerouslySetInnerHTML={{ __html: sanitizedContent }}
