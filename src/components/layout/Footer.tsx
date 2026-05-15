@@ -97,7 +97,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-12 pt-6 border-t border-rc2-sand/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="rc2-caption text-rc2-sand/90 text-center sm:text-left">
+          <p className="text-xs font-normal text-rc2-sand text-center sm:text-left">
             © 2026 RC2 Soluções. Todos os direitos reservados.
           </p>
           <div className="flex gap-6">
@@ -105,7 +105,7 @@ export function Footer() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="ui-focus-ring rounded-sm rc2-caption text-rc2-sand/90 hover:text-rc2-sand transition-colors"
+                className="ui-focus-ring rounded-sm text-xs font-normal text-rc2-sand hover:underline transition-colors"
               >
                 {link.label}
               </Link>
