@@ -18,14 +18,26 @@ type TrackedLinkProps = LinkProps &
     onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
   };
 
-function queryToString(query: NonNullable<Extract<LinkProps["href"], object>["query"]>) {
+type LinkHrefObject = Exclude<LinkProps["href"], string>;
+type LinkQuery = LinkHrefObject["query"];
+
+function normalizeSearch(search: string) {
+  if (!search) return "";
+  return search.startsWith("?") ? search : `?${search}`;
+}
+
+function queryToString(query: LinkQuery) {
+  if (!query) return "";
+  if (typeof query === "string") return normalizeSearch(query);
+
   const searchParams = new URLSearchParams();
 
   for (const [key, value] of Object.entries(query)) {
-    if (value === undefined) continue;
+    if (value === undefined || value === null) continue;
 
     if (Array.isArray(value)) {
       for (const item of value) {
+        if (item === undefined || item === null) continue;
         searchParams.append(key, String(item));
       }
     } else {
@@ -37,14 +49,31 @@ function queryToString(query: NonNullable<Extract<LinkProps["href"], object>["qu
   return queryString ? `?${queryString}` : "";
 }
 
+function hostToString(href: LinkHrefObject) {
+  if (href.host) return href.host;
+  if (!href.hostname) return "";
+
+  const auth = href.auth ? `${href.auth}@` : "";
+  const port = href.port ? `:${href.port}` : "";
+
+  return `${auth}${href.hostname}${port}`;
+}
+
 function hrefToString(href: LinkProps["href"]) {
   if (typeof href === "string") return href;
 
+  const protocol = href.protocol
+    ? href.protocol.endsWith(":")
+      ? href.protocol
+      : `${href.protocol}:`
+    : "";
+  const host = hostToString(href);
+  const slashes = host ? "//" : "";
   const pathname = href.pathname ?? "";
-  const query = href.query ? queryToString(href.query) : "";
+  const search = href.search ? normalizeSearch(href.search) : queryToString(href.query);
   const hash = href.hash ? `#${href.hash.replace(/^#/, "")}` : "";
 
-  return `${pathname}${query}${hash}`;
+  return `${protocol}${slashes}${host}${pathname}${search}${hash}`;
 }
 
 export function TrackedLink({
@@ -60,6 +89,9 @@ export function TrackedLink({
     <Link
       href={href}
       onClick={(event) => {
+        onClick?.(event);
+        if (event.defaultPrevented) return;
+
         if (tracking.kind === "whatsapp") {
           trackWhatsappClick({
             location: tracking.location,
@@ -73,8 +105,6 @@ export function TrackedLink({
             destination,
           });
         }
-
-        onClick?.(event);
       }}
       {...props}
     >
