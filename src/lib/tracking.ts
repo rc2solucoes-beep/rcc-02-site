@@ -2,6 +2,17 @@
 
 export type DataLayerValue = string | number | boolean | null | undefined;
 export type DataLayerPayload = Record<string, DataLayerValue>;
+export type CompanySegmentCategory =
+  | "varejo"
+  | "saude"
+  | "logistica"
+  | "servicos"
+  | "educacao"
+  | "industria"
+  | "tecnologia"
+  | "financeiro"
+  | "alimentacao"
+  | "outro";
 
 export type LeadEventName =
   | "generate_lead_start"
@@ -39,7 +50,7 @@ export interface LeadEventPayload extends DataLayerPayload {
   lead_source?: "website";
   solution_interest?: string;
   company_size?: string;
-  company_segment?: string;
+  company_segment?: CompanySegmentCategory;
 }
 
 declare global {
