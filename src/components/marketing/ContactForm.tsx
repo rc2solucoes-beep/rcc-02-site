@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Turnstile } from "@marsidev/react-turnstile";
-import { contactStep1Schema, contactStep2Schema, contactSchema, type ContactStep1Data, type ContactStep2Data, type ContactFormData } from "@/lib/validations/contact";
+import { contactSchema, type ContactFormData } from "@/lib/validations/contact";
 import { cn } from "@/lib/utils";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { trackLeadEvent, trackWhatsappClick } from "@/lib/tracking";
@@ -53,6 +53,68 @@ const inputBase =
 const TURNSTILE_SITE_KEY =
   process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "1x00000000000000000000AA";
 
+type CompanySegmentCategory =
+  | "varejo"
+  | "saude"
+  | "logistica"
+  | "servicos"
+  | "educacao"
+  | "industria"
+  | "tecnologia"
+  | "financeiro"
+  | "alimentacao"
+  | "outro";
+
+function categorizeCompanySegment(segment: string): CompanySegmentCategory {
+  const normalizedSegment = segment
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+
+  if (!normalizedSegment.trim()) return "outro";
+
+  const categoryKeywords: Array<{
+    category: CompanySegmentCategory;
+    keywords: string[];
+  }> = [
+    { category: "varejo", keywords: ["varejo", "loja", "comercio", "retail"] },
+    { category: "saude", keywords: ["saude", "clinica", "medico", "hospital"] },
+    { category: "logistica", keywords: ["logistica", "transporte", "frete", "entrega"] },
+    { category: "servicos", keywords: ["servico", "consultoria", "agencia", "prestador"] },
+    { category: "educacao", keywords: ["educacao", "escola", "curso", "ensino"] },
+    { category: "industria", keywords: ["industria", "fabrica", "manufatura", "producao"] },
+    { category: "tecnologia", keywords: ["tecnologia", "software", "ti", "startup"] },
+    { category: "financeiro", keywords: ["financeiro", "financas", "contabil", "banco"] },
+    { category: "alimentacao", keywords: ["alimentacao", "restaurante", "comida", "food"] },
+  ];
+
+  return (
+    categoryKeywords.find(({ keywords }) =>
+      keywords.some((keyword) => normalizedSegment.includes(keyword))
+    )?.category ?? "outro"
+  );
+}
+
+function ProgressBar({ step }: { step: 1 | 2 }) {
+  return (
+    <div className="mb-8">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <div className={cn("text-sm font-semibold", step === 1 ? "text-rc2-orange" : "text-rc2-ebony/40")}>
+            Etapa 1
+          </div>
+          <div className={cn("w-24 h-1 rounded-full", step >= 1 ? "bg-rc2-orange" : "bg-rc2-ebony/10")} />
+          <div className={cn("text-sm font-semibold", step === 2 ? "text-rc2-orange" : "text-rc2-ebony/40")}>
+            Etapa 2
+          </div>
+        </div>
+        <span className="text-xs text-rc2-ebony/60">~1 min</span>
+      </div>
+      <p className="text-xs text-rc2-ebony/70">{step === 1 ? "Informações iniciais" : "Detalhes da empresa"}</p>
+    </div>
+  );
+}
+
 export function ContactForm() {
   const [step, setStep] = useState<1 | 2>(1);
   const [submitted, setSubmitted] = useState(false);
@@ -60,13 +122,11 @@ export function ContactForm() {
   const [serverError, setServerError] = useState<string | null>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState<string | null>(null);
-  const [step1Data, setStep1Data] = useState<Partial<ContactStep1Data>>({});
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    watch,
     trigger,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -76,14 +136,6 @@ export function ContactForm() {
   const handleStep1Next = async () => {
     const isValid = await trigger(["name", "email", "whatsapp", "message", "website"]);
     if (isValid) {
-      const formData = watch();
-      setStep1Data({
-        name: formData.name,
-        email: formData.email,
-        whatsapp: formData.whatsapp,
-        message: formData.message,
-        website: formData.website,
-      });
       trackLeadEvent(
         "generate_lead_step_1",
         { form_name: "diagnostico_gratuito" }
@@ -123,37 +175,20 @@ export function ContactForm() {
         return;
       }
 
+      const companySegmentCategory = categorizeCompanySegment(data.segment);
+
       trackLeadEvent("generate_lead_success", {
         form_name: "diagnostico_gratuito",
         lead_source: "website",
         solution_interest: data.solution,
         company_size: data.size,
-        company_segment: data.segment,
+        company_segment: companySegmentCategory,
       });
       setSubmitted(true);
     } catch {
       setServerError("Falha de conexão. Verifique sua internet e tente novamente.");
     }
   };
-
-  // Progress bar component
-  const ProgressBar = () => (
-    <div className="mb-8">
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <div className={cn("text-sm font-semibold", step === 1 ? "text-rc2-orange" : "text-rc2-ebony/40")}>
-            Etapa 1
-          </div>
-          <div className={cn("w-24 h-1 rounded-full", step >= 1 ? "bg-rc2-orange" : "bg-rc2-ebony/10")} />
-          <div className={cn("text-sm font-semibold", step === 2 ? "text-rc2-orange" : "text-rc2-ebony/40")}>
-            Etapa 2
-          </div>
-        </div>
-        <span className="text-xs text-rc2-ebony/60">~1 min</span>
-      </div>
-      <p className="text-xs text-rc2-ebony/70">{step === 1 ? "Informações iniciais" : "Detalhes da empresa"}</p>
-    </div>
-  );
 
   if (submitted) {
     return (
@@ -215,7 +250,7 @@ export function ContactForm() {
       />
 
       {/* Progress bar */}
-      <ProgressBar />
+      <ProgressBar step={step} />
 
       {/* STEP 1: Low-friction initial contact */}
       {step === 1 && (

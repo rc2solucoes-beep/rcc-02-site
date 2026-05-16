@@ -62,7 +62,7 @@ export function CTABlock({
             tracking={{
               kind: primaryHref.startsWith("https://wa.me") ? "whatsapp" : "cta",
               location: "cta_block_primary",
-              label: primaryLabel.toLowerCase().replace(/\s+/g, "_"),
+              label: "cta_block_primary",
               destination: primaryHref,
             }}
             className={cn(
@@ -81,7 +81,7 @@ export function CTABlock({
               tracking={{
                 kind: secondaryHref.startsWith("https://wa.me") ? "whatsapp" : "cta",
                 location: "cta_block_secondary",
-                label: secondaryLabel.toLowerCase().replace(/\s+/g, "_"),
+                label: "cta_block_secondary",
                 destination: secondaryHref,
               }}
               className={cn(

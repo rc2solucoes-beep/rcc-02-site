@@ -399,7 +399,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                             tracking={{
                               kind: ctaBlock.primaryButton.url.startsWith("https://wa.me") ? "whatsapp" : "cta",
                               location: "blog_post_cta_primary",
-                              label: ctaBlock.primaryButton.text.toLowerCase().replace(/\s+/g, "_"),
+                              label: "blog_post_cta_primary",
                               destination: ctaBlock.primaryButton.url,
                             }}
                             className="inline-block px-6 py-2.5 bg-rc2-orange text-white font-medium rounded hover:bg-rc2-orange/90 transition-colors"
@@ -413,7 +413,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                             tracking={{
                               kind: ctaBlock.secondaryButton.url.startsWith("https://wa.me") ? "whatsapp" : "cta",
                               location: "blog_post_cta_secondary",
-                              label: ctaBlock.secondaryButton.text.toLowerCase().replace(/\s+/g, "_"),
+                              label: "blog_post_cta_secondary",
                               destination: ctaBlock.secondaryButton.url,
                             }}
                             className="inline-block px-6 py-2.5 border border-rc2-orange-text text-rc2-orange-text font-medium rounded hover:bg-rc2-orange-text/5 transition-colors"
