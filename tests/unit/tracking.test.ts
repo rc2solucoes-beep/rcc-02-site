@@ -6,6 +6,7 @@ import {
   trackPageView,
   trackWhatsappClick,
 } from "@/lib/tracking";
+import type { PageViewPayload } from "@/lib/tracking";
 
 declare global {
   interface Window {
@@ -54,7 +55,7 @@ describe("tracking helpers", () => {
       page_location: "https://www.rc2solucoes.com.br/contato",
       page_title: "Contato",
       event: "spoofed",
-    } as any);
+    } as PageViewPayload & { event: string });
 
     expect(window.dataLayer).toEqual([
       {
