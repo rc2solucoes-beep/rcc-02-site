@@ -1,4 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { render } from "@testing-library/react";
+import { createElement } from "react";
+import { PageViewTracker } from "@/components/tracking/PageViewTracker";
 import {
   trackCtaClick,
   trackEvent,
@@ -7,6 +10,16 @@ import {
   trackWhatsappClick,
 } from "@/lib/tracking";
 import type { PageViewPayload } from "@/lib/tracking";
+
+const navigationState = vi.hoisted(() => ({
+  pathname: "/",
+  searchParams: new URLSearchParams(),
+}));
+
+vi.mock("next/navigation", () => ({
+  usePathname: () => navigationState.pathname,
+  useSearchParams: () => navigationState.searchParams,
+}));
 
 declare global {
   interface Window {
@@ -17,6 +30,9 @@ declare global {
 describe("tracking helpers", () => {
   beforeEach(() => {
     window.dataLayer = [];
+    navigationState.pathname = "/";
+    navigationState.searchParams = new URLSearchParams();
+    window.history.replaceState(null, "", "/");
   });
 
   afterEach(() => {
@@ -34,16 +50,16 @@ describe("tracking helpers", () => {
 
   it("pushes page_view payload", () => {
     trackPageView({
-      page_path: "/contato?utm_source=test",
-      page_location: "https://www.rc2solucoes.com.br/contato?utm_source=test",
+      page_path: "/contato",
+      page_location: "https://www.rc2solucoes.com.br/contato",
       page_title: "Contato",
     });
 
     expect(window.dataLayer).toEqual([
       {
         event: "page_view",
-        page_path: "/contato?utm_source=test",
-        page_location: "https://www.rc2solucoes.com.br/contato?utm_source=test",
+        page_path: "/contato",
+        page_location: "https://www.rc2solucoes.com.br/contato",
         page_title: "Contato",
       },
     ]);
@@ -63,6 +79,24 @@ describe("tracking helpers", () => {
         page_location: "https://www.rc2solucoes.com.br/contato",
         page_title: "Contato",
         event: "page_view",
+      },
+    ]);
+  });
+
+  it("sanitizes page view paths before pushing to dataLayer", () => {
+    navigationState.pathname = "/contato";
+    navigationState.searchParams = new URLSearchParams("ref=campaign&secret=value");
+    window.history.replaceState(null, "", "/contato?ref=campaign&secret=value#section");
+    document.title = "Contato";
+
+    render(createElement(PageViewTracker));
+
+    expect(window.dataLayer).toEqual([
+      {
+        event: "page_view",
+        page_path: "/contato",
+        page_location: `${window.location.origin}/contato`,
+        page_title: "Contato",
       },
     ]);
   });
@@ -107,7 +141,7 @@ describe("tracking helpers", () => {
       lead_source: "website",
       solution_interest: "Automações com IA",
       company_size: "11-50 colaboradores",
-      company_segment: "Varejo",
+      company_segment: "varejo",
     });
 
     const [event] = window.dataLayer ?? [];
@@ -117,7 +151,7 @@ describe("tracking helpers", () => {
       lead_source: "website",
       solution_interest: "Automações com IA",
       company_size: "11-50 colaboradores",
-      company_segment: "Varejo",
+      company_segment: "varejo",
     });
     expect(Object.keys(event)).not.toEqual(
       expect.arrayContaining(["name", "email", "phone", "whatsapp", "message", "ip"])

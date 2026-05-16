@@ -11,12 +11,9 @@ export function PageViewTracker() {
   useEffect(() => {
     if (!pathname) return;
 
-    const queryString = searchParams.toString();
-    const pagePath = queryString ? `${pathname}?${queryString}` : pathname;
-
     trackPageView({
-      page_path: pagePath,
-      page_location: window.location.href,
+      page_path: pathname,
+      page_location: `${window.location.origin}${pathname}`,
       page_title: document.title,
     });
   }, [pathname, searchParams]);

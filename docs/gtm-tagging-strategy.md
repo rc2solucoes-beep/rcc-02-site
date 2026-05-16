@@ -30,11 +30,13 @@ Example `page_view` payload:
 ```js
 window.dataLayer.push({
   event: "page_view",
-  page_path: "/contato?utm_source=google",
-  page_location: "https://www.rc2solucoes.com.br/contato?utm_source=google",
+  page_path: "/contato",
+  page_location: "https://www.rc2solucoes.com.br/contato",
   page_title: "Contato | RC2 Solucoes",
 });
 ```
+
+`page_path` and `page_location` are sanitized. They include only the pathname and origin plus pathname respectively, with no query string or fragment.
 
 Example lead success payload:
 
@@ -45,7 +47,7 @@ window.dataLayer.push({
   lead_source: "website",
   solution_interest: "Automacoes com IA",
   company_size: "11-50 colaboradores",
-  company_segment: "Varejo",
+  company_segment: "varejo",
 });
 ```
 
@@ -65,7 +67,7 @@ Analytics payloads must not include:
 - Turnstile token
 - Raw free text or raw form values
 
-`company_segment` is allowed because it is bucketed/categorized, not a raw company name or free-text company description. Keep `solution_interest`, `company_size`, and `company_segment` restricted to controlled form choices or normalized buckets.
+`company_segment` is allowed because it is a normalized bucket code such as `varejo`, not a raw company name, display label, or free-text company description. Keep `solution_interest`, `company_size`, and `company_segment` restricted to controlled form choices or normalized buckets.
 
 ## GTM Data Layer Variables
 
@@ -170,7 +172,7 @@ Validate event collection:
 
 - Confirm `page_view` fires on first load.
 - Confirm `page_view` fires on client-side route changes.
-- Confirm `page_view` includes updated search parameters when query strings change.
+- Confirm `page_view` does not include query strings or fragments in `page_path` or `page_location`.
 - Confirm `cta_click` fires for header, hero, footer, service grid, blog, and CTA block links.
 - Confirm `whatsapp_click` fires for WhatsApp links and WhatsApp share links.
 - Confirm `generate_lead_start` fires when the user starts the contact form.
@@ -182,7 +184,7 @@ Validate payload privacy:
 
 - Inspect every event payload in Preview mode.
 - Confirm no name, email, phone, WhatsApp number, company name, message, IP address, Turnstile token, or raw free text is present.
-- Confirm `company_segment` is a bucket/category value, not a company name.
+- Confirm `company_segment` is a normalized bucket code such as `varejo`, not display text or a company name.
 - Confirm `solution_interest` and `company_size` are controlled values.
 
 Validate destination tags:
