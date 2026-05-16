@@ -211,22 +211,24 @@ export interface WhatsappClickPayload extends DataLayerPayload {
   destination: string;
 }
 
+export type CompanySegmentCategory =
+  | "varejo"
+  | "saude"
+  | "logistica"
+  | "servicos"
+  | "educacao"
+  | "industria"
+  | "tecnologia"
+  | "financeiro"
+  | "alimentacao"
+  | "outro";
+
 export interface LeadEventPayload extends DataLayerPayload {
   form_name?: "diagnostico_gratuito";
   lead_source?: "website";
   solution_interest?: string;
   company_size?: string;
-  company_segment?:
-    | "varejo"
-    | "saude"
-    | "logistica"
-    | "servicos"
-    | "educacao"
-    | "industria"
-    | "tecnologia"
-    | "financeiro"
-    | "alimentacao"
-    | "outro";
+  company_segment?: CompanySegmentCategory;
 }
 
 declare global {
