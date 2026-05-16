@@ -48,6 +48,24 @@ describe("tracking helpers", () => {
     ]);
   });
 
+  it("prevents page_view payload from overriding the fixed event name", () => {
+    trackPageView({
+      page_path: "/contato",
+      page_location: "https://www.rc2solucoes.com.br/contato",
+      page_title: "Contato",
+      event: "spoofed",
+    } as any);
+
+    expect(window.dataLayer).toEqual([
+      {
+        page_path: "/contato",
+        page_location: "https://www.rc2solucoes.com.br/contato",
+        page_title: "Contato",
+        event: "page_view",
+      },
+    ]);
+  });
+
   it("pushes cta_click payload", () => {
     trackCtaClick({
       location: "header",

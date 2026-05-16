@@ -48,7 +48,7 @@ declare global {
   }
 }
 
-function pushDataLayer(event: DataLayerEventName, payload: DataLayerPayload = {}) {
+function pushLegacyDataLayer(event: string, payload: Record<string, unknown> = {}) {
   if (typeof window === "undefined") return;
 
   window.dataLayer = window.dataLayer ?? [];
@@ -58,22 +58,32 @@ function pushDataLayer(event: DataLayerEventName, payload: DataLayerPayload = {}
   });
 }
 
-export function trackEvent(event: string, payload: DataLayerPayload = {}) {
-  pushDataLayer(event, payload);
+function pushFixedDataLayer(event: DataLayerEventName, payload: DataLayerPayload = {}) {
+  if (typeof window === "undefined") return;
+
+  window.dataLayer = window.dataLayer ?? [];
+  window.dataLayer.push({
+    ...payload,
+    event,
+  });
+}
+
+export function trackEvent(event: string, payload: Record<string, unknown> = {}) {
+  pushLegacyDataLayer(event, payload);
 }
 
 export function trackPageView(payload: PageViewPayload) {
-  pushDataLayer("page_view", payload);
+  pushFixedDataLayer("page_view", payload);
 }
 
 export function trackCtaClick(payload: CtaClickPayload) {
-  pushDataLayer("cta_click", payload);
+  pushFixedDataLayer("cta_click", payload);
 }
 
 export function trackWhatsappClick(payload: WhatsappClickPayload) {
-  pushDataLayer("whatsapp_click", payload);
+  pushFixedDataLayer("whatsapp_click", payload);
 }
 
 export function trackLeadEvent(eventName: LeadEventName, payload: LeadEventPayload = {}) {
-  pushDataLayer(eventName, payload);
+  pushFixedDataLayer(eventName, payload);
 }
