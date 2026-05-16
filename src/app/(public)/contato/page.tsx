@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { buildOg } from "@/lib/siteMetadata";
 import { ContactForm } from "@/components/marketing/ContactForm";
 import { CTABlock } from "@/components/marketing/CTABlock";
+import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
@@ -94,14 +95,20 @@ export default async function ContatoPage() {
 
             <div className="mt-6">
               <p className="text-xs text-rc2-ebony/70 mb-2">Prefere falar diretamente?</p>
-              <a
+              <TrackedLink
                 href="https://wa.me/5511988028550"
                 target="_blank"
                 rel="noopener noreferrer"
+                tracking={{
+                  kind: "whatsapp",
+                  location: "contact_page_sidebar",
+                  label: "falar_pelo_whatsapp",
+                  destination: "https://wa.me/5511988028550",
+                }}
                 className="text-sm font-semibold text-rc2-orange underline underline-offset-4 hover:opacity-70 transition-opacity"
               >
                 Falar pelo WhatsApp →
-              </a>
+              </TrackedLink>
             </div>
           </div>
 

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { createPublicClient } from "@/lib/supabase/server";
 import { PageHero } from "@/components/marketing/PageHero";
+import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import type { Post } from "@/lib/types/post";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
@@ -94,12 +95,20 @@ export default async function BlogPage() {
               <h2 className="text-2xl font-semibold text-rc2-ebony mb-3">Conteúdo em desenvolvimento</h2>
               <p className="text-text-secondary text-lg mb-8 max-w-md mx-auto">Estamos preparando insights práticos sobre automação, IA e operações digitais. Novos artigos chegando em breve.</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/servicos" className="inline-flex items-center gap-2 px-6 h-11 bg-rc2-orange text-rc2-sand font-semibold text-sm rounded-md hover:bg-rc2-orange/90 transition-colors">
+                <TrackedLink
+                  href="/servicos"
+                  tracking={{ kind: "cta", location: "blog_empty_state", label: "explorar_servicos", destination: "/servicos" }}
+                  className="inline-flex items-center gap-2 px-6 h-11 bg-rc2-orange text-rc2-sand font-semibold text-sm rounded-md hover:bg-rc2-orange/90 transition-colors"
+                >
                   Explorar serviços
-                </Link>
-                <Link href="/contato" className="inline-flex items-center gap-2 px-6 h-11 border border-border text-rc2-ebony font-medium text-sm rounded-md hover:bg-surface-1 transition-colors">
+                </TrackedLink>
+                <TrackedLink
+                  href="/contato"
+                  tracking={{ kind: "cta", location: "blog_empty_state", label: "solicitar_diagnostico", destination: "/contato" }}
+                  className="inline-flex items-center gap-2 px-6 h-11 border border-border text-rc2-ebony font-medium text-sm rounded-md hover:bg-surface-1 transition-colors"
+                >
                   Solicitar diagnóstico
-                </Link>
+                </TrackedLink>
               </div>
             </div>
           ) : (

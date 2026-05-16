@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
+import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { services } from "@/lib/content/services";
 
 const footerLinks = {
@@ -41,12 +42,22 @@ export function Footer() {
             <ul className="space-y-2">
               {footerLinks.empresa.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="ui-focus-ring rounded-sm text-sm text-rc2-sand/88 hover:text-rc2-sand hover:underline transition-colors"
-                  >
-                    {link.label}
-                  </Link>
+                  {link.href === "/contato" ? (
+                    <TrackedLink
+                      href={link.href}
+                      tracking={{ kind: "cta", location: "footer_empresa", label: "contato", destination: link.href }}
+                      className="ui-focus-ring rounded-sm text-sm text-rc2-sand/88 hover:text-rc2-sand hover:underline transition-colors"
+                    >
+                      {link.label}
+                    </TrackedLink>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="ui-focus-ring rounded-sm text-sm text-rc2-sand/88 hover:text-rc2-sand hover:underline transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -74,14 +85,20 @@ export function Footer() {
             <h3 className="rc2-label text-rc2-orange mb-4">Contato</h3>
             <ul className="space-y-2">
               <li>
-                <a
+                <TrackedLink
                   href="https://wa.me/5511988028550"
                   target="_blank"
                   rel="noopener noreferrer"
+                  tracking={{
+                    kind: "whatsapp",
+                    location: "footer_contact",
+                    label: "whatsapp",
+                    destination: "https://wa.me/5511988028550",
+                  }}
                   className="text-sm text-rc2-sand/88 hover:text-rc2-sand transition-colors"
                 >
                   WhatsApp
-                </a>
+                </TrackedLink>
               </li>
               <li>
                 <a

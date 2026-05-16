@@ -8,6 +8,7 @@ import type { Post, FaqItem } from "@/lib/types/post";
 import { ExternalLink, ChevronDown } from "lucide-react";
 import { TableOfContents, type TocHeading } from "@/components/blog/TableOfContents";
 import { BackToTopButton } from "@/components/blog/BackToTopButton";
+import { TrackedLink } from "@/components/tracking/TrackedLink";
 
 const BASE_URL = "https://rc2solucoes.com.br";
 
@@ -176,6 +177,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const shareUrl = `${BASE_URL}/blog/${slug}`;
   const encodedTitle = encodeURIComponent(post.title);
+  const whatsappShareUrl = `https://wa.me/?text=${encodedTitle}%20${encodeURIComponent(shareUrl)}`;
 
   // Parse cta_block (pode vir como string após sanitização)
   let ctaBlock: import("@/lib/types/post").CtaBlock | null = null;
@@ -331,14 +333,20 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   >
                     <ExternalLink size={16} /> LinkedIn
                   </a>
-                  <a
-                    href={`https://wa.me/?text=${encodedTitle}%20${encodeURIComponent(shareUrl)}`}
+                  <TrackedLink
+                    href={whatsappShareUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    tracking={{
+                      kind: "whatsapp",
+                      location: "blog_post_share",
+                      label: "share_whatsapp",
+                      destination: whatsappShareUrl,
+                    }}
                     className="inline-flex items-center gap-2 px-4 py-2 bg-[#25D366] text-white text-sm font-medium rounded hover:bg-[#25D366]/90 transition-colors"
                   >
                     WhatsApp
-                  </a>
+                  </TrackedLink>
                   <a
                     href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodeURIComponent(shareUrl)}`}
                     target="_blank"
@@ -386,20 +394,32 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                       )}
                       <div className="flex flex-wrap gap-3">
                         {ctaBlock.primaryButton && (
-                          <Link
+                          <TrackedLink
                             href={ctaBlock.primaryButton.url}
+                            tracking={{
+                              kind: ctaBlock.primaryButton.url.startsWith("https://wa.me") ? "whatsapp" : "cta",
+                              location: "blog_post_cta_primary",
+                              label: ctaBlock.primaryButton.text.toLowerCase().replace(/\s+/g, "_"),
+                              destination: ctaBlock.primaryButton.url,
+                            }}
                             className="inline-block px-6 py-2.5 bg-rc2-orange text-white font-medium rounded hover:bg-rc2-orange/90 transition-colors"
                           >
                             {ctaBlock.primaryButton.text}
-                          </Link>
+                          </TrackedLink>
                         )}
                         {ctaBlock.secondaryButton && (
-                          <Link
+                          <TrackedLink
                             href={ctaBlock.secondaryButton.url}
+                            tracking={{
+                              kind: ctaBlock.secondaryButton.url.startsWith("https://wa.me") ? "whatsapp" : "cta",
+                              location: "blog_post_cta_secondary",
+                              label: ctaBlock.secondaryButton.text.toLowerCase().replace(/\s+/g, "_"),
+                              destination: ctaBlock.secondaryButton.url,
+                            }}
                             className="inline-block px-6 py-2.5 border border-rc2-orange-text text-rc2-orange-text font-medium rounded hover:bg-rc2-orange-text/5 transition-colors"
                           >
                             {ctaBlock.secondaryButton.text}
-                          </Link>
+                          </TrackedLink>
                         )}
                       </div>
                     </div>
@@ -415,12 +435,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     <p className="text-rc2-ebony/70 mb-4">
                       Fale com a RC2 Soluções e descubra como tornar sua operação mais eficiente.
                     </p>
-                    <Link
+                    <TrackedLink
                       href="/contato"
+                      tracking={{ kind: "cta", location: "blog_post_default_cta", label: "solicitar_diagnostico", destination: "/contato" }}
                       className="inline-block px-6 py-2.5 bg-rc2-orange text-white font-medium rounded hover:bg-rc2-orange/90 transition-colors"
                     >
                       Solicitar Diagnóstico →
-                    </Link>
+                    </TrackedLink>
                   </div>
                 </div>
               )}

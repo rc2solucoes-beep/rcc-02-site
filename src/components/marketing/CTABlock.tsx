@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
+import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { cn } from "@/lib/utils";
 
 interface CTABlockProps {
@@ -57,8 +57,14 @@ export function CTABlock({
           </p>
         )}
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link
+          <TrackedLink
             href={primaryHref}
+            tracking={{
+              kind: primaryHref.startsWith("https://wa.me") ? "whatsapp" : "cta",
+              location: "cta_block_primary",
+              label: primaryLabel.toLowerCase().replace(/\s+/g, "_"),
+              destination: primaryHref,
+            }}
             className={cn(
               buttonVariants({ variant: "default" }),
               "ui-focus-ring font-semibold tracking-wide uppercase text-xs px-8 h-11 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90 active:bg-rc2-orange active:ring-1 active:ring-rc2-orange/50 transition-all duration-150",
@@ -66,12 +72,18 @@ export function CTABlock({
             )}
           >
             {primaryLabel}
-          </Link>
+          </TrackedLink>
           {!hideSecondary && (
-            <Link
+            <TrackedLink
               href={secondaryHref}
               target={secondaryHref.startsWith("http") ? "_blank" : undefined}
               rel={secondaryHref.startsWith("http") ? "noopener noreferrer" : undefined}
+              tracking={{
+                kind: secondaryHref.startsWith("https://wa.me") ? "whatsapp" : "cta",
+                location: "cta_block_secondary",
+                label: secondaryLabel.toLowerCase().replace(/\s+/g, "_"),
+                destination: secondaryHref,
+              }}
               className={cn(
                 "ui-focus-ring rounded-lg px-6 h-11 inline-flex items-center gap-1.5 border font-medium text-sm transition-all duration-200",
                 isDark
@@ -81,7 +93,7 @@ export function CTABlock({
             >
               {secondaryLabel}
               <span>→</span>
-            </Link>
+            </TrackedLink>
           )}
         </div>
       </div>

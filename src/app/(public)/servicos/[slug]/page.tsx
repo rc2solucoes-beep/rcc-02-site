@@ -7,6 +7,7 @@ import { services, getServiceBySlug } from "@/lib/content/services";
 import { PageHero } from "@/components/marketing/PageHero";
 import { CTABlock } from "@/components/marketing/CTABlock";
 import { PageAnchorNav } from "@/components/marketing/PageAnchorNav";
+import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { buttonVariants } from "@/components/ui/button";
@@ -142,30 +143,32 @@ export default async function ServicePage({ params }: Props) {
               </blockquote>
 
               <div className="mt-8">
-                <Link
+                <TrackedLink
                   href="/contato"
+                  tracking={{ kind: "cta", location: "service_detail_benefits", label: "solicitar_diagnostico", destination: "/contato" }}
                   className={cn(
                     buttonVariants({ variant: "default" }),
                     "font-semibold tracking-wide uppercase text-xs px-8 h-11 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90"
                   )}
                 >
                   Solicitar diagnóstico
-                </Link>
+                </TrackedLink>
               </div>
             </div>
           </div>
 
           {/* Repeated CTA before navigation */}
           <div className="mt-12 mb-8 md:hidden">
-            <Link
+            <TrackedLink
               href="/contato"
+              tracking={{ kind: "cta", location: "service_detail_mobile_repeat", label: "solicitar_diagnostico", destination: "/contato" }}
               className={cn(
                 buttonVariants({ variant: "default" }),
                 "w-full font-semibold tracking-wide uppercase text-xs h-12 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90"
               )}
             >
               Solicitar diagnóstico
-            </Link>
+            </TrackedLink>
           </div>
 
           {/* Navigation between services */}

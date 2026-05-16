@@ -7,7 +7,7 @@ import { Turnstile } from "@marsidev/react-turnstile";
 import { contactStep1Schema, contactStep2Schema, contactSchema, type ContactStep1Data, type ContactStep2Data, type ContactFormData } from "@/lib/validations/contact";
 import { cn } from "@/lib/utils";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { trackEvent } from "@/lib/tracking";
+import { trackLeadEvent, trackWhatsappClick } from "@/lib/tracking";
 
 const solutionOptions = [
   "Automações com IA",
@@ -84,7 +84,10 @@ export function ContactForm() {
         message: formData.message,
         website: formData.website,
       });
-      trackEvent("contact_step1_complete", { step: 1 });
+      trackLeadEvent(
+        "generate_lead_step_1",
+        { form_name: "diagnostico_gratuito" }
+      );
       setStep(2);
     }
   };
@@ -101,6 +104,10 @@ export function ContactForm() {
       return;
     }
     setTurnstileError(null);
+    trackLeadEvent(
+      "generate_lead_submit",
+      { form_name: "diagnostico_gratuito" }
+    );
 
     try {
       const res = await fetch("/api/contact", {
@@ -116,8 +123,13 @@ export function ContactForm() {
         return;
       }
 
-      trackEvent("contact_step2_complete", { step: 2 });
-      trackEvent("contact_submit_success");
+      trackLeadEvent("generate_lead_success", {
+        form_name: "diagnostico_gratuito",
+        lead_source: "website",
+        solution_interest: data.solution,
+        company_size: data.size,
+        company_segment: data.segment,
+      });
       setSubmitted(true);
     } catch {
       setServerError("Falha de conexão. Verifique sua internet e tente novamente.");
@@ -161,6 +173,13 @@ export function ContactForm() {
           href="https://wa.me/5511988028550"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() =>
+            trackWhatsappClick({
+              location: "contact_form_success",
+              label: "prefere_falar_agora_whatsapp",
+              destination: "https://wa.me/5511988028550",
+            })
+          }
           className="mt-6 text-sm font-medium text-rc2-orange underline underline-offset-4"
         >
           Prefere falar agora? Chama no WhatsApp →
@@ -177,7 +196,10 @@ export function ContactForm() {
         const target = event.target as HTMLElement;
         if (!["name", "email", "whatsapp", "message"].includes(target.id)) return;
         setStep1Started(true);
-        trackEvent("contact_step1_start", { step: 1 });
+        trackLeadEvent(
+          "generate_lead_start",
+          { form_name: "diagnostico_gratuito" }
+        );
       }}
       noValidate
       className="space-y-6"

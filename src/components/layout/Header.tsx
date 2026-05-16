@@ -7,7 +7,7 @@ import { Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { trackEvent } from "@/lib/tracking";
+import { trackCtaClick } from "@/lib/tracking";
 
 const navLinks = [
   { href: "/", label: "Início" },
@@ -63,7 +63,13 @@ export function Header() {
             ))}
             <Link
               href="/contato"
-              onClick={() => trackEvent("cta_click_header", { location: "header", label: "diagnostico_gratuito" })}
+              onClick={() =>
+                trackCtaClick({
+                  location: "header_desktop",
+                  label: "diagnostico_gratuito",
+                  destination: "/contato",
+                })
+              }
               className={cn(
                 buttonVariants({ variant: "default" }),
                 "ml-2 font-semibold tracking-wide uppercase text-xs px-5 h-9 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90 shadow-sm ring-1 ring-rc2-orange/20"
@@ -108,7 +114,11 @@ export function Header() {
             <Link
               href="/contato"
               onClick={() => {
-                trackEvent("cta_click_header", { location: "header_mobile", label: "diagnostico_gratuito" });
+                trackCtaClick({
+                  location: "header_mobile",
+                  label: "diagnostico_gratuito",
+                  destination: "/contato",
+                });
                 setOpen(false);
               }}
               className={cn(

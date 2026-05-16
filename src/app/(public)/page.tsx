@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Check, ArrowRight } from "lucide-react";
 import { buildOg } from "@/lib/siteMetadata";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ServiceCard } from "@/components/marketing/ServiceCard";
 import { CTABlock } from "@/components/marketing/CTABlock";
+import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { GoogleReviews } from "@/components/GoogleReviews";
 import { HeroActions } from "@/components/marketing/HeroActions";
 import { buttonVariants } from "@/components/ui/button";
@@ -158,8 +158,9 @@ export default async function HomePage({ searchParams }: Props) {
               />
             ))}
             {/* 6º card — CTA */}
-            <Link
+            <TrackedLink
               href="/contato"
+              tracking={{ kind: "cta", location: "home_services_grid", label: "solicitar_diagnostico", destination: "/contato" }}
               className="group rc2-card rc2-card-hover flex flex-col justify-between p-6 bg-rc2-orange border-rc2-orange"
             >
               <div>
@@ -177,7 +178,7 @@ export default async function HomePage({ searchParams }: Props) {
                 Solicitar diagnóstico
                 <ArrowRight size={14} />
               </span>
-            </Link>
+            </TrackedLink>
           </div>
         </div>
       </section>
@@ -216,15 +217,16 @@ export default async function HomePage({ searchParams }: Props) {
           </h2>
           <GoogleReviews maxReviews={4} showGoogleLink={false} columns={2} />
           <div className="mt-8 text-center">
-            <Link
+            <TrackedLink
               href="/avaliacoes"
+              tracking={{ kind: "cta", location: "home_reviews", label: "ver_avaliacoes_cases", destination: "/avaliacoes" }}
               className={cn(
                 buttonVariants({ variant: "outline" }),
                 "font-semibold tracking-wide uppercase text-xs px-8 h-12 border-rc2-ebony text-rc2-ebony hover:bg-rc2-ebony hover:text-rc2-sand"
               )}
             >
               Ver mais avaliações e cases
-            </Link>
+            </TrackedLink>
           </div>
         </div>
       </section>
