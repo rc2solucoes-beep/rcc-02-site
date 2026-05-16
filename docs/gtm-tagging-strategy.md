@@ -67,7 +67,22 @@ Analytics payloads must not include:
 - Turnstile token
 - Raw free text or raw form values
 
-`company_segment` is allowed because it is a normalized bucket code such as `varejo`, not a raw company name, display label, or free-text company description. Keep `solution_interest`, `company_size`, and `company_segment` restricted to controlled form choices or normalized buckets.
+`company_segment` is bucket-only and must never contain free text.
+
+Allowed `company_segment` values:
+
+- `varejo`
+- `saude`
+- `logistica`
+- `servicos`
+- `educacao`
+- `industria`
+- `tecnologia`
+- `financeiro`
+- `alimentacao`
+- `outro`
+
+Any other value is invalid and should be mapped to `outro` before pushing to `dataLayer`.
 
 ## GTM Data Layer Variables
 
@@ -184,7 +199,7 @@ Validate payload privacy:
 
 - Inspect every event payload in Preview mode.
 - Confirm no name, email, phone, WhatsApp number, company name, message, IP address, Turnstile token, or raw free text is present.
-- Confirm `company_segment` is a normalized bucket code such as `varejo`, not display text or a company name.
+- Confirm `company_segment` is one of: `varejo`, `saude`, `logistica`, `servicos`, `educacao`, `industria`, `tecnologia`, `financeiro`, `alimentacao`, `outro`.
 - Confirm `solution_interest` and `company_size` are controlled values.
 
 Validate destination tags:

@@ -126,7 +126,7 @@ describe("tracking helpers", () => {
       lead_source: "website",
       solution_interest: "Automações com IA",
       company_size: "11-50 colaboradores",
-      company_segment: "Varejo",
+      company_segment: "varejo",
     });
 
     const [event] = window.dataLayer ?? [];
@@ -136,7 +136,7 @@ describe("tracking helpers", () => {
       lead_source: "website",
       solution_interest: "Automações com IA",
       company_size: "11-50 colaboradores",
-      company_segment: "Varejo",
+      company_segment: "varejo",
     });
     expect(Object.keys(event)).not.toEqual(
       expect.arrayContaining(["name", "email", "phone", "whatsapp", "message", "ip"])
@@ -216,7 +216,17 @@ export interface LeadEventPayload extends DataLayerPayload {
   lead_source?: "website";
   solution_interest?: string;
   company_size?: string;
-  company_segment?: string;
+  company_segment?:
+    | "varejo"
+    | "saude"
+    | "logistica"
+    | "servicos"
+    | "educacao"
+    | "industria"
+    | "tecnologia"
+    | "financeiro"
+    | "alimentacao"
+    | "outro";
 }
 
 declare global {
@@ -539,7 +549,7 @@ trackLeadEvent("generate_lead_success", {
   lead_source: "website",
   solution_interest: data.solution,
   company_size: data.size,
-  company_segment: data.segment,
+  company_segment: categorizeCompanySegment(data.segment),
 });
 ```
 
@@ -978,6 +988,9 @@ Create `docs/gtm-tagging-strategy.md` with sections for:
 | `generate_lead_step_1` | Step 1 validates and user advances to step 2 | `form_name` |
 | `generate_lead_submit` | Valid form submit attempt after security check | `form_name` |
 | `generate_lead_success` | `/api/contact` returns success | `form_name`, `lead_source`, `solution_interest`, `company_size`, `company_segment` |
+
+`company_segment` is bucket-only and must be one of:
+`varejo`, `saude`, `logistica`, `servicos`, `educacao`, `industria`, `tecnologia`, `financeiro`, `alimentacao`, `outro`.
 
 ## Privacy Rule
 

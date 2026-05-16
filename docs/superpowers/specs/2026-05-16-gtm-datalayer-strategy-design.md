@@ -79,6 +79,19 @@ Allowed lead success fields:
 - `company_size`
 - `company_segment`
 
+`company_segment` must use only these normalized buckets:
+
+- `varejo`
+- `saude`
+- `logistica`
+- `servicos`
+- `educacao`
+- `industria`
+- `tecnologia`
+- `financeiro`
+- `alimentacao`
+- `outro`
+
 The helper will not add user identifiers, names, emails, phone numbers, WhatsApp numbers, messages, IP addresses, or raw form fields by default.
 
 ## Page Tracking
@@ -123,7 +136,7 @@ The success payload will be limited to:
   lead_source: "website",
   solution_interest: data.solution,
   company_size: data.size,
-  company_segment: data.segment,
+  company_segment: categorizeCompanySegment(data.segment),
 }
 ```
 

@@ -7,7 +7,11 @@ import { Turnstile } from "@marsidev/react-turnstile";
 import { contactSchema, type ContactFormData } from "@/lib/validations/contact";
 import { cn } from "@/lib/utils";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { trackLeadEvent, trackWhatsappClick } from "@/lib/tracking";
+import {
+  trackLeadEvent,
+  trackWhatsappClick,
+  type CompanySegmentCategory,
+} from "@/lib/tracking";
 
 const solutionOptions = [
   "Automações com IA",
@@ -52,18 +56,6 @@ const inputBase =
 
 const TURNSTILE_SITE_KEY =
   process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "1x00000000000000000000AA";
-
-type CompanySegmentCategory =
-  | "varejo"
-  | "saude"
-  | "logistica"
-  | "servicos"
-  | "educacao"
-  | "industria"
-  | "tecnologia"
-  | "financeiro"
-  | "alimentacao"
-  | "outro";
 
 function categorizeCompanySegment(segment: string): CompanySegmentCategory {
   const normalizedSegment = segment

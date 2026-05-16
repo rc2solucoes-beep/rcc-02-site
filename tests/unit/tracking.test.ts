@@ -9,7 +9,7 @@ import {
   trackPageView,
   trackWhatsappClick,
 } from "@/lib/tracking";
-import type { PageViewPayload } from "@/lib/tracking";
+import type { CompanySegmentCategory, PageViewPayload } from "@/lib/tracking";
 
 const navigationState = vi.hoisted(() => ({
   pathname: "/",
@@ -136,12 +136,14 @@ describe("tracking helpers", () => {
   });
 
   it("pushes lead success without personal data", () => {
+    const segment: CompanySegmentCategory = "varejo";
+
     trackLeadEvent("generate_lead_success", {
       form_name: "diagnostico_gratuito",
       lead_source: "website",
       solution_interest: "Automações com IA",
       company_size: "11-50 colaboradores",
-      company_segment: "varejo",
+      company_segment: segment,
     });
 
     const [event] = window.dataLayer ?? [];
@@ -151,7 +153,7 @@ describe("tracking helpers", () => {
       lead_source: "website",
       solution_interest: "Automações com IA",
       company_size: "11-50 colaboradores",
-      company_segment: "varejo",
+      company_segment: segment,
     });
     expect(Object.keys(event)).not.toEqual(
       expect.arrayContaining(["name", "email", "phone", "whatsapp", "message", "ip"])
