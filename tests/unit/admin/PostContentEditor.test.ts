@@ -8,26 +8,13 @@ vi.mock("@/components/admin/RichEditor", () => ({
   RichEditor: ({
     content,
     onChange,
-    ariaLabelledBy,
-    ariaDescribedBy,
-    ariaInvalid,
   }: {
     content: string;
     onChange: (value: string) => void;
-    ariaLabelledBy?: string;
-    ariaDescribedBy?: string;
-    ariaInvalid?: boolean;
   }) =>
     createElement(
       "div",
       { "data-testid": "rich-editor" },
-      createElement("div", {
-        "data-testid": "rich-editor-editable",
-        role: "textbox",
-        "aria-labelledby": ariaLabelledBy,
-        "aria-describedby": ariaDescribedBy,
-        "aria-invalid": ariaInvalid === undefined ? undefined : ariaInvalid ? "true" : "false",
-      }),
       createElement("output", { "data-testid": "rich-editor-content" }, content),
       createElement(
         "button",
@@ -50,14 +37,11 @@ describe("PostContentEditor", () => {
 
     render(createElement(PostContentEditor, { content: "<p>Conteudo inicial</p>", onChange: handleChange }));
 
-    const editable = screen.getByRole("textbox", { name: contentLabel });
-
     expect(screen.getByRole("button", { name: "Visual" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByRole("button", { name: "HTML" })).toHaveAttribute("aria-pressed", "false");
     expect(screen.getByTestId("rich-editor")).toBeInTheDocument();
-    expect(editable).toHaveAccessibleName(contentLabel);
-    expect(editable).toHaveAttribute("aria-invalid", "false");
-    expect(editable).not.toHaveAttribute("aria-describedby");
+    expect(screen.getByRole("button", { name: "Visual" })).toHaveClass("bg-rc2-orange", "text-white");
+    expect(screen.getByRole("button", { name: "HTML" })).not.toHaveClass("bg-rc2-orange", "text-white");
     expect(screen.getByTestId("rich-editor-content")).toHaveTextContent("<p>Conteudo inicial</p>");
     expect(screen.queryByDisplayValue("<p>Conteudo inicial</p>")).not.toBeInTheDocument();
 
@@ -78,10 +62,13 @@ describe("PostContentEditor", () => {
     const warning = screen.getByText(htmlModeWarning);
 
     expect(screen.getByRole("button", { name: "HTML" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "HTML" })).toHaveClass("bg-rc2-orange", "text-white");
+    expect(screen.getByRole("button", { name: "Visual" })).not.toHaveClass("bg-rc2-orange", "text-white");
     expect(textarea).toHaveValue(content);
     expect(textarea).toHaveAccessibleName(contentLabel);
     expect(textarea).toHaveAttribute("aria-describedby", warning.id);
     expect(textarea).toHaveAttribute("aria-invalid", "false");
+    expect(textarea).toHaveClass("min-h-[520px]", "resize-y", "font-mono", "leading-relaxed", "bg-rc2-sand");
     expect(screen.queryByTestId("rich-editor")).not.toBeInTheDocument();
   });
 
@@ -144,12 +131,8 @@ describe("PostContentEditor", () => {
     );
 
     const error = screen.getByText("Conteúdo é obrigatório.");
-    const editable = screen.getByRole("textbox", { name: contentLabel });
 
     expect(error).toBeInTheDocument();
-    expect(editable).toHaveAccessibleName(contentLabel);
-    expect(editable).toHaveAttribute("aria-describedby", error.id);
-    expect(editable).toHaveAttribute("aria-invalid", "true");
 
     await user.click(screen.getByRole("button", { name: "HTML" }));
 

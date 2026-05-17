@@ -17,22 +17,6 @@ interface RichEditorProps {
   content: string;
   onChange: (html: string) => void;
   placeholder?: string;
-  ariaLabelledBy?: string;
-  ariaDescribedBy?: string;
-  ariaInvalid?: boolean;
-}
-
-function getEditorAttributes({
-  ariaLabelledBy,
-  ariaDescribedBy,
-  ariaInvalid,
-}: Pick<RichEditorProps, "ariaLabelledBy" | "ariaDescribedBy" | "ariaInvalid">) {
-  return {
-    class: "prose prose-sm max-w-none min-h-64 px-4 py-3 focus:outline-none text-rc2-ebony",
-    ...(ariaLabelledBy ? { "aria-labelledby": ariaLabelledBy } : {}),
-    ...(ariaDescribedBy ? { "aria-describedby": ariaDescribedBy } : {}),
-    ...(ariaInvalid !== undefined ? { "aria-invalid": ariaInvalid ? "true" : "false" } : {}),
-  };
 }
 
 function ToolbarButton({
@@ -50,7 +34,6 @@ function ToolbarButton({
     <button
       type="button"
       title={title}
-      aria-pressed={active === undefined ? undefined : active}
       onClick={onClick}
       className={cn(
         "p-1.5 rounded text-sm transition-colors",
@@ -139,16 +122,17 @@ export function RichEditor({
   content,
   onChange,
   placeholder = "Escreva o conteúdo do post...",
-  ariaLabelledBy,
-  ariaDescribedBy,
-  ariaInvalid,
 }: RichEditorProps) {
   const [dialog, setDialog] = useState<DialogState>({
     isOpen: false,
     selectedText: "",
     initialUrl: "",
   });
-  const portalTarget = typeof document === "undefined" ? null : document.body;
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const editor = useEditor({
     extensions: [
@@ -164,7 +148,9 @@ export function RichEditor({
       onChange(editor.getHTML());
     },
     editorProps: {
-      attributes: getEditorAttributes({ ariaLabelledBy, ariaDescribedBy, ariaInvalid }),
+      attributes: {
+        class: "prose prose-sm max-w-none min-h-64 px-4 py-3 focus:outline-none text-rc2-ebony",
+      },
     },
   });
 
@@ -174,16 +160,6 @@ export function RichEditor({
       editor.commands.setContent(content, { emitUpdate: false });
     }
   }, [editor, content]);
-
-  useEffect(() => {
-    if (editor) {
-      editor.setOptions({
-        editorProps: {
-          attributes: getEditorAttributes({ ariaLabelledBy, ariaDescribedBy, ariaInvalid }),
-        },
-      });
-    }
-  }, [editor, ariaLabelledBy, ariaDescribedBy, ariaInvalid]);
 
   if (!editor) return null;
 
@@ -235,7 +211,7 @@ export function RichEditor({
   return (
     <>
       {/* Portal: renders dialog in document.body, completely outside TipTap's DOM tree */}
-      {portalTarget ? createPortal(linkDialog, portalTarget) : null}
+      {mounted && createPortal(linkDialog, document.body)}
       <div className="border border-border rounded overflow-hidden">
         {/* Top Toolbar */}
         <div className="border-b border-border">

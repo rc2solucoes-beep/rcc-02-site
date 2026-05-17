@@ -22,7 +22,6 @@ export function PostContentEditor({
   const labelId = `${textareaId}-label`;
   const warningId = `${textareaId}-warning`;
   const errorId = `${textareaId}-error`;
-  const visualDescribedBy = error ? errorId : undefined;
   const textareaDescribedBy = [warningId, error ? errorId : null].filter(Boolean).join(" ");
 
   return (
@@ -41,7 +40,11 @@ export function PostContentEditor({
         <button
           type="button"
           aria-pressed={mode === "visual"}
-          className="rounded px-3 py-1.5 text-sm"
+          className={`rounded px-3 py-1.5 text-sm transition-colors ${
+            mode === "visual"
+              ? "bg-rc2-orange text-white"
+              : "text-rc2-ebony/70 hover:text-rc2-ebony hover:bg-zinc-100"
+          }`}
           onClick={() => setMode("visual")}
         >
           Visual
@@ -49,7 +52,11 @@ export function PostContentEditor({
         <button
           type="button"
           aria-pressed={mode === "html"}
-          className="rounded px-3 py-1.5 text-sm"
+          className={`rounded px-3 py-1.5 text-sm transition-colors ${
+            mode === "html"
+              ? "bg-rc2-orange text-white"
+              : "text-rc2-ebony/70 hover:text-rc2-ebony hover:bg-zinc-100"
+          }`}
           onClick={() => setMode("html")}
         >
           HTML
@@ -57,13 +64,7 @@ export function PostContentEditor({
       </div>
 
       {mode === "visual" ? (
-        <RichEditor
-          content={content}
-          onChange={onChange}
-          ariaLabelledBy={labelId}
-          ariaDescribedBy={visualDescribedBy}
-          ariaInvalid={Boolean(error)}
-        />
+        <RichEditor content={content} onChange={onChange} />
       ) : (
         <div className="space-y-2">
           <p id={warningId} className="text-sm text-amber-700">
@@ -73,7 +74,7 @@ export function PostContentEditor({
             id={textareaId}
             value={content}
             onChange={(event) => onChange(event.target.value)}
-            className="min-h-64 w-full rounded-md border border-border px-3 py-2 font-mono text-sm"
+            className="min-h-[520px] w-full resize-y border border-border bg-rc2-sand px-3 py-2.5 text-sm text-rc2-ebony placeholder:text-rc2-placeholder font-mono leading-relaxed outline-none transition-colors focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange"
             aria-invalid={error ? "true" : "false"}
             aria-labelledby={labelId}
             aria-describedby={textareaDescribedBy}
