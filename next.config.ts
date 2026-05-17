@@ -17,6 +17,8 @@ const cspDirectives = [
   "frame-src https://challenges.cloudflare.com https://www.google.com",
   // Connections: self + Supabase + Cloudflare Turnstile + GTM + Google Places
   "connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://places.googleapis.com",
+  // Workers: Turnstile uses web workers for its challenge processing
+  "worker-src blob: https://challenges.cloudflare.com",
   // Base URI restriction
   "base-uri 'self'",
   // Form action: self only

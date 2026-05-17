@@ -114,6 +114,7 @@ export function ContactForm() {
   const [serverError, setServerError] = useState<string | null>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState<string | null>(null);
+  const [turnstileReady, setTurnstileReady] = useState(false);
 
   const {
     register,
@@ -138,6 +139,9 @@ export function ContactForm() {
 
   const handleStep1Back = () => {
     setStep(1);
+    setTurnstileReady(false);
+    setTurnstileToken(null);
+    setTurnstileError(null);
   };
 
   const onSubmit = async (data: ContactFormData) => {
@@ -370,13 +374,19 @@ export function ContactForm() {
           </div>
 
           {/* Turnstile */}
-          <Turnstile
-            siteKey={TURNSTILE_SITE_KEY}
-            onSuccess={(token) => { setTurnstileToken(token); setTurnstileError(null); }}
-            onError={() => { setTurnstileToken(null); setTurnstileError("Falha na verificação de segurança. Recarregue a página."); }}
-            onExpire={() => { setTurnstileToken(null); setTurnstileError("Verificação expirada. Por favor, complete novamente."); }}
-            options={{ theme: "light", language: "pt-BR" }}
-          />
+          <div className="space-y-2">
+            {!turnstileReady && !turnstileError && (
+              <p className="text-xs text-rc2-ebony/60 animate-pulse">Carregando verificação de segurança...</p>
+            )}
+            <Turnstile
+              siteKey={TURNSTILE_SITE_KEY}
+              onSuccess={(token) => { setTurnstileToken(token); setTurnstileError(null); setTurnstileReady(true); }}
+              onError={() => { setTurnstileToken(null); setTurnstileReady(true); setTurnstileError("Falha na verificação de segurança. Recarregue a página e tente novamente."); }}
+              onExpire={() => { setTurnstileToken(null); setTurnstileError("Verificação expirada. Por favor, complete novamente."); }}
+              onBeforeInteractive={() => setTurnstileReady(true)}
+              options={{ theme: "light", language: "pt-BR" }}
+            />
+          </div>
 
           {/* Errors */}
           <div aria-live="polite">
@@ -405,9 +415,10 @@ export function ContactForm() {
             <button
               type="submit"
               disabled={!turnstileToken || isSubmitting}
+              title={!turnstileToken && !turnstileError ? "Aguarde a verificação de segurança" : undefined}
               className="ui-focus-ring flex-1 px-10 h-12 bg-rc2-orange text-rc2-sand font-semibold tracking-wide uppercase text-xs hover:bg-rc2-orange/90 active:bg-rc2-orange active:ring-1 active:ring-rc2-orange/50 transition-all duration-150 disabled:opacity-60 disabled:cursor-not-allowed rounded-md"
             >
-              {isSubmitting ? "Enviando..." : "Solicitar diagnóstico"}
+              {isSubmitting ? "Enviando..." : !turnstileToken && !turnstileError ? "Verificando segurança..." : "Solicitar diagnóstico"}
             </button>
           </div>
         </>
