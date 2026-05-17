@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Turnstile } from "@marsidev/react-turnstile";
 import { contactSchema, type ContactFormData } from "@/lib/validations/contact";
 import { cn } from "@/lib/utils";
 import { ChevronRight, ChevronLeft } from "lucide-react";
@@ -54,8 +53,6 @@ function Label({
 const inputBase =
   "w-full rounded-md border border-border bg-white px-4 py-3 text-sm text-rc2-ebony placeholder:text-rc2-placeholder outline-none focus:border-rc2-orange focus:ring-2 focus:ring-rc2-orange/20 transition-colors shadow-sm";
 
-const TURNSTILE_SITE_KEY =
-  process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "1x00000000000000000000AA";
 
 function categorizeCompanySegment(segment: string): CompanySegmentCategory {
   const normalizedSegment = segment
@@ -112,9 +109,6 @@ export function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [step1Started, setStep1Started] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
-  const [turnstileError, setTurnstileError] = useState<string | null>(null);
-  const [turnstileReady, setTurnstileReady] = useState(false);
 
   const {
     register,
@@ -139,14 +133,10 @@ export function ContactForm() {
 
   const handleStep1Back = () => {
     setStep(1);
-    setTurnstileReady(false);
-    setTurnstileToken(null);
-    setTurnstileError(null);
   };
 
   const onSubmit = async (data: ContactFormData) => {
     setServerError(null);
-    setTurnstileError(null);
     trackLeadEvent(
       "generate_lead_submit",
       { form_name: "diagnostico_gratuito" }
@@ -156,7 +146,7 @@ export function ContactForm() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, turnstileToken: turnstileToken ?? "" }),
+        body: JSON.stringify({ ...data, turnstileToken: "" }),
       });
 
       const json = await res.json() as { success?: boolean; error?: string };
@@ -366,28 +356,6 @@ export function ContactForm() {
               ))}
             </select>
             <FieldError message={errors.solution?.message} />
-          </div>
-
-          {/* Turnstile */}
-          <div className="space-y-2">
-            {!turnstileReady && !turnstileError && (
-              <p className="text-xs text-rc2-ebony/60 animate-pulse">Carregando verificação de segurança...</p>
-            )}
-            <Turnstile
-              siteKey={TURNSTILE_SITE_KEY}
-              onSuccess={(token) => { setTurnstileToken(token); setTurnstileError(null); setTurnstileReady(true); }}
-              onError={() => { setTurnstileToken(null); setTurnstileReady(true); setTurnstileError("Falha na verificação de segurança. Recarregue a página e tente novamente."); }}
-              onExpire={() => { setTurnstileToken(null); setTurnstileError("Verificação expirada. Por favor, complete novamente."); }}
-              onBeforeInteractive={() => setTurnstileReady(true)}
-              options={{ theme: "light", language: "pt-br" }}
-            />
-          </div>
-
-          {/* Errors */}
-          <div aria-live="polite">
-            {turnstileError && (
-              <p className="text-xs text-destructive" role="alert">{turnstileError}</p>
-            )}
           </div>
 
           {serverError && (
