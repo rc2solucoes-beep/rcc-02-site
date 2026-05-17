@@ -52,7 +52,7 @@ async function getPost(id: string): Promise<Post | null> {
       }
     }
 
-    return sanitizedPost as Post;
+    return sanitizedPost as unknown as Post;
   } catch (error) {
     console.error("[getPost] Error:", error);
     throw error;
