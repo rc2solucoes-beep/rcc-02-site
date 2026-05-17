@@ -4,10 +4,20 @@ import { AdminHeader } from "@/components/admin/AdminHeader";
 import { PostFormRefactored } from "@/components/admin/PostFormRefactored";
 import { DeletePostButton } from "@/components/admin/DeletePostButton";
 import { updatePost, deletePost } from "@/app/admin/(protected)/posts/actions";
+import { listAuthors } from "@/lib/authors/server";
 import type { Post } from "@/lib/types/post";
 
 interface EditPostPageProps {
   params: Promise<{ id: string }>;
+}
+
+async function loadAuthorsSafely() {
+  try {
+    return await listAuthors();
+  } catch (error) {
+    console.error("[EditPostPage] Error loading authors:", error);
+    return [];
+  }
 }
 
 async function getPost(id: string): Promise<Post | null> {
@@ -24,7 +34,7 @@ async function getPost(id: string): Promise<Post | null> {
 
     // Ensure all data is JSON-serializable for Client Component
     // Sanitize every field to prevent serialization errors
-    const sanitizedPost: Record<string, any> = {};
+    const sanitizedPost: Record<string, unknown> = {};
 
     for (const [key, value] of Object.entries(data)) {
       if (value === null || value === undefined) {
@@ -50,29 +60,24 @@ async function getPost(id: string): Promise<Post | null> {
 }
 
 export default async function EditPostPage({ params }: EditPostPageProps) {
-  try {
-    const { id } = await params;
-    const post = await getPost(id);
-    if (!post) {
-      console.warn(`[EditPostPage] Post not found: ${id}`);
-      notFound();
-    }
-
-    const updatePostWithId = updatePost.bind(null, id);
-    const deletePostWithId = deletePost.bind(null, id);
-
-    return (
-      <>
-        <AdminHeader
-          title="Editar post"
-          description={post.title}
-          action={<DeletePostButton postId={id} deleteAction={deletePostWithId} />}
-        />
-        <PostFormRefactored post={post} action={updatePostWithId} />
-      </>
-    );
-  } catch (error) {
-    console.error("[EditPostPage] Error:", error);
-    throw error;
+  const { id } = await params;
+  const [post, authors] = await Promise.all([getPost(id), loadAuthorsSafely()]);
+  if (!post) {
+    console.warn(`[EditPostPage] Post not found: ${id}`);
+    notFound();
   }
+
+  const updatePostWithId = updatePost.bind(null, id);
+  const deletePostWithId = deletePost.bind(null, id);
+
+  return (
+    <>
+      <AdminHeader
+        title="Editar post"
+        description={post.title}
+        action={<DeletePostButton postId={id} deleteAction={deletePostWithId} />}
+      />
+      <PostFormRefactored authors={authors} post={post} action={updatePostWithId} />
+    </>
+  );
 }

@@ -10,11 +10,13 @@ import { ImageTab } from "@/components/admin/PostFormTabs/ImageTab";
 import { RelatedTab } from "@/components/admin/PostFormTabs/RelatedTab";
 import { FaqTab } from "@/components/admin/PostFormTabs/FaqTab";
 import { CtaTab } from "@/components/admin/PostFormTabs/CtaTab";
+import type { Author } from "@/lib/types/author";
 import type { Post, FaqItem, CtaBlock } from "@/lib/types/post";
 import type { PostFormState } from "@/app/admin/(protected)/posts/actions";
 import { slugify } from "@/lib/utils";
 
 interface PostFormProps {
+  authors: Author[];
   post?: Post;
   action: (prevState: PostFormState, formData: FormData) => Promise<PostFormState>;
 }
@@ -54,6 +56,7 @@ interface PostFormData {
   author_photo: string;
   author_bio: string;
   author_linkedin: string;
+  sync_author_global: string;
   // Imagem
   cover_url: string;
   cover_url_alt: string;
@@ -71,7 +74,7 @@ function FieldError({ errors, field }: { errors?: Record<string, string[]>; fiel
   return <p className="mt-1 text-xs text-red-600">{msgs[0]}</p>;
 }
 
-export function PostFormRefactored({ post, action }: PostFormProps) {
+export function PostFormRefactored({ authors, post, action }: PostFormProps) {
   const [state, formAction, pending] = useActionState(action, initialState);
   const [activeTab, setActiveTab] = useState<TabKey>("conteudo");
 
@@ -104,6 +107,7 @@ export function PostFormRefactored({ post, action }: PostFormProps) {
     author_photo: post?.author_photo ?? "",
     author_bio: post?.author_bio ?? "",
     author_linkedin: post?.author_linkedin ?? "",
+    sync_author_global: "false",
     // Imagem
     cover_url: post?.cover_url ?? "",
     cover_url_alt: post?.cover_url_alt ?? "",
@@ -291,7 +295,13 @@ export function PostFormRefactored({ post, action }: PostFormProps) {
 
         {activeTab === "seo" && <SeoTab formData={formData} onChange={handleFieldChange} />}
         {activeTab === "publicacao" && <PublicationTab formData={formData} onChange={handleFieldChange} />}
-        {activeTab === "autor" && <AuthorTab formData={formData} onChange={handleFieldChange} />}
+        {activeTab === "autor" && (
+          <AuthorTab
+            authors={authors}
+            formData={formData}
+            onChange={handleFieldChange}
+          />
+        )}
         {activeTab === "imagem" && <ImageTab formData={formData} onChange={handleFieldChange} />}
         {activeTab === "relacionados" && <RelatedTab formData={formData} onChange={handleFieldChange} currentPostId={post?.id} />}
         {activeTab === "faq" && (

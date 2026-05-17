@@ -2,8 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { z } from "zod";
+import { updateAuthorRecord } from "@/lib/authors/server";
 import { createSessionClient } from "@/lib/supabase/server";
+import type { AuthorSnapshotComparableFields } from "@/lib/types/author";
 import { CreatePostSchema } from "@/lib/validations/post";
 import type { PostStatus } from "@/lib/types/post";
 
@@ -16,16 +17,42 @@ function calculateReadingTime(htmlContent: string): number {
   return minutes;
 }
 
-// Helper para extrair conteúdo de texto a partir de HTML
-function stripHtmlAndTruncate(html: string, maxLength: number): string {
-  const text = html.replace(/<[^>]*>/g, "").trim();
-  return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
-}
-
 export type PostFormState = {
   errors?: Record<string, string[]>;
   message?: string;
 };
+
+function getAuthorSnapshotFromFormData(
+  formData: FormData
+): AuthorSnapshotComparableFields {
+  return {
+    author_name: (formData.get("author_name") as string) || "",
+    author_title: (formData.get("author_title") as string) || "",
+    author_photo: (formData.get("author_photo") as string) || "",
+    author_bio: (formData.get("author_bio") as string) || "",
+    author_linkedin: (formData.get("author_linkedin") as string) || "",
+  };
+}
+
+async function syncGlobalAuthorIfRequested(
+  formData: FormData,
+  authorId: string | null | undefined
+): Promise<PostFormState | null> {
+  if (!authorId || formData.get("sync_author_global") !== "true") {
+    return null;
+  }
+
+  try {
+    await updateAuthorRecord(authorId, getAuthorSnapshotFromFormData(formData));
+    return null;
+  } catch (error) {
+    console.error("Error updating global author:", error);
+    return {
+      message:
+        "Erro ao atualizar cadastro global do autor. O post não foi salvo.",
+    };
+  }
+}
 
 export async function createPost(prevState: PostFormState, formData: FormData): Promise<PostFormState> {
   const raw = {
@@ -85,6 +112,14 @@ export async function createPost(prevState: PostFormState, formData: FormData): 
   const reading_time = parsed.data.reading_time_minutes || calculateReadingTime(content);
 
   try {
+    const syncAuthorError = await syncGlobalAuthorIfRequested(
+      formData,
+      parsed.data.author_id
+    );
+    if (syncAuthorError) {
+      return syncAuthorError;
+    }
+
     const supabase = await createSessionClient();
     const now = new Date().toISOString();
 
@@ -171,6 +206,14 @@ export async function updatePost(id: string, prevState: PostFormState, formData:
   const reading_time = parsed.data.reading_time_minutes || calculateReadingTime(content);
 
   try {
+    const syncAuthorError = await syncGlobalAuthorIfRequested(
+      formData,
+      parsed.data.author_id
+    );
+    if (syncAuthorError) {
+      return syncAuthorError;
+    }
+
     const supabase = await createSessionClient();
     const now = new Date().toISOString();
 
