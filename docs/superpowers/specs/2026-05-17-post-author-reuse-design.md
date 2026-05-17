@@ -6,13 +6,13 @@ Permitir reaproveitar autores já cadastrados na aba Autor do formulário de pos
 ## Escopo
 Incluído:
 - criar uma tabela persistente `authors`
-- carregar autores existentes no fluxo de criação/edição de posts
+- carregar autores server-side no fluxo de criação/edição de posts
 - permitir selecionar um autor existente e preencher o snapshot do post
 - permitir criar novo autor por modal reutilizável
 - permitir editar autor existente pelo mesmo modal
 - manter `author_id` e `author_*` salvos diretamente no post
 - permitir edição inline do snapshot do post após selecionar um autor
-- no submit do post, perguntar se alterações locais em autor existente também devem atualizar o cadastro global
+- controlar a sincronização global por checkbox/callout na aba Autor
 
 Fora de escopo:
 - remover os campos `author_*` do post
@@ -38,7 +38,7 @@ Isso implica o seguinte modelo:
 - criar autor novo grava em `authors` e atualiza o formulário com o novo `author_id`
 - editar autor existente via modal grava em `authors` e atualiza o snapshot do post
 - editar manualmente o snapshot após selecionar um autor existente não altera o cadastro global automaticamente
-- no submit do post, o sistema pergunta se a alteração local também deve atualizar o autor cadastrado
+- a sincronização global é controlada por um checkbox/callout explícito na aba Autor, não por pergunta modal no submit
 
 ## Banco de dados
 Criar migration SQL para tabela `authors` com a estrutura aprovada:
@@ -58,39 +58,70 @@ create table if not exists authors (
 create index if not exists authors_name_idx on authors (name);
 ```
 
-Observações:
-- os nomes na tabela podem diferir ligeiramente dos campos do post, por exemplo `photo_url` versus `author_photo`
-- o mapeamento entre cadastro global e snapshot do post deve ficar explícito em um helper central
-- `updated_at` deve ser atualizado em alterações futuras do cadastro global
+Restrições explícitas:
+- não remover nem alterar os campos `author_*` já existentes em `posts`
+- atualizar `updated_at` manualmente em `updateAuthor`
+
+## Validação
+Criar validação Zod específica para Author.
+
+Regras mínimas:
+- `name` obrigatório
+- `bio` com máximo de 500 caracteres
+- `photo_url` e `linkedin_url` devem aceitar string vazia na UI, mas ser normalizados para `null` antes da validação de URL
+
+Essa validação deve ficar separada da validação de post para manter responsabilidades claras.
 
 ## Arquitetura de código
 ### Tipos e dados
 Adicionar um tipo `Author` correspondente à tabela `authors`, separado do tipo `Post`.
 
-Criar um módulo pequeno de dados, por exemplo `src/lib/authors.ts` ou `src/lib/authors/service.ts`, responsável por:
+Criar um módulo dedicado para lógica de autores, por exemplo `src/lib/authors.ts` ou `src/lib/authors/service.ts`, responsável por:
 - listar autores
-- buscar autor por id quando necessário
 - criar autor
 - atualizar autor
 - mapear `Author` para os campos snapshot do post
+- normalizar dados do cadastro global antes de persistir
 
-Esse módulo existe para evitar inchar `src/app/admin/(protected)/posts/actions.ts` com toda a lógica de autores.
+Esse módulo existe para evitar inchar `src/app/admin/(protected)/posts/actions.ts`.
+
+### Ações dedicadas
+Criar ações específicas para:
+- `createAuthor`
+- `updateAuthor`
+
+Essas ações devem usar o módulo dedicado de autores.
+
+As actions de post continuam salvando o post, mas passam a consumir helpers centrais de autores quando necessário.
+
+### Carregamento server-side
+As páginas de novo/editar post devem carregar a lista de autores no servidor.
+
+Fluxo aprovado:
+- páginas server-side de novo/editar post carregam `authors`
+- passam `authors` como prop para `PostFormRefactored`
+- `PostFormRefactored` repassa `authors` para `AuthorTab`
+
+Isso reduz dependência de carregamento client-side e mantém o formulário pronto ao renderizar.
 
 ### `PostFormRefactored`
 Continua dono do estado consolidado do formulário. Deve passar para a aba Autor:
 - `formData`
 - `onChange`
-- lista de autores
+- `authors`
 - callbacks para seleção, criação e edição de autor
-- flags de estado relacionadas a autor selecionado e snapshot alterado
+- estado de autor selecionado
+- estado booleano `sync_author_global`
+- estado que detecta se o snapshot foi alterado após seleção de autor existente
 
 A mudança deve ser mínima e concentrada apenas no fluxo da aba Autor.
 
 ### `AuthorTab`
-Passa a reunir três responsabilidades de interface:
+Passa a reunir quatro responsabilidades de interface:
 - seleção de autor existente
 - edição manual do snapshot do post
 - abertura do modal reutilizável para criar/editar autor
+- exibição do checkbox/callout de sincronização global quando aplicável
 
 A aba deve continuar exibindo os campos `author_name`, `author_title`, `author_photo`, `author_bio` e `author_linkedin`, porque eles continuam sendo o snapshot salvo no post.
 
@@ -109,7 +140,7 @@ Ao confirmar:
 ## Fluxo de dados
 ### Carregamento
 Ao abrir a tela de novo/editar post:
-- carregar a lista de autores de `authors`
+- carregar a lista de autores de `authors` no servidor
 - inicializar `formData.author_*` com os dados do próprio post, como hoje
 - se `post.author_id` existir, marcar esse autor como selecionado sem sobrescrever automaticamente o snapshot já salvo no post
 
@@ -121,6 +152,7 @@ Quando o usuário seleciona um autor existente:
 - preencher `author_photo`
 - preencher `author_bio`
 - preencher `author_linkedin`
+- inicializar `sync_author_global` como `false`
 - limpar o estado de “snapshot local alterado” naquele momento inicial
 
 ### Criar novo autor
@@ -130,6 +162,7 @@ Quando o usuário clica `Novo autor`:
 - atualizar a lista local de autores
 - selecionar automaticamente o novo autor
 - preencher o snapshot `author_*` do post com os dados retornados
+- manter `sync_author_global` como `false`, porque o snapshot já reflete o cadastro recém-criado
 
 ### Editar autor existente pelo modal
 Quando o usuário escolhe editar o autor selecionado:
@@ -138,6 +171,7 @@ Quando o usuário escolhe editar o autor selecionado:
 - atualizar a lista local
 - manter o autor selecionado
 - atualizar o snapshot `author_*` do post com a versão nova
+- limpar o estado de divergência local, porque o snapshot volta a refletir o cadastro global
 
 ### Editar snapshot manualmente
 Depois de selecionar um autor existente, o usuário pode alterar manualmente os campos do post.
@@ -145,18 +179,17 @@ Depois de selecionar um autor existente, o usuário pode alterar manualmente os 
 Essa alteração deve:
 - manter o `author_id`
 - alterar apenas o snapshot local do post
-- marcar um estado de “autor selecionado teve snapshot modificado” para ser tratado no submit
+- marcar um estado de “autor selecionado teve snapshot modificado”
+- exibir na aba Autor um checkbox/callout com o texto:
+  `Também atualizar o cadastro global deste autor com estes dados.`
 
 ### Salvar o post
 No submit do post:
 - se não houver `author_id`, manter o fluxo atual: salvar apenas snapshot no post
 - se houver `author_id` e não houver modificação local após seleção, salvar normalmente o snapshot no post
-- se houver `author_id` e o snapshot tiver sido modificado localmente, perguntar se também deve atualizar o cadastro global
-
-Decisão no submit:
-- se o usuário escolher atualizar o autor existente, atualizar `authors` primeiro e depois salvar o post
-- se o usuário escolher não atualizar o autor existente, salvar apenas o snapshot no post
-- se a atualização do autor falhar, o post não deve ser salvo naquele submit para evitar inconsistência com uma intenção explícita de sincronização global
+- se houver `author_id`, houver modificação local e `sync_author_global=false`, salvar apenas o snapshot no post
+- se houver `author_id`, houver modificação local e `sync_author_global=true`, atualizar `authors` primeiro e depois salvar o post
+- se a atualização global falhar, não salvar o post e retornar erro claro
 
 ## UX proposta
 Fluxo padrão para post novo:
@@ -168,23 +201,27 @@ Regras de interface:
 - os campos do snapshot continuam visíveis e editáveis
 - o botão de editar autor existente só aparece quando há um autor selecionado
 - o modal reutilizável muda título e ação conforme `Criar` ou `Editar`
-- a pergunta de sincronização global acontece apenas quando há um autor existente vinculado e edição inline posterior
+- o checkbox/callout de sincronização global só aparece quando há autor existente selecionado e divergência local posterior
 
 ## Erros e comportamento seguro
-- se a listagem de autores falhar, a aba continua funcional em modo manual
+- se a listagem de autores falhar no carregamento server-side, a página continua funcional em modo manual, com `authors` vazio
 - se criar ou editar autor no modal falhar, o modal mostra erro e o estado do formulário não é sobrescrito
 - se o usuário preencher manualmente sem selecionar autor, `author_id` permanece vazio e o post continua válido
 - nenhuma falha de `authors` deve apagar o snapshot já digitado nos campos do post
+- se a sincronização global estiver marcada e falhar, o post não é salvo naquele submit
 
 ## Impacto em arquivos
 Arquivos a criar ou alterar, em alto nível:
 - migration SQL para `authors`
 - tipo `Author`
+- validação Zod específica para Author
 - módulo de dados/serviço de autores
-- componente de modal de autor
+- helper central `Author -> author_* do post`
+- ações dedicadas `createAuthor` e `updateAuthor`
 - `src/components/admin/PostFormTabs/AuthorTab.tsx`
 - `src/components/admin/PostFormRefactored.tsx`
-- `src/app/admin/(protected)/posts/actions.ts`
+- páginas server-side de novo/editar post para carregar `authors`
+- `src/app/admin/(protected)/posts/actions.ts` apenas no necessário para consumir a lógica dedicada
 
 Arquivos a preservar conceitualmente:
 - contrato dos campos `author_*` no post
@@ -194,14 +231,19 @@ Arquivos a preservar conceitualmente:
 ## Testes e verificação
 Verificações mínimas:
 - migration cria `authors`
-- a lista de autores carrega na criação de post
-- selecionar autor existente preenche snapshot no formulário
-- criar novo autor via modal adiciona à lista e preenche o post
-- editar autor existente via modal atualiza lista e snapshot
-- editar snapshot manualmente após selecionar autor existente aciona a decisão no submit
-- salvar com “atualizar autor existente” atualiza `authors` e salva snapshot no post
-- salvar com “não atualizar autor existente” salva apenas snapshot
-- fluxo manual sem `author_id` continua funcionando
+- criar autor novo pelo modal
+- selecionar autor existente e preencher snapshot
+- editar autor existente pelo modal
+- editar snapshot local sem alterar cadastro global
+- editar snapshot local com checkbox marcado e atualizar cadastro global no submit
+- salvar post sem autor continua funcionando
+- posts antigos continuam funcionando
+- página pública continua igual
+
+Verificações adicionais de base técnica:
+- string vazia vira `null` antes da validação de `photo_url` e `linkedin_url`
+- `bio` respeita limite de 500 caracteres
+- `name` é obrigatório no cadastro global
 
 ## Critérios de aceitação
 - autores podem ser reaproveitados sem redigitar todos os campos
@@ -209,5 +251,8 @@ Verificações mínimas:
 - seleção de autor existente preenche snapshot do post
 - criação de autor novo acontece por modal reutilizável
 - edição de autor existente também usa o mesmo modal
-- edições inline posteriores no snapshot podem ou não sincronizar com `authors`, conforme decisão explícita do usuário no submit
+- edição local do snapshot pode ou não sincronizar com `authors` conforme o checkbox de sincronização global
+- salvar post sem autor continua funcionando
+- posts antigos continuam funcionando
+- página pública continua igual
 - a mudança é localizada e não exige uma nova área admin de autores
