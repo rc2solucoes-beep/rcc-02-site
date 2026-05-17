@@ -1,8 +1,8 @@
 "use client";
 
-import { useActionState, useRef, useState, useEffect } from "react";
+import { useActionState, useState } from "react";
 import Link from "next/link";
-import { RichEditor } from "@/components/admin/RichEditor";
+import { PostContentEditor } from "@/components/admin/PostContentEditor";
 import { SeoTab } from "@/components/admin/PostFormTabs/SeoTab";
 import { PublicationTab } from "@/components/admin/PostFormTabs/PublicationTab";
 import { AuthorTab } from "@/components/admin/PostFormTabs/AuthorTab";
@@ -157,7 +157,7 @@ export function PostFormRefactored({ post, action }: PostFormProps) {
   };
 
   // Wrapper do formAction que popula FormData no FormData
-  const handleSubmit = async (formDataSubmit: FormData) => {
+  const handleSubmit = async () => {
     const fd = new FormData();
     // Popula FormData com os valores do estado
     Object.entries(formData).forEach(([key, value]) => {
@@ -281,15 +281,11 @@ export function PostFormRefactored({ post, action }: PostFormProps) {
               <FieldError errors={state.errors} field="summary" />
             </div>
 
-            {/* Rich Editor */}
-            <div>
-              <label className="block text-sm font-medium text-rc2-ebony mb-1.5">Conteúdo do Artigo</label>
-              <RichEditor
-                content={formData.content}
-                onChange={(html) => handleFieldChange("content", html)}
-              />
-              <FieldError errors={state.errors} field="content" />
-            </div>
+            <PostContentEditor
+              content={formData.content}
+              onChange={(html) => handleFieldChange("content", html)}
+              error={state.errors?.content?.[0]}
+            />
           </div>
         )}
 
