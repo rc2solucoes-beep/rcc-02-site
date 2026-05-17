@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { Resend } from "resend";
-import { contactSchema } from "@/lib/validations/contact";
+import { contactApiSchema } from "@/lib/validations/contact";
 import { createServiceClient } from "@/lib/supabase/server";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -177,7 +177,7 @@ export async function POST(req: NextRequest) {
   }
 
   // 1. Zod validation
-  const parsed = contactSchema.safeParse(body);
+  const parsed = contactApiSchema.safeParse(body);
   if (!parsed.success) {
     const errors = parsed.error.flatten().fieldErrors;
     return NextResponse.json({ error: "Dados inválidos.", fields: errors }, { status: 400 });

@@ -118,6 +118,7 @@ export function ContactForm() {
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
     mode: "onBlur",
+    defaultValues: {},
   });
 
   const handleStep1Next = async () => {

@@ -21,11 +21,12 @@ export const contactStep2Schema = z.object({
 
 export type ContactStep2Data = z.infer<typeof contactStep2Schema>;
 
-// Complete form (all steps + verification)
-export const contactSchema = contactStep1Schema.merge(
-  contactStep2Schema.extend({
-    turnstileToken: z.string().min(1, "Verificação de segurança obrigatória"),
-  })
-);
-
+// Client form schema (no turnstileToken — handled server-side)
+export const contactSchema = contactStep1Schema.merge(contactStep2Schema);
 export type ContactFormData = z.infer<typeof contactSchema>;
+
+// API schema used by the server route (adds optional turnstileToken)
+export const contactApiSchema = contactSchema.extend({
+  turnstileToken: z.string().optional().default(""),
+});
+export type ContactApiData = z.infer<typeof contactApiSchema>;
