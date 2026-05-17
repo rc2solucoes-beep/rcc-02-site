@@ -6,7 +6,8 @@ const isDev = process.env.NODE_ENV === "development";
 const cspDirectives = [
   "default-src 'self'",
   // Scripts: self + Turnstile + GTM + inline scripts (Next.js hydration)
-  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://www.gstatic.com https://connect.facebook.net`,
+  // unsafe-eval is required: Cloudflare Turnstile uses eval() internally in its challenge scripts
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://www.gstatic.com https://connect.facebook.net`,
   // Styles: self + Google Fonts
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   // Fonts: self + Google Fonts CDN
@@ -16,7 +17,8 @@ const cspDirectives = [
   // Frames: Turnstile widget + Google Maps embed
   "frame-src https://challenges.cloudflare.com https://www.google.com",
   // Connections: self + Supabase + Cloudflare Turnstile + GTM + Google Places
-  "connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://places.googleapis.com",
+  // GA4 sends beacons to google.com/g/collect (not google-analytics.com)
+  "connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://places.googleapis.com",
   // Workers: Turnstile uses web workers for its challenge processing
   "worker-src blob: https://challenges.cloudflare.com",
   // Base URI restriction

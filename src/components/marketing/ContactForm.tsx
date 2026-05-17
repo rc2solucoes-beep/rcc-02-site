@@ -379,7 +379,7 @@ export function ContactForm() {
               onError={() => { setTurnstileToken(null); setTurnstileReady(true); setTurnstileError("Falha na verificação de segurança. Recarregue a página e tente novamente."); }}
               onExpire={() => { setTurnstileToken(null); setTurnstileError("Verificação expirada. Por favor, complete novamente."); }}
               onBeforeInteractive={() => setTurnstileReady(true)}
-              options={{ theme: "light", language: "pt-BR" }}
+              options={{ theme: "light", language: "pt-br" }}
             />
           </div>
 
