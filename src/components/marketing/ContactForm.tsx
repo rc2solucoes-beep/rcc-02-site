@@ -146,11 +146,6 @@ export function ContactForm() {
 
   const onSubmit = async (data: ContactFormData) => {
     setServerError(null);
-
-    if (!turnstileToken) {
-      setTurnstileError("Complete a verificação de segurança antes de enviar.");
-      return;
-    }
     setTurnstileError(null);
     trackLeadEvent(
       "generate_lead_submit",
@@ -414,11 +409,10 @@ export function ContactForm() {
             </button>
             <button
               type="submit"
-              disabled={!turnstileToken || isSubmitting}
-              title={!turnstileToken && !turnstileError ? "Aguarde a verificação de segurança" : undefined}
+              disabled={isSubmitting}
               className="ui-focus-ring flex-1 px-10 h-12 bg-rc2-orange text-rc2-sand font-semibold tracking-wide uppercase text-xs hover:bg-rc2-orange/90 active:bg-rc2-orange active:ring-1 active:ring-rc2-orange/50 transition-all duration-150 disabled:opacity-60 disabled:cursor-not-allowed rounded-md"
             >
-              {isSubmitting ? "Enviando..." : !turnstileToken && !turnstileError ? "Verificando segurança..." : "Solicitar diagnóstico"}
+              {isSubmitting ? "Enviando..." : "Solicitar diagnóstico"}
             </button>
           </div>
         </>

@@ -33,6 +33,13 @@ async function verifyTurnstile(token: string, ip: string): Promise<boolean> {
   // Skip in dev/test if no secret configured
   if (!secret || secret === "xxxx") return true;
 
+  // If no token was provided (e.g. widget blocked by browser/CSP), fall through
+  // to rate limiting as the primary spam protection layer
+  if (!token) {
+    console.warn("[turnstile] No token received — skipping, relying on rate limit");
+    return true;
+  }
+
   const res = await fetch(
     "https://challenges.cloudflare.com/turnstile/v0/siteverify",
     {
