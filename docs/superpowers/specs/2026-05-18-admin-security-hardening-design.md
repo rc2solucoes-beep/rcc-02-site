@@ -15,6 +15,7 @@ Incluido neste trabalho:
 - Endurecer `src/app/api/admin/init/route.ts`
 - Atualizar `src/app/api/upload/route.ts` para usar `requireAdmin()`
 - Simplificar `src/app/admin/page.tsx` para fluxo login-only
+- Corrigir `src/proxy.ts` para nao redirecionar automaticamente qualquer usuario autenticado de `/admin` para `/admin/dashboard`
 - Ajustar proxy ou matcher de `/api/admin/:path*` apenas como camada adicional, se existir ponto apropriado no projeto
 
 Fora de escopo:
@@ -49,6 +50,10 @@ O endpoint promove automaticamente o primeiro usuario autenticado quando `admin_
 ### `src/app/admin/page.tsx`
 
 A pagina atual trata `201` de `/api/admin/init` como fluxo de setup bem-sucedido e possui estados visuais de criacao de admin, o que conflita com a postura de login-only.
+
+### `src/proxy.ts`
+
+O proxy atual redireciona qualquer usuario com sessao em `/admin` diretamente para `/admin/dashboard`, antes que a pagina de login possa consultar `/api/admin/init`. Isso cria redirecionamento incorreto para usuarios autenticados sem permissao admin e pode gerar loop ou UX inconsistente.
 
 ### `src/app/api/upload/route.ts`
 
@@ -171,6 +176,14 @@ Regra de arquitetura:
 - proxy ou matcher filtra precocemente quando possivel
 - handlers continuam sendo a fonte primaria de autorizacao
 
+Correcao obrigatoria em `src/proxy.ts`:
+
+- manter redirecionamento de rotas protegidas como `/admin/dashboard` e `/admin/:path+` para `/admin` quando nao houver sessao
+- permitir que `/admin` carregue mesmo quando ja existir sessao
+- nao redirecionar automaticamente qualquer usuario autenticado de `/admin` para `/admin/dashboard`
+- deixar a decisao de redirecionar para `src/app/admin/page.tsx`, apos chamada a `/api/admin/init`
+- evitar loop para usuario autenticado sem permissao admin
+
 ## Logging
 
 Adicionar logs server-side minimos e sem dados sensiveis:
@@ -233,6 +246,7 @@ Validacoes minimas esperadas:
 - `/api/upload` retorna `403` para usuario autenticado sem admin
 - `/api/upload` permite operacao apenas para admin autenticado
 - `src/app/admin/page.tsx` nao exibe mais fluxo de setup
+- `src/proxy.ts` permite carregar `/admin` com sessao existente sem redirecionar automaticamente para `/admin/dashboard`
 - As rotas e paginas deletadas deixam de existir
 
 ## Implementation Notes
@@ -247,6 +261,7 @@ Validacoes minimas esperadas:
 - `src/app/api/admin/debug/route.ts` nao existe mais
 - `src/app/admin/status/page.tsx` nao existe mais
 - `/admin` funciona apenas como login e verificacao de permissao
+- `src/proxy.ts` nao redireciona automaticamente qualquer sessao autenticada de `/admin` para `/admin/dashboard`
 - Nenhum usuario vira admin apenas navegando pela interface
 - `requireAdmin()` existe e centraliza verificacao administrativa server-side
 - `/api/upload` usa `requireAdmin()`
