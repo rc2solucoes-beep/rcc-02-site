@@ -1,38 +1,17 @@
 import { redirect } from "next/navigation";
-import { createSessionClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/admin/requireAdmin";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 
-async function isUserAdmin(userId: string): Promise<boolean> {
-  try {
-    const supabase = await createSessionClient();
-    const { data } = await supabase
-      .from("admin_users")
-      .select("id")
-      .eq("id", userId)
-      .single();
-    return !!data;
-  } catch (error) {
-    console.error("[AdminLayout] Error checking admin status:", error);
-    return false;
-  }
-}
-
 export default async function ProtectedAdminLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createSessionClient();
-  const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+  const admin = await requireAdmin();
 
-  if (sessionError) {
-    console.error("[AdminLayout] Session error:", sessionError);
-    redirect("/admin");
-  }
+  if (!admin.ok) {
+    if (admin.status === 401) {
+      console.warn("[AdminLayout] Access denied: no active session");
+    } else {
+      console.warn("[AdminLayout] Access denied: user is not an admin");
+    }
 
-  if (!session) {
-    redirect("/admin");
-  }
-
-  const isAdmin = await isUserAdmin(session.user.id);
-  if (!isAdmin) {
-    console.warn(`[AdminLayout] User ${session.user.email} is not an admin`);
     redirect("/admin");
   }
 

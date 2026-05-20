@@ -1,6 +1,6 @@
 import { put } from "@vercel/blob";
 import { NextRequest, NextResponse } from "next/server";
-import { createSessionClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/admin/requireAdmin";
 
 // Extensões válidas → MIME canônico
 const EXT_TO_MIME: Record<string, string> = {
@@ -11,28 +11,32 @@ const EXT_TO_MIME: Record<string, string> = {
   gif: "image/gif",
   avif: "image/avif",
 };
+const MIME_TO_EXT: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+  "image/gif": "gif",
+  "image/avif": "avif",
+};
+const ALLOWED_MIME_TYPES = new Set(Object.keys(MIME_TO_EXT));
 
 const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
 
-/** Verifica se o usuário autenticado é admin */
-async function getAdminSession() {
-  const supabase = await createSessionClient();
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) return null;
+function getBasename(raw: string): string {
+  return raw.replace(/\\/g, "/").split("/").pop() ?? "";
+}
 
-  const { data: adminUser } = await supabase
-    .from("admin_users")
-    .select("id")
-    .eq("id", session.user.id)
-    .single();
-
-  return adminUser ? session : null;
+function getAllowedExtension(raw: string): string | null {
+  const basename = getBasename(raw);
+  const ext = basename.split(".").pop()?.toLowerCase() ?? "";
+  return EXT_TO_MIME[ext] ? ext : null;
 }
 
 /** Sanitiza o nome do arquivo para uso seguro no path do Blob */
-function sanitizeFilename(raw: string): string {
-  const ext = raw.split(".").pop()?.toLowerCase() ?? "jpg";
-  const name = raw
+function sanitizeFilename(raw: string, mimeType: string): string {
+  const basename = getBasename(raw);
+  const ext = getAllowedExtension(basename) ?? MIME_TO_EXT[mimeType];
+  const name = basename
     .replace(/\.[^.]+$/, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
@@ -41,28 +45,51 @@ function sanitizeFilename(raw: string): string {
   return `${name || "imagem"}.${ext}`;
 }
 
+function sanitizeFolder(raw: string): string {
+  const sanitized = raw
+    .replace(/\\/g, "/")
+    .split("/")
+    .map((segment) =>
+      segment
+        .toLowerCase()
+        .replace(/[^a-z0-9-]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 40)
+    )
+    .filter(Boolean)
+    .join("/");
+
+  return sanitized || "blog";
+}
+
 /** Resolve o MIME type canonicamente — usa Content-Type e cai no filename como fallback */
 function resolveMime(contentTypeHeader: string, filename: string): string | null {
-  // Tenta o Content-Type enviado pelo browser
   const fromHeader = contentTypeHeader.split(";")[0].trim().toLowerCase();
-  if (fromHeader.startsWith("image/")) return fromHeader;
+  if (fromHeader) {
+    return ALLOWED_MIME_TYPES.has(fromHeader) ? fromHeader : null;
+  }
 
-  // Fallback: extensão do filename
-  const ext = filename.split(".").pop()?.toLowerCase() ?? "";
-  return EXT_TO_MIME[ext] ?? null;
+  const ext = getAllowedExtension(filename);
+  return ext ? EXT_TO_MIME[ext] : null;
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   // 1. Autenticação
-  const session = await getAdminSession();
-  if (!session) {
-    return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+  const admin = await requireAdmin();
+  if (!admin.ok) {
+    if (admin.status === 401) {
+      console.warn("[/api/upload] Access denied: no active session");
+    } else {
+      console.warn("[/api/upload] Access denied: user is not an admin");
+    }
+
+    return NextResponse.json({ error: "Não autorizado" }, { status: admin.status });
   }
 
   // 2. Parâmetros da query
   const { searchParams } = new URL(request.url);
   const rawFilename = searchParams.get("filename") ?? "imagem.jpg";
-  const folder = searchParams.get("folder") ?? "blog";
+  const folder = sanitizeFolder(searchParams.get("folder") ?? "blog");
 
   // 3. Resolver MIME type (Content-Type header + fallback por extensão)
   const contentTypeHeader = request.headers.get("content-type") ?? "";
@@ -96,7 +123,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }
 
   // 6. Gerar path único
-  const sanitized = sanitizeFilename(rawFilename);
+  const sanitized = sanitizeFilename(rawFilename, mimeType);
   const blobPath = `${folder}/${Date.now()}-${sanitized}`;
 
   // 7. Upload para Vercel Blob
