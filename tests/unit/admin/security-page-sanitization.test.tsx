@@ -47,4 +47,16 @@ describe("/admin/security page", () => {
     expect(text).not.toContain("secret");
     expect(screen.queryByText(/token/i)).not.toBeInTheDocument();
   });
+
+  it("renders GET filter form", async () => {
+    const { default: SecurityPage } = await import("@/app/admin/(protected)/security/page");
+    const element = await SecurityPage({ searchParams: Promise.resolve({ severity: "warn", event: "admin_access_forbidden" }) });
+
+    render(createElement("div", null, element));
+
+    expect(screen.getByRole("button", { name: "Filtrar" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Limpar filtros" })).toHaveAttribute("href", "/admin/security");
+    expect(screen.getByDisplayValue("warn")).toBeInTheDocument();
+    expect(screen.getByDisplayValue("admin_access_forbidden")).toBeInTheDocument();
+  });
 });

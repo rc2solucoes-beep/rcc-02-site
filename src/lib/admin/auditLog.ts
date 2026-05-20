@@ -1,9 +1,12 @@
+import "server-only";
+
 import { createHash } from "crypto";
 import { createServiceClient } from "@/lib/supabase/server";
 import { sendSecurityAlert } from "@/lib/admin/securityAlerts";
 import { sanitizeAuditMetadata } from "@/lib/admin/auditLogSanitizer";
+import { normalizeAuditSeverity } from "@/lib/admin/securityRisk";
 
-type AuditSeverity = "info" | "warning" | "error" | "critical";
+type AuditSeverity = "info" | "warn" | "warning" | "error" | "critical";
 type AuditActorType = "admin" | "authenticated" | "unknown" | "system";
 
 type AuditLogInput = {
@@ -47,12 +50,12 @@ const INTERNAL_ALERT_EVENTS = new Set([
 ]);
 
 function toAlertSeverity(
-  severity: AuditSeverity
+  severity: "info" | "warn" | "error"
 ): "warn" | "error" | null {
-  if (severity === "error" || severity === "critical") {
+  if (severity === "error") {
     return "error";
   }
-  if (severity === "warning") {
+  if (severity === "warn") {
     return "warn";
   }
   return null;
@@ -60,6 +63,14 @@ function toAlertSeverity(
 
 function sha256(input: string): string {
   return createHash("sha256").update(input).digest("hex");
+}
+
+function getAuditSalt(): string | undefined {
+  return (
+    process.env.AUDIT_LOG_SALT ??
+    process.env.IP_SALT ??
+    (process.env.NODE_ENV === "development" ? "rc2-dev-only" : undefined)
+  );
 }
 
 function normalizeIp(ip: string): string {
@@ -97,9 +108,21 @@ export function extractRequestContext(request: Request): {
 export async function writeAdminAuditLog(input: AuditLogInput): Promise<void> {
   try {
     const serviceClient = createServiceClient();
-    const actorEmailHash = input.actorEmail ? sha256(input.actorEmail.toLowerCase()) : null;
-    const ipHash = input.ip ? sha256(input.ip) : null;
-    const severity = input.severity ?? "info";
+    const auditSalt = getAuditSalt();
+    const isProdWithoutSalt = process.env.NODE_ENV === "production" && !auditSalt;
+    if (isProdWithoutSalt) {
+      console.error("[auditLog] Missing AUDIT_LOG_SALT/IP_SALT in production; hashes will be omitted");
+    }
+
+    const actorEmailHash =
+      input.actorEmail && auditSalt
+        ? sha256(`${auditSalt}:${input.actorEmail.toLowerCase()}`)
+        : null;
+    const ipHash =
+      input.ip && auditSalt
+        ? sha256(`${auditSalt}:${normalizeIp(input.ip)}`)
+        : null;
+    const severity = normalizeAuditSeverity(input.severity ?? "info");
     const metadata = sanitizeAuditMetadata(input.metadata ?? null);
 
     await serviceClient.from("admin_audit_logs").insert({

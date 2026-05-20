@@ -127,6 +127,29 @@ export default async function SecurityPage({
             <h2 className="text-sm font-semibold text-rc2-ebony">Eventos recentes</h2>
             <p className="text-xs text-rc2-ebony/60">Limite: 100 | Ordem: mais recentes primeiro</p>
           </div>
+          <form method="GET" className="px-4 py-3 border-b border-border grid grid-cols-1 md:grid-cols-6 gap-3">
+            <select name="severity" defaultValue={severity ?? ""} className="h-9 rounded border border-border px-2 text-sm">
+              <option value="">Severidade</option>
+              <option value="info">info</option>
+              <option value="warn">warn</option>
+              <option value="error">error</option>
+            </select>
+            <input name="event" defaultValue={event ?? ""} placeholder="Evento" className="h-9 rounded border border-border px-2 text-sm" />
+            <select name="actorType" defaultValue={actorType ?? ""} className="h-9 rounded border border-border px-2 text-sm">
+              <option value="">Tipo de ator</option>
+              <option value="anonymous">anonymous</option>
+              <option value="authenticated">authenticated</option>
+              <option value="admin">admin</option>
+              <option value="system">system</option>
+              <option value="unknown">unknown</option>
+            </select>
+            <input type="date" name="from" defaultValue={from ?? ""} className="h-9 rounded border border-border px-2 text-sm" />
+            <input type="date" name="to" defaultValue={to ?? ""} className="h-9 rounded border border-border px-2 text-sm" />
+            <div className="flex items-center gap-2">
+              <button type="submit" className="h-9 px-3 rounded bg-rc2-orange text-white text-sm font-medium">Filtrar</button>
+              <a href="/admin/security" className="text-sm text-rc2-ebony/70 hover:text-rc2-ebony">Limpar filtros</a>
+            </div>
+          </form>
 
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -154,6 +177,7 @@ export default async function SecurityPage({
                   events.map((item) => {
                     const risk = getAuditEventRiskLevel(item.event, item.severity);
                     const actor = item.actor_email_hash ?? item.actor_user_id ?? item.actor_type;
+                    const metadataPreview = formatAuditMetadataPreview(item.metadata, 200);
                     return (
                       <tr key={item.id} className="border-t border-border align-top">
                         <td className="px-3 py-2 whitespace-nowrap">{formatDateTime(item.created_at)}</td>
@@ -172,8 +196,8 @@ export default async function SecurityPage({
                         <td className="px-3 py-2">{item.status ?? "—"}</td>
                         <td className="px-3 py-2 font-mono text-xs">{item.path ?? "—"}</td>
                         <td className="px-3 py-2 font-mono text-xs">{formatResource(item.resource_type, item.resource_id)}</td>
-                        <td className="px-3 py-2 max-w-[380px] truncate" title={formatAuditMetadataPreview(item.metadata, 200)}>
-                          {formatAuditMetadataPreview(item.metadata, 200)}
+                        <td className="px-3 py-2 max-w-[380px] truncate" title={metadataPreview}>
+                          {metadataPreview}
                         </td>
                       </tr>
                     );

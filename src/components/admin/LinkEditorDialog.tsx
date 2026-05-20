@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { X } from "lucide-react";
 
 interface Post {
@@ -41,36 +41,34 @@ export function LinkEditorDialog({
   const [loading, setLoading] = useState(false);
   const [urlError, setUrlError] = useState<string>("");
 
+  const syncStateFromInitial = useCallback(() => {
+    setUrl(initialUrl);
+    setUrlError("");
+
+    const isExternal = initialUrl?.startsWith("http") ?? false;
+    setLinkType(isExternal ? "external" : "internal");
+
+    if (!isExternal && initialUrl?.startsWith("/blog/")) {
+      const slug = initialUrl.replace("/blog/", "");
+      setSelectedPostSlug(slug);
+    } else {
+      setSelectedPostSlug("");
+    }
+
+    setOpenInNewTab(false);
+  }, [initialUrl]);
+
   // Sync state when dialog opens or link changes
   useEffect(() => {
     if (isOpen) {
-      setUrl(initialUrl);
-      setUrlError("");
-
-      // Determine if external or internal
-      const isExternal = initialUrl?.startsWith("http") ?? false;
-      setLinkType(isExternal ? "external" : "internal");
-
-      // Extract slug if internal link
-      if (!isExternal && initialUrl?.startsWith("/blog/")) {
-        const slug = initialUrl.replace("/blog/", "");
-        setSelectedPostSlug(slug);
-      } else {
-        setSelectedPostSlug("");
-      }
-
-      // Check if link currently has target="_blank" to set openInNewTab
-      // For now, we'll keep it false as default
-      setOpenInNewTab(false);
-
-      // Focus the appropriate input when dialog opens
       setTimeout(() => {
+        syncStateFromInitial();
         if (urlInputRef.current) {
           urlInputRef.current.focus();
         }
       }, 0);
     }
-  }, [isOpen, initialUrl]);
+  }, [isOpen, syncStateFromInitial]);
 
   // Handle escape key to close dialog
   useEffect(() => {
@@ -107,13 +105,6 @@ export function LinkEditorDialog({
       fetchPosts();
     }
   }, [linkType, posts.length]);
-
-  // Update URL when link type changes
-  useEffect(() => {
-    if (linkType === "internal" && selectedPostSlug) {
-      setUrl(`/blog/${selectedPostSlug}`);
-    }
-  }, [linkType, selectedPostSlug]);
 
   const validateUrl = (testUrl: string): boolean => {
     setUrlError("");
@@ -208,7 +199,7 @@ export function LinkEditorDialog({
           <div className="mb-4 p-3 bg-rc2-sand/50 rounded border border-border/50">
             <p className="text-xs text-rc2-ebony/60 mb-1">Texto:</p>
             <p className="text-sm font-medium text-rc2-ebony line-clamp-2">
-              "{selectedText}"
+              &quot;{selectedText}&quot;
             </p>
           </div>
         )}
@@ -289,7 +280,9 @@ export function LinkEditorDialog({
                 value={selectedPostSlug}
                 onChange={(e) => {
                   e.stopPropagation();
-                  setSelectedPostSlug(e.target.value);
+                  const slug = e.target.value;
+                  setSelectedPostSlug(slug);
+                  setUrl(slug ? `/blog/${slug}` : "");
                 }}
                 onMouseDown={(e) => e.stopPropagation()}
                 className="w-full border border-border bg-white px-3 py-2.5 text-sm rounded outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors"

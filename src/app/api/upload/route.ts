@@ -115,6 +115,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const { searchParams } = new URL(request.url);
   const rawFilename = searchParams.get("filename") ?? "imagem.jpg";
   const folder = sanitizeFolder(searchParams.get("folder") ?? "blog");
+  const safeOriginalExtension = getAllowedExtension(rawFilename);
 
   // 3. Resolver MIME type (Content-Type header + fallback por extensão)
   const contentTypeHeader = request.headers.get("content-type") ?? "";
@@ -133,7 +134,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       ip: requestContext.ip,
       userAgent: requestContext.userAgent,
       metadata: {
-        filename: rawFilename,
+        extension: safeOriginalExtension,
         contentTypeHeader,
       },
     });
@@ -160,7 +161,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       ip: requestContext.ip,
       userAgent: requestContext.userAgent,
       metadata: {
-        filename: rawFilename,
+        extension: safeOriginalExtension,
       },
     });
     return NextResponse.json({ error: "Não foi possível ler o arquivo." }, { status: 400 });
@@ -180,8 +181,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       ip: requestContext.ip,
       userAgent: requestContext.userAgent,
       metadata: {
-        filename: rawFilename,
+        extension: safeOriginalExtension,
         sizeBytes: buffer.byteLength,
+        folder,
       },
     });
     return NextResponse.json(
@@ -203,7 +205,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       ip: requestContext.ip,
       userAgent: requestContext.userAgent,
       metadata: {
-        filename: rawFilename,
+        extension: safeOriginalExtension,
+        folder,
       },
     });
     return NextResponse.json({ error: "Arquivo vazio." }, { status: 400 });
@@ -234,7 +237,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       resourceType: "blob",
       resourceId: blob.pathname,
       metadata: {
-        filename: rawFilename,
+        sanitizedFilename: sanitized,
+        extension: safeOriginalExtension ?? MIME_TO_EXT[mimeType],
         folder,
         mimeType,
         sizeBytes: buffer.byteLength,
@@ -255,7 +259,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       ip: requestContext.ip,
       userAgent: requestContext.userAgent,
       metadata: {
-        filename: rawFilename,
+        sanitizedFilename: sanitized,
+        extension: safeOriginalExtension ?? MIME_TO_EXT[mimeType],
         folder,
         mimeType,
       },

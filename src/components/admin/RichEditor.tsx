@@ -128,11 +128,6 @@ export function RichEditor({
     selectedText: "",
     initialUrl: "",
   });
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const editor = useEditor({
     extensions: [
@@ -211,7 +206,7 @@ export function RichEditor({
   return (
     <>
       {/* Portal: renders dialog in document.body, completely outside TipTap's DOM tree */}
-      {mounted && createPortal(linkDialog, document.body)}
+      {typeof document !== "undefined" && createPortal(linkDialog, document.body)}
       <div className="border border-border rounded overflow-hidden">
         {/* Top Toolbar */}
         <div className="border-b border-border">

@@ -4,10 +4,10 @@ vi.mock("server-only", () => ({}));
 
 const send = vi.fn();
 const insert = vi.fn();
-const select = vi.fn();
-const inFilter = vi.fn();
+const filter = vi.fn();
 const gte = vi.fn();
-const limit = vi.fn();
+const inFilter = vi.fn();
+const select = vi.fn();
 const from = vi.fn();
 
 vi.mock("resend", () => ({
@@ -29,27 +29,36 @@ describe("securityAlerts", () => {
 
     send.mockReset();
     insert.mockReset();
-    select.mockReset();
-    inFilter.mockReset();
+    filter.mockReset();
     gte.mockReset();
-    limit.mockReset();
+    inFilter.mockReset();
+    select.mockReset();
     from.mockReset();
 
-    limit.mockResolvedValue({ data: [], error: null });
-    gte.mockReturnValue({ limit });
-    inFilter.mockReturnValue({ gte });
-    select.mockReturnValue({ in: inFilter });
+    filter.mockResolvedValue({ count: 0, error: null });
+    const query = {
+      in: inFilter,
+      gte,
+      select,
+      filter,
+      limit: vi.fn().mockResolvedValue({ data: [], error: null }),
+    };
+    gte.mockReturnValue(query);
+    inFilter.mockReturnValue(query);
+    select.mockReturnValue(query);
     insert.mockResolvedValue({ error: null });
 
-    from.mockImplementation((table: string) => {
-      if (table === "admin_audit_logs") {
-        return {
-          select,
-          insert,
-        };
-      }
-      return { select, insert };
-    });
+    from.mockReturnValue({ select, insert, in: inFilter, gte });
+  });
+
+  it("does not send alert for internal alert events", async () => {
+    const { sendSecurityAlert } = await import("@/lib/admin/securityAlerts");
+
+    await sendSecurityAlert({ event: "admin_security_alert_sent", severity: "warn" });
+    await sendSecurityAlert({ event: "admin_security_alert_skipped_unconfigured", severity: "warn" });
+
+    expect(send).not.toHaveBeenCalled();
+    expect(insert).not.toHaveBeenCalled();
   });
 
   it("does not send alert when emails are not configured and logs skipped", async () => {
@@ -66,6 +75,20 @@ describe("securityAlerts", () => {
     );
   });
 
+  it("dedupes by sourceEvent when recent alert already exists", async () => {
+    vi.stubEnv("SECURITY_ALERT_EMAIL", "security@example.com");
+    vi.stubEnv("RESEND_API_KEY", "re_test");
+    filter.mockResolvedValueOnce({ count: 1, error: null });
+    const { sendSecurityAlert } = await import("@/lib/admin/securityAlerts");
+
+    await sendSecurityAlert({
+      event: "admin_access_forbidden",
+      severity: "warn",
+    });
+
+    expect(send).not.toHaveBeenCalled();
+  });
+
   it("does not leak sensitive metadata keys", async () => {
     vi.stubEnv("SECURITY_ALERT_EMAIL", "security@example.com");
     vi.stubEnv("RESEND_API_KEY", "re_test");
@@ -79,6 +102,7 @@ describe("securityAlerts", () => {
         token: "secret",
         authorization: "Bearer x",
         password: "abc",
+        apiKey: "123",
         safe: "ok",
       },
     });
@@ -88,6 +112,7 @@ describe("securityAlerts", () => {
     expect(payload).not.toContain("secret");
     expect(payload).not.toContain("authorization");
     expect(payload).not.toContain("password");
+    expect(payload).not.toContain("apiKey");
     expect(payload).toContain("safe");
   });
 });

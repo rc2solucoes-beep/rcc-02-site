@@ -59,14 +59,26 @@ async function hasRecentAlertEvent(sourceEvent: string): Promise<boolean> {
   try {
     const service = createServiceClient();
     const threshold = new Date(Date.now() - 15 * 60 * 1000).toISOString();
-    const { data, error } = await service
+    const { count, error } = await service
       .from("admin_audit_logs")
-      .select("id,event,metadata")
+      .select("id", { count: "exact", head: true })
       .in("event", ["admin_security_alert_sent", "admin_security_alert_skipped_unconfigured"])
       .gte("created_at", threshold)
-      .limit(100);
+      .filter("metadata->>sourceEvent", "eq", sourceEvent);
 
-    if (error || !data) {
+    if (!error) {
+      return (count ?? 0) > 0;
+    }
+
+    // Fallback for clients that don't support JSON-path filters reliably.
+    const { data, error: fallbackError } = await service
+      .from("admin_audit_logs")
+      .select("id,metadata")
+      .in("event", ["admin_security_alert_sent", "admin_security_alert_skipped_unconfigured"])
+      .gte("created_at", threshold)
+      .limit(250);
+
+    if (fallbackError || !data) {
       return false;
     }
 
