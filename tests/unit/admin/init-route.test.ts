@@ -4,6 +4,7 @@ import { NextRequest } from "next/server";
 const requireAdmin = vi.fn();
 const createServiceClient = vi.fn();
 const rpc = vi.fn();
+const writeAdminAuditLog = vi.fn();
 
 let warnSpy: ReturnType<typeof vi.spyOn>;
 let infoSpy: ReturnType<typeof vi.spyOn>;
@@ -11,6 +12,16 @@ let errorSpy: ReturnType<typeof vi.spyOn>;
 
 vi.mock("@/lib/admin/requireAdmin", () => ({
   requireAdmin,
+}));
+
+vi.mock("@/lib/admin/auditLog", () => ({
+  extractRequestContext: vi.fn(() => ({
+    path: "/api/admin/init",
+    method: "POST",
+    ip: "127.0.0.1",
+    userAgent: "vitest",
+  })),
+  writeAdminAuditLog,
 }));
 
 vi.mock("@/lib/supabase/server", () => ({
@@ -75,6 +86,7 @@ describe("POST /api/admin/init", () => {
     requireAdmin.mockReset();
     createServiceClient.mockReset();
     rpc.mockReset();
+    writeAdminAuditLog.mockReset();
 
     createServiceClient.mockReturnValue({ rpc });
     rpc.mockResolvedValue({ data: false, error: null });

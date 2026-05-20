@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { updateAuthorRecord } from "@/lib/authors/server";
+import { requireAdmin } from "@/lib/admin/requireAdmin";
+import { writeAdminAuditLog } from "@/lib/admin/auditLog";
 import { createSessionClient } from "@/lib/supabase/server";
 import type { AuthorSnapshotComparableFields } from "@/lib/types/author";
 import { CreatePostSchema } from "@/lib/validations/post";
@@ -21,6 +23,24 @@ export type PostFormState = {
   errors?: Record<string, string[]>;
   message?: string;
 };
+
+async function requireAdminActorForPosts() {
+  const admin = await requireAdmin();
+  if (!admin.ok) {
+    await writeAdminAuditLog({
+      event: "admin_post_action_denied",
+      severity: "warning",
+      actorUserId: admin.userId,
+      actorEmail: admin.email,
+      actorType: admin.status === 401 ? "unknown" : "authenticated",
+      path: "/admin/posts",
+      method: "SERVER_ACTION",
+      status: admin.status,
+    });
+    throw new Error("Unauthorized: admin access required.");
+  }
+  return admin;
+}
 
 function getAuthorSnapshotFromFormData(
   formData: FormData
@@ -55,6 +75,7 @@ async function syncGlobalAuthorIfRequested(
 }
 
 export async function createPost(prevState: PostFormState, formData: FormData): Promise<PostFormState> {
+  const admin = await requireAdminActorForPosts();
   const raw = {
     title: formData.get("title") as string,
     slug: formData.get("slug") as string,
@@ -133,6 +154,16 @@ export async function createPost(prevState: PostFormState, formData: FormData): 
 
     if (error) {
       if (error.code === "23505") {
+        await writeAdminAuditLog({
+          event: "admin_post_create_duplicate_slug",
+          severity: "warning",
+          actorUserId: admin.userId,
+          actorEmail: admin.email,
+          actorType: "admin",
+          path: "/admin/posts",
+          method: "SERVER_ACTION",
+          status: 409,
+        });
         return { errors: { slug: ["Este slug já está em uso."] } };
       }
       console.error("Supabase error:", error);
@@ -140,8 +171,33 @@ export async function createPost(prevState: PostFormState, formData: FormData): 
     }
   } catch (err) {
     console.error("Error creating post:", err);
+    await writeAdminAuditLog({
+      event: "admin_post_create_error",
+      severity: "error",
+      actorUserId: admin.userId,
+      actorEmail: admin.email,
+      actorType: "admin",
+      path: "/admin/posts",
+      method: "SERVER_ACTION",
+      status: 500,
+    });
     return { message: "Erro ao salvar post. Tente novamente." };
   }
+
+  await writeAdminAuditLog({
+    event: "admin_post_created",
+    severity: "info",
+    actorUserId: admin.userId,
+    actorEmail: admin.email,
+    actorType: "admin",
+    path: "/admin/posts",
+    method: "SERVER_ACTION",
+    status: 200,
+    metadata: {
+      slug: parsed.data.slug,
+      status: parsed.data.status,
+    },
+  });
 
   revalidatePath("/admin/posts");
   revalidatePath("/blog");
@@ -149,6 +205,7 @@ export async function createPost(prevState: PostFormState, formData: FormData): 
 }
 
 export async function updatePost(id: string, prevState: PostFormState, formData: FormData): Promise<PostFormState> {
+  const admin = await requireAdminActorForPosts();
   const raw = {
     title: formData.get("title") as string,
     slug: formData.get("slug") as string,
@@ -239,6 +296,18 @@ export async function updatePost(id: string, prevState: PostFormState, formData:
 
     if (error) {
       if (error.code === "23505") {
+        await writeAdminAuditLog({
+          event: "admin_post_update_duplicate_slug",
+          severity: "warning",
+          actorUserId: admin.userId,
+          actorEmail: admin.email,
+          actorType: "admin",
+          path: "/admin/posts",
+          method: "SERVER_ACTION",
+          status: 409,
+          resourceType: "post",
+          resourceId: id,
+        });
         return { errors: { slug: ["Este slug já está em uso."] } };
       }
       console.error("Supabase error:", error);
@@ -246,8 +315,37 @@ export async function updatePost(id: string, prevState: PostFormState, formData:
     }
   } catch (err) {
     console.error("Error updating post:", err);
+    await writeAdminAuditLog({
+      event: "admin_post_update_error",
+      severity: "error",
+      actorUserId: admin.userId,
+      actorEmail: admin.email,
+      actorType: "admin",
+      path: "/admin/posts",
+      method: "SERVER_ACTION",
+      status: 500,
+      resourceType: "post",
+      resourceId: id,
+    });
     return { message: "Erro ao atualizar post. Tente novamente." };
   }
+
+  await writeAdminAuditLog({
+    event: "admin_post_updated",
+    severity: "info",
+    actorUserId: admin.userId,
+    actorEmail: admin.email,
+    actorType: "admin",
+    path: "/admin/posts",
+    method: "SERVER_ACTION",
+    status: 200,
+    resourceType: "post",
+    resourceId: id,
+    metadata: {
+      slug: parsed.data.slug,
+      status: parsed.data.status,
+    },
+  });
 
   revalidatePath("/admin/posts");
   revalidatePath("/blog");
@@ -255,8 +353,23 @@ export async function updatePost(id: string, prevState: PostFormState, formData:
 }
 
 export async function deletePost(id: string): Promise<void> {
+  const admin = await requireAdminActorForPosts();
   const supabase = await createSessionClient();
   await supabase.from("posts").delete().eq("id", id);
+
+  await writeAdminAuditLog({
+    event: "admin_post_deleted",
+    severity: "warning",
+    actorUserId: admin.userId,
+    actorEmail: admin.email,
+    actorType: "admin",
+    path: "/admin/posts",
+    method: "SERVER_ACTION",
+    status: 200,
+    resourceType: "post",
+    resourceId: id,
+  });
+
   revalidatePath("/admin/posts");
   revalidatePath("/blog");
   redirect("/admin/posts");
