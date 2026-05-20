@@ -124,10 +124,13 @@ Conteúdo lógico:
 1. Backfill de severidade legada:
    - `UPDATE ... SET severity='warn' WHERE severity='warning'`
    - `UPDATE ... SET severity='error' WHERE severity='critical'`
-2. Constraints:
+   - `UPDATE ... SET severity='info' WHERE severity NOT IN ('info','warn','error') OR severity IS NULL`
+2. Backfill de actor_type inválido:
+   - `UPDATE ... SET actor_type='unknown' WHERE actor_type NOT IN ('anonymous','authenticated','admin','system','unknown') OR actor_type IS NULL`
+3. Constraints:
    - `admin_audit_logs_severity_check`
    - `admin_audit_logs_actor_type_check`
-3. Índices:
+4. Índices:
    - `admin_audit_logs_severity_idx`
    - `admin_audit_logs_resource_idx`
 
@@ -213,6 +216,7 @@ Validação manual:
 - `auditLog.ts` server-only.
 - hash com salt e sem hash inseguro em produção sem salt.
 - sem e-mail/IP puro persistido.
+- produção com `AUDIT_LOG_SALT` configurado (com `IP_SALT` somente como fallback de compatibilidade).
 - severity persistida só em `info|warn|error`.
 - constraints/índices aplicados via migration incremental.
 - RPC bootstrap confirmada ou criada com segurança.
