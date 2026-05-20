@@ -1,5 +1,6 @@
 import { put } from "@vercel/blob";
 import { NextRequest, NextResponse } from "next/server";
+import { extractRequestContext, writeAdminAuditLog } from "@/lib/admin/auditLog";
 import { requireAdmin } from "@/lib/admin/requireAdmin";
 
 // Extensões válidas → MIME canônico
@@ -74,13 +75,37 @@ function resolveMime(contentTypeHeader: string, filename: string): string | null
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
+  const requestContext = extractRequestContext(request);
+
   // 1. Autenticação
   const admin = await requireAdmin();
   if (!admin.ok) {
     if (admin.status === 401) {
       console.warn("[/api/upload] Access denied: no active session");
+      await writeAdminAuditLog({
+        event: "admin_upload_denied_no_session",
+        severity: "warning",
+        actorType: "unknown",
+        path: requestContext.path,
+        method: requestContext.method,
+        status: 401,
+        ip: requestContext.ip,
+        userAgent: requestContext.userAgent,
+      });
     } else {
       console.warn("[/api/upload] Access denied: user is not an admin");
+      await writeAdminAuditLog({
+        event: "admin_upload_denied_not_admin",
+        severity: "warning",
+        actorUserId: admin.userId,
+        actorEmail: admin.email,
+        actorType: "authenticated",
+        path: requestContext.path,
+        method: requestContext.method,
+        status: 403,
+        ip: requestContext.ip,
+        userAgent: requestContext.userAgent,
+      });
     }
 
     return NextResponse.json({ error: "Não autorizado" }, { status: admin.status });
@@ -96,6 +121,22 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const mimeType = resolveMime(contentTypeHeader, rawFilename);
 
   if (!mimeType) {
+    await writeAdminAuditLog({
+      event: "admin_upload_invalid_mime",
+      severity: "warning",
+      actorUserId: admin.userId,
+      actorEmail: admin.email,
+      actorType: "admin",
+      path: requestContext.path,
+      method: requestContext.method,
+      status: 400,
+      ip: requestContext.ip,
+      userAgent: requestContext.userAgent,
+      metadata: {
+        filename: rawFilename,
+        contentTypeHeader,
+      },
+    });
     return NextResponse.json(
       { error: "Tipo de arquivo não suportado. Use JPEG, PNG, WebP, GIF ou AVIF." },
       { status: 400 }
@@ -107,11 +148,42 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     buffer = await request.arrayBuffer();
   } catch {
+    await writeAdminAuditLog({
+      event: "admin_upload_read_error",
+      severity: "warning",
+      actorUserId: admin.userId,
+      actorEmail: admin.email,
+      actorType: "admin",
+      path: requestContext.path,
+      method: requestContext.method,
+      status: 400,
+      ip: requestContext.ip,
+      userAgent: requestContext.userAgent,
+      metadata: {
+        filename: rawFilename,
+      },
+    });
     return NextResponse.json({ error: "Não foi possível ler o arquivo." }, { status: 400 });
   }
 
   // 5. Validar tamanho
   if (buffer.byteLength > MAX_SIZE_BYTES) {
+    await writeAdminAuditLog({
+      event: "admin_upload_too_large",
+      severity: "warning",
+      actorUserId: admin.userId,
+      actorEmail: admin.email,
+      actorType: "admin",
+      path: requestContext.path,
+      method: requestContext.method,
+      status: 413,
+      ip: requestContext.ip,
+      userAgent: requestContext.userAgent,
+      metadata: {
+        filename: rawFilename,
+        sizeBytes: buffer.byteLength,
+      },
+    });
     return NextResponse.json(
       { error: `Arquivo muito grande. Máximo: ${MAX_SIZE_BYTES / 1024 / 1024} MB.` },
       { status: 413 }
@@ -119,6 +191,21 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }
 
   if (buffer.byteLength === 0) {
+    await writeAdminAuditLog({
+      event: "admin_upload_empty_file",
+      severity: "warning",
+      actorUserId: admin.userId,
+      actorEmail: admin.email,
+      actorType: "admin",
+      path: requestContext.path,
+      method: requestContext.method,
+      status: 400,
+      ip: requestContext.ip,
+      userAgent: requestContext.userAgent,
+      metadata: {
+        filename: rawFilename,
+      },
+    });
     return NextResponse.json({ error: "Arquivo vazio." }, { status: 400 });
   }
 
@@ -133,9 +220,46 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       contentType: mimeType,
     });
 
+    await writeAdminAuditLog({
+      event: "admin_upload_success",
+      severity: "info",
+      actorUserId: admin.userId,
+      actorEmail: admin.email,
+      actorType: "admin",
+      path: requestContext.path,
+      method: requestContext.method,
+      status: 200,
+      ip: requestContext.ip,
+      userAgent: requestContext.userAgent,
+      resourceType: "blob",
+      resourceId: blob.pathname,
+      metadata: {
+        filename: rawFilename,
+        folder,
+        mimeType,
+        sizeBytes: buffer.byteLength,
+      },
+    });
     return NextResponse.json({ url: blob.url, pathname: blob.pathname });
   } catch (err) {
     console.error("[/api/upload] Erro no Vercel Blob:", err);
+    await writeAdminAuditLog({
+      event: "admin_upload_storage_error",
+      severity: "error",
+      actorUserId: admin.userId,
+      actorEmail: admin.email,
+      actorType: "admin",
+      path: requestContext.path,
+      method: requestContext.method,
+      status: 500,
+      ip: requestContext.ip,
+      userAgent: requestContext.userAgent,
+      metadata: {
+        filename: rawFilename,
+        folder,
+        mimeType,
+      },
+    });
     return NextResponse.json(
       { error: "Erro ao fazer upload. Tente novamente." },
       { status: 500 }
