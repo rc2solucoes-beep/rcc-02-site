@@ -31,7 +31,9 @@ Fora de escopo nesta prioridade:
 - Nunca exibir e-mail puro; apenas `actor_email_hash` quando existir.
 - Range de filtro por data: máximo 90 dias.
 - Limite máximo de registros retornados: 100.
-- Padrão de período da tela: **sempre últimas 24h (cards e tabela)** quando nenhum filtro explícito for fornecido.
+- Cards permanecem sempre na janela fixa de 24h, independente de filtros.
+- Filtros por query string afetam somente a tabela de eventos.
+- Na tabela, quando não houver filtro explícito, o padrão é janela de últimas 24h.
 
 ## 4. Arquitetura proposta (Abordagem A)
 
@@ -83,8 +85,10 @@ Responsabilidades:
   - registrar `admin_security_alert_skipped_unconfigured` (audit log técnico).
 - Deduplicar envio:
   - verificar `admin_security_alert_sent` com `metadata.sourceEvent` igual ao evento, janela de 15 minutos.
+- Deduplicar também `admin_security_alert_skipped_unconfigured` por `metadata.sourceEvent` em janela de 15 minutos.
 - Se enviado com sucesso:
   - registrar `admin_security_alert_sent` com metadata mínima `{ sourceEvent }`.
+- `admin_security_alert_sent` e `admin_security_alert_skipped_unconfigured` nunca podem disparar novos alertas.
 - Falhas internas nunca quebram fluxo principal.
 
 ## 5. Design da UI `/admin/security`
@@ -157,6 +161,7 @@ Regras:
 - Ignorar filtro inválido sem quebrar render.
 - Aplicar range máximo de 90 dias.
 - Limite sempre <= 100.
+- Esses filtros influenciam apenas a tabela; os cards seguem fixos em 24h.
 
 ## 6. Integrações no código existente
 
@@ -173,6 +178,13 @@ Arquivo: `src/lib/admin/auditLog.ts`.
 - Envio de alerta deve ser best-effort:
   - erro de alerta é capturado e isolado,
   - fluxo principal segue sem impacto.
+- Guard-rail explícito: nunca disparar alerta para eventos internos de controle de alerta:
+  - `admin_security_alert_sent`
+  - `admin_security_alert_skipped_unconfigured`
+
+### 6.3 Dependência de RLS para leitura via sessão
+- Confirmar na migration `supabase/migrations/009_admin_audit_logs.sql` que a política de `SELECT` permite leitura para usuários autenticados presentes em `admin_users`.
+- A tela `/admin/security` deve usar `createSessionClient()` e respeitar essa política.
 
 Whitelist de eventos que disparam alerta:
 - `admin_bootstrap_success`
