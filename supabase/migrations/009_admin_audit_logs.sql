@@ -33,10 +33,12 @@ CREATE INDEX IF NOT EXISTS admin_audit_logs_actor_user_id_idx
 
 ALTER TABLE public.admin_audit_logs ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Admin audit logs - block select"
+DROP POLICY IF EXISTS "Admin audit logs - block select" ON public.admin_audit_logs;
+
+CREATE POLICY "Admin audit logs - admin select"
   ON public.admin_audit_logs FOR SELECT
   TO authenticated
-  USING (false);
+  USING (auth.uid() IN (SELECT id FROM public.admin_users));
 
 CREATE POLICY "Admin audit logs - block insert"
   ON public.admin_audit_logs FOR INSERT

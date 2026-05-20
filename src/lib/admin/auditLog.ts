@@ -1,5 +1,7 @@
 import { createHash } from "crypto";
 import { createServiceClient } from "@/lib/supabase/server";
+import { sendSecurityAlert } from "@/lib/admin/securityAlerts";
+import { sanitizeAuditMetadata } from "@/lib/admin/auditLogSanitizer";
 
 type AuditSeverity = "info" | "warning" | "error" | "critical";
 type AuditActorType = "admin" | "authenticated" | "unknown" | "system";
@@ -19,6 +21,42 @@ type AuditLogInput = {
   resourceId?: string | null;
   metadata?: Record<string, unknown> | null;
 };
+
+const ALERT_EVENT_WHITELIST = new Set([
+  "admin_bootstrap_success",
+  "admin_bootstrap_invalid_token",
+  "admin_bootstrap_not_configured",
+  "admin_access_forbidden",
+  "admin_action_forbidden",
+  "admin_upload_rejected_type",
+  "admin_upload_rejected_size",
+  "admin_bootstrap_created_first_admin",
+  "admin_bootstrap_denied_invalid_token",
+  "admin_bootstrap_denied_missing_token",
+  "admin_bootstrap_denied_admin_exists",
+  "admin_post_action_denied",
+  "admin_author_action_denied",
+  "admin_upload_invalid_mime",
+  "admin_upload_too_large",
+  "admin_upload_denied_not_admin",
+]);
+
+const INTERNAL_ALERT_EVENTS = new Set([
+  "admin_security_alert_sent",
+  "admin_security_alert_skipped_unconfigured",
+]);
+
+function toAlertSeverity(
+  severity: AuditSeverity
+): "warn" | "error" | null {
+  if (severity === "error" || severity === "critical") {
+    return "error";
+  }
+  if (severity === "warning") {
+    return "warn";
+  }
+  return null;
+}
 
 function sha256(input: string): string {
   return createHash("sha256").update(input).digest("hex");
@@ -61,10 +99,12 @@ export async function writeAdminAuditLog(input: AuditLogInput): Promise<void> {
     const serviceClient = createServiceClient();
     const actorEmailHash = input.actorEmail ? sha256(input.actorEmail.toLowerCase()) : null;
     const ipHash = input.ip ? sha256(input.ip) : null;
+    const severity = input.severity ?? "info";
+    const metadata = sanitizeAuditMetadata(input.metadata ?? null);
 
     await serviceClient.from("admin_audit_logs").insert({
       event: input.event,
-      severity: input.severity ?? "info",
+      severity,
       actor_user_id: input.actorUserId ?? null,
       actor_email_hash: actorEmailHash,
       actor_type: input.actorType ?? "unknown",
@@ -75,8 +115,26 @@ export async function writeAdminAuditLog(input: AuditLogInput): Promise<void> {
       user_agent: input.userAgent ?? null,
       resource_type: input.resourceType ?? null,
       resource_id: input.resourceId ?? null,
-      metadata: input.metadata ?? null,
+      metadata,
     });
+
+    const alertSeverity = toAlertSeverity(severity);
+    if (
+      alertSeverity &&
+      ALERT_EVENT_WHITELIST.has(input.event) &&
+      !INTERNAL_ALERT_EVENTS.has(input.event)
+    ) {
+      await sendSecurityAlert({
+        event: input.event,
+        severity: alertSeverity,
+        status: input.status ?? null,
+        path: input.path ?? null,
+        actorUserId: input.actorUserId ?? null,
+        actorEmailHash,
+        ipHash,
+        metadata,
+      });
+    }
   } catch {
     // Never block admin flows on audit write failure.
   }

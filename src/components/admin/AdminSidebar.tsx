@@ -5,12 +5,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, FileText, Users, Settings, LogOut, Menu, X } from "lucide-react";
+import { LayoutDashboard, FileText, Users, Settings, Shield, LogOut, Menu, X } from "lucide-react";
 
 const navItems = [
   { href: "/admin/dashboard", label: "Dashboard",  icon: LayoutDashboard },
   { href: "/admin/posts",     label: "Posts",       icon: FileText },
   { href: "/admin/leads",     label: "Leads",       icon: Users },
+  { href: "/admin/security",  label: "Segurança",   icon: Shield },
   { href: "/admin/settings",  label: "Configurações", icon: Settings },
 ];
 
