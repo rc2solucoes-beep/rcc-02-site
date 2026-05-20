@@ -104,15 +104,16 @@ Fluxo de verificacao normal:
 Fluxo de bootstrap:
 
 - Executar apenas se o usuario autenticado nao for admin
-- Confirmar que `admin_users` esta vazia
 - Confirmar que `ADMIN_BOOTSTRAP_TOKEN` existe no ambiente
 - Confirmar que o header `x-admin-bootstrap-token` foi enviado
 - Confirmar que o valor do header corresponde ao token configurado
-- So entao usar `createServiceClient()` para inserir o primeiro admin
+- So entao entrar no branch de bootstrap com `createServiceClient()`
+- Dentro desse branch, executar uma operacao atomica no banco para verificar se `admin_users` esta vazia e inserir o primeiro admin sem race condition
 
 Restricoes obrigatorias:
 
-- `createServiceClient()` fica restrito exclusivamente ao bloco final de criacao do primeiro admin
+- `createServiceClient()` fica restrito exclusivamente ao branch de bootstrap, depois de sessao valida e token valido
+- A criacao do primeiro admin deve ser atomica no banco; nao usar `count` seguido de `insert` em duas etapas independentes
 - Sem token, token invalido ou token ausente no ambiente: retornar `403`
 - O token nunca aparece em logs
 - O token nunca aparece em respostas JSON
@@ -161,6 +162,7 @@ Comportamento esperado:
 - `401` quando nao houver sessao
 - `403` quando houver sessao sem privilegio admin
 - seguir com upload apenas quando `requireAdmin()` retornar `ok: true`
+- ao tocar na rota, manter ou endurecer as invariantes de seguranca do upload; nao permitir ampliacao acidental do allowlist de arquivos aceitos nem composicao insegura de `blobPath`
 
 Diretriz futura:
 
