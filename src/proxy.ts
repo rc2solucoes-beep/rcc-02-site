@@ -3,6 +3,7 @@ import { createServerClient } from "@supabase/ssr";
 
 export async function proxy(req: NextRequest) {
   const res = NextResponse.next();
+  const { pathname } = req.nextUrl;
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -23,16 +24,15 @@ export async function proxy(req: NextRequest) {
   );
 
   const { data: { session } } = await supabase.auth.getSession();
-  const { pathname } = req.nextUrl;
+  const isAdminRoot = pathname === "/admin";
+  const isProtectedAdminPath = pathname.startsWith("/admin/");
 
-  // Unauthenticated → redirect to login (except login page itself)
-  if (!session && pathname !== "/admin") {
+  if (!session && isProtectedAdminPath) {
     return NextResponse.redirect(new URL("/admin", req.url));
   }
 
-  // Authenticated on login page → redirect to dashboard
-  if (session && pathname === "/admin") {
-    return NextResponse.redirect(new URL("/admin/dashboard", req.url));
+  if (isAdminRoot) {
+    return res;
   }
 
   return res;
