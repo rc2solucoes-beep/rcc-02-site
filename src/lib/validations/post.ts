@@ -27,7 +27,13 @@ export const SeoIndexStatusEnum = z.enum(["index", "noindex", "nofollow"]);
 
 export const PostContentSchema = z.object({
   title: z.string().min(3, "Título deve ter pelo menos 3 caracteres").max(200),
-  slug: z.string().min(1, "Slug é obrigatório").regex(/^[a-z0-9-]+$/, "Slug deve conter apenas letras minúsculas, números e hífens"),
+  slug: z
+    .string()
+    .min(1, "Slug é obrigatório")
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Use apenas letras minúsculas, números e hífens. Não use acentos, espaços ou caracteres especiais."
+    ),
   summary: z.string().min(10, "Resumo deve ter pelo menos 10 caracteres").max(500),
   content: z.string().min(20, "Conteúdo deve ter pelo menos 20 caracteres"),
 });

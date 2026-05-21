@@ -144,10 +144,18 @@ vercel --prod
 | [`docs/DEPLOY.md`](docs/DEPLOY.md) | Guia de deploy, variáveis de ambiente e rollback |
 | [`docs/CMS_GUIDE.md`](docs/CMS_GUIDE.md) | Guia do administrador (posts, leads, configurações) |
 | [`docs/SEO_CHECKLIST.md`](docs/SEO_CHECKLIST.md) | Checklist de SEO técnico e pós-deploy |
+| [`docs/CMS_SEO_EDITORIAL_GUIDE.md`](docs/CMS_SEO_EDITORIAL_GUIDE.md) | Guia de preenchimento SEO no CMS |
+| [`docs/CMS_SEO_QA_CHECKLIST.md`](docs/CMS_SEO_QA_CHECKLIST.md) | Checklist de revisão editorial antes da publicação |
 | [`docs/BLOG_SEO_PLAYBOOK.md`](docs/BLOG_SEO_PLAYBOOK.md) | Diretrizes editoriais de SEO para novos artigos do blog |
 | [`docs/BLOG_PUBLICATION_CHECKLIST.md`](docs/BLOG_PUBLICATION_CHECKLIST.md) | Checklist operacional para publicação de posts |
 | [`docs/BLOG_INTERNAL_LINKING_GUIDE.md`](docs/BLOG_INTERNAL_LINKING_GUIDE.md) | Matriz de interlinking entre clusters editoriais e serviços |
 | [`docs/BLOG_CMS_FIELDS_GUIDE.md`](docs/BLOG_CMS_FIELDS_GUIDE.md) | Guia de preenchimento dos campos do CMS de posts |
 | [`docs/SOLUTIONS_PAGES_GUIDE.md`](docs/SOLUTIONS_PAGES_GUIDE.md) | Guia das páginas de soluções por dor/problema |
+| [`docs/SITEMAP_GUIDE.md`](docs/SITEMAP_GUIDE.md) | Guia de manutenção do sitemap |
+| [`docs/ANALYTICS_EVENTS.md`](docs/ANALYTICS_EVENTS.md) | Mapa de eventos de analytics e conversões |
+| [`docs/SEO_MONITORING_PLAN.md`](docs/SEO_MONITORING_PLAN.md) | Plano de monitoramento SEO |
+| [`docs/SEARCH_CONSOLE_MONITORING.md`](docs/SEARCH_CONSOLE_MONITORING.md) | Guia de uso do Google Search Console |
+| [`docs/SEO_MONTHLY_REVIEW_TEMPLATE.md`](docs/SEO_MONTHLY_REVIEW_TEMPLATE.md) | Template de revisão mensal SEO |
+| [`docs/SEO_ANALYTICS_QA_CHECKLIST.md`](docs/SEO_ANALYTICS_QA_CHECKLIST.md) | Checklist de QA SEO e Analytics |
 | [`docs/02-plano-fases-execucao.md`](docs/02-plano-fases-execucao.md) | Fases 0–9 do projeto |
 | [`docs/03-backlog-tecnico.md`](docs/03-backlog-tecnico.md) | Backlog técnico completo |

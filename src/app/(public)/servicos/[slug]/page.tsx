@@ -258,13 +258,21 @@ export default async function ServicePage({ params }: Props) {
             <SectionLabel className="block mb-4">Links relacionados</SectionLabel>
             <div className="flex flex-wrap gap-3">
               {service.relatedLinks.map((link) => (
-                <Link
+                <TrackedLink
                   key={link.href}
                   href={link.href}
+                  tracking={{
+                    kind: "related_link",
+                    location: "service_related_links",
+                    label: link.label,
+                    destination: link.href,
+                    source_page: `/servicos/${slug}`,
+                    source_type: "service_page",
+                  }}
                   className="text-sm text-rc2-orange hover:underline underline-offset-4"
                 >
                   {link.label}
-                </Link>
+                </TrackedLink>
               ))}
             </div>
           </div>
@@ -276,13 +284,21 @@ export default async function ServicePage({ params }: Props) {
           >
             <div>
               {prev && (
-                <Link
+                <TrackedLink
                   href={`/servicos/${prev.slug}`}
+                  tracking={{
+                    kind: "service_link",
+                    location: "service_navigation_prev",
+                    label: prev.shortTitle,
+                    destination: `/servicos/${prev.slug}`,
+                    source_page: `/servicos/${slug}`,
+                    source_type: "service_page",
+                  }}
                   className="flex items-center gap-2 text-sm text-rc2-ebony/70 hover:text-rc2-ebony transition-colors"
                 >
                   <ArrowLeft size={14} aria-hidden="true" />
                   <span>{prev.shortTitle}</span>
-                </Link>
+                </TrackedLink>
               )}
             </div>
             <Link
@@ -293,13 +309,21 @@ export default async function ServicePage({ params }: Props) {
             </Link>
             <div>
               {next && (
-                <Link
+                <TrackedLink
                   href={`/servicos/${next.slug}`}
+                  tracking={{
+                    kind: "service_link",
+                    location: "service_navigation_next",
+                    label: next.shortTitle,
+                    destination: `/servicos/${next.slug}`,
+                    source_page: `/servicos/${slug}`,
+                    source_type: "service_page",
+                  }}
                   className="flex items-center gap-2 text-sm text-rc2-ebony/70 hover:text-rc2-ebony transition-colors"
                 >
                   <span>{next.shortTitle}</span>
                   <ArrowLeft size={14} className="rotate-180" aria-hidden="true" />
-                </Link>
+                </TrackedLink>
               )}
             </div>
           </nav>

@@ -107,6 +107,37 @@
 - [x] Sitemap atualizado com `/solucoes` e páginas individuais.
 - [x] `/llms.txt` e `/llms-full.txt` atualizados.
 
+### Sitemap
+
+- [x] Sitemap usa `BASE_URL` centralizado.
+- [x] Rotas estáticas usam `lastModified` fixo, sem `new Date()` dinâmico.
+- [x] Serviços são gerados automaticamente a partir de `services.ts`.
+- [x] Soluções são geradas automaticamente a partir de `solutions.ts`, quando disponível.
+- [x] Posts publicados são carregados do Supabase.
+- [x] Posts `noindex` são excluídos do sitemap quando o campo estiver disponível.
+- [x] Posts `nofollow` permanecem no sitemap quando publicados.
+- [x] URLs duplicadas são removidas.
+- [x] Sitemap tem ordenação previsível.
+
+### CMS SEO Editorial
+
+- [x] Validações editoriais revisadas no CMS.
+- [x] Campos SEO com mensagens de apoio ou documentação.
+- [x] Padrão de slug reforçado.
+- [x] Regras de meta title e meta description documentadas.
+- [x] Guia editorial do CMS criado.
+- [x] Checklist de QA editorial criado.
+
+### Medição e Monitoramento
+
+- [x] Eventos principais de conversão revisados.
+- [x] Formulário de contato instrumentado sem envio de dados pessoais.
+- [x] Documentação de eventos criada ou atualizada.
+- [x] Plano de monitoramento SEO criado.
+- [x] Guia de Search Console criado.
+- [x] Template de revisão mensal SEO criado.
+- [x] Checklist de QA SEO/Analytics criado.
+
 ---
 
 ## Conteúdo (responsabilidade da RC2)

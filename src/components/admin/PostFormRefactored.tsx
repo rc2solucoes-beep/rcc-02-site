@@ -68,14 +68,23 @@ interface PostFormData {
   related_post_ids: string;
 }
 
-function getEditorialWarnings(formData: PostFormData, faqItems: FaqItem[]): string[] {
+function getEditorialWarnings(
+  formData: PostFormData,
+  faqItems: FaqItem[],
+  ctaBlock: CtaBlock | null
+): string[] {
   const warnings: string[] = [];
   const isPublished = formData.status === "published";
+  const titleLength = formData.title.trim().length;
+  const summaryLength = formData.summary.trim().length;
+  const slug = formData.slug.trim();
+  const isValidSlug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug);
   const metaTitleLength = formData.seo_meta_title.trim().length;
   const metaDescriptionLength = formData.seo_meta_description.trim().length;
   const hasCoverImage = formData.cover_url.trim().length > 0;
   const hasAltText = formData.cover_url_alt.trim().length > 0;
   const hasPrimaryKeyword = formData.seo_keyword_primary.trim().length > 0;
+  const hasCtaBlock = !!ctaBlock?.title?.trim();
   const validFaqCount = faqItems.filter(
     (item) => item.question.trim() && item.answer.trim()
   ).length;
@@ -85,6 +94,15 @@ function getEditorialWarnings(formData: PostFormData, faqItems: FaqItem[]): stri
     .filter(Boolean).length;
   const isLongForm = formData.content_type === "guia" || formData.content_type === "tutorial";
 
+  if (slug && !isValidSlug) {
+    warnings.push("Slug fora do padrão recomendado: use minúsculas, números e hífens simples.");
+  }
+  if (titleLength > 0 && (titleLength < 35 || titleLength > 70)) {
+    warnings.push("Título do post ideal entre 35 e 70 caracteres para SEO.");
+  }
+  if (summaryLength > 0 && (summaryLength < 120 || summaryLength > 220)) {
+    warnings.push("Resumo ideal entre 120 e 220 caracteres para card e contexto de busca.");
+  }
   if (metaTitleLength > 0 && metaTitleLength > 60) {
     warnings.push("Meta title acima de 60 caracteres pode reduzir performance nos resultados.");
   }
@@ -110,6 +128,18 @@ function getEditorialWarnings(formData: PostFormData, faqItems: FaqItem[]): stri
     }
     if (!formData.seo_meta_description.trim()) {
       warnings.push("Post publicado sem meta description definida.");
+    }
+    if (!hasAltText && hasCoverImage) {
+      warnings.push("Post publicado com imagem de capa sem ALT text.");
+    }
+    if (isLongForm && validFaqCount < 3) {
+      warnings.push("Para guia/tutorial publicado, considere pelo menos 3 FAQs úteis.");
+    }
+    if (!hasCtaBlock) {
+      warnings.push("Post publicado sem CTA configurado.");
+    }
+    if (relatedCount === 0) {
+      warnings.push("Post publicado sem relacionados. Considere adicionar links internos.");
     }
   }
 
@@ -235,7 +265,7 @@ export function PostFormRefactored({ authors, post, action }: PostFormProps) {
     { key: "faq" as TabKey, label: faqItems.length > 0 ? `FAQ (${faqItems.length})` : "FAQ" },
     { key: "cta" as TabKey, label: ctaBlock ? "CTA ✓" : "CTA" },
   ];
-  const editorialWarnings = getEditorialWarnings(formData, faqItems);
+  const editorialWarnings = getEditorialWarnings(formData, faqItems, ctaBlock);
 
   return (
     <form action={handleSubmit} className="p-8 space-y-6 max-w-5xl">
@@ -300,6 +330,9 @@ export function PostFormRefactored({ authors, post, action }: PostFormProps) {
                 className={inputBase}
                 placeholder="Título do post"
               />
+              <p className="text-xs text-muted-foreground mt-1">
+                {formData.title.trim().length} caracteres — ideal entre 35 e 70 para SEO editorial.
+              </p>
               <FieldError errors={state.errors} field="title" />
             </div>
 
@@ -327,6 +360,9 @@ export function PostFormRefactored({ authors, post, action }: PostFormProps) {
                 />
               </div>
               <FieldError errors={state.errors} field="slug" />
+              <p className="text-xs text-muted-foreground mt-1">
+                Use versão curta, sem acentos, em minúsculas e com hífens.
+              </p>
             </div>
 
             {/* Summary */}
@@ -346,6 +382,9 @@ export function PostFormRefactored({ authors, post, action }: PostFormProps) {
               />
               <p className="text-xs text-muted-foreground mt-1">
                 Este resumo aparece no card do blog, não confundir com meta description
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {formData.summary.trim().length} caracteres — ideal entre 120 e 220.
               </p>
               <FieldError errors={state.errors} field="summary" />
             </div>

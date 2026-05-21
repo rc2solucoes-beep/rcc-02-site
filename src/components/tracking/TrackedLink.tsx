@@ -2,9 +2,22 @@
 
 import Link, { type LinkProps } from "next/link";
 import type { AnchorHTMLAttributes, MouseEvent, ReactNode } from "react";
-import { trackCtaClick, trackWhatsappClick } from "@/lib/tracking";
+import {
+  trackBlogShareClick,
+  trackCtaClick,
+  trackRelatedLinkClick,
+  trackServiceLinkClick,
+  trackSolutionLinkClick,
+  trackWhatsappClick,
+} from "@/lib/tracking";
 
-type TrackingKind = "cta" | "whatsapp";
+type TrackingKind =
+  | "cta"
+  | "whatsapp"
+  | "service_link"
+  | "solution_link"
+  | "related_link"
+  | "blog_share";
 
 type TrackedLinkProps = LinkProps &
   Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps | "onClick"> & {
@@ -14,6 +27,10 @@ type TrackedLinkProps = LinkProps &
       location: string;
       label: string;
       destination?: string;
+      source_page?: string;
+      source_type?: string;
+      post_slug?: string;
+      network?: "linkedin" | "whatsapp" | "x";
     };
     onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
   };
@@ -98,7 +115,63 @@ export function TrackedLink({
             label: tracking.label,
             destination,
           });
-        } else {
+          return;
+        }
+
+        if (tracking.kind === "service_link") {
+          trackServiceLinkClick({
+            location: tracking.location,
+            label: tracking.label,
+            destination,
+            source_page: tracking.source_page ?? "",
+            source_type: tracking.source_type ?? "",
+          });
+          return;
+        }
+
+        if (tracking.kind === "solution_link") {
+          trackSolutionLinkClick({
+            location: tracking.location,
+            label: tracking.label,
+            destination,
+            source_page: tracking.source_page ?? "",
+            source_type: tracking.source_type ?? "",
+          });
+          return;
+        }
+
+        if (tracking.kind === "related_link") {
+          trackRelatedLinkClick({
+            location: tracking.location,
+            label: tracking.label,
+            destination,
+            source_page: tracking.source_page ?? "",
+            source_type: tracking.source_type ?? "",
+          });
+          return;
+        }
+
+        if (tracking.kind === "blog_share") {
+          if (tracking.network === "whatsapp") {
+            trackWhatsappClick({
+              location: tracking.location,
+              label: tracking.label,
+              destination,
+            });
+          }
+          trackBlogShareClick({
+            location: tracking.location,
+            label: tracking.label,
+            destination,
+            source_page: tracking.source_page ?? "",
+            source_type: tracking.source_type ?? "",
+            post_slug: tracking.post_slug ?? "",
+            network: tracking.network ?? "x",
+          });
+          return;
+        }
+
+        {
           trackCtaClick({
             location: tracking.location,
             label: tracking.label,

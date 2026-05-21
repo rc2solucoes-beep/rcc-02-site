@@ -328,36 +328,60 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               <div className="mt-12 pt-8 border-t border-border">
                 <p className="text-sm font-medium text-rc2-ebony mb-4">Compartilhe este artigo:</p>
                 <div className="flex gap-3">
-                  <a
+                  <TrackedLink
                     href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    tracking={{
+                      kind: "blog_share",
+                      location: "blog_post_share",
+                      label: "share_linkedin",
+                      destination: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
+                      source_page: `/blog/${slug}`,
+                      source_type: "blog_post",
+                      post_slug: slug,
+                      network: "linkedin",
+                    }}
                     className="inline-flex items-center gap-2 px-4 py-2 bg-[#0A66C2] text-white text-sm font-medium rounded hover:bg-[#0A66C2]/90 transition-colors"
                   >
                     <ExternalLink size={16} /> LinkedIn
-                  </a>
+                  </TrackedLink>
                   <TrackedLink
                     href={whatsappShareUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     tracking={{
-                      kind: "whatsapp",
+                      kind: "blog_share",
                       location: "blog_post_share",
                       label: "share_whatsapp",
                       destination: whatsappShareUrl,
+                      source_page: `/blog/${slug}`,
+                      source_type: "blog_post",
+                      post_slug: slug,
+                      network: "whatsapp",
                     }}
                     className="inline-flex items-center gap-2 px-4 py-2 bg-[#25D366] text-white text-sm font-medium rounded hover:bg-[#25D366]/90 transition-colors"
                   >
                     WhatsApp
                   </TrackedLink>
-                  <a
+                  <TrackedLink
                     href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodeURIComponent(shareUrl)}`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    tracking={{
+                      kind: "blog_share",
+                      location: "blog_post_share",
+                      label: "share_x",
+                      destination: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodeURIComponent(shareUrl)}`,
+                      source_page: `/blog/${slug}`,
+                      source_type: "blog_post",
+                      post_slug: slug,
+                      network: "x",
+                    }}
                     className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white text-sm font-medium rounded hover:bg-black/90 transition-colors"
                   >
                     X (Twitter)
-                  </a>
+                  </TrackedLink>
                 </div>
               </div>
 

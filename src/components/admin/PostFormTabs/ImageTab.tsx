@@ -232,7 +232,7 @@ export function ImageTab({ formData, onChange }: ImageTabProps) {
         <div>
           <div className="flex items-center justify-between mb-1.5">
             <label className="text-sm font-medium text-rc2-ebony" htmlFor="cover_url_alt">
-              Alt Text <span className="text-rc2-orange text-xs">*</span>
+              Alt Text
             </label>
             <CharCount value={formData.cover_url_alt} max={255} />
           </div>
@@ -246,7 +246,7 @@ export function ImageTab({ formData, onChange }: ImageTabProps) {
             placeholder="Descreva a imagem: o que está sendo mostrado?"
           />
           <p className="text-xs text-muted-foreground mt-1">
-            Obrigatório para acessibilidade (WCAG) e indexação no Google Images
+            Recomendado para acessibilidade (WCAG) e SEO de imagem, especialmente em posts publicados.
           </p>
         </div>
 
@@ -276,6 +276,9 @@ export function ImageTab({ formData, onChange }: ImageTabProps) {
             Como o artigo aparece ao ser compartilhado. Campos vazios usam os valores de SEO automaticamente.
           </p>
         </div>
+        <p className="text-xs text-muted-foreground">
+          Dica editorial: se não preencher OG, o CMS usa fallback automático (SEO e capa). Preencha manualmente apenas quando quiser variação para social.
+        </p>
 
         <ImageField
           id="og_image"

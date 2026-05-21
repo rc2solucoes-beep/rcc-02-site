@@ -7,6 +7,7 @@ import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { PageHero } from "@/components/marketing/PageHero";
 import { PageAnchorNav } from "@/components/marketing/PageAnchorNav";
 import { CTABlock } from "@/components/marketing/CTABlock";
+import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { getSolutionBySlug, solutions } from "@/lib/content/solutions";
 
@@ -174,9 +175,20 @@ export default async function SolucaoPage({ params }: Props) {
                 <article key={service.href} className="rounded-lg border border-border bg-white p-5">
                   <h3 className="font-semibold text-rc2-ebony mb-2">{service.label}</h3>
                   <p className="text-sm text-rc2-ebony/75 leading-relaxed mb-3">{service.description}</p>
-                  <Link href={service.href} className="text-sm text-rc2-orange hover:underline underline-offset-4">
+                  <TrackedLink
+                    href={service.href}
+                    tracking={{
+                      kind: "service_link",
+                      location: "solution_related_services",
+                      label: service.label,
+                      destination: service.href,
+                      source_page: `/solucoes/${slug}`,
+                      source_type: "solution_page",
+                    }}
+                    className="text-sm text-rc2-orange hover:underline underline-offset-4"
+                  >
                     Ver serviço
-                  </Link>
+                  </TrackedLink>
                 </article>
               ))}
             </div>
@@ -214,9 +226,21 @@ export default async function SolucaoPage({ params }: Props) {
             <SectionLabel className="block mb-4">Links relacionados</SectionLabel>
             <div className="flex flex-wrap gap-3">
               {solution.relatedLinks.map((link) => (
-                <Link key={link.href} href={link.href} className="text-sm text-rc2-orange hover:underline underline-offset-4">
+                <TrackedLink
+                  key={link.href}
+                  href={link.href}
+                  tracking={{
+                    kind: "related_link",
+                    location: "solution_related_links",
+                    label: link.label,
+                    destination: link.href,
+                    source_page: `/solucoes/${slug}`,
+                    source_type: "solution_page",
+                  }}
+                  className="text-sm text-rc2-orange hover:underline underline-offset-4"
+                >
                   {link.label}
-                </Link>
+                </TrackedLink>
               ))}
             </div>
           </div>

@@ -1,13 +1,29 @@
 import type { MetadataRoute } from "next";
+import { BASE_URL } from "@/lib/siteMetadata";
 import { services } from "@/lib/content/services";
 import { solutions } from "@/lib/content/solutions";
 import { createPublicClient } from "@/lib/supabase/server";
 
-const BASE_URL = "https://rc2solucoes.com.br";
-
 export const revalidate = 60;
 
-type SitemapEntry = MetadataRoute.Sitemap[number];
+type StaticSitemapEntry = {
+  path: string;
+  lastModified: string;
+  changeFrequency: NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
+  priority: number;
+};
+
+type PostRouteRow = {
+  slug: string;
+  updated_at: string;
+  seo_index_status?: string | null;
+};
+
+function absoluteUrl(path = "") {
+  if (!path) return BASE_URL;
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${BASE_URL}${normalizedPath}`;
+}
 
 const staticPages = [
   {
@@ -82,63 +98,106 @@ const staticPages = [
     changeFrequency: "weekly",
     priority: 0.3,
   },
-] as const;
+] satisfies StaticSitemapEntry[];
 
-function getStaticRoutes(): SitemapEntry[] {
-  return staticPages.map((page) => ({
-    url: `${BASE_URL}${page.path}`,
-    lastModified: new Date(page.lastModified),
-    changeFrequency: page.changeFrequency,
-    priority: page.priority,
+function mapStaticRoutes(routes: readonly StaticSitemapEntry[]): MetadataRoute.Sitemap {
+  return routes.map((route) => ({
+    url: absoluteUrl(route.path),
+    lastModified: new Date(route.lastModified),
+    changeFrequency: route.changeFrequency,
+    priority: route.priority,
   }));
 }
 
-function getServiceRoutes(): SitemapEntry[] {
-  const serviceLastModified = new Date("2026-05-20");
-  return services.map((service) => ({
-    url: `${BASE_URL}/servicos/${service.slug}`,
-    lastModified: serviceLastModified,
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-  }));
+const serviceRoutes: MetadataRoute.Sitemap = services.map((service) => ({
+  url: absoluteUrl(`/servicos/${service.slug}`),
+  lastModified: new Date("2026-05-20"),
+  changeFrequency: "monthly",
+  priority: 0.8,
+}));
+
+const solutionRoutes: MetadataRoute.Sitemap = solutions.map((solution) => ({
+  url: absoluteUrl(`/solucoes/${solution.slug}`),
+  lastModified: new Date("2026-05-20"),
+  changeFrequency: "monthly",
+  priority: 0.75,
+}));
+
+function dedupeRoutes(routes: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
+  const seen = new Set<string>();
+  return routes.filter((route) => {
+    if (seen.has(route.url)) return false;
+    seen.add(route.url);
+    return true;
+  });
 }
 
-function getSolutionRoutes(): SitemapEntry[] {
-  const solutionLastModified = new Date("2026-05-20");
-  return solutions.map((solution) => ({
-    url: `${BASE_URL}/solucoes/${solution.slug}`,
-    lastModified: solutionLastModified,
-    changeFrequency: "monthly" as const,
-    priority: 0.75,
-  }));
+function sortRoutes(routes: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
+  return [...routes].sort((a, b) => {
+    const priorityDiff = (b.priority ?? 0) - (a.priority ?? 0);
+    if (priorityDiff !== 0) return priorityDiff;
+    return a.url.localeCompare(b.url);
+  });
 }
 
-async function getBlogRoutes(): Promise<SitemapEntry[]> {
-  try {
-    const supabase = createPublicClient();
-    const { data: posts, error } = await supabase
-      .from("posts")
-      .select("slug,updated_at")
-      .eq("status", "published");
-
-    if (error) {
-      console.error("[sitemap] Error loading published blog posts:", error);
-      return [];
-    }
-
-    return (posts ?? []).map((post: { slug: string; updated_at: string }) => ({
-      url: `${BASE_URL}/blog/${post.slug}`,
+function mapPostRoutes(rows: PostRouteRow[]): MetadataRoute.Sitemap {
+  return rows
+    .filter((post) => post.seo_index_status !== "noindex")
+    .map((post) => ({
+      url: absoluteUrl(`/blog/${post.slug}`),
       lastModified: new Date(post.updated_at),
-      changeFrequency: "weekly" as const,
+      changeFrequency: "weekly",
       priority: 0.7,
     }));
-  } catch (error) {
-    console.error("[sitemap] Unexpected error loading published blog posts:", error);
+}
+
+async function getBlogRoutes(): Promise<MetadataRoute.Sitemap> {
+  const supabase = createPublicClient();
+
+  const { data: postsWithSeo, error: seoError } = await supabase
+    .from("posts")
+    .select("slug,updated_at,seo_index_status")
+    .eq("status", "published");
+
+  if (!seoError) {
+    return mapPostRoutes((postsWithSeo ?? []) as PostRouteRow[]);
+  }
+
+  console.error("[sitemap] Failed SEO-aware posts query, trying fallback:", seoError);
+
+  const { data: fallbackPosts, error: fallbackError } = await supabase
+    .from("posts")
+    .select("slug,updated_at")
+    .eq("status", "published");
+
+  if (fallbackError) {
+    console.error("[sitemap] Fallback posts query failed:", fallbackError);
     return [];
   }
+
+  return (fallbackPosts ?? []).map((post: { slug: string; updated_at: string }) => ({
+    url: absoluteUrl(`/blog/${post.slug}`),
+    lastModified: new Date(post.updated_at),
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const blogRoutes = await getBlogRoutes();
-  return [...getStaticRoutes(), ...getServiceRoutes(), ...getSolutionRoutes(), ...blogRoutes];
+  let postRoutes: MetadataRoute.Sitemap = [];
+
+  try {
+    postRoutes = await getBlogRoutes();
+  } catch (error) {
+    console.error("[sitemap] Unexpected error loading published blog posts:", error);
+  }
+
+  return sortRoutes(
+    dedupeRoutes([
+      ...mapStaticRoutes(staticPages),
+      ...serviceRoutes,
+      ...solutionRoutes,
+      ...postRoutes,
+    ])
+  );
 }

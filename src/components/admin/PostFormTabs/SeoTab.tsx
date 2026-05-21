@@ -13,7 +13,18 @@ interface SeoTabProps {
 
 const inputBase = "w-full border border-border bg-rc2-sand px-3 py-2.5 text-sm text-rc2-ebony placeholder:text-rc2-placeholder outline-none focus:border-rc2-orange focus:ring-1 focus:ring-rc2-orange transition-colors";
 
+function countText(value: string | undefined) {
+  return value?.trim().length ?? 0;
+}
+
 export function SeoTab({ formData, onChange }: SeoTabProps) {
+  const metaTitleLength = countText(formData.seo_meta_title);
+  const metaDescriptionLength = countText(formData.seo_meta_description);
+  const ogTitleLength = countText(formData.og_title);
+  const ogDescriptionLength = countText(formData.og_description);
+  const titleLength = countText(formData.title);
+  const summaryLength = countText(formData.summary);
+
   return (
     <div className="space-y-6">
       {/* Preview Google */}
@@ -62,7 +73,7 @@ export function SeoTab({ formData, onChange }: SeoTabProps) {
           placeholder="Título para os motores de busca"
         />
         <p className="text-xs text-muted-foreground mt-1">
-          Aparece como título nos resultados do Google (máx 60 caracteres)
+          {metaTitleLength}/60 caracteres recomendados. Acima disso pode cortar no Google.
         </p>
       </div>
 
@@ -82,7 +93,7 @@ export function SeoTab({ formData, onChange }: SeoTabProps) {
           placeholder="Descrição que aparece nos resultados de busca"
         />
         <p className="text-xs text-muted-foreground mt-1">
-          Aparece como descrição nos resultados do Google (máx 160 caracteres)
+          {metaDescriptionLength} caracteres — ideal entre 120 e 160.
         </p>
       </div>
 
@@ -103,7 +114,7 @@ export function SeoTab({ formData, onChange }: SeoTabProps) {
           <option value="nofollow">Nofollow (não seguir links)</option>
         </select>
         <p className="text-xs text-muted-foreground mt-1">
-          Controla como os motores de busca tratam esta página
+          Use noindex apenas quando este post não deve aparecer nos buscadores.
         </p>
       </div>
 
@@ -124,6 +135,13 @@ export function SeoTab({ formData, onChange }: SeoTabProps) {
         <p className="text-xs text-muted-foreground mt-1">
           Outras palavras-chave relacionadas (separadas por vírgula)
         </p>
+      </div>
+
+      <div className="rounded border border-border/70 bg-rc2-sand/40 px-3 py-2 text-xs text-muted-foreground space-y-1">
+        <p>Título do post: {titleLength} caracteres (ideal 35–70).</p>
+        <p>Resumo: {summaryLength} caracteres (ideal 120–220).</p>
+        <p>OG title: {ogTitleLength}/200 caracteres.</p>
+        <p>OG description: {ogDescriptionLength}/500 caracteres.</p>
       </div>
     </div>
   );

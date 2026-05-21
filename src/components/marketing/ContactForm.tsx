@@ -7,6 +7,10 @@ import { contactSchema, type ContactFormData } from "@/lib/validations/contact";
 import { cn } from "@/lib/utils";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import {
+  trackFormError,
+  trackFormStart,
+  trackFormSubmit,
+  trackFormSuccess,
   trackLeadEvent,
   trackWhatsappClick,
   type CompanySegmentCategory,
@@ -53,6 +57,12 @@ function Label({
 const inputBase =
   "w-full rounded-md border border-border bg-white px-4 py-3 text-sm text-rc2-ebony placeholder:text-rc2-placeholder outline-none focus:border-rc2-orange focus:ring-2 focus:ring-rc2-orange/20 transition-colors shadow-sm";
 
+const FORM_CONTEXT = {
+  form_name: "diagnostico_gratuito" as const,
+  location: "contact_form",
+  source_page: "/contato",
+  source_type: "contact_page",
+};
 
 function categorizeCompanySegment(segment: string): CompanySegmentCategory {
   const normalizedSegment = segment
@@ -138,6 +148,12 @@ export function ContactForm() {
 
   const onSubmit = async (data: ContactFormData) => {
     setServerError(null);
+    trackFormSubmit({
+      ...FORM_CONTEXT,
+      solution_interest: data.solution,
+      company_size: data.size,
+      company_segment: categorizeCompanySegment(data.segment),
+    });
     trackLeadEvent(
       "generate_lead_submit",
       { form_name: "diagnostico_gratuito" }
@@ -154,11 +170,22 @@ export function ContactForm() {
 
       if (!res.ok) {
         setServerError(json.error ?? "Erro inesperado. Tente novamente.");
+        trackFormError({
+          ...FORM_CONTEXT,
+          error_code: "api_error",
+          error_message: "request_failed",
+        });
         return;
       }
 
       const companySegmentCategory = categorizeCompanySegment(data.segment);
 
+      trackFormSuccess({
+        ...FORM_CONTEXT,
+        solution_interest: data.solution,
+        company_size: data.size,
+        company_segment: companySegmentCategory,
+      });
       trackLeadEvent("generate_lead_success", {
         form_name: "diagnostico_gratuito",
         lead_source: "website",
@@ -169,6 +196,11 @@ export function ContactForm() {
       setSubmitted(true);
     } catch {
       setServerError("Falha de conexão. Verifique sua internet e tente novamente.");
+      trackFormError({
+        ...FORM_CONTEXT,
+        error_code: "network_error",
+        error_message: "network_failure",
+      });
     }
   };
 
@@ -213,6 +245,7 @@ export function ContactForm() {
         const target = event.target as HTMLElement;
         if (!["name", "email", "whatsapp", "message"].includes(target.id)) return;
         setStep1Started(true);
+        trackFormStart(FORM_CONTEXT);
         trackLeadEvent(
           "generate_lead_start",
           { form_name: "diagnostico_gratuito" }

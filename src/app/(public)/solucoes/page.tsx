@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { PageHero } from "@/components/marketing/PageHero";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { solutions } from "@/lib/content/solutions";
 import { buildOg } from "@/lib/siteMetadata";
 
@@ -98,10 +98,21 @@ export default function SolucoesPage() {
                   ))}
                 </ul>
 
-                <Link href={`/solucoes/${solution.slug}`} className="rc2-action-link">
+                <TrackedLink
+                  href={`/solucoes/${solution.slug}`}
+                  tracking={{
+                    kind: "solution_link",
+                    location: "solution_hub_card",
+                    label: solution.shortTitle,
+                    destination: `/solucoes/${solution.slug}`,
+                    source_page: "/solucoes",
+                    source_type: "solutions_hub",
+                  }}
+                  className="rc2-action-link"
+                >
                   Ver solução completa
                   <ArrowRight size={14} />
-                </Link>
+                </TrackedLink>
               </article>
             ))}
           </div>
