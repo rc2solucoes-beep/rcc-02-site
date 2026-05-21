@@ -33,7 +33,7 @@ async function getPosts(): Promise<Post[]> {
     const supabase = createPublicClient();
     const { data } = await supabase
       .from("posts")
-      .select("id,slug,title,summary,cover_url,published_at,created_at,updated_at,content,status")
+      .select("id,slug,title,summary,cover_url,cover_url_alt,published_at,created_at,updated_at,status,category,reading_time_minutes")
       .eq("status", "published")
       .order("published_at", { ascending: false });
     return (data as Post[]) ?? [];

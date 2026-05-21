@@ -144,5 +144,10 @@ vercel --prod
 | [`docs/DEPLOY.md`](docs/DEPLOY.md) | Guia de deploy, variáveis de ambiente e rollback |
 | [`docs/CMS_GUIDE.md`](docs/CMS_GUIDE.md) | Guia do administrador (posts, leads, configurações) |
 | [`docs/SEO_CHECKLIST.md`](docs/SEO_CHECKLIST.md) | Checklist de SEO técnico e pós-deploy |
+| [`docs/BLOG_SEO_PLAYBOOK.md`](docs/BLOG_SEO_PLAYBOOK.md) | Diretrizes editoriais de SEO para novos artigos do blog |
+| [`docs/BLOG_PUBLICATION_CHECKLIST.md`](docs/BLOG_PUBLICATION_CHECKLIST.md) | Checklist operacional para publicação de posts |
+| [`docs/BLOG_INTERNAL_LINKING_GUIDE.md`](docs/BLOG_INTERNAL_LINKING_GUIDE.md) | Matriz de interlinking entre clusters editoriais e serviços |
+| [`docs/BLOG_CMS_FIELDS_GUIDE.md`](docs/BLOG_CMS_FIELDS_GUIDE.md) | Guia de preenchimento dos campos do CMS de posts |
+| [`docs/SOLUTIONS_PAGES_GUIDE.md`](docs/SOLUTIONS_PAGES_GUIDE.md) | Guia das páginas de soluções por dor/problema |
 | [`docs/02-plano-fases-execucao.md`](docs/02-plano-fases-execucao.md) | Fases 0–9 do projeto |
 | [`docs/03-backlog-tecnico.md`](docs/03-backlog-tecnico.md) | Backlog técnico completo |

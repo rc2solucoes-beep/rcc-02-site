@@ -68,6 +68,54 @@ interface PostFormData {
   related_post_ids: string;
 }
 
+function getEditorialWarnings(formData: PostFormData, faqItems: FaqItem[]): string[] {
+  const warnings: string[] = [];
+  const isPublished = formData.status === "published";
+  const metaTitleLength = formData.seo_meta_title.trim().length;
+  const metaDescriptionLength = formData.seo_meta_description.trim().length;
+  const hasCoverImage = formData.cover_url.trim().length > 0;
+  const hasAltText = formData.cover_url_alt.trim().length > 0;
+  const hasPrimaryKeyword = formData.seo_keyword_primary.trim().length > 0;
+  const validFaqCount = faqItems.filter(
+    (item) => item.question.trim() && item.answer.trim()
+  ).length;
+  const relatedCount = formData.related_post_ids
+    .split(",")
+    .map((id) => id.trim())
+    .filter(Boolean).length;
+  const isLongForm = formData.content_type === "guia" || formData.content_type === "tutorial";
+
+  if (metaTitleLength > 0 && metaTitleLength > 60) {
+    warnings.push("Meta title acima de 60 caracteres pode reduzir performance nos resultados.");
+  }
+  if (metaDescriptionLength > 0 && (metaDescriptionLength < 120 || metaDescriptionLength > 160)) {
+    warnings.push("Meta description ideal entre 120 e 160 caracteres.");
+  }
+  if (hasCoverImage && !hasAltText) {
+    warnings.push("Imagem de capa com ALT vazio reduz acessibilidade e SEO de imagem.");
+  }
+  if (isLongForm && validFaqCount > 0 && validFaqCount < 3) {
+    warnings.push("Guias e tutoriais têm melhor resultado com pelo menos 3 FAQs úteis.");
+  }
+  if (relatedCount > 0 && relatedCount < 2) {
+    warnings.push("Considere incluir ao menos 2 posts relacionados para fortalecer interlinking.");
+  }
+
+  if (isPublished) {
+    if (!hasPrimaryKeyword) {
+      warnings.push("Post publicado sem palavra-chave primária preenchida.");
+    }
+    if (!formData.seo_meta_title.trim()) {
+      warnings.push("Post publicado sem meta title definido.");
+    }
+    if (!formData.seo_meta_description.trim()) {
+      warnings.push("Post publicado sem meta description definida.");
+    }
+  }
+
+  return warnings;
+}
+
 function FieldError({ errors, field }: { errors?: Record<string, string[]>; field: string }) {
   const msgs = errors?.[field];
   if (!msgs?.length) return null;
@@ -187,6 +235,7 @@ export function PostFormRefactored({ authors, post, action }: PostFormProps) {
     { key: "faq" as TabKey, label: faqItems.length > 0 ? `FAQ (${faqItems.length})` : "FAQ" },
     { key: "cta" as TabKey, label: ctaBlock ? "CTA ✓" : "CTA" },
   ];
+  const editorialWarnings = getEditorialWarnings(formData, faqItems);
 
   return (
     <form action={handleSubmit} className="p-8 space-y-6 max-w-5xl">
@@ -194,6 +243,22 @@ export function PostFormRefactored({ authors, post, action }: PostFormProps) {
         <p className="text-sm text-red-600 bg-red-50 border border-red-200 px-4 py-3 rounded">
           {state.message}
         </p>
+      )}
+
+      {editorialWarnings.length > 0 && (
+        <div className="rounded border border-amber-300 bg-amber-50 px-4 py-3">
+          <p className="text-sm font-medium text-amber-900">
+            Recomendações editoriais de SEO
+          </p>
+          <ul className="mt-2 list-disc pl-5 text-xs text-amber-900/90 space-y-1">
+            {editorialWarnings.map((warning) => (
+              <li key={warning}>{warning}</li>
+            ))}
+          </ul>
+          <p className="mt-2 text-xs text-amber-900/80">
+            Esses alertas não bloqueiam rascunhos nem publicação.
+          </p>
+        </div>
       )}
 
       {/* Abas de Navegação */}

@@ -102,6 +102,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: metaTitle,
     description: metaDescription,
+    alternates: {
+      canonical: `${BASE_URL}/blog/${slug}`,
+    },
     robots: {
       index: post.seo_index_status !== "noindex",
       follow: post.seo_index_status !== "nofollow",
@@ -170,7 +173,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       url: BASE_URL,
       logo: {
         "@type": "ImageObject",
-        url: `${BASE_URL}/logo.png`,
+        url: `${BASE_URL}/images/logo-base.png`,
       },
     },
   };

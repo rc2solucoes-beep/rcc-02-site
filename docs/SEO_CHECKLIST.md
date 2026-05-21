@@ -21,6 +21,7 @@
 ### Sitemap e Robots
 - [x] `/sitemap.xml` gerado automaticamente (estático + posts dinâmicos)
 - [x] `/robots.txt` bloqueia `/admin` e `/api/`
+- [x] `robots.txt` com regras explícitas para `OAI-SearchBot`, `GPTBot` e `Google-Extended`
 - [ ] Submeter sitemap no Google Search Console após o deploy
 
 ### Schema.org (JSON-LD)
@@ -71,6 +72,40 @@
 - [ ] Verificar Core Web Vitals no Google Search Console mensalmente
 - [ ] Rodar Lighthouse em produção trimestralmente
 - [ ] Verificar links quebrados com ferramenta de crawl (Screaming Frog ou similar)
+
+### LLM / GEO
+
+- [x] `/llms.txt` criado com visão curada do site para LLMs.
+- [x] `/llms-full.txt` criado com resumo completo de serviços e posts publicados.
+- [x] `robots.txt` atualizado com regras explícitas para `OAI-SearchBot`, `GPTBot` e `Google-Extended`.
+- [x] Posts do blog com canonical explícito.
+- [x] Sitemap inclui `/llms.txt` e `/llms-full.txt`.
+
+### Páginas de Serviço
+
+- [x] Serviços expandidos com problemas, casos de uso, implantação, integrações, indicadores e FAQ.
+- [x] Metadata dos serviços usando `seoTitle`.
+- [x] Schema `Service` enriquecido.
+- [x] Schema `FAQPage` adicionado às páginas de serviço.
+- [x] Links internos relacionados adicionados às páginas de serviço.
+
+### Blog / Conteúdo SEO
+
+- [x] Playbook editorial do blog criado.
+- [x] Checklist de publicação criado.
+- [x] Guia de interlinking interno criado.
+- [x] Guia de preenchimento dos campos do CMS criado.
+- [x] Validações editoriais revisadas sem criar migrations.
+
+### Páginas por Dor/Problema
+
+- [x] `/solucoes` criado.
+- [x] Páginas por dor criadas para atendimento lento, leads sem resposta, processos manuais, sistemas desconectados e WhatsApp desorganizado.
+- [x] Conteúdo das soluções centralizado em `src/lib/content/solutions.ts`.
+- [x] Metadata e canonical configurados nas páginas de solução.
+- [x] JSON-LD `WebPage` e `FAQPage` adicionados.
+- [x] Sitemap atualizado com `/solucoes` e páginas individuais.
+- [x] `/llms.txt` e `/llms-full.txt` atualizados.
 
 ---
 

@@ -63,6 +63,21 @@ export default async function ServicosPage() {
 
       <section className="bg-rc2-sand rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-10 rounded-xl border border-[var(--surface-2)] bg-[var(--surface-1)] p-6 md:p-8">
+            <SectionLabel className="block mb-3">Soluções por problema</SectionLabel>
+            <h2 className="rc2-h4 mb-3 text-rc2-ebony">
+              Comece pela dor real da sua operação.
+            </h2>
+            <p className="text-sm leading-relaxed text-rc2-ebony/75">
+              Explore cenários como atendimento lento, leads sem resposta, processos manuais e WhatsApp desorganizado,
+              com direcionamento direto para o serviço mais adequado.
+            </p>
+            <Link href="/solucoes" className="rc2-action-link mt-5">
+              Explorar soluções por problema
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+
           <div className="space-y-16">
             {services.map((service, index) => {
               const isDark = index % 2 === 1;

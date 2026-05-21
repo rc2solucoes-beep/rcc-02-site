@@ -150,6 +150,14 @@ export default async function HomePage({ searchParams }: Props) {
           <h2 className="rc2-h2 text-rc2-ebony mb-12 max-w-2xl">
             Cinco serviços para transformar sua operação digital.
           </h2>
+          <TrackedLink
+            href="/solucoes"
+            tracking={{ kind: "cta", location: "home_services_intro", label: "solucoes_por_problema", destination: "/solucoes" }}
+            className="rc2-action-link mb-10"
+          >
+            Ver soluções por problema
+            <ArrowRight size={14} />
+          </TrackedLink>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {services.map((service) => (
               <ServiceCard

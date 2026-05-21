@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { services } from "@/lib/content/services";
+import { solutions } from "@/lib/content/solutions";
 import { createPublicClient } from "@/lib/supabase/server";
 
 const BASE_URL = "https://rc2solucoes.com.br";
@@ -8,71 +9,107 @@ export const revalidate = 60;
 
 type SitemapEntry = MetadataRoute.Sitemap[number];
 
-const now = new Date();
-
-const staticRoutes: SitemapEntry[] = [
+const staticPages = [
   {
-    url: BASE_URL,
-    lastModified: now,
+    path: "",
+    lastModified: "2026-05-18",
     changeFrequency: "weekly",
-    priority: 1,
+    priority: 1.0,
   },
   {
-    url: `${BASE_URL}/avaliacoes`,
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.7,
-  },
-  {
-    url: `${BASE_URL}/blog`,
-    lastModified: now,
-    changeFrequency: "weekly",
-    priority: 0.8,
-  },
-  {
-    url: `${BASE_URL}/contato`,
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.6,
-  },
-  {
-    url: `${BASE_URL}/privacidade`,
-    lastModified: now,
-    changeFrequency: "yearly",
-    priority: 0.3,
-  },
-  {
-    url: `${BASE_URL}/servicos`,
-    lastModified: now,
+    path: "/servicos",
+    lastModified: "2026-05-18",
     changeFrequency: "monthly",
     priority: 0.9,
   },
   {
-    url: `${BASE_URL}/sobre`,
-    lastModified: now,
+    path: "/solucoes-com-ia",
+    lastModified: "2026-05-18",
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+  {
+    path: "/solucoes",
+    lastModified: "2026-05-20",
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+  {
+    path: "/sobre",
+    lastModified: "2026-05-18",
     changeFrequency: "monthly",
     priority: 0.7,
   },
   {
-    url: `${BASE_URL}/solucoes-com-ia`,
-    lastModified: now,
+    path: "/contato",
+    lastModified: "2026-05-18",
     changeFrequency: "monthly",
+    priority: 0.6,
+  },
+  {
+    path: "/blog",
+    lastModified: "2026-05-18",
+    changeFrequency: "weekly",
     priority: 0.8,
   },
   {
-    url: `${BASE_URL}/termos`,
-    lastModified: now,
+    path: "/avaliacoes",
+    lastModified: "2026-05-18",
+    changeFrequency: "monthly",
+    priority: 0.7,
+  },
+  {
+    path: "/privacidade",
+    lastModified: "2026-05-18",
     changeFrequency: "yearly",
     priority: 0.3,
   },
-];
+  {
+    path: "/termos",
+    lastModified: "2026-05-18",
+    changeFrequency: "yearly",
+    priority: 0.3,
+  },
+  {
+    path: "/llms.txt",
+    lastModified: "2026-05-20",
+    changeFrequency: "weekly",
+    priority: 0.3,
+  },
+  {
+    path: "/llms-full.txt",
+    lastModified: "2026-05-20",
+    changeFrequency: "weekly",
+    priority: 0.3,
+  },
+] as const;
+
+function getStaticRoutes(): SitemapEntry[] {
+  return staticPages.map((page) => ({
+    url: `${BASE_URL}${page.path}`,
+    lastModified: new Date(page.lastModified),
+    changeFrequency: page.changeFrequency,
+    priority: page.priority,
+  }));
+}
 
 function getServiceRoutes(): SitemapEntry[] {
+  const serviceLastModified = new Date("2026-05-20");
   return services.map((service) => ({
     url: `${BASE_URL}/servicos/${service.slug}`,
-    lastModified: now,
+    lastModified: serviceLastModified,
     changeFrequency: "monthly" as const,
     priority: 0.8,
+  }));
+}
+
+function getSolutionRoutes(): SitemapEntry[] {
+  const solutionLastModified = new Date("2026-05-20");
+  return solutions.map((solution) => ({
+    url: `${BASE_URL}/solucoes/${solution.slug}`,
+    lastModified: solutionLastModified,
+    changeFrequency: "monthly" as const,
+    priority: 0.75,
   }));
 }
 
@@ -103,5 +140,5 @@ async function getBlogRoutes(): Promise<SitemapEntry[]> {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const blogRoutes = await getBlogRoutes();
-  return [...staticRoutes, ...getServiceRoutes(), ...blogRoutes];
+  return [...getStaticRoutes(), ...getServiceRoutes(), ...getSolutionRoutes(), ...blogRoutes];
 }
