@@ -32,6 +32,10 @@ Padronizar os eventos de SEO e conversão no `dataLayer` para uso no GTM/GA4, pr
 - `label`
 - `destination`
 
+Regra:
+- `whatsapp_click` deve ser usado apenas para intenção comercial de contato pelo WhatsApp.
+- Compartilhamentos de artigo no WhatsApp devem usar apenas `blog_share_click` com `network = whatsapp`.
+
 ### `form_start` / `form_submit` / `form_success`
 - `form_name`
 - `location`

@@ -3,6 +3,10 @@
 ## Objetivo
 Este guia padroniza o preenchimento dos campos editoriais e de SEO no CMS para reduzir erros antes da publicação de posts no blog.
 
+## Regra por status
+- Drafts podem ter campos editoriais incompletos, mas precisam respeitar os campos mínimos exigidos tecnicamente pelo CMS/banco (ex.: `slug` válido e único).
+- Posts `published` e `scheduled` devem cumprir validações editoriais completas (título, resumo, conteúdo e limites de metas SEO).
+
 ## Título do post (`title`)
 - Escreva um título claro, direto e alinhado à intenção de busca.
 - Faixa recomendada: 35 a 70 caracteres para boa legibilidade.

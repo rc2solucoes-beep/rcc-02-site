@@ -39,6 +39,7 @@ Se a query com `seo_index_status` falhar (ex.: coluna ausente), há fallback par
 
 ## Regras de indexação no sitemap
 - Incluir somente rotas públicas e indexáveis.
+- Páginas com `robots: { index: false }`, como `/privacidade` e `/termos`, não devem entrar no sitemap.
 - Posts devem estar com `status = published`.
 - Posts com `seo_index_status = noindex` devem ser excluídos.
 - Posts com `seo_index_status = nofollow` podem permanecer no sitemap se estiverem publicados.

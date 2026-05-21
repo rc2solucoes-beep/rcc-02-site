@@ -75,18 +75,6 @@ const staticPages = [
     priority: 0.7,
   },
   {
-    path: "/privacidade",
-    lastModified: "2026-05-18",
-    changeFrequency: "yearly",
-    priority: 0.3,
-  },
-  {
-    path: "/termos",
-    lastModified: "2026-05-18",
-    changeFrequency: "yearly",
-    priority: 0.3,
-  },
-  {
     path: "/llms.txt",
     lastModified: "2026-05-20",
     changeFrequency: "weekly",

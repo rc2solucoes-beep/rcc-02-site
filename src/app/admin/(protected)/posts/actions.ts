@@ -7,7 +7,7 @@ import { requireAdmin } from "@/lib/admin/requireAdmin";
 import { writeAdminAuditLog } from "@/lib/admin/auditLog";
 import { createSessionClient } from "@/lib/supabase/server";
 import type { AuthorSnapshotComparableFields } from "@/lib/types/author";
-import { CreatePostSchema } from "@/lib/validations/post";
+import { validatePostInputByStatus } from "@/lib/validations/post";
 import type { PostStatus } from "@/lib/types/post";
 
 // Helper para calcular tempo de leitura (palavras / 200 = minutos)
@@ -124,7 +124,7 @@ export async function createPost(prevState: PostFormState, formData: FormData): 
     })(),
   };
 
-  const parsed = CreatePostSchema.safeParse(raw);
+  const parsed = validatePostInputByStatus(raw);
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
   }
@@ -254,7 +254,7 @@ export async function updatePost(id: string, prevState: PostFormState, formData:
     })(),
   };
 
-  const parsed = CreatePostSchema.safeParse(raw);
+  const parsed = validatePostInputByStatus(raw);
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
   }

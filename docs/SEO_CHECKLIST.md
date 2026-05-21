@@ -138,6 +138,13 @@
 - [x] Template de revisão mensal SEO criado.
 - [x] Checklist de QA SEO/Analytics criado.
 
+### Correções pós-validação
+
+- [x] URLs `noindex` removidas do sitemap.
+- [x] Compartilhamento de blog no WhatsApp separado de `whatsapp_click`.
+- [x] Filtro `noindex` do `/llms-full.txt` aplicado em código.
+- [x] Validação de drafts revisada para manter flexibilidade editorial.
+
 ---
 
 ## Conteúdo (responsabilidade da RC2)

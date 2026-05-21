@@ -23,26 +23,26 @@ export const PostStatusEnum = z.enum(["draft", "scheduled", "published"]);
 
 export const SeoIndexStatusEnum = z.enum(["index", "noindex", "nofollow"]);
 
-// Schemas por seção de aba
+const SlugSchema = z
+  .string()
+  .min(1, "Slug é obrigatório")
+  .regex(
+    /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+    "Use apenas letras minúsculas, números e hífens. Não use acentos, espaços ou caracteres especiais."
+  );
 
 export const PostContentSchema = z.object({
-  title: z.string().min(3, "Título deve ter pelo menos 3 caracteres").max(200),
-  slug: z
-    .string()
-    .min(1, "Slug é obrigatório")
-    .regex(
-      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-      "Use apenas letras minúsculas, números e hífens. Não use acentos, espaços ou caracteres especiais."
-    ),
-  summary: z.string().min(10, "Resumo deve ter pelo menos 10 caracteres").max(500),
-  content: z.string().min(20, "Conteúdo deve ter pelo menos 20 caracteres"),
+  title: z.string().min(1, "Título é obrigatório").max(200),
+  slug: SlugSchema,
+  summary: z.string().max(500),
+  content: z.string(),
 });
 
 export const PostSeoSchema = z.object({
-  seo_keyword_primary: z.string().max(60, "Máx 60 caracteres").optional().nullable(),
+  seo_keyword_primary: z.string().optional().nullable(),
   seo_keyword_secondary: z.array(z.string()).optional().nullable(),
-  seo_meta_title: z.string().max(60, "Meta title: máx 60 caracteres").optional().nullable(),
-  seo_meta_description: z.string().max(160, "Meta description: máx 160 caracteres").optional().nullable(),
+  seo_meta_title: z.string().optional().nullable(),
+  seo_meta_description: z.string().optional().nullable(),
   seo_index_status: SeoIndexStatusEnum.default("index"),
 });
 
@@ -105,6 +105,62 @@ export const PostFaqSchema = z.object({
 
 // Schema completo para criar/atualizar post
 export const CreatePostSchema = PostContentSchema.merge(PostSeoSchema).merge(PostPublicationSchema).merge(PostAuthorSchema).merge(PostImageSchema).merge(PostRelatedSchema).merge(PostFaqSchema);
+
+export const PublishedPostSchema = CreatePostSchema.superRefine((post, ctx) => {
+  if (post.title.trim().length < 3) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["title"],
+      message: "Título deve ter pelo menos 3 caracteres",
+    });
+  }
+
+  if (post.summary.trim().length < 10) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["summary"],
+      message: "Resumo deve ter pelo menos 10 caracteres",
+    });
+  }
+
+  if (post.content.trim().length < 20) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["content"],
+      message: "Conteúdo deve ter pelo menos 20 caracteres",
+    });
+  }
+
+  if (post.seo_meta_title && post.seo_meta_title.trim().length > 60) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["seo_meta_title"],
+      message: "Meta title: máx 60 caracteres",
+    });
+  }
+
+  if (post.seo_meta_description && post.seo_meta_description.trim().length > 160) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["seo_meta_description"],
+      message: "Meta description: máx 160 caracteres",
+    });
+  }
+});
+
+export function validatePostInputByStatus(input: unknown) {
+  const baseParsed = CreatePostSchema.safeParse(input);
+  if (!baseParsed.success) {
+    return baseParsed;
+  }
+
+  const post = baseParsed.data;
+  if (post.status === "draft") {
+    return baseParsed;
+  }
+
+  return PublishedPostSchema.safeParse(post);
+}
 
 export type CreatePostInput = z.infer<typeof CreatePostSchema>;
 export type PostContent = z.infer<typeof PostContentSchema>;

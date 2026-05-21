@@ -152,13 +152,6 @@ export function TrackedLink({
         }
 
         if (tracking.kind === "blog_share") {
-          if (tracking.network === "whatsapp") {
-            trackWhatsappClick({
-              location: tracking.location,
-              label: tracking.label,
-              destination,
-            });
-          }
           trackBlogShareClick({
             location: tracking.location,
             label: tracking.label,

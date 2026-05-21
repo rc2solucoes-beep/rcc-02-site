@@ -55,7 +55,6 @@ async function getPublishedPosts(): Promise<LlmPost[]> {
       .from("posts")
       .select("slug,title,summary,category,seo_keyword_primary,faq_items,status,seo_index_status,published_at")
       .eq("status", "published")
-      .not("seo_index_status", "eq", "noindex")
       .order("published_at", { ascending: false });
 
     if (error) {
@@ -63,7 +62,9 @@ async function getPublishedPosts(): Promise<LlmPost[]> {
       return [];
     }
 
-    return ((data ?? []) as LlmPost[]).filter((post) => post.status === "published");
+    return ((data ?? []) as LlmPost[]).filter(
+      (post) => post.status === "published" && post.seo_index_status !== "noindex"
+    );
   } catch (error) {
     console.error("[llms-full] Unexpected error while loading posts:", error);
     return [];
