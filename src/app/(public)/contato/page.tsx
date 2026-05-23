@@ -13,12 +13,12 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Contato — Solicite um Diagnóstico",
     description:
-      "Preencha o formulário e receba um diagnóstico gratuito de oportunidades de IA e automação para sua empresa.",
+      "Solicite um diagnóstico e receba um plano inicial para organizar atendimento, reduzir retrabalho e priorizar automações.",
     alternates: { canonical: "https://rc2solucoes.com.br/contato" },
     openGraph: buildOg({
       url: "https://rc2solucoes.com.br/contato",
       title: "Contato — Solicite um Diagnóstico | RC2 Soluções",
-      description: "Preencha o formulário e receba um diagnóstico gratuito de oportunidades de IA e automação para sua empresa.",
+      description: "Solicite um diagnóstico e receba um plano inicial para organizar atendimento, reduzir retrabalho e priorizar automações.",
       imageUrl: settings.og_image_url,
     }),
   };
@@ -34,7 +34,7 @@ export default async function ContatoPage() {
       {
         title: "Contato — Solicite um Diagnóstico",
         description:
-          "Preencha o formulário e receba um diagnóstico gratuito de oportunidades de IA e automação para sua empresa.",
+          "Solicite um diagnóstico e receba um plano inicial para organizar atendimento, reduzir retrabalho e priorizar automações.",
         url: `${BASE_URL}/contato`,
         keywords: "contato, diagnóstico gratuito, consultoria, IA, automação, oportunidades",
         image: `${BASE_URL}/og-image.png`,
@@ -62,13 +62,14 @@ export default async function ContatoPage() {
               Solicite um diagnóstico para sua empresa
             </h1>
             <p className="text-rc2-ebony/70 leading-relaxed mb-8">
-              Quer automatizar atendimento, criar agentes de IA, integrar
-              sistemas, estruturar um e-commerce ou modernizar sua presença
-              digital?
+              Se sua empresa está com atendimento lento, leads sem resposta,
+              tarefas manuais ou sistemas desconectados, este diagnóstico ajuda
+              a priorizar o que resolver primeiro.
             </p>
             <p className="text-rc2-ebony/70 leading-relaxed mb-8">
-              Preencha o formulário e vamos identificar onde a tecnologia pode
-              gerar resultado prático para sua operação.
+              Em poucos passos, mapeamos seu cenário atual, identificamos
+              gargalos e sugerimos um plano inicial de execução com IA,
+              automações e integrações.
             </p>
 
             {/* What you get */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
@@ -20,6 +20,7 @@ const navLinks = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
@@ -30,6 +31,22 @@ export function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        requestAnimationFrame(() => {
+          mobileMenuButtonRef.current?.focus();
+        });
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   return (
     <header
@@ -75,16 +92,18 @@ export function Header() {
                 "ml-2 font-semibold tracking-wide uppercase text-xs px-5 h-9 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90 shadow-sm ring-1 ring-rc2-orange/20"
               )}
             >
-              Diagnóstico Gratuito
+              Solicitar diagnóstico
             </Link>
           </nav>
 
           {/* Mobile hamburger */}
           <button
+            ref={mobileMenuButtonRef}
             className="ui-focus-ring rounded md:hidden p-2 -mr-2 text-rc2-ebony hover:text-rc2-orange transition-colors"
             onClick={() => setOpen(!open)}
             aria-label={open ? "Fechar menu" : "Abrir menu"}
             aria-expanded={open}
+            aria-controls="mobile-main-menu"
           >
             {open ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -93,7 +112,7 @@ export function Header() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden bg-rc2-sand border-t border-border px-4 pb-4 pt-2">
+        <div id="mobile-main-menu" className="md:hidden bg-rc2-sand border-t border-border px-4 pb-4 pt-2">
           <nav className="flex flex-col gap-1">
             {navLinks.map((link) => (
               <Link
@@ -126,7 +145,7 @@ export function Header() {
                 "mt-3 font-semibold tracking-wide uppercase text-xs w-full justify-center bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90"
               )}
             >
-              Diagnóstico Gratuito
+              Solicitar diagnóstico
             </Link>
           </nav>
         </div>

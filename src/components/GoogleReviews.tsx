@@ -34,15 +34,21 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
 
   if (loading) {
     return (
-      <div className="w-full h-96 bg-gray-200 animate-pulse rounded-lg" />
+      <div className="w-full rounded-lg border border-border bg-white p-6" role="status" aria-live="polite">
+        <p className="text-sm text-rc2-ebony/70 mb-4">Carregando avaliações do Google...</p>
+        <div className="w-full h-40 bg-gray-200 animate-pulse rounded-lg" />
+      </div>
     );
   }
 
   if (error || !place) {
     return (
       <div className="w-full text-center py-12">
-        <p className="text-gray-600">
+        <p className="text-gray-600" role="alert">
           Não conseguimos carregar as avaliações no momento.
+        </p>
+        <p className="text-sm text-gray-500 mt-2">
+          Tente novamente em instantes ou abra as avaliações diretamente no Google.
         </p>
         <a
           href="https://www.google.com/maps/search/RC2+Solu%C3%A7%C3%B5es"
@@ -57,6 +63,25 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
   }
 
   const reviews = place.reviews.slice(0, maxReviews);
+
+  if (reviews.length === 0) {
+    return (
+      <div className="w-full text-center py-12">
+        <p className="text-gray-600">Ainda não há avaliações visíveis neste momento.</p>
+        <p className="text-sm text-gray-500 mt-2">
+          Você pode conferir nosso perfil completo no Google Maps.
+        </p>
+        <a
+          href="https://www.google.com/maps/search/RC2+Solu%C3%A7%C3%B5es"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-block text-rc2-orange hover:underline"
+        >
+          Ver no Google Maps →
+        </a>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full space-y-8">

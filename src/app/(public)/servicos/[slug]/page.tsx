@@ -140,6 +140,21 @@ export default async function ServicePage({ params }: Props) {
 
       <section className="bg-rc2-sand py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-14">
+          <div className="rounded-lg border border-border bg-white p-5 md:p-6">
+            <SectionLabel className="block mb-3">Resumo rápido</SectionLabel>
+            <h2 className="text-lg font-semibold text-rc2-ebony mb-3">
+              Este serviço é indicado quando sua operação enfrenta:
+            </h2>
+            <ul className="space-y-2">
+              {service.painPoints.slice(0, 3).map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-sm text-rc2-ebony/80">
+                  <span className="text-rc2-orange mt-0.5 text-xs shrink-0">•</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           <div id="problemas">
             <SectionLabel className="block mb-4">Problemas que resolvemos</SectionLabel>
             <ul className="space-y-3">

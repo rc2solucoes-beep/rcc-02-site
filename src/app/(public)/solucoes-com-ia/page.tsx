@@ -12,12 +12,12 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Soluções com IA",
     description:
-      "Descubra como a IA pode ajudar sua empresa na prática: atendimento, vendas, operação e integração com sistemas. RC2 Soluções.",
+      "Veja aplicações práticas de IA para PMEs: responder clientes, qualificar leads, organizar operação e integrar sistemas.",
     alternates: { canonical: "https://rc2solucoes.com.br/solucoes-com-ia" },
     openGraph: buildOg({
       url: "https://rc2solucoes.com.br/solucoes-com-ia",
       title: "Soluções com IA — RC2 Soluções",
-      description: "Descubra como a IA pode ajudar sua empresa na prática: atendimento, vendas, operação e integração com sistemas. RC2 Soluções.",
+      description: "Aplicações práticas de IA para responder mais rápido, reduzir retrabalho e organizar operação.",
       imageUrl: settings.og_image_url,
     }),
   };
@@ -95,7 +95,7 @@ export default async function SolucoesComIAPage() {
       {
         title: "Soluções com IA",
         description:
-          "Descubra como a IA pode ajudar sua empresa na prática: atendimento, vendas, operação e integração com sistemas. RC2 Soluções.",
+          "Veja aplicações práticas de IA para PMEs: responder clientes, qualificar leads, organizar operação e integrar sistemas.",
         url: `${BASE_URL}/solucoes-com-ia`,
         keywords: "soluções com IA, casos de uso, RPA, automação, inteligência artificial prática, IA para empresas",
         image: `${BASE_URL}/og-image.png`,
@@ -116,11 +116,21 @@ export default async function SolucoesComIAPage() {
       <PageHero
         label="Soluções com IA"
         title="Como a IA pode ajudar sua empresa na prática"
-        description="A RC2 implementa soluções de IA aplicadas a problemas reais de atendimento, vendas, produtividade e operação."
+        description="A RC2 aplica IA em problemas reais do dia a dia: atendimento lento, perda de leads, retrabalho e falta de integração entre sistemas."
       />
 
       <section className="bg-rc2-sand py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-10 rounded-lg border border-[var(--surface-2)] bg-white p-6 md:p-8">
+            <SectionLabel className="block mb-3">Exemplos práticos</SectionLabel>
+            <div className="space-y-3 text-sm text-rc2-ebony/80">
+              <p><span className="font-semibold text-rc2-ebony">Atendimento:</span> dúvidas frequentes chegam pelo WhatsApp; a IA responde o básico e encaminha casos complexos para a equipe, reduzindo fila de resposta.</p>
+              <p><span className="font-semibold text-rc2-ebony">Leads:</span> novos contatos entram sem contexto; a IA faz perguntas iniciais e envia oportunidades mais qualificadas para o vendedor certo.</p>
+              <p><span className="font-semibold text-rc2-ebony">Equipe interna:</span> informações ficam espalhadas; a IA consulta documentos e entrega respostas rápidas sem busca manual em várias ferramentas.</p>
+              <p><span className="font-semibold text-rc2-ebony">Pós-venda:</span> solicitações chegam misturadas; a IA classifica demandas e organiza o fluxo antes da análise humana, melhorando previsibilidade operacional.</p>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {blocks.map((block) => (
               <div key={block.label} className="bg-[var(--surface-1)] border border-[var(--surface-2)] rounded-lg p-8 md:p-10">
@@ -146,9 +156,9 @@ export default async function SolucoesComIAPage() {
           {/* Bridge text */}
           <div className="mt-16 max-w-2xl">
             <p className="text-rc2-ebony/70 text-lg leading-relaxed border-l-2 border-rc2-orange pl-5 italic">
-              Muitas empresas ainda não sabem exatamente o que pedir. A RC2
-              ajuda a identificar quais soluções fazem sentido para o momento do
-              seu negócio.
+              Você não precisa chegar com a solução pronta. A RC2 ajuda a
+              identificar por onde começar, priorizando o que gera impacto real
+              com menor complexidade.
             </p>
           </div>
         </div>

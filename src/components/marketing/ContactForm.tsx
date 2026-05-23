@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { Turnstile } from "@marsidev/react-turnstile";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactSchema, type ContactFormData } from "@/lib/validations/contact";
@@ -17,12 +19,12 @@ import {
 } from "@/lib/tracking";
 
 const solutionOptions = [
-  "Automações com IA",
-  "Agentes de IA internos",
-  "Integrações com n8n/APIs",
+  "Automatizar atendimento ou vendas",
+  "Criar IA para apoiar a equipe interna",
+  "Conectar sistemas, planilhas ou CRM",
   "E-commerce",
-  "Site ou landing page",
-  "Ainda não sei",
+  "Criar site ou landing page",
+  "Ainda não sei por onde começar",
 ];
 
 const sizeOptions = [
@@ -100,16 +102,18 @@ function ProgressBar({ step }: { step: 1 | 2 }) {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className={cn("text-sm font-semibold", step === 1 ? "text-rc2-orange" : "text-rc2-ebony/40")}>
-            Etapa 1
+            Etapa 1 de 2
           </div>
           <div className={cn("w-24 h-1 rounded-full", step >= 1 ? "bg-rc2-orange" : "bg-rc2-ebony/10")} />
           <div className={cn("text-sm font-semibold", step === 2 ? "text-rc2-orange" : "text-rc2-ebony/40")}>
-            Etapa 2
+            Etapa 2 de 2
           </div>
         </div>
-        <span className="text-xs text-rc2-ebony/60">~1 min</span>
+        <span className="text-xs text-rc2-ebony/60">Tempo estimado: 1 minuto</span>
       </div>
-      <p className="text-xs text-rc2-ebony/70">{step === 1 ? "Informações iniciais" : "Detalhes da empresa"}</p>
+      <p className="text-xs text-rc2-ebony/70">
+        {step === 1 ? "Etapa 1 de 2 — Informações iniciais" : "Etapa 2 de 2 — Dados da empresa"}
+      </p>
     </div>
   );
 }
@@ -118,13 +122,20 @@ export function ContactForm() {
   const [step, setStep] = useState<1 | 2>(1);
   const [submitted, setSubmitted] = useState(false);
   const [step1Started, setStep1Started] = useState(false);
+  const [step1Error, setStep1Error] = useState<string | null>(null);
   const [serverError, setServerError] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileError, setTurnstileError] = useState<string | null>(null);
+
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
+  const hasRealTurnstileSiteKey = Boolean(turnstileSiteKey && turnstileSiteKey !== "xxxx");
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     trigger,
+    setFocus,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
     mode: "onBlur",
@@ -132,22 +143,45 @@ export function ContactForm() {
   });
 
   const handleStep1Next = async () => {
-    const isValid = await trigger(["name", "email", "whatsapp", "message", "website"]);
+    setStep1Error(null);
+    const isValid = await trigger(["name", "email", "whatsapp", "message", "website"], {
+      shouldFocus: true,
+    });
     if (isValid) {
       trackLeadEvent(
         "generate_lead_step_1",
         { form_name: "diagnostico_gratuito" }
       );
       setStep(2);
+      return;
+    }
+
+    setStep1Error("Revise os campos destacados antes de continuar.");
+    const firstErrorField = ["name", "email", "whatsapp", "message"].find(
+      (field) => errors[field as keyof typeof errors]
+    ) as "name" | "email" | "whatsapp" | "message" | undefined;
+    if (firstErrorField) {
+      setFocus(firstErrorField);
     }
   };
 
   const handleStep1Back = () => {
+    setServerError(null);
     setStep(1);
   };
 
   const onSubmit = async (data: ContactFormData) => {
     setServerError(null);
+    setStep1Error(null);
+    setTurnstileError(null);
+
+    if (hasRealTurnstileSiteKey && !turnstileToken) {
+      setTurnstileError(
+        "Não foi possível validar a verificação de segurança. Recarregue a página e tente novamente ou fale pelo WhatsApp."
+      );
+      return;
+    }
+
     trackFormSubmit({
       ...FORM_CONTEXT,
       solution_interest: data.solution,
@@ -163,17 +197,27 @@ export function ContactForm() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, turnstileToken: "" }),
+        body: JSON.stringify({ ...data, turnstileToken }),
       });
 
       const json = await res.json() as { success?: boolean; error?: string };
 
       if (!res.ok) {
-        setServerError(json.error ?? "Erro inesperado. Tente novamente.");
+        const apiMessage = json.error?.toLowerCase() ?? "";
+        const isRateLimited = apiMessage.includes("muitas") || apiMessage.includes("too many") || apiMessage.includes("rate");
+        const isTurnstileError = apiMessage.includes("verificação de segurança") || apiMessage.includes("validar");
+        setServerError(
+          isTurnstileError
+            ? "Não foi possível validar a verificação de segurança. Recarregue a página e tente novamente ou fale pelo WhatsApp."
+            :
+          isRateLimited
+            ? "Muitas solicitações em pouco tempo. Aguarde alguns minutos ou fale pelo WhatsApp."
+            : "Não conseguimos registrar sua solicitação neste momento. Tente novamente ou fale pelo WhatsApp."
+        );
         trackFormError({
           ...FORM_CONTEXT,
-          error_code: "api_error",
-          error_message: "request_failed",
+          error_code: isRateLimited ? "rate_limited" : "api_error",
+          error_message: isRateLimited ? "too_many_requests" : isTurnstileError ? "security_verification_failed" : "request_failed",
         });
         return;
       }
@@ -195,7 +239,7 @@ export function ContactForm() {
       });
       setSubmitted(true);
     } catch {
-      setServerError("Falha de conexão. Verifique sua internet e tente novamente.");
+      setServerError("Não foi possível enviar agora. Verifique sua conexão e tente novamente.");
       trackFormError({
         ...FORM_CONTEXT,
         error_code: "network_error",
@@ -215,8 +259,11 @@ export function ContactForm() {
           Diagnóstico solicitado com sucesso!
         </h2>
         <p className="text-rc2-ebony/70 max-w-md">
-          Recebemos suas informações e entraremos em contato em breve pelo e-mail
-          ou WhatsApp informado.
+          Diagnóstico solicitado com sucesso. Recebemos suas informações e retornaremos
+          pelo e-mail ou WhatsApp informado.
+        </p>
+        <p className="text-rc2-ebony/70 max-w-md mt-2">
+          Se preferir acelerar o contato, fale agora pelo WhatsApp.
         </p>
         <a
           href="https://wa.me/5511988028550"
@@ -231,8 +278,14 @@ export function ContactForm() {
           }
           className="mt-6 text-sm font-medium text-rc2-orange underline underline-offset-4"
         >
-          Prefere falar agora? Chama no WhatsApp →
+          Abrir WhatsApp agora →
         </a>
+        <Link
+          href="/servicos"
+          className="mt-3 text-sm text-rc2-ebony/75 underline underline-offset-4 hover:text-rc2-ebony"
+        >
+          Ver serviços
+        </Link>
       </div>
     );
   }
@@ -252,6 +305,7 @@ export function ContactForm() {
         );
       }}
       noValidate
+      aria-busy={isSubmitting}
       className="space-y-6"
     >
       {/* Honeypot */}
@@ -270,11 +324,21 @@ export function ContactForm() {
       {/* STEP 1: Low-friction initial contact */}
       {step === 1 && (
         <>
+          {step1Error && (
+            <p
+              role="alert"
+              aria-live="assertive"
+              className="text-sm text-destructive bg-destructive/5 border border-destructive/20 px-4 py-3 rounded-md"
+            >
+              {step1Error}
+            </p>
+          )}
           <div>
             <Label htmlFor="name" required>Seu nome</Label>
             <input
               id="name"
               type="text"
+              autoComplete="name"
               placeholder="Seu nome completo"
               className={cn(inputBase, errors.name && "border-destructive")}
               {...register("name")}
@@ -288,6 +352,7 @@ export function ContactForm() {
               <input
                 id="email"
                 type="email"
+                autoComplete="email"
                 placeholder="seu@email.com"
                 className={cn(inputBase, errors.email && "border-destructive")}
                 {...register("email")}
@@ -299,6 +364,8 @@ export function ContactForm() {
               <input
                 id="whatsapp"
                 type="tel"
+                autoComplete="tel"
+                inputMode="tel"
                 placeholder="(11) 99999-9999"
                 className={cn(inputBase, errors.whatsapp && "border-destructive")}
                 {...register("whatsapp")}
@@ -312,7 +379,7 @@ export function ContactForm() {
             <textarea
               id="message"
               rows={4}
-              placeholder="Conte um pouco sobre o que você precisa resolver ou automatizar..."
+              placeholder="Exemplo: muitos contatos sem resposta, tarefas manuais, dados espalhados ou sistemas que não conversam."
               className={cn(inputBase, "resize-none", errors.message && "border-destructive")}
               {...register("message")}
             />
@@ -325,7 +392,7 @@ export function ContactForm() {
               onClick={handleStep1Next}
               className="ui-focus-ring flex-1 px-10 h-12 bg-rc2-orange text-rc2-sand font-semibold tracking-wide uppercase text-xs hover:bg-rc2-orange/90 active:bg-rc2-orange active:ring-1 active:ring-rc2-orange/50 transition-all duration-150 rounded-md flex items-center justify-center gap-2"
             >
-              Próximo
+              Continuar para dados da empresa
               <ChevronRight size={16} />
             </button>
           </div>
@@ -340,6 +407,7 @@ export function ContactForm() {
             <input
               id="company"
               type="text"
+              autoComplete="organization"
               placeholder="Nome da empresa"
               className={cn(inputBase, errors.company && "border-destructive")}
               {...register("company")}
@@ -393,12 +461,72 @@ export function ContactForm() {
           </div>
 
           {serverError && (
-            <p className="text-sm text-destructive bg-destructive/5 border border-destructive/20 px-4 py-3" role="alert">
-              {serverError}
-            </p>
+            <div className="text-sm text-destructive bg-destructive/5 border border-destructive/20 px-4 py-3 rounded-md" role="alert">
+              <p>{serverError}</p>
+              <a
+                href="https://wa.me/5511988028550"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() =>
+                  trackWhatsappClick({
+                    location: "contact_form_error",
+                    label: "fallback_whatsapp",
+                    destination: "https://wa.me/5511988028550",
+                  })
+                }
+                className="inline-block mt-2 underline underline-offset-2"
+              >
+                Abrir WhatsApp agora →
+              </a>
+            </div>
+          )}
+
+          {hasRealTurnstileSiteKey && (
+            <div>
+              <Turnstile
+                siteKey={turnstileSiteKey}
+                onSuccess={(token) => {
+                  setTurnstileToken(token);
+                  setTurnstileError(null);
+                }}
+                onExpire={() => {
+                  setTurnstileToken("");
+                }}
+                onError={() => {
+                  setTurnstileToken("");
+                  setTurnstileError(
+                    "Não foi possível validar a verificação de segurança. Recarregue a página e tente novamente ou fale pelo WhatsApp."
+                  );
+                }}
+              />
+            </div>
+          )}
+
+          {turnstileError && (
+            <div className="text-sm text-destructive bg-destructive/5 border border-destructive/20 px-4 py-3 rounded-md" role="alert">
+              <p>{turnstileError}</p>
+              <a
+                href="https://wa.me/5511988028550"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() =>
+                  trackWhatsappClick({
+                    location: "contact_form_turnstile_error",
+                    label: "fallback_whatsapp",
+                    destination: "https://wa.me/5511988028550",
+                  })
+                }
+                className="inline-block mt-2 underline underline-offset-2"
+              >
+                Abrir WhatsApp agora →
+              </a>
+            </div>
           )}
 
           {/* Action buttons */}
+          <p className="text-xs text-rc2-ebony/70">
+            Você pode voltar sem perder as informações preenchidas.
+          </p>
           <div className="mt-8 flex gap-3">
             <button
               type="button"
@@ -414,9 +542,14 @@ export function ContactForm() {
               disabled={isSubmitting}
               className="ui-focus-ring flex-1 px-10 h-12 bg-rc2-orange text-rc2-sand font-semibold tracking-wide uppercase text-xs hover:bg-rc2-orange/90 active:bg-rc2-orange active:ring-1 active:ring-rc2-orange/50 transition-all duration-150 disabled:opacity-60 disabled:cursor-not-allowed rounded-md"
             >
-              {isSubmitting ? "Enviando..." : "Solicitar diagnóstico"}
+              {isSubmitting ? "Enviando solicitação..." : "Solicitar diagnóstico"}
             </button>
           </div>
+          {isSubmitting && (
+            <p className="text-xs text-rc2-ebony/70" aria-live="polite">
+              Estamos registrando seu diagnóstico. Não feche esta página.
+            </p>
+          )}
         </>
       )}
 

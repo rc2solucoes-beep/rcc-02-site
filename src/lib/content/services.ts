@@ -37,7 +37,7 @@ export const services: Service[] = [
     summary:
       "Automatize atendimentos, vendas e processos usando IA conectada aos canais e sistemas da sua empresa.",
     description:
-      "Automatize o atendimento da sua empresa com inteligência artificial, sem perder o controle humano da operação. Criamos soluções para WhatsApp, site, formulários, CRM e canais digitais que ajudam sua empresa a responder clientes, qualificar leads, organizar demandas e vender com mais eficiência.",
+      "Para empresas com atendimento sobrecarregado e leads sem resposta, implementamos IA com processo claro e controle humano. Conectamos WhatsApp, site, formulários e CRM para responder clientes mais rápido, qualificar contatos e organizar a operação comercial.",
     items: [
       "Atendimento automático com IA",
       "Chatbot para WhatsApp e site",
@@ -78,7 +78,7 @@ export const services: Service[] = [
     ],
     implementationSteps: [
       "Mapeamento dos principais motivos de contato e perguntas frequentes.",
-      "Definição dos fluxos de atendimento, qualificação e handoff humano.",
+      "Definição dos fluxos de atendimento, qualificação e encaminhamento para humano.",
       "Configuração da base de conhecimento e das regras de resposta.",
       "Integração com canais como WhatsApp, site, formulários, CRM ou planilhas.",
       "Testes com cenários reais de atendimento.",
@@ -100,7 +100,7 @@ export const services: Service[] = [
       "Tempo médio de primeira resposta",
       "Volume de atendimentos automatizados",
       "Leads qualificados",
-      "Taxa de handoff para humano",
+      "Taxa de encaminhamento para humano",
       "Motivos de contato mais frequentes",
       "Conversões originadas no atendimento",
       "Atendimentos fora do horário comercial",
@@ -140,13 +140,13 @@ export const services: Service[] = [
   },
   {
     slug: "agentes-de-ia",
-    shortTitle: "Agentes de IA Internos",
-    title: "Implantação de agentes de IA para processos internos",
+    shortTitle: "IA para equipe interna",
+    title: "IA para equipe interna e processos do dia a dia",
     seoTitle: "Agentes de IA para Empresas e Processos Internos",
     summary:
-      "Crie assistentes inteligentes para apoiar sua equipe em consultas, relatórios, tarefas e tomada de decisão.",
+      "Use IA para responder dúvidas internas, resumir informações e reduzir tarefas administrativas da equipe.",
     description:
-      "Criamos agentes de IA para apoiar áreas internas da empresa em tarefas repetitivas, consultas, análises, relatórios e organização de informações. Esses agentes podem atuar como assistentes internos para equipes de vendas, atendimento, operação, financeiro, RH, marketing ou gestão.",
+      "Quando a equipe perde tempo buscando informação ou montando relatórios manuais, a IA pode ajudar com segurança. Criamos assistentes internos para vendas, atendimento, operação, financeiro, RH, marketing e gestão, conectados às fontes de dados da empresa.",
     items: [
       "Agente para consultar documentos internos",
       "Agente para responder dúvidas da equipe",
@@ -252,13 +252,13 @@ export const services: Service[] = [
   },
   {
     slug: "automacao-de-processos",
-    shortTitle: "Integrações e n8n",
-    title: "Automação de processos com n8n, APIs e integrações",
+    shortTitle: "Integração de sistemas",
+    title: "Automação para conectar sistemas e reduzir retrabalho",
     seoTitle: "Automação de Processos com n8n, APIs e Integrações",
     summary:
-      "Conecte ferramentas, sistemas, planilhas, CRM, ERP, e-mail e WhatsApp para reduzir trabalho manual.",
+      "Conecte ferramentas, planilhas e sistemas para reduzir digitação manual e retrabalho na operação.",
     description:
-      "Muitas empresas perdem tempo todos os dias copiando informações entre sistemas, atualizando planilhas, enviando mensagens manuais e repetindo tarefas que poderiam ser automatizadas. A RC2 cria automações sob medida usando n8n, APIs e integrações entre ferramentas para conectar processos e reduzir retrabalho.",
+      "Se sua equipe copia dados entre planilhas, CRM, ERP e WhatsApp, existe espaço para ganhar eficiência rápida. A RC2 cria automações com n8n, APIs e integrações para conectar processos e reduzir erros manuais.",
     items: [
       "Integração entre formulários, CRM e planilhas",
       "Envio automático de e-mails e mensagens",

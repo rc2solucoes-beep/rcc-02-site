@@ -8,7 +8,17 @@ interface ServiceCardProps {
   className?: string;
 }
 
+const serviceResolveMap: Record<string, string> = {
+  "automacoes-com-ia": "atendimento lento e perda de leads.",
+  "agentes-de-ia": "tarefas internas repetitivas e dúvidas operacionais.",
+  "automacao-de-processos": "retrabalho entre planilhas, CRM e ERP.",
+  "e-commerce": "operação de vendas online desorganizada.",
+  "sites-e-landing-pages": "site sem geração consistente de contatos.",
+};
+
 export function ServiceCard({ service, className }: ServiceCardProps) {
+  const resolveText = serviceResolveMap[service.slug];
+
   return (
     <div
       className={cn(
@@ -23,11 +33,16 @@ export function ServiceCard({ service, className }: ServiceCardProps) {
       <p className="text-sm text-rc2-ebony/70 leading-relaxed flex-1">
         {service.summary}
       </p>
+      {resolveText && (
+        <p className="mt-3 text-xs text-rc2-ebony/70">
+          <span className="font-semibold text-rc2-ebony/80">Resolve:</span> {resolveText}
+        </p>
+      )}
       <Link
         href={`/servicos/${service.slug}`}
         className="ui-focus-ring rounded-lg mt-5 inline-flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-rc2-orange bg-rc2-orange/5 hover:bg-rc2-orange/10 active:bg-rc2-orange/20 hover:gap-3 transition-all duration-200"
       >
-        Ver detalhes
+        Ver serviço
         <ArrowRight size={14} />
       </Link>
     </div>

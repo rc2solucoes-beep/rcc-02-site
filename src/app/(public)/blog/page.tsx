@@ -92,8 +92,10 @@ export default async function BlogPage() {
                 <span className="text-3xl">📚</span>
               </div>
               <SectionLabel className="mb-3">Em breve</SectionLabel>
-              <h2 className="text-2xl font-semibold text-rc2-ebony mb-3">Conteúdo em desenvolvimento</h2>
-              <p className="text-text-secondary text-lg mb-8 max-w-md mx-auto">Estamos preparando insights práticos sobre automação, IA e operações digitais. Novos artigos chegando em breve.</p>
+              <h2 className="text-2xl font-semibold text-rc2-ebony mb-3">Ainda não há artigos publicados</h2>
+              <p className="text-text-secondary text-lg mb-8 max-w-md mx-auto">
+                Enquanto isso, veja nossas soluções ou solicite um diagnóstico para sua operação.
+              </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <TrackedLink
                   href="/servicos"

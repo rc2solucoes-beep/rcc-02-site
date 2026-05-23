@@ -17,24 +17,24 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
     description:
-      "Consultoria especializada em IA, automações e operações digitais para pequenas e médias empresas. Automatize atendimento, integre sistemas e escale sua operação.",
+      "Consultoria para PMEs que precisam responder mais rápido, perder menos leads e reduzir tarefas manuais com IA, automações e integrações.",
     alternates: { canonical: "https://rc2solucoes.com.br" },
     openGraph: buildOg({
       url: "https://rc2solucoes.com.br",
       title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
-      description: "Consultoria especializada em IA, automações e operações digitais para PMEs. Diagnóstico gratuito.",
+      description: "Para PMEs que querem responder mais rápido, perder menos leads e reduzir retrabalho com IA e automação.",
       imageUrl: settings.og_image_url,
     }),
   };
 }
 
 const forWhomItems = [
-  "Muitos contatos no WhatsApp e pouca conversão em vendas.",
-  "Equipe presa em tarefas repetitivas e manuais.",
-  "Planilhas e sistemas desconectados gerando retrabalho.",
-  "Quero aplicar IA, mas preciso de um plano claro.",
-  "Atendimento lento, sem padrão e sem previsibilidade.",
-  "Operação digital precisa escalar com mais controle.",
+  "Sua equipe responde as mesmas perguntas todos os dias.",
+  "Leads chegam pelo WhatsApp, mas se perdem no processo.",
+  "Dados ficam espalhados entre planilhas, sistemas e conversas.",
+  "Você quer usar IA, mas ainda não sabe por onde começar com segurança.",
+  "O atendimento está lento e sem padrão entre os canais.",
+  "A operação cresce, mas o controle não acompanha.",
 ];
 
 const socialProofItems = [
@@ -61,7 +61,7 @@ export default async function HomePage({ searchParams }: Props) {
       {
         title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
         description:
-          "Consultoria especializada em IA, automações e operações digitais para pequenas e médias empresas. Automatize atendimento, integre sistemas e escale sua operação.",
+          "Consultoria para PMEs que precisam responder mais rápido, perder menos leads e reduzir tarefas manuais com IA, automações e integrações.",
         url: BASE_URL,
         keywords: "IA, automação, consultoria digital, PME, n8n, agentes de IA, e-commerce, atendimento automático, integrações",
         image: `${BASE_URL}/og-image.png`,
@@ -86,13 +86,13 @@ export default async function HomePage({ searchParams }: Props) {
             Consultoria em IA e Automações para PMEs
           </SectionLabel>
           <h1 className="rc2-h1 text-rc2-ebony max-w-4xl">
-            IA, automações e operações digitais para empresas que querem ganhar
-            eficiência e vender mais.
+            IA, automações e integrações para empresas que querem responder mais
+            rápido, vender melhor e reduzir retrabalho.
           </h1>
           <p className="rc2-body-lg mt-6 text-rc2-ebony/75 max-w-2xl">
-            A RC2 Soluções ajuda empresas a automatizar atendimentos, criar
-            agentes de IA, integrar sistemas, estruturar processos digitais e
-            vender melhor pela internet.
+            A RC2 ajuda PMEs a organizar atendimento, evitar perda de leads e
+            tirar tarefas manuais da equipe. Depois disso, aplicamos IA,
+            automações e integrações no que gera mais impacto.
           </p>
 
           {heroVariant === "b" && (
@@ -143,8 +143,90 @@ export default async function HomePage({ searchParams }: Props) {
         </div>
       </section>
 
+      {/* ── Escolha pela dor ── */}
+      <section className="bg-rc2-sand pt-10 pb-14 md:pt-14 md:pb-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="rounded-2xl border border-rc2-ebony/15 bg-white p-6 sm:p-8 md:p-10 shadow-[0_16px_45px_-36px_rgba(17,24,39,0.55)]">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.35fr] gap-8 lg:gap-10">
+              <div className="max-w-xl">
+                <SectionLabel className="block mb-4">Escolha pela sua dor</SectionLabel>
+                <h2 className="rc2-h3 text-rc2-ebony mb-3">
+                  Se sua empresa tem esse cenário, já existe um próximo passo.
+                </h2>
+                <p className="text-sm text-rc2-ebony/72 leading-relaxed">
+                  Não precisa decorar nome técnico. Compare a dor com a rota recomendada e siga para a solução mais aderente.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  <span className="inline-flex items-center rounded-full border border-rc2-ebony/15 bg-rc2-sand px-3 py-1 text-xs font-medium text-rc2-ebony/80">
+                    Se sua empresa tem...
+                  </span>
+                  <span className="inline-flex items-center rounded-full border border-rc2-orange/25 bg-rc2-orange/10 px-3 py-1 text-xs font-medium text-rc2-ebony/85">
+                    Comece por...
+                  </span>
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-rc2-ebony/12 bg-rc2-sand/35 divide-y divide-rc2-ebony/10 overflow-hidden">
+                {[
+                  {
+                    pain: "Muitos contatos no WhatsApp e demora para responder clientes.",
+                    href: "/solucoes/atendimento-lento",
+                    label: "Atendimento lento",
+                  },
+                  {
+                    pain: "Leads chegam, mas se perdem antes de virar oportunidade.",
+                    href: "/solucoes/leads-sem-resposta",
+                    label: "Leads sem resposta",
+                  },
+                  {
+                    pain: "Equipe copia dados manualmente entre planilhas e sistemas.",
+                    href: "/solucoes/processos-manuais",
+                    label: "Processos manuais",
+                  },
+                  {
+                    pain: "Sistemas não conversam e o retrabalho aumenta.",
+                    href: "/solucoes/sistemas-desconectados",
+                    label: "Sistemas desconectados",
+                  },
+                  {
+                    pain: "Você ainda não sabe por onde começar com IA e automação.",
+                    href: "/contato",
+                    label: "Diagnóstico inicial",
+                  },
+                ].map((item, index) => (
+                  <article
+                    key={item.href + item.pain}
+                    className="group grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3 md:gap-5 px-4 py-4 sm:px-5 sm:py-5"
+                  >
+                    <div className="flex items-start gap-3">
+                      <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-rc2-ebony/20 bg-white text-[11px] font-semibold text-rc2-ebony/80">
+                        {index + 1}
+                      </span>
+                      <p className="text-sm text-rc2-ebony/82 leading-relaxed">{item.pain}</p>
+                    </div>
+                    <TrackedLink
+                      href={item.href}
+                      tracking={{
+                        kind: "cta",
+                        location: "home_choose_by_pain",
+                        label: item.label,
+                        destination: item.href,
+                      }}
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-rc2-orange md:justify-self-end group-hover:gap-2 transition-all"
+                    >
+                      Comece por {item.label}
+                      <ArrowRight size={14} />
+                    </TrackedLink>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── O que entregamos ── */}
-      <section id="servicos" className="bg-rc2-sand rc2-section">
+      <section id="servicos" className="bg-rc2-sand pt-0 pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionLabel className="block mb-5">O que entregamos</SectionLabel>
           <h2 className="rc2-h2 text-rc2-ebony mb-12 max-w-2xl">
@@ -169,20 +251,20 @@ export default async function HomePage({ searchParams }: Props) {
             <TrackedLink
               href="/contato"
               tracking={{ kind: "cta", location: "home_services_grid", label: "solicitar_diagnostico", destination: "/contato" }}
-              className="group rc2-card rc2-card-hover flex flex-col justify-between p-6 bg-rc2-orange border-rc2-orange"
+              className="group rc2-card rc2-card-hover flex flex-col justify-between p-6 md:p-7 !bg-rc2-forest !border-rc2-forest shadow-[0_16px_36px_-24px_rgba(11,45,34,0.78)]"
             >
               <div>
-                <span className="block text-xs font-medium uppercase tracking-widest text-rc2-sand/70 mb-3">
+                <span className="inline-flex rounded-full border border-rc2-sand/45 bg-rc2-sand/14 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-rc2-sand mb-4">
                   Próximo passo
                 </span>
-                <h3 className="text-lg font-semibold text-rc2-sand mb-3 leading-snug">
+                <h3 className="text-xl font-semibold text-rc2-sand mb-3 leading-tight">
                   Não sabe por onde começar?
                 </h3>
-                <p className="text-sm text-rc2-sand/80 leading-relaxed">
+                <p className="text-sm text-rc2-sand/95 leading-relaxed max-w-[30ch]">
                   Diagnóstico gratuito para mapear gargalos e oportunidades de automação na sua operação.
                 </p>
               </div>
-              <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-rc2-sand group-hover:gap-3 transition-all duration-200">
+              <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-rc2-sand group-hover:gap-3 transition-all duration-200">
                 Solicitar diagnóstico
                 <ArrowRight size={14} />
               </span>
@@ -199,11 +281,10 @@ export default async function HomePage({ searchParams }: Props) {
             Tecnologia com visão de operação.
           </h2>
           <p className="text-rc2-sand/90 text-lg leading-relaxed mb-6">
-            A RC2 não entrega apenas ferramentas. Entregamos processos
-            funcionando. Com experiência em TI, e-commerce, automação,
-            atendimento omnichannel, marketing digital, integração de sistemas e
-            liderança de operações digitais, a RC2 atua do diagnóstico à
-            implantação.
+            A RC2 não entrega só ferramenta. Entrega processo funcionando no dia
+            a dia da empresa. Atuamos do diagnóstico à implantação para
+            organizar atendimento, conectar sistemas e dar previsibilidade à
+            operação comercial.
           </p>
           <p className="text-rc2-sand/85 italic text-sm border-l-2 border-rc2-orange pl-4">
             &ldquo;A IA não substitui uma operação mal estruturada. Primeiro

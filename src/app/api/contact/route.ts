@@ -27,17 +27,22 @@ function getIp(req: NextRequest): string {
 
 // ─── Turnstile verification ───────────────────────────────────────────────────
 
+function hasRealTurnstileSecret(secret: string | undefined): secret is string {
+  return Boolean(secret && secret !== "xxxx");
+}
+
 async function verifyTurnstile(token: string, ip: string): Promise<boolean> {
   const secret = process.env.TURNSTILE_SECRET_KEY;
+  const isProduction = process.env.NODE_ENV === "production";
+  const hasRealSecret = hasRealTurnstileSecret(secret);
+  const shouldValidate = hasRealSecret;
 
-  // Skip in dev/test if no secret configured
-  if (!secret || secret === "xxxx") return true;
+  // Allow local/test bypass only when no real secret is configured
+  if (!shouldValidate) return true;
 
-  // If no token was provided (e.g. widget blocked by browser/CSP), fall through
-  // to rate limiting as the primary spam protection layer
+  // With real secret configured, token is always required
   if (!token) {
-    console.warn("[turnstile] No token received — skipping, relying on rate limit");
-    return true;
+    return false;
   }
 
   const res = await fetch(
@@ -49,7 +54,15 @@ async function verifyTurnstile(token: string, ip: string): Promise<boolean> {
     }
   );
 
+  if (!res.ok) return false;
+
   const data = (await res.json()) as { success: boolean };
+
+  // In production with real secret, only explicit success is accepted
+  if (isProduction && hasRealSecret) {
+    return data.success === true;
+  }
+
   return data.success;
 }
 
@@ -198,7 +211,7 @@ export async function POST(req: NextRequest) {
   const valid = await verifyTurnstile(turnstileToken, ip);
   if (!valid) {
     return NextResponse.json(
-      { error: "Verificação de segurança falhou. Recarregue a página e tente novamente." },
+      { error: "Não foi possível validar a verificação de segurança. Recarregue a página e tente novamente ou fale pelo WhatsApp." },
       { status: 400 }
     );
   }

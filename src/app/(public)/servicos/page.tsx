@@ -16,12 +16,12 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Serviços",
     description:
-      "Automações com IA, agentes inteligentes, integrações com n8n, e-commerce e sites para PMEs. Conheça as soluções da RC2 Soluções.",
+      "Serviços para PMEs que precisam responder mais rápido, perder menos leads e reduzir retrabalho com IA, automações e integrações.",
     alternates: { canonical: "https://rc2solucoes.com.br/servicos" },
     openGraph: buildOg({
       url: "https://rc2solucoes.com.br/servicos",
       title: "Serviços — RC2 Soluções",
-      description: "Automações com IA, agentes inteligentes, integrações com n8n, e-commerce e sites para PMEs. Conheça as soluções da RC2 Soluções.",
+      description: "Serviços para organizar atendimento, conectar sistemas e melhorar vendas com IA e automações.",
       imageUrl: settings.og_image_url,
     }),
   };
@@ -37,7 +37,7 @@ export default async function ServicosPage() {
       {
         title: "Serviços",
         description:
-          "Automações com IA, agentes inteligentes, integrações com n8n, e-commerce e sites para PMEs. Conheça as soluções da RC2 Soluções.",
+          "Serviços para PMEs que precisam responder mais rápido, perder menos leads e reduzir retrabalho com IA, automações e integrações.",
         url: `${BASE_URL}/servicos`,
         keywords: "serviços, automação, IA, integrações, e-commerce, sites, consultoria, PME, n8n, agentes inteligentes",
         image: `${BASE_URL}/og-image.png`,
@@ -57,8 +57,8 @@ export default async function ServicosPage() {
       />
       <PageHero
         label="Serviços"
-        title="Cinco soluções para transformar sua operação digital."
-        description="Da automação de atendimento à estruturação de e-commerce — a RC2 atua em toda a cadeia da transformação digital para PMEs."
+        title="Cinco serviços para resolver gargalos reais da sua operação."
+        description="Da organização do atendimento à integração entre sistemas, a RC2 conecta tecnologia ao que trava vendas, atendimento e produtividade no dia a dia."
       />
 
       <section className="bg-rc2-sand rc2-section">
@@ -105,7 +105,7 @@ export default async function ServicosPage() {
                     href={`/servicos/${service.slug}`}
                     className="rc2-action-link mt-6"
                   >
-                    Ver detalhes completos
+                    Ver serviço
                     <ArrowRight size={14} />
                   </Link>
                 </div>

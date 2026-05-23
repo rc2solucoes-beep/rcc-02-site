@@ -46,7 +46,7 @@ export function HeroActions({ variant }: HeroActionsProps) {
           "font-semibold tracking-wide uppercase text-xs px-8 h-12 border-rc2-ebony text-rc2-ebony hover:bg-rc2-ebony hover:text-rc2-sand"
         )}
       >
-        Falar no WhatsApp
+        Falar pelo WhatsApp
       </Link>
     </div>
   );

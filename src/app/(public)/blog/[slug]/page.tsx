@@ -467,7 +467,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                       tracking={{ kind: "cta", location: "blog_post_default_cta", label: "solicitar_diagnostico", destination: "/contato" }}
                       className="inline-block px-6 py-2.5 bg-rc2-orange text-white font-medium rounded hover:bg-rc2-orange/90 transition-colors"
                     >
-                      Solicitar Diagnóstico →
+                      Solicitar diagnóstico →
                     </TrackedLink>
                   </div>
                 </div>
