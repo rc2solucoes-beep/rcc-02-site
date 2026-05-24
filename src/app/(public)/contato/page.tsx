@@ -7,6 +7,8 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
 const BASE_URL = "https://rc2solucoes.com.br";
+const CONTACT_WHATSAPP_MESSAGE = "Olá, quero solicitar um diagnóstico para minha empresa.";
+const CONTACT_WHATSAPP_URL = `https://wa.me/5511988028550?text=${encodeURIComponent(CONTACT_WHATSAPP_MESSAGE)}`;
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getOrgSettings();
@@ -97,14 +99,14 @@ export default async function ContatoPage() {
             <div className="mt-6">
               <p className="text-xs text-rc2-ebony/70 mb-2">Prefere falar diretamente?</p>
               <TrackedLink
-                href="https://wa.me/5511988028550"
+                href={CONTACT_WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 tracking={{
                   kind: "whatsapp",
                   location: "contact_page_sidebar",
                   label: "falar_pelo_whatsapp",
-                  destination: "https://wa.me/5511988028550",
+                  destination: CONTACT_WHATSAPP_URL,
                 }}
                 className="text-sm font-semibold text-rc2-orange underline underline-offset-4 hover:opacity-70 transition-opacity"
               >
@@ -125,7 +127,7 @@ export default async function ContatoPage() {
         title="Não consegue preencher agora?"
         description="Chame a gente pelo WhatsApp e vamos agendar um diagnóstico em tempo real."
         primaryLabel="Falar pelo WhatsApp"
-        primaryHref="https://wa.me/5511988028550"
+        primaryHref={CONTACT_WHATSAPP_URL}
         hideSecondary={true}
         variant="dark"
       />

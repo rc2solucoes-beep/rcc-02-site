@@ -44,6 +44,9 @@ const socialProofItems = [
 ];
 
 const BASE_URL = "https://rc2solucoes.com.br";
+const HOME_WHATSAPP_MESSAGE =
+  "Olá, quero entender onde a IA e automações podem ajudar minha empresa.";
+const HOME_WHATSAPP_URL = `https://wa.me/5511988028550?text=${encodeURIComponent(HOME_WHATSAPP_MESSAGE)}`;
 
 type Props = {
   searchParams: Promise<{ hero?: string }>;
@@ -324,6 +327,7 @@ export default async function HomePage({ searchParams }: Props) {
       <CTABlock
         title="Quer descobrir onde a IA pode gerar resultado na sua empresa?"
         description="Solicite um diagnóstico inicial e receba um mapa de oportunidades para automatizar atendimento, vendas e processos."
+        secondaryHref={HOME_WHATSAPP_URL}
       />
     </>
   );

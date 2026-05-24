@@ -98,7 +98,7 @@ export function Footer() {
                   }}
                   className="text-sm text-rc2-sand/88 hover:text-rc2-sand transition-colors"
                 >
-                  Abrir WhatsApp
+                  Falar pelo WhatsApp
                 </TrackedLink>
               </li>
               <li>

@@ -5,7 +5,9 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { trackCtaClick, trackWhatsappClick } from "@/lib/tracking";
 
-const WHATSAPP_URL = "https://wa.me/5511988028550";
+const HOME_WHATSAPP_MESSAGE =
+  "Olá, quero entender onde a IA e automações podem ajudar minha empresa.";
+const WHATSAPP_URL = `https://wa.me/5511988028550?text=${encodeURIComponent(HOME_WHATSAPP_MESSAGE)}`;
 
 interface HeroActionsProps {
   variant: "a" | "b";

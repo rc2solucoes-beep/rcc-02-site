@@ -6,6 +6,9 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
 const BASE_URL = "https://rc2solucoes.com.br";
+const IA_WHATSAPP_MESSAGE =
+  "Olá, quero entender quais aplicações de IA fazem sentido para minha empresa.";
+const IA_WHATSAPP_URL = `https://wa.me/5511988028550?text=${encodeURIComponent(IA_WHATSAPP_MESSAGE)}`;
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getOrgSettings();
@@ -167,6 +170,7 @@ export default async function SolucoesComIAPage() {
       <CTABlock
         title="Quer saber quais soluções fazem sentido para sua empresa?"
         description="Solicite um diagnóstico de oportunidades com IA e receba um mapa personalizado para sua operação."
+        secondaryHref={IA_WHATSAPP_URL}
       />
     </>
   );

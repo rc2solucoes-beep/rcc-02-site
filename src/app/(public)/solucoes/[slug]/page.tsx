@@ -47,6 +47,9 @@ export default async function SolucaoPage({ params }: Props) {
   const solution = getSolutionBySlug(slug);
 
   if (!solution) notFound();
+  const solutionWhatsappMessage = `Olá, quero falar sobre o problema "${solution.shortTitle}" na minha empresa.`;
+  const solutionWhatsappUrl = `https://wa.me/5511988028550?text=${encodeURIComponent(solutionWhatsappMessage)}`;
+  const primaryRelatedService = solution.relatedServices[0];
 
   const schemaWebPage = {
     "@context": "https://schema.org",
@@ -142,6 +145,47 @@ export default async function SolucaoPage({ params }: Props) {
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div className="rounded-lg border border-rc2-orange/25 bg-white p-5 md:p-6">
+            <SectionLabel className="block mb-3">Atalho rápido</SectionLabel>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm text-rc2-ebony/75">
+                Se esse problema já está acontecendo no seu dia a dia, você pode avançar agora.
+              </p>
+              <div className="flex flex-wrap items-center gap-3">
+                <TrackedLink
+                  href={solutionWhatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  tracking={{
+                    kind: "whatsapp",
+                    location: "solution_detail_midpoint",
+                    label: "falar_pelo_whatsapp",
+                    destination: solutionWhatsappUrl,
+                  }}
+                  className="text-sm font-semibold text-rc2-orange hover:underline underline-offset-4"
+                >
+                  Falar sobre este problema
+                </TrackedLink>
+                {primaryRelatedService && (
+                  <TrackedLink
+                    href={primaryRelatedService.href}
+                    tracking={{
+                      kind: "service_link",
+                      location: "solution_detail_midpoint",
+                      label: primaryRelatedService.label,
+                      destination: primaryRelatedService.href,
+                      source_page: `/solucoes/${slug}`,
+                      source_type: "solution_page",
+                    }}
+                    className="text-sm text-rc2-ebony/75 hover:text-rc2-ebony hover:underline underline-offset-4"
+                  >
+                    Ver serviço relacionado
+                  </TrackedLink>
+                )}
+              </div>
+            </div>
           </div>
 
           <div id="causas">
@@ -268,7 +312,7 @@ export default async function SolucaoPage({ params }: Props) {
         ]}
       />
 
-      <CTABlock title={solution.ctaTitle} description={solution.ctaDescription} />
+      <CTABlock title={solution.ctaTitle} description={solution.ctaDescription} secondaryHref={solutionWhatsappUrl} />
     </>
   );
 }

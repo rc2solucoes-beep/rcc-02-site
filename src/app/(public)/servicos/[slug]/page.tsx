@@ -4,6 +4,7 @@ import { buildOg } from "@/lib/siteMetadata";
 import { Check, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { services, getServiceBySlug } from "@/lib/content/services";
+import { solutions } from "@/lib/content/solutions";
 import { PageHero } from "@/components/marketing/PageHero";
 import { CTABlock } from "@/components/marketing/CTABlock";
 import { PageAnchorNav } from "@/components/marketing/PageAnchorNav";
@@ -51,6 +52,18 @@ export default async function ServicePage({ params }: Props) {
   const currentIndex = services.findIndex((s) => s.slug === slug);
   const next = services[currentIndex + 1];
   const prev = services[currentIndex - 1];
+  const relatedSolution = solutions.find((solution) =>
+    solution.relatedServices.some((relatedService) => relatedService.href === `/servicos/${slug}`)
+  );
+  const topPainPoints = service.painPoints.slice(0, 3);
+  const topUseCases = service.useCases.slice(0, 5);
+  const topItems = service.items.slice(0, 6);
+  const topIntegrations = service.integrations.slice(0, 8);
+  const topMetrics = service.metrics.slice(0, 5);
+  const topBenefits = service.benefits.slice(0, 5);
+  const topFaq = service.faq.slice(0, 5);
+  const serviceWhatsappMessage = `Olá, quero avaliar ${service.shortTitle} para minha empresa.`;
+  const serviceWhatsappUrl = `https://wa.me/5511988028550?text=${encodeURIComponent(serviceWhatsappMessage)}`;
 
   let schemaWebPage;
 
@@ -146,13 +159,57 @@ export default async function ServicePage({ params }: Props) {
               Este serviço é indicado quando sua operação enfrenta:
             </h2>
             <ul className="space-y-2">
-              {service.painPoints.slice(0, 3).map((item) => (
+              {topPainPoints.map((item) => (
                 <li key={item} className="flex items-start gap-2.5 text-sm text-rc2-ebony/80">
                   <span className="text-rc2-orange mt-0.5 text-xs shrink-0">•</span>
                   <span>{item}</span>
                 </li>
               ))}
             </ul>
+            <p className="mt-4 text-sm text-rc2-ebony/75 leading-relaxed">
+              <span className="font-semibold text-rc2-ebony">Quando contratar:</span> quando essas dores já afetam atendimento, vendas ou rotina da equipe.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-rc2-orange/25 bg-white p-5 md:p-6">
+            <SectionLabel className="block mb-3">Atalho rápido</SectionLabel>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm text-rc2-ebony/75">
+                Se este cenário já descreve sua operação, você pode acelerar o próximo passo.
+              </p>
+              <div className="flex flex-wrap items-center gap-3">
+                <TrackedLink
+                  href={serviceWhatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  tracking={{
+                    kind: "whatsapp",
+                    location: "service_detail_midpoint",
+                    label: "falar_pelo_whatsapp",
+                    destination: serviceWhatsappUrl,
+                  }}
+                  className="text-sm font-semibold text-rc2-orange hover:underline underline-offset-4"
+                >
+                  Falar pelo WhatsApp
+                </TrackedLink>
+                {relatedSolution && (
+                  <TrackedLink
+                    href={`/solucoes/${relatedSolution.slug}`}
+                    tracking={{
+                      kind: "solution_link",
+                      location: "service_detail_midpoint",
+                      label: relatedSolution.shortTitle,
+                      destination: `/solucoes/${relatedSolution.slug}`,
+                      source_page: `/servicos/${slug}`,
+                      source_type: "service_page",
+                    }}
+                    className="text-sm text-rc2-ebony/75 hover:text-rc2-ebony hover:underline underline-offset-4"
+                  >
+                    Ver solução por problema relacionada
+                  </TrackedLink>
+                )}
+              </div>
+            </div>
           </div>
 
           <div id="problemas">
@@ -170,7 +227,7 @@ export default async function ServicePage({ params }: Props) {
           <div id="casos-de-uso">
             <SectionLabel className="block mb-4">Casos de uso</SectionLabel>
             <ul className="space-y-3">
-              {service.useCases.map((item, i) => (
+              {topUseCases.map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <Check size={16} className="text-rc2-orange shrink-0 mt-0.5" strokeWidth={2.5} aria-hidden="true" />
                   <span className="text-rc2-ebony/80">{item}</span>
@@ -182,7 +239,7 @@ export default async function ServicePage({ params }: Props) {
           <div id="items">
             <SectionLabel className="block mb-4">O que pode ser implantado</SectionLabel>
             <ul className="space-y-3">
-              {service.items.map((item, i) => (
+              {topItems.map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <Check size={16} className="text-rc2-orange shrink-0 mt-0.5" strokeWidth={2.5} aria-hidden="true" />
                   <span className="text-rc2-ebony/80">{item}</span>
@@ -206,7 +263,7 @@ export default async function ServicePage({ params }: Props) {
           <div id="integracoes">
             <SectionLabel className="block mb-4">Integrações possíveis</SectionLabel>
             <div className="flex flex-wrap gap-2">
-              {service.integrations.map((integration) => (
+              {topIntegrations.map((integration) => (
                 <span key={integration} className="px-3 py-1.5 rounded bg-white border border-border text-sm text-rc2-ebony/80">
                   {integration}
                 </span>
@@ -217,7 +274,7 @@ export default async function ServicePage({ params }: Props) {
           <div id="indicadores">
             <SectionLabel className="block mb-4">Indicadores que podem ser acompanhados</SectionLabel>
             <ul className="space-y-3">
-              {service.metrics.map((metric, i) => (
+              {topMetrics.map((metric, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <span className="text-rc2-orange font-bold text-sm mt-0.5" aria-hidden="true">→</span>
                   <span className="text-rc2-ebony/80">{metric}</span>
@@ -229,7 +286,7 @@ export default async function ServicePage({ params }: Props) {
           <div id="benefits">
             <SectionLabel className="block mb-4">Benefícios</SectionLabel>
             <ul className="space-y-3 mb-8">
-              {service.benefits.map((benefit, i) => (
+              {topBenefits.map((benefit, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <span className="text-rc2-orange font-bold text-sm mt-0.5" aria-hidden="true">→</span>
                   <span className="text-rc2-ebony/80">{benefit}</span>
@@ -256,7 +313,7 @@ export default async function ServicePage({ params }: Props) {
           <div id="faq">
             <SectionLabel className="block mb-4">Perguntas frequentes</SectionLabel>
             <div className="space-y-2">
-              {service.faq.map((item, idx) => (
+              {topFaq.map((item, idx) => (
                 <details key={idx} className="group border border-border rounded-lg overflow-hidden bg-white">
                   <summary className="px-4 py-3 cursor-pointer list-none text-rc2-ebony font-medium hover:bg-rc2-ebony/[0.02]">
                     {item.question}
@@ -359,6 +416,7 @@ export default async function ServicePage({ params }: Props) {
       <CTABlock
         title="Esse serviço faz sentido para você?"
         description="Solicite um diagnóstico gratuito e descubra como podemos ajudar sua operação."
+        secondaryHref={serviceWhatsappUrl}
       />
     </>
   );
