@@ -8,24 +8,24 @@
    Tailwind v4 — Tokens RC2 "The High-End Tool"
 ──────────────────────────────────────────────── */
 @theme inline {
-  /* RC2 Palette */
-  --color-rc2-sand:   #F5F0E8;  /* Areia Industrial — fundo principal (50%) */
-  --color-rc2-ink:    #121212;  /* Ink Black — seções escuras, headers (20%) */
-  --color-rc2-forest: #163020;  /* Deep Forest — rodapés, prova social (20%) */
-  --color-rc2-orange: #FF5F1F;  /* Safety Orange — CTA, detalhe logo (máx 10%) */
-  --color-rc2-ebony:  #1E1610;  /* Ébano Quente — texto corrido */
-  --color-rc2-placeholder: #7A6E66;  /* placeholder legível: 4.53:1 vs branco */
-  --color-rc2-orange-text: #C94400;  /* orange para texto em fundo claro: 4.84:1 vs areia */
+  /* Palette */
+  --color-rc2-sand:   #F0F0EE;  /* Texto claro e superfícies claras legíveis */
+  --color-rc2-ink:    #1A1A1F;  /* Surface */
+  --color-rc2-forest: #1A1A1F;  /* Surface alt */
+  --color-rc2-orange: #5046E4;  /* Accent */
+  --color-rc2-ebony:  #0D0D0F;  /* Texto principal em superfícies claras */
+  --color-rc2-placeholder: #888892;  /* Secondary text */
+  --color-rc2-orange-text: #5046E4;  /* Accent text */
 
   /* Surface Scale — contraste tonal progressivo */
-  --color-surface-0: #F5F0E8;  /* Base page — Areia pura */
-  --color-surface-1: #FDFBF8;  /* Card/Bloco — ligeiramente mais claro */
-  --color-surface-2: #E8E2D8;  /* Container/Seção — mais escuro, define área */
-  --color-surface-3: #D4CCB8;  /* Destaque/Divider — ainda mais escuro */
+  --color-surface-0: #0D0D0F;
+  --color-surface-1: #1A1A1F;
+  --color-surface-2: #23232A;
+  --color-surface-3: #2A2A30;
 
   /* Text Contrast Scale — tokens semânticos para tipografia secundária */
-  --color-text-secondary: #6B5E52;  /* Secondary text — 60% contrast, legível */
-  --color-text-tertiary:  #6B5E52;  /* Tertiary text — raised to match secondary for WCAG AA (was #8B7D77) */
+  --color-text-secondary: #888892;
+  --color-text-tertiary:  #888892;
 
   /* shadcn semantic tokens mapeados para RC2 */
   --color-background:         var(--background);
@@ -65,49 +65,45 @@
    Remapeia shadcn tokens para paleta RC2
 ──────────────────────────────────────────────── */
 :root {
-  /* Fundo: Areia Industrial — NUNCA branco puro */
-  --background: #F5F0E8;
-  --foreground: #1E1610;
+  --background: #0D0D0F;
+  --foreground: #F0F0EE;
 
   /* Cartões e popovers sobre o fundo areia */
-  --card:            #F5F0E8;
-  --card-foreground: #1E1610;
-  --popover:         #F5F0E8;
-  --popover-foreground: #1E1610;
+  --card:            #1A1A1F;
+  --card-foreground: #F0F0EE;
+  --popover:         #1A1A1F;
+  --popover-foreground: #F0F0EE;
 
-  /* Primary = Safety Orange (CTA) */
-  --primary:            #FF5F1F;
-  --primary-foreground: #F5F0E8;
+  --primary:            #5046E4;
+  --primary-foreground: #F0F0EE;
 
-  /* Secondary = Ink Black (dark sections) */
-  --secondary:            #121212;
-  --secondary-foreground: #F5F0E8;
+  --secondary:            #1A1A1F;
+  --secondary-foreground: #F0F0EE;
 
   /* Muted = tom neutro sobre areia */
-  --muted:            #E8E2D8;
-  --muted-foreground: #5A4E42;
+  --muted:            #23232A;
+  --muted-foreground: #888892;
 
-  /* Accent = Deep Forest */
-  --accent:            #163020;
-  --accent-foreground: #F5F0E8;
+  --accent:            #5046E4;
+  --accent-foreground: #F0F0EE;
 
   /* Destructive */
   --destructive: #DC2626;
 
   /* Borders e inputs */
-  --border: #D4CCB8;
-  --input:  #D4CCB8;
-  --ring:   #FF5F1F;
+  --border: #2A2A30;
+  --input:  #2A2A30;
+  --ring:   #5046E4;
 
   /* Surface Scale */
-  --surface-0: #F5F0E8;
-  --surface-1: #FDFBF8;
-  --surface-2: #E8E2D8;
-  --surface-3: #D4CCB8;
+  --surface-0: #0D0D0F;
+  --surface-1: #1A1A1F;
+  --surface-2: #23232A;
+  --surface-3: #2A2A30;
 
   /* Text Contrast Scale — tokens semânticos para tipografia secundária */
-  --text-secondary: #6B5E52;     /* Secondary text — 60% contrast, legível */
-  --text-tertiary:  #6B5E52;     /* Tertiary text — raised to match secondary for WCAG AA (was #8B7D77) */
+  --text-secondary: #888892;
+  --text-tertiary:  #888892;
 
   /* Radius base — recalibrado para contemporâneo (era 0.375rem/3px) */
   --radius: 0.5rem;
@@ -117,8 +113,8 @@
   --space-section-y-desktop: 6rem;
 
   /* Shadow scale */
-  --shadow-soft: 0 4px 18px rgba(18, 18, 18, 0.06);
-  --shadow-lift: 0 10px 28px rgba(18, 18, 18, 0.12);
+  --shadow-soft: 0 4px 18px rgba(0, 0, 0, 0.35);
+  --shadow-lift: 0 10px 28px rgba(0, 0, 0, 0.5);
 }
 
 /* RC2 não usa tema escuro — a marca opera em luz */
@@ -141,8 +137,8 @@
 
   body {
     @apply bg-background text-foreground;
-    background-color: #F5F0E8;
-    color: #1E1610;
+    background-color: #0D0D0F;
+    color: #F0F0EE;
     font-family: var(--font-barlow), sans-serif;
     font-size: 16px;
     line-height: 1.7;
@@ -152,26 +148,26 @@
     font-family: var(--font-barlow), sans-serif;
     font-weight: 700;
     letter-spacing: -0.02em;
-    color: #1E1610;
+    color: inherit;
   }
 
   h2 {
     font-family: var(--font-barlow), sans-serif;
     font-weight: 600;
     letter-spacing: -0.01em;
-    color: #1E1610;
+    color: inherit;
   }
 
   h3 {
     font-family: var(--font-barlow), sans-serif;
     font-weight: 500;
-    color: #1E1610;
+    color: inherit;
   }
 
   /* WCAG: accessible placeholder color (4.53:1 vs white) */
   input::placeholder,
   textarea::placeholder {
-    color: #7A6E66;  /* var(--color-rc2-placeholder) */
+    color: #888892;
   }
 }
 
@@ -179,6 +175,81 @@
    Utilitários RC2 customizados
 ──────────────────────────────────────────────── */
 @layer utilities {
+  .layout-public {
+    position: relative;
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 8% 2%, rgba(80, 70, 228, 0.08), transparent 26%),
+      radial-gradient(circle at 92% 78%, rgba(80, 70, 228, 0.06), transparent 30%),
+      var(--background);
+  }
+
+  .layout-public::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    z-index: 0;
+    background-image:
+      linear-gradient(to right, rgba(240, 240, 238, 0.24) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(240, 240, 238, 0.24) 1px, transparent 1px);
+    background-size: 52px 52px;
+  }
+
+  .layout-public > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .editorial-grid {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .editorial-grid::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.38;
+    background:
+      linear-gradient(115deg, transparent 0 22%, rgba(80, 70, 228, 0.12) 22% 30%, transparent 30% 100%),
+      radial-gradient(circle at 82% 22%, rgba(80, 70, 228, 0.12), transparent 32%);
+  }
+
+  .cut-panel {
+    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
+  }
+
+  .cut-panel-soft {
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+  }
+
+  .angled-divider {
+    position: relative;
+  }
+
+  .angled-divider::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 26px;
+    background: linear-gradient(to right bottom, transparent 49%, var(--background) 50%);
+    pointer-events: none;
+  }
+
+  .hero-kicker {
+    font-family: var(--font-barlow-condensed), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.66rem;
+    font-weight: 700;
+    color: #5046E4;
+  }
+
   /* Eyebrow / Label — uppercase com tracking generoso */
   .rc2-label {
     font-family: var(--font-barlow-condensed), sans-serif;
@@ -186,7 +257,7 @@
     text-transform: uppercase;
     letter-spacing: 0.10em;
     font-size: 0.75rem;
-    color: #C94400;  /* var(--color-rc2-orange-text) — 4.84:1 vs sand; dark sections override via text-rc2-orange */
+    color: #5046E4;
   }
 
   /* Display — impacto máximo */
@@ -274,12 +345,12 @@
     font-family: var(--font-barlow), sans-serif;
     font-weight: 300;
     font-size: 0.75rem;
-    color: #5A4E42;
+    color: #888892;
   }
 
   /* Tipografia de post (prose-rc2) */
   .prose-rc2 {
-    color: #1E1610;
+    color: inherit;
     font-family: var(--font-barlow), sans-serif;
     font-size: 1.0625rem;
     line-height: 1.8;
@@ -290,14 +361,14 @@
     font-weight: 700;
     margin-top: 2.5rem;
     margin-bottom: 1rem;
-    color: #1E1610;
+    color: inherit;
   }
   .prose-rc2 h3 {
     font-size: 1.2rem;
     font-weight: 600;
     margin-top: 2rem;
     margin-bottom: 0.75rem;
-    color: #1E1610;
+    color: inherit;
   }
   .prose-rc2 p {
     margin-bottom: 1.25rem;
@@ -312,28 +383,28 @@
   .prose-rc2 strong { font-weight: 700; }
   .prose-rc2 em { font-style: italic; }
   .prose-rc2 blockquote {
-    border-left: 3px solid #FF5F1F;
+    border-left: 3px solid #5046E4;
     padding-left: 1.25rem;
     margin: 1.5rem 0;
-    color: #5A4E42;
+    color: #888892;
     font-style: italic;
   }
   .prose-rc2 a {
-    color: #C94400;  /* var(--color-rc2-orange-text) — 4.84:1 vs sand ✓ */
+    color: #5046E4;
     text-decoration: underline;
     text-underline-offset: 3px;
   }
   .prose-rc2 a:hover { opacity: 0.8; }
   .prose-rc2 code {
-    background: #1E1610/8;
+    background: #1A1A1F;
     padding: 0.15em 0.4em;
     border-radius: 3px;
     font-size: 0.875em;
     font-family: ui-monospace, monospace;
   }
   .prose-rc2 pre {
-    background: #1E1610;
-    color: #F5F0E8;
+    background: #1A1A1F;
+    color: #F0F0EE;
     padding: 1.25rem;
     overflow-x: auto;
     margin-bottom: 1.25rem;
@@ -341,7 +412,7 @@
   .prose-rc2 pre code { background: none; padding: 0; font-size: 0.875rem; }
   .prose-rc2 hr {
     border: none;
-    border-top: 1px solid #D4CCB8;
+    border-top: 1px solid #2A2A30;
     margin: 2rem 0;
   }
   .prose-rc2 img {

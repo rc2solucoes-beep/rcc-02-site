@@ -8,7 +8,7 @@
  */
 
 export const SITE_NAME = "RC2 Soluções";
-export const BASE_URL = "https://rc2solucoes.com.br";
+export const BASE_URL = "https://www.rc2solucoes.com.br";
 
 const OG_IMAGE = {
   url: "/og-image.png",
@@ -37,3 +37,4 @@ export function buildOg(opts: {
     ...rest,
   };
 }
+

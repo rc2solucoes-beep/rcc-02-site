@@ -1,4 +1,5 @@
 import { getOrgSettings, getOrganizationSchema, getLocalBusinessSchema } from "@/lib/schema";
+import { BASE_URL } from "@/lib/siteMetadata";
 import { NextResponse } from "next/server";
 
 /**
@@ -9,8 +10,8 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const settings = await getOrgSettings();
-    const orgSchema = getOrganizationSchema(settings, "https://rc2solucoes.com.br");
-    const localSchema = getLocalBusinessSchema(settings, "https://rc2solucoes.com.br");
+    const orgSchema = getOrganizationSchema(settings, BASE_URL);
+    const localSchema = getLocalBusinessSchema(settings, BASE_URL);
 
     return NextResponse.json(
       {

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { buildOg } from "@/lib/siteMetadata";
+import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 import Link from "next/link";
 import Image from "next/image";
 import { createPublicClient } from "@/lib/supabase/server";
@@ -9,16 +9,14 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import type { Post } from "@/lib/types/post";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
-const BASE_URL = "https://rc2solucoes.com.br";
-
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getOrgSettings();
   return {
     title: "Blog",
     description: "Conteúdo sobre automação, IA e operações digitais para pequenas e médias empresas.",
-    alternates: { canonical: "https://rc2solucoes.com.br/blog" },
+    alternates: { canonical: `${BASE_URL}/blog` },
     openGraph: buildOg({
-      url: "https://rc2solucoes.com.br/blog",
+      url: `${BASE_URL}/blog`,
       title: "Blog — RC2 Soluções",
       description: "Conteúdo sobre automação, IA e operações digitais para pequenas e médias empresas.",
       imageUrl: settings.og_image_url,
@@ -137,13 +135,13 @@ export default async function BlogPage() {
                         <span className="text-rc2-forest/30 text-4xl font-bold font-condensed uppercase tracking-widest">RC2</span>
                       </div>
                     )}
-                    <time className="text-xs text-rc2-ebony/70 uppercase tracking-wider">
+                    <time className="text-xs text-rc2-ebony/80 uppercase tracking-wider">
                       {formatDate(post.published_at)}
                     </time>
                     <h2 className={`font-semibold text-rc2-ebony mt-1.5 group-hover:text-rc2-orange transition-colors leading-snug ${index === 0 ? "text-2xl" : "text-lg"}`}>
                       {post.title}
                     </h2>
-                    <p className="text-rc2-ebony/70 text-sm mt-2 line-clamp-3">{post.summary}</p>
+                    <p className="text-rc2-ebony/80 text-sm mt-2 line-clamp-3">{post.summary}</p>
                     <span className="inline-block mt-3 text-sm font-medium text-rc2-orange group-hover:underline underline-offset-4">
                       Ler artigo →
                     </span>

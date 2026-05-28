@@ -1,11 +1,10 @@
 import { services } from "@/lib/content/services";
 import { solutions } from "@/lib/content/solutions";
+import { BASE_URL } from "@/lib/siteMetadata";
 import { createPublicClient } from "@/lib/supabase/server";
 import type { FaqItem, Post } from "@/lib/types/post";
 
 export const revalidate = 3600;
-
-const BASE_URL = "https://rc2solucoes.com.br";
 
 type LlmPost = Pick<
   Post,

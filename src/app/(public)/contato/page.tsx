@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { buildOg } from "@/lib/siteMetadata";
+import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 import { ContactForm } from "@/components/marketing/ContactForm";
 import { CTABlock } from "@/components/marketing/CTABlock";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
-const BASE_URL = "https://rc2solucoes.com.br";
 const CONTACT_WHATSAPP_MESSAGE = "Olá, quero solicitar um diagnóstico para minha empresa.";
 const CONTACT_WHATSAPP_URL = `https://wa.me/5511988028550?text=${encodeURIComponent(CONTACT_WHATSAPP_MESSAGE)}`;
 
@@ -16,9 +15,9 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "Contato — Solicite um Diagnóstico",
     description:
       "Solicite um diagnóstico e receba um plano inicial para organizar atendimento, reduzir retrabalho e priorizar automações.",
-    alternates: { canonical: "https://rc2solucoes.com.br/contato" },
+    alternates: { canonical: `${BASE_URL}/contato` },
     openGraph: buildOg({
-      url: "https://rc2solucoes.com.br/contato",
+      url: `${BASE_URL}/contato`,
       title: "Contato — Solicite um Diagnóstico | RC2 Soluções",
       description: "Solicite um diagnóstico e receba um plano inicial para organizar atendimento, reduzir retrabalho e priorizar automações.",
       imageUrl: settings.og_image_url,
@@ -63,12 +62,12 @@ export default async function ContatoPage() {
             <h1 className="rc2-display text-4xl md:text-5xl text-rc2-ebony mb-6 leading-tight">
               Solicite um diagnóstico para sua empresa
             </h1>
-            <p className="text-rc2-ebony/70 leading-relaxed mb-8">
+            <p className="text-rc2-ebony/80 leading-relaxed mb-8">
               Se sua empresa está com atendimento lento, leads sem resposta,
               tarefas manuais ou sistemas desconectados, este diagnóstico ajuda
               a priorizar o que resolver primeiro.
             </p>
-            <p className="text-rc2-ebony/70 leading-relaxed mb-8">
+            <p className="text-rc2-ebony/80 leading-relaxed mb-8">
               Em poucos passos, mapeamos seu cenário atual, identificamos
               gargalos e sugerimos um plano inicial de execução com IA,
               automações e integrações.
@@ -79,7 +78,7 @@ export default async function ContatoPage() {
               <h2 className="text-sm font-semibold text-rc2-ebony mb-4 uppercase tracking-wide">
                 O que você recebe
               </h2>
-              <ul className="space-y-3 text-sm text-rc2-ebony/70">
+              <ul className="space-y-3 text-sm text-rc2-ebony/80">
                 {[
                   "Mapeamento inicial da operação",
                   "Identificação de gargalos",
@@ -97,7 +96,7 @@ export default async function ContatoPage() {
             </div>
 
             <div className="mt-6">
-              <p className="text-xs text-rc2-ebony/70 mb-2">Prefere falar diretamente?</p>
+              <p className="text-xs text-rc2-ebony/80 mb-2">Prefere falar diretamente?</p>
               <TrackedLink
                 href={CONTACT_WHATSAPP_URL}
                 target="_blank"

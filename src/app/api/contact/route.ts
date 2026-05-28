@@ -149,7 +149,7 @@ async function sendLeadEmail(data: {
         <tr><td style="font-weight:bold;">Solução</td><td>${escaped.solution}</td></tr>
         <tr style="background:#f5f5f5"><td style="font-weight:bold;">Desafio</td><td>${escaped.message}</td></tr>
       </table>
-      <p style="margin-top:24px;font-size:12px;color:#888;">Enviado via rc2solucoes.com.br</p>
+      <p style="margin-top:24px;font-size:12px;color:#888;">Enviado via www.rc2solucoes.com.br</p>
     `,
   });
 }
@@ -162,6 +162,7 @@ function isValidOrigin(origin: string | null): boolean {
     const url = new URL(origin);
     return (
       url.hostname === "rc2solucoes.com.br" ||
+      url.hostname === "www.rc2solucoes.com.br" ||
       url.hostname === "localhost" ||
       url.hostname === "127.0.0.1"
     );
@@ -250,3 +251,4 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ success: true });
 }
+

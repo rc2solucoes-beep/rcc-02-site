@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { buildOg } from "@/lib/siteMetadata";
+import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 import { PageHero } from "@/components/marketing/PageHero";
 import { CTABlock } from "@/components/marketing/CTABlock";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
-const BASE_URL = "https://rc2solucoes.com.br";
 const IA_WHATSAPP_MESSAGE =
   "Olá, quero entender quais aplicações de IA fazem sentido para minha empresa.";
 const IA_WHATSAPP_URL = `https://wa.me/5511988028550?text=${encodeURIComponent(IA_WHATSAPP_MESSAGE)}`;
@@ -16,9 +15,9 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "Soluções com IA",
     description:
       "Veja aplicações práticas de IA para PMEs: responder clientes, qualificar leads, organizar operação e integrar sistemas.",
-    alternates: { canonical: "https://rc2solucoes.com.br/solucoes-com-ia" },
+    alternates: { canonical: `${BASE_URL}/solucoes-com-ia` },
     openGraph: buildOg({
-      url: "https://rc2solucoes.com.br/solucoes-com-ia",
+      url: `${BASE_URL}/solucoes-com-ia`,
       title: "Soluções com IA — RC2 Soluções",
       description: "Aplicações práticas de IA para responder mais rápido, reduzir retrabalho e organizar operação.",
       imageUrl: settings.og_image_url,

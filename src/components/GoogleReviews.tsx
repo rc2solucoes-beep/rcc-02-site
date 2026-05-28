@@ -34,9 +34,9 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
 
   if (loading) {
     return (
-      <div className="w-full rounded-lg border border-border bg-white p-6" role="status" aria-live="polite">
-        <p className="text-sm text-rc2-ebony/70 mb-4">Carregando avaliações do Google...</p>
-        <div className="w-full h-40 bg-gray-200 animate-pulse rounded-lg" />
+      <div className="w-full rounded-lg border border-border bg-card p-6" role="status" aria-live="polite">
+        <p className="text-sm text-muted-foreground mb-4">Carregando avaliações do Google...</p>
+        <div className="w-full h-40 bg-muted animate-pulse rounded-lg" />
       </div>
     );
   }
@@ -44,10 +44,10 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
   if (error || !place) {
     return (
       <div className="w-full text-center py-12">
-        <p className="text-gray-600" role="alert">
+        <p className="text-muted-foreground" role="alert">
           Não conseguimos carregar as avaliações no momento.
         </p>
-        <p className="text-sm text-gray-500 mt-2">
+        <p className="text-sm text-muted-foreground mt-2">
           Tente novamente em instantes ou abra as avaliações diretamente no Google.
         </p>
         <a
@@ -67,8 +67,8 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
   if (reviews.length === 0) {
     return (
       <div className="w-full text-center py-12">
-        <p className="text-gray-600">Ainda não há avaliações visíveis neste momento.</p>
-        <p className="text-sm text-gray-500 mt-2">
+        <p className="text-muted-foreground">Ainda não há avaliações visíveis neste momento.</p>
+        <p className="text-sm text-muted-foreground mt-2">
           Você pode conferir nosso perfil completo no Google Maps.
         </p>
         <a
@@ -96,14 +96,14 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
                 className={
                   i < Math.round(place.rating)
                     ? "fill-yellow-400 text-yellow-400"
-                    : "text-gray-300"
+                    : "text-muted-foreground/40"
                 }
               />
             ))}
           </div>
           <span className="text-2xl font-bold">{place.rating.toFixed(1)}</span>
         </div>
-        <p className="text-gray-600">
+        <p className="text-muted-foreground">
           {place.userRatingCount} avaliações no Google
         </p>
       </div>
@@ -115,7 +115,7 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
           return (
             <div
               key={i}
-              className={`border border-gray-200 rounded-lg p-4 space-y-2${isLastOdd ? " sm:col-span-2 sm:max-w-[calc(50%-0.5rem)] sm:mx-auto sm:w-full" : ""}`}
+              className={`border border-border bg-card rounded-lg p-4 space-y-2${isLastOdd ? " sm:col-span-2 sm:max-w-[calc(50%-0.5rem)] sm:mx-auto sm:w-full" : ""}`}
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
@@ -130,17 +130,17 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
                         className={
                           j < review.rating
                             ? "fill-yellow-400 text-yellow-400"
-                            : "text-gray-300"
+                            : "text-muted-foreground/40"
                         }
                       />
                     ))}
                   </div>
                 </div>
-                <time className="text-sm text-gray-500 whitespace-nowrap">
+                <time className="text-sm text-muted-foreground whitespace-nowrap">
                   {new Date(review.publishTime).toLocaleDateString("pt-BR")}
                 </time>
               </div>
-              <p className="text-gray-700 text-sm leading-relaxed">
+              <p className="text-sm text-foreground/90 leading-relaxed">
                 {review.text}
               </p>
             </div>

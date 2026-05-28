@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Check } from "lucide-react";
-import { buildOg } from "@/lib/siteMetadata";
+import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { PageHero } from "@/components/marketing/PageHero";
 import { PageAnchorNav } from "@/components/marketing/PageAnchorNav";
@@ -10,8 +10,6 @@ import { CTABlock } from "@/components/marketing/CTABlock";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { getSolutionBySlug, solutions } from "@/lib/content/solutions";
-
-const BASE_URL = "https://rc2solucoes.com.br";
 
 type Props = { params: Promise<{ slug: string }> };
 

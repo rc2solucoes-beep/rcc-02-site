@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { buildOg } from "@/lib/siteMetadata";
+import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 import { Check, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { services, getServiceBySlug } from "@/lib/content/services";
@@ -14,8 +14,6 @@ import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
-
-const BASE_URL = "https://rc2solucoes.com.br";
 
 type Props = { params: Promise<{ slug: string }> };
 

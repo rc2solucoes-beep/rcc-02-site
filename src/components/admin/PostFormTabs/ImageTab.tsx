@@ -374,7 +374,7 @@ export function ImageTab({ formData, onChange }: ImageTabProps) {
                 </div>
                 <div className="px-3 pt-2.5 pb-3 border-t border-black/8">
                   <p className="text-[10px] text-[#65676B] uppercase tracking-wide mb-1 font-medium">
-                    rc2solucoes.com.br
+                    www.rc2solucoes.com.br
                   </p>
                   <p className="text-sm font-semibold text-[#1C1E21] leading-snug line-clamp-2">
                     {effectiveTitle || "Título do artigo"}
@@ -396,3 +396,4 @@ export function ImageTab({ formData, onChange }: ImageTabProps) {
     </div>
   );
 }
+

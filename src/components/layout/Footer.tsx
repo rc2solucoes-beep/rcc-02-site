@@ -23,15 +23,15 @@ const legalLinks = [
 
 export function Footer() {
   return (
-    <footer className="bg-rc2-forest text-rc2-sand">
-      {/* Transição tonal do conteúdo principal */}
-      <div className="h-px bg-gradient-to-r from-transparent via-surface-3 to-transparent opacity-40" />
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <footer className="relative overflow-hidden bg-rc2-forest text-rc2-sand">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/70 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 opacity-35 [background:radial-gradient(circle_at_8%_10%,rgba(80,70,228,0.18),transparent_38%),radial-gradient(circle_at_88%_82%,rgba(80,70,228,0.12),transparent_40%)]" />
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 md:py-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           {/* Brand */}
           <div className="sm:col-span-2 md:col-span-1">
             <Logo variant="dark" />
-            <p className="mt-4 text-sm text-rc2-sand/88 leading-relaxed max-w-xs">
+            <p className="mt-4 text-sm text-rc2-sand/85 leading-relaxed max-w-xs">
               Consultoria especializada em IA, automações e operações digitais
               para pequenas e médias empresas.
             </p>
@@ -39,7 +39,7 @@ export function Footer() {
 
           {/* Empresa */}
           <div>
-            <h3 className="rc2-label text-rc2-orange mb-4">Empresa</h3>
+            <h3 className="rc2-label text-primary mb-4">Empresa</h3>
             <ul className="space-y-2">
               {footerLinks.empresa.map((link) => (
                 <li key={link.href}>
@@ -47,14 +47,14 @@ export function Footer() {
                     <TrackedLink
                       href={link.href}
                       tracking={{ kind: "cta", location: "footer_empresa", label: "contato", destination: link.href }}
-                      className="ui-focus-ring rounded-sm text-sm text-rc2-sand/88 hover:text-rc2-sand hover:underline transition-colors"
+                      className="ui-focus-ring rounded-sm text-sm text-rc2-sand/85 hover:text-rc2-sand hover:underline transition-colors"
                     >
                       {link.label}
                     </TrackedLink>
                   ) : (
                     <Link
                       href={link.href}
-                      className="ui-focus-ring rounded-sm text-sm text-rc2-sand/88 hover:text-rc2-sand hover:underline transition-colors"
+                      className="ui-focus-ring rounded-sm text-sm text-rc2-sand/85 hover:text-rc2-sand hover:underline transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -66,13 +66,13 @@ export function Footer() {
 
           {/* Serviços */}
           <div>
-            <h3 className="rc2-label text-rc2-orange mb-4">Serviços</h3>
+            <h3 className="rc2-label text-primary mb-4">Serviços</h3>
             <ul className="space-y-2">
               {footerLinks.servicos.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="ui-focus-ring rounded-sm text-sm text-rc2-sand/88 hover:text-rc2-sand hover:underline transition-colors"
+                    className="ui-focus-ring rounded-sm text-sm text-rc2-sand/85 hover:text-rc2-sand hover:underline transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -83,7 +83,7 @@ export function Footer() {
 
           {/* Contato */}
           <div>
-            <h3 className="rc2-label text-rc2-orange mb-4">Contato</h3>
+            <h3 className="rc2-label text-primary mb-4">Contato</h3>
             <ul className="space-y-2">
               <li>
                 <TrackedLink
@@ -96,7 +96,7 @@ export function Footer() {
                     label: "whatsapp",
                     destination: "https://wa.me/5511988028550",
                   }}
-                  className="text-sm text-rc2-sand/88 hover:text-rc2-sand transition-colors"
+                  className="text-sm text-rc2-sand/85 hover:text-rc2-sand transition-colors"
                 >
                   Falar pelo WhatsApp
                 </TrackedLink>
@@ -104,7 +104,7 @@ export function Footer() {
               <li>
                 <a
                   href="mailto:contato@rc2solucoes.com.br"
-                  className="text-sm text-rc2-sand/88 hover:text-rc2-sand transition-colors"
+                  className="text-sm text-rc2-sand/85 hover:text-rc2-sand transition-colors"
                 >
                   contato@rc2solucoes.com.br
                 </a>
@@ -114,8 +114,8 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-6 border-t border-rc2-sand/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs font-normal text-rc2-sand text-center sm:text-left">
+        <div className="mt-12 pt-6 border-t border-rc2-sand/15 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs font-normal text-rc2-sand/92 text-center sm:text-left">
             © 2026 RC2 Soluções. Todos os direitos reservados.
           </p>
           <div className="flex gap-6">
@@ -123,7 +123,7 @@ export function Footer() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="ui-focus-ring rounded-sm text-xs font-normal text-rc2-sand hover:underline transition-colors"
+                className="ui-focus-ring rounded-sm text-xs font-normal text-rc2-sand/92 hover:text-rc2-sand hover:underline transition-colors"
               >
                 {link.label}
               </Link>

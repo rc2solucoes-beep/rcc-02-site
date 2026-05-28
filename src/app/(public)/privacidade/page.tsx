@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/marketing/PageHero";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
-
-const BASE_URL = "https://rc2solucoes.com.br";
+import { BASE_URL } from "@/lib/siteMetadata";
 
 export const metadata: Metadata = {
   title: "Política de Privacidade",

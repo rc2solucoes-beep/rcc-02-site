@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { BASE_URL } from "@/lib/siteMetadata";
 
 const disallowedRoutes = ["/admin", "/admin/", "/api/"];
 
@@ -26,6 +27,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: disallowedRoutes,
       },
     ],
-    sitemap: "https://rc2solucoes.com.br/sitemap.xml",
+    sitemap: `${BASE_URL}/sitemap.xml`,
   };
 }

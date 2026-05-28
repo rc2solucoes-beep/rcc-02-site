@@ -51,28 +51,29 @@ export function Header() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 backdrop-blur-sm border-b transition-all duration-200",
+        "sticky top-0 z-50 border-b transition-all duration-300",
         scrolled
-          ? "bg-rc2-sand/98 border-rc2-ebony/15 shadow-sm"
-          : "bg-rc2-sand/95 border-border"
+          ? "bg-background/95 border-border shadow-[0_14px_36px_-28px_rgba(0,0,0,0.65)] backdrop-blur-md"
+          : "bg-background/88 border-border backdrop-blur-sm"
       )}
     >
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-rc2-orange/70 to-transparent" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Logo />
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-3">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 aria-current={isActive(link.href) ? "page" : undefined}
                 className={cn(
-                  "ui-focus-ring rounded-full text-sm transition-all duration-200 px-3 py-1",
+                  "ui-focus-ring rounded-full text-sm transition-all duration-200 px-3 py-1.5",
                   isActive(link.href)
-                    ? "font-semibold text-rc2-orange-text bg-rc2-orange-text/10 ring-1 ring-rc2-orange-text/20"
-                    : "font-medium text-rc2-ebony hover:text-rc2-orange-text hover:bg-rc2-ebony/5"
+                    ? "font-semibold text-primary bg-primary/14 ring-1 ring-primary/35"
+                    : "font-medium text-foreground/88 hover:text-foreground hover:bg-foreground/5"
                 )}
               >
                 {link.label}
@@ -89,7 +90,7 @@ export function Header() {
               }
               className={cn(
                 buttonVariants({ variant: "default" }),
-                "ml-2 font-semibold tracking-wide uppercase text-xs px-5 h-9 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90 shadow-sm ring-1 ring-rc2-orange/20"
+                "ml-3 font-semibold tracking-[0.08em] uppercase text-[11px] px-5 h-9 bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_10px_28px_-18px_rgba(80,70,228,0.9)] ring-1 ring-primary/25"
               )}
             >
               Solicitar diagnóstico
@@ -99,7 +100,7 @@ export function Header() {
           {/* Mobile hamburger */}
           <button
             ref={mobileMenuButtonRef}
-            className="ui-focus-ring rounded md:hidden p-2 -mr-2 text-rc2-ebony hover:text-rc2-orange transition-colors"
+            className="ui-focus-ring rounded md:hidden p-2 -mr-2 text-foreground/88 hover:text-primary transition-colors"
             onClick={() => setOpen(!open)}
             aria-label={open ? "Fechar menu" : "Abrir menu"}
             aria-expanded={open}
@@ -112,7 +113,7 @@ export function Header() {
 
       {/* Mobile menu */}
       {open && (
-        <div id="mobile-main-menu" className="md:hidden bg-rc2-sand border-t border-border px-4 pb-4 pt-2">
+        <div id="mobile-main-menu" className="md:hidden bg-background border-t border-border px-4 pb-4 pt-3">
           <nav className="flex flex-col gap-1">
             {navLinks.map((link) => (
               <Link
@@ -120,10 +121,10 @@ export function Header() {
                 href={link.href}
                 aria-current={isActive(link.href) ? "page" : undefined}
                 className={cn(
-                  "ui-focus-ring rounded-sm py-2 text-sm transition-colors",
+                  "ui-focus-ring rounded-md px-2 py-2.5 text-sm transition-colors",
                   isActive(link.href)
-                    ? "font-semibold text-rc2-orange-text"
-                    : "font-medium text-rc2-ebony hover:text-rc2-orange-text"
+                    ? "font-semibold text-primary bg-primary/10"
+                    : "font-medium text-foreground/88 hover:text-foreground hover:bg-foreground/5"
                 )}
                 onClick={() => setOpen(false)}
               >
@@ -142,7 +143,7 @@ export function Header() {
               }}
               className={cn(
                 buttonVariants({ variant: "default" }),
-                "mt-3 font-semibold tracking-wide uppercase text-xs w-full justify-center bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90"
+                "mt-3 font-semibold tracking-[0.08em] uppercase text-[11px] w-full justify-center bg-primary text-primary-foreground hover:bg-primary/90"
               )}
             >
               Solicitar diagnóstico

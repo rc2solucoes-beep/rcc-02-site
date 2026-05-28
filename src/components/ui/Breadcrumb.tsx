@@ -14,12 +14,12 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Início", item: "https://rc2solucoes.com.br" },
+      { "@type": "ListItem", position: 1, name: "Início", item: "https://www.rc2solucoes.com.br" },
       ...items.map((item, index) => ({
         "@type": "ListItem",
         position: index + 2,
         name: item.label,
-        ...(item.href ? { item: `https://rc2solucoes.com.br${item.href}` } : {}),
+        ...(item.href ? { item: `https://www.rc2solucoes.com.br${item.href}` } : {}),
       })),
     ],
   };
@@ -43,3 +43,4 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
     </>
   );
 }
+

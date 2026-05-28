@@ -4,9 +4,7 @@ import { PageHero } from "@/components/marketing/PageHero";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { solutions } from "@/lib/content/solutions";
-import { buildOg } from "@/lib/siteMetadata";
-
-const BASE_URL = "https://rc2solucoes.com.br";
+import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
