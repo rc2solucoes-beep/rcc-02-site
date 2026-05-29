@@ -32,13 +32,12 @@ export function CTABlock({
   return (
     <section
       className={cn(
-        "relative overflow-hidden rc2-section",
+        "rc2-section",
         isDark ? "bg-rc2-ink" : "bg-rc2-orange",
         className
       )}
     >
-      <div className="pointer-events-none absolute inset-0 opacity-55 [background:radial-gradient(circle_at_15%_20%,rgba(80,70,228,0.22),transparent_38%),radial-gradient(circle_at_85%_80%,rgba(80,70,228,0.16),transparent_42%)]" />
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
         <h2
           className={cn(
             "rc2-h2 rc2-display max-w-3xl mx-auto",
@@ -68,7 +67,7 @@ export function CTABlock({
             }}
             className={cn(
               buttonVariants({ variant: "default" }),
-              "ui-focus-ring font-semibold tracking-[0.08em] uppercase text-[11px] px-8 h-11 bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary active:ring-1 active:ring-primary/50 transition-all duration-150 shadow-[0_12px_30px_-22px_rgba(80,70,228,0.95)]",
+              "ui-focus-ring font-semibold tracking-wide uppercase text-xs px-8 h-11 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90 active:bg-rc2-orange active:ring-1 active:ring-rc2-orange/50 transition-all duration-150",
               !isDark && "bg-rc2-sand text-rc2-orange hover:bg-rc2-sand/90 active:bg-rc2-sand active:ring-rc2-orange/50"
             )}
           >

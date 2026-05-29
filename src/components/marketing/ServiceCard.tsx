@@ -27,15 +27,15 @@ export function ServiceCard({ service, className }: ServiceCardProps) {
       )}
     >
       <span className="rc2-label text-rc2-orange mb-3">{service.shortTitle}</span>
-      <h3 className="text-lg font-semibold text-rc2-sand mb-3 leading-snug">
+      <h3 className="text-lg font-semibold text-rc2-ebony mb-3 leading-snug">
         {service.title}
       </h3>
-      <p className="text-sm text-rc2-sand/80 leading-relaxed flex-1">
+      <p className="text-sm text-rc2-ebony/70 leading-relaxed flex-1">
         {service.summary}
       </p>
       {resolveText && (
-        <p className="mt-3 text-xs text-rc2-sand/75">
-          <span className="font-semibold text-rc2-sand/90">Resolve:</span> {resolveText}
+        <p className="mt-3 text-xs text-rc2-ebony/70">
+          <span className="font-semibold text-rc2-ebony/80">Resolve:</span> {resolveText}
         </p>
       )}
       <Link
