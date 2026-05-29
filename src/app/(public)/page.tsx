@@ -15,10 +15,10 @@ import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getOrgSettings();
   return {
-    title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
+    title: "IA, Automações e Operações Digitais para PMEs",
     description:
       "Consultoria para PMEs que precisam responder mais rápido, perder menos leads e reduzir tarefas manuais com IA, automações e integrações.",
-    alternates: { canonical: BASE_URL },
+    alternates: { canonical: `${BASE_URL}/` },
     openGraph: buildOg({
       url: BASE_URL,
       title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
@@ -66,7 +66,7 @@ export default async function HomePage({ searchParams }: Props) {
           "Consultoria para PMEs que precisam responder mais rápido, perder menos leads e reduzir tarefas manuais com IA, automações e integrações.",
         url: BASE_URL,
         keywords: "IA, automação, consultoria digital, PME, n8n, agentes de IA, e-commerce, atendimento automático, integrações",
-        image: `${BASE_URL}/og-image.png`,
+        image: settings.og_image_url || `${BASE_URL}/og-image.png`,
       },
       BASE_URL
     );

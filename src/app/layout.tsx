@@ -77,7 +77,7 @@ export async function generateMetadata(): Promise<Metadata> {
       },
     },
     alternates: {
-      canonical: BASE_URL,
+      canonical: `${BASE_URL}/`,
     },
   };
 }

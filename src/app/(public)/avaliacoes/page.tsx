@@ -6,7 +6,7 @@ import { buildOg, BASE_URL } from "@/lib/siteMetadata";
 import type { WebPageInfo } from "@/lib/types/schema";
 
 const pageInfo: WebPageInfo = {
-  title: "Avaliações e Cases — RC2 Soluções",
+  title: "Avaliações e Cases",
   description: "Veja as avaliações de clientes e cases de sucesso com nossas soluções de IA e automação.",
   url: `${BASE_URL}/avaliacoes`,
   keywords: "avaliações, cases de sucesso, depoimentos, clientes satisfeitos, resultados, IA, automação",
