@@ -62,12 +62,12 @@ export default async function ContatoPage() {
             <h1 className="rc2-display text-4xl md:text-5xl text-rc2-ebony mb-6 leading-tight">
               Solicite um diagnóstico para sua empresa
             </h1>
-            <p className="text-rc2-ebony/80 leading-relaxed mb-8">
+            <p className="text-rc2-ebony/70 leading-relaxed mb-8">
               Se sua empresa está com atendimento lento, leads sem resposta,
               tarefas manuais ou sistemas desconectados, este diagnóstico ajuda
               a priorizar o que resolver primeiro.
             </p>
-            <p className="text-rc2-ebony/80 leading-relaxed mb-8">
+            <p className="text-rc2-ebony/70 leading-relaxed mb-8">
               Em poucos passos, mapeamos seu cenário atual, identificamos
               gargalos e sugerimos um plano inicial de execução com IA,
               automações e integrações.
@@ -78,7 +78,7 @@ export default async function ContatoPage() {
               <h2 className="text-sm font-semibold text-rc2-ebony mb-4 uppercase tracking-wide">
                 O que você recebe
               </h2>
-              <ul className="space-y-3 text-sm text-rc2-ebony/80">
+              <ul className="space-y-3 text-sm text-rc2-ebony/70">
                 {[
                   "Mapeamento inicial da operação",
                   "Identificação de gargalos",
@@ -96,7 +96,7 @@ export default async function ContatoPage() {
             </div>
 
             <div className="mt-6">
-              <p className="text-xs text-rc2-ebony/80 mb-2">Prefere falar diretamente?</p>
+              <p className="text-xs text-rc2-ebony/70 mb-2">Prefere falar diretamente?</p>
               <TrackedLink
                 href={CONTACT_WHATSAPP_URL}
                 target="_blank"

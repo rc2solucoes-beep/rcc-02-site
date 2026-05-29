@@ -235,15 +235,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <div className="container mx-auto max-w-4xl px-4 py-2.5">
             <ol className="flex items-center gap-1 text-xs md:text-sm text-muted-foreground flex-wrap">
               <li><Link href="/" className="hover:text-rc2-orange transition-colors font-medium">Home</Link></li>
-              <li className="text-rc2-ebony/45 mx-1">/</li>
+              <li className="text-rc2-ebony/30 mx-1">/</li>
               <li><Link href="/blog" className="hover:text-rc2-orange transition-colors font-medium">Blog</Link></li>
               {post.category && (
                 <>
-                  <li className="text-rc2-ebony/45 mx-1">/</li>
-                  <li className="text-rc2-ebony/80 font-medium">{post.category}</li>
+                  <li className="text-rc2-ebony/30 mx-1">/</li>
+                  <li className="text-rc2-ebony/70 font-medium">{post.category}</li>
                 </>
               )}
-              <li className="text-rc2-ebony/45 mx-1">/</li>
+              <li className="text-rc2-ebony/30 mx-1">/</li>
               <li className="text-rc2-ebony line-clamp-1 font-medium">{post.title}</li>
             </ol>
           </div>
@@ -416,7 +416,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                         {ctaBlock.title}
                       </h3>
                       {ctaBlock.description && (
-                        <p className="text-rc2-ebony/80 mb-5">{ctaBlock.description}</p>
+                        <p className="text-rc2-ebony/70 mb-5">{ctaBlock.description}</p>
                       )}
                       <div className="flex flex-wrap gap-3">
                         {ctaBlock.primaryButton && (
@@ -458,7 +458,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     <h3 className="text-lg font-bold text-rc2-ebony mb-2">
                       Quer identificar gargalos nos processos da sua empresa?
                     </h3>
-                    <p className="text-rc2-ebony/80 mb-4">
+                    <p className="text-rc2-ebony/70 mb-4">
                       Fale com a RC2 Soluções e descubra como tornar sua operação mais eficiente.
                     </p>
                     <TrackedLink
@@ -498,7 +498,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                           <h3 className="font-semibold text-rc2-ebony group-hover:text-rc2-orange transition-colors line-clamp-2">
                             {relPost.title}
                           </h3>
-                          <p className="text-sm text-rc2-ebony/75 mt-2 line-clamp-2">
+                          <p className="text-sm text-rc2-ebony/60 mt-2 line-clamp-2">
                             {relPost.summary}
                           </p>
                         </div>
@@ -540,7 +540,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     )}
 
                     {post.author_bio && (
-                      <p className="text-sm text-rc2-ebony/80 mb-4 leading-relaxed">
+                      <p className="text-sm text-rc2-ebony/70 mb-4 leading-relaxed">
                         {post.author_bio}
                       </p>
                     )}

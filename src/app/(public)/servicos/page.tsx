@@ -61,7 +61,7 @@ export default async function ServicosPage() {
 
       <section className="bg-rc2-sand rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-10 rounded-xl border border-border bg-rc2-sand p-6 md:p-8">
+          <div className="mb-10 rounded-xl border border-[var(--surface-2)] bg-[var(--surface-1)] p-6 md:p-8">
             <SectionLabel className="block mb-3">Soluções por problema</SectionLabel>
             <h2 className="rc2-h4 mb-3 text-rc2-ebony">
               Comece pela dor real da sua operação.
@@ -83,7 +83,7 @@ export default async function ServicosPage() {
               <article
                 key={service.slug}
                 id={service.slug}
-                  className={`grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 p-8 md:p-10 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 last:border-b-0 last:pb-0 rounded-xl border ${isDark ? "bg-rc2-forest border-rc2-forest/80" : "bg-rc2-sand border-border"}`}
+                  className={`grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 p-8 md:p-10 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 last:border-b-0 last:pb-0 rounded-xl border ${isDark ? "bg-rc2-forest border-rc2-forest/80" : "bg-[var(--surface-1)] border-[var(--surface-2)]"}`}
               >
                 {/* Content */}
                 <div className={index % 2 === 1 ? "lg:order-2" : ""}>
@@ -93,7 +93,7 @@ export default async function ServicosPage() {
                   <h2 className={`rc2-h3 mb-4 ${isDark ? "text-rc2-sand" : "text-rc2-ebony"}`}>
                     {service.title}
                   </h2>
-                  <p className={`leading-relaxed mb-6 ${isDark ? "text-rc2-sand/90" : "text-rc2-ebony/80"}`}>
+                  <p className={`leading-relaxed mb-6 ${isDark ? "text-rc2-sand/80" : "text-rc2-ebony/70"}`}>
                     {service.description}
                   </p>
                   <p className={`text-sm font-medium italic border-l-2 border-rc2-orange pl-4 ${isDark ? "text-rc2-sand/85" : "text-rc2-ebony/80"}`}>
@@ -116,7 +116,7 @@ export default async function ServicosPage() {
                       {service.items.map((item, i) => (
                         <li key={i} className="flex items-start gap-2.5">
                           <Check size={14} className={`shrink-0 mt-0.5 ${isDark ? "text-rc2-orange" : "text-rc2-orange"}`} strokeWidth={2.5} />
-                          <span className={`text-sm ${isDark ? "text-rc2-sand/90" : "text-rc2-ebony/80"}`}>{item}</span>
+                          <span className={`text-sm ${isDark ? "text-rc2-sand/80" : "text-rc2-ebony/80"}`}>{item}</span>
                         </li>
                       ))}
                     </ul>
@@ -127,7 +127,7 @@ export default async function ServicosPage() {
                       {service.benefits.map((benefit, i) => (
                         <li key={i} className="flex items-start gap-2.5">
                           <span className={`mt-0.5 text-xs ${isDark ? "text-rc2-orange" : "text-rc2-orange"}`}>→</span>
-                          <span className={`text-sm ${isDark ? "text-rc2-sand/90" : "text-rc2-ebony/80"}`}>{benefit}</span>
+                          <span className={`text-sm ${isDark ? "text-rc2-sand/80" : "text-rc2-ebony/80"}`}>{benefit}</span>
                         </li>
                       ))}
                     </ul>
