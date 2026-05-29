@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Check, ArrowRight } from "lucide-react";
-import { BASE_URL, buildOg } from "@/lib/siteMetadata";
+import { buildOg } from "@/lib/siteMetadata";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ServiceCard } from "@/components/marketing/ServiceCard";
 import { CTABlock } from "@/components/marketing/CTABlock";
@@ -15,12 +15,12 @@ import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getOrgSettings();
   return {
-    title: "IA, Automações e Operações Digitais para PMEs",
+    title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
     description:
       "Consultoria para PMEs que precisam responder mais rápido, perder menos leads e reduzir tarefas manuais com IA, automações e integrações.",
-    alternates: { canonical: `${BASE_URL}/` },
+    alternates: { canonical: "https://rc2solucoes.com.br" },
     openGraph: buildOg({
-      url: BASE_URL,
+      url: "https://rc2solucoes.com.br",
       title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
       description: "Para PMEs que querem responder mais rápido, perder menos leads e reduzir retrabalho com IA e automação.",
       imageUrl: settings.og_image_url,
@@ -43,6 +43,7 @@ const socialProofItems = [
   "Diagnóstico prático com próximos passos acionáveis",
 ];
 
+const BASE_URL = "https://rc2solucoes.com.br";
 const HOME_WHATSAPP_MESSAGE =
   "Olá, quero entender onde a IA e automações podem ajudar minha empresa.";
 const HOME_WHATSAPP_URL = `https://wa.me/5511988028550?text=${encodeURIComponent(HOME_WHATSAPP_MESSAGE)}`;
@@ -66,7 +67,7 @@ export default async function HomePage({ searchParams }: Props) {
           "Consultoria para PMEs que precisam responder mais rápido, perder menos leads e reduzir tarefas manuais com IA, automações e integrações.",
         url: BASE_URL,
         keywords: "IA, automação, consultoria digital, PME, n8n, agentes de IA, e-commerce, atendimento automático, integrações",
-        image: settings.og_image_url || `${BASE_URL}/og-image.png`,
+        image: `${BASE_URL}/og-image.png`,
       },
       BASE_URL
     );
@@ -81,85 +82,140 @@ export default async function HomePage({ searchParams }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
       />
-      <section className="editorial-grid angled-divider bg-rc2-sand rc2-section md:pt-28 md:pb-32">
+      {/* ── Hero ── */}
+      <section className="bg-rc2-sand rc2-section md:py-28 lg:py-36">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.15fr_0.85fr]">
-            <div>
-              <p className="hero-kicker mb-5">Consultoria em IA e Automações para PMEs</p>
-              <h1 className="rc2-h1 max-w-4xl text-rc2-ebony">
-                IA, automações e integrações para empresas que querem responder mais rápido, vender melhor e reduzir retrabalho.
-              </h1>
-              <p className="rc2-body-lg mt-7 max-w-2xl text-rc2-ebony/76">
-                A RC2 organiza atendimento, elimina gargalos e conecta sistemas antes da automação.
-                Depois, aplica IA no ponto de maior retorno operacional.
-              </p>
-              <HeroActions variant={heroVariant} />
-              <p className="mt-6 text-xs uppercase tracking-[0.14em] text-rc2-ebony/62">
-                {heroVariant === "b" ? "Diagnóstico com mapa de oportunidades" : "Sem compromisso • retorno em até 1 dia útil"}
-              </p>
+          <SectionLabel className="block mb-5">
+            Consultoria em IA e Automações para PMEs
+          </SectionLabel>
+          <h1 className="rc2-h1 text-rc2-ebony max-w-4xl">
+            IA, automações e integrações para empresas que querem responder mais
+            rápido, vender melhor e reduzir retrabalho.
+          </h1>
+          <p className="rc2-body-lg mt-6 text-rc2-ebony/75 max-w-2xl">
+            A RC2 ajuda PMEs a organizar atendimento, evitar perda de leads e
+            tirar tarefas manuais da equipe. Depois disso, aplicamos IA,
+            automações e integrações no que gera mais impacto.
+          </p>
+
+          {heroVariant === "b" && (
+            <div className="mt-7 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-4xl">
+              {socialProofItems.map((item) => (
+                <div
+                  key={item}
+                  className="rounded-lg border border-rc2-ebony/10 bg-[var(--surface-1)] px-4 py-3 text-sm text-rc2-ebony/85 shadow-sm"
+                >
+                  {item}
+                </div>
+              ))}
             </div>
-            <aside className="cut-panel self-end border border-border bg-[#f7f7f5] p-6">
-              <p className="hero-kicker mb-4">Base operacional</p>
-              <ul className="space-y-3">
-                {socialProofItems.map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm text-rc2-ebony/88">
-                    <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-rc2-orange" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </aside>
-          </div>
+          )}
+
+          <HeroActions variant={heroVariant} />
+
+          <p className="mt-5 text-sm text-rc2-ebony/70">
+            {heroVariant === "b"
+              ? "Diagnóstico inicial com mapa de oportunidades."
+              : "Sem compromisso. Retorno em até 1 dia útil."}
+          </p>
+          <p className="mt-6 text-xs text-rc2-ebony/75 italic">
+            &ldquo;Tecnologia que funciona. Operação que entrega.&rdquo;
+          </p>
         </div>
       </section>
 
+      {/* ── Para quem é ── */}
       <section className="bg-rc2-ink rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p className="hero-kicker mb-4">Para quem é</p>
-          <h2 className="rc2-h2 mb-10 max-w-xl text-rc2-sand">Sua empresa precisa da RC2 se você:</h2>
-          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <SectionLabel className="block mb-5 text-rc2-orange">Para quem é</SectionLabel>
+          <h2 className="rc2-h2 text-rc2-sand mb-10 max-w-lg">
+            Sua empresa precisa da RC2 se você:
+          </h2>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {forWhomItems.map((item, i) => (
-              <li key={i} className="cut-panel-soft border border-rc2-sand/22 bg-rc2-sand/10 px-4 py-3">
-                <div className="flex items-start gap-3">
-                  <Check size={16} className="mt-0.5 shrink-0 text-rc2-orange" strokeWidth={2.5} />
-                  <span className="text-sm leading-relaxed text-rc2-sand">{item}</span>
-                </div>
+              <li key={i} className="rc2-card flex items-start gap-3 !border-rc2-sand/30 !bg-rc2-sand/12 px-4 py-3">
+                <Check
+                  size={16}
+                  className="text-rc2-orange shrink-0 mt-0.5"
+                  strokeWidth={2.5}
+                />
+                <span className="text-sm text-rc2-sand leading-relaxed">{item}</span>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-      <section className="bg-rc2-sand pb-16 pt-12 md:pb-20">
+      {/* ── Escolha pela dor ── */}
+      <section className="bg-rc2-sand pt-10 pb-14 md:pt-14 md:pb-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="cut-panel border border-border bg-[#f7f7f5] p-6 sm:p-8 md:p-10 shadow-[0_28px_70px_-54px_rgba(0,0,0,0.72)]">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.35fr]">
-              <div>
-                <p className="hero-kicker mb-4">Escolha pela dor</p>
-                <h2 className="rc2-h3 mb-3 text-rc2-ebony">Se sua empresa tem esse cenário, já existe um próximo passo.</h2>
-                <p className="text-sm leading-relaxed text-rc2-ebony/75">
-                  Compare sintomas e vá direto para a solução mais aderente, sem precisar navegar por termos técnicos.
+          <div className="rounded-2xl border border-rc2-ebony/15 bg-white p-6 sm:p-8 md:p-10 shadow-[0_16px_45px_-36px_rgba(17,24,39,0.55)]">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.35fr] gap-8 lg:gap-10">
+              <div className="max-w-xl">
+                <SectionLabel className="block mb-4">Escolha pela sua dor</SectionLabel>
+                <h2 className="rc2-h3 text-rc2-ebony mb-3">
+                  Se sua empresa tem esse cenário, já existe um próximo passo.
+                </h2>
+                <p className="text-sm text-rc2-ebony/72 leading-relaxed">
+                  Não precisa decorar nome técnico. Compare a dor com a rota recomendada e siga para a solução mais aderente.
                 </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  <span className="inline-flex items-center rounded-full border border-rc2-ebony/15 bg-rc2-sand px-3 py-1 text-xs font-medium text-rc2-ebony/80">
+                    Se sua empresa tem...
+                  </span>
+                  <span className="inline-flex items-center rounded-full border border-rc2-orange/25 bg-rc2-orange/10 px-3 py-1 text-xs font-medium text-rc2-ebony/85">
+                    Comece por...
+                  </span>
+                </div>
               </div>
-              <div className="divide-y divide-rc2-ebony/10 overflow-hidden rounded-xl border border-border bg-white/65">
+
+              <div className="rounded-xl border border-rc2-ebony/12 bg-rc2-sand/35 divide-y divide-rc2-ebony/10 overflow-hidden">
                 {[
-                  { pain: "Muitos contatos no WhatsApp e demora para responder clientes.", href: "/solucoes/atendimento-lento", label: "Atendimento lento" },
-                  { pain: "Leads chegam, mas se perdem antes de virar oportunidade.", href: "/solucoes/leads-sem-resposta", label: "Leads sem resposta" },
-                  { pain: "Equipe copia dados manualmente entre planilhas e sistemas.", href: "/solucoes/processos-manuais", label: "Processos manuais" },
-                  { pain: "Sistemas não conversam e o retrabalho aumenta.", href: "/solucoes/sistemas-desconectados", label: "Sistemas desconectados" },
-                  { pain: "Você ainda não sabe por onde começar com IA e automação.", href: "/contato", label: "Diagnóstico inicial" },
+                  {
+                    pain: "Muitos contatos no WhatsApp e demora para responder clientes.",
+                    href: "/solucoes/atendimento-lento",
+                    label: "Atendimento lento",
+                  },
+                  {
+                    pain: "Leads chegam, mas se perdem antes de virar oportunidade.",
+                    href: "/solucoes/leads-sem-resposta",
+                    label: "Leads sem resposta",
+                  },
+                  {
+                    pain: "Equipe copia dados manualmente entre planilhas e sistemas.",
+                    href: "/solucoes/processos-manuais",
+                    label: "Processos manuais",
+                  },
+                  {
+                    pain: "Sistemas não conversam e o retrabalho aumenta.",
+                    href: "/solucoes/sistemas-desconectados",
+                    label: "Sistemas desconectados",
+                  },
+                  {
+                    pain: "Você ainda não sabe por onde começar com IA e automação.",
+                    href: "/contato",
+                    label: "Diagnóstico inicial",
+                  },
                 ].map((item, index) => (
-                  <article key={item.href + item.pain} className="group grid grid-cols-1 gap-3 px-4 py-4 md:grid-cols-[1fr_auto] md:gap-5 sm:px-5">
+                  <article
+                    key={item.href + item.pain}
+                    className="group grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3 md:gap-5 px-4 py-4 sm:px-5 sm:py-5"
+                  >
                     <div className="flex items-start gap-3">
                       <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-rc2-ebony/20 bg-white text-[11px] font-semibold text-rc2-ebony/80">
                         {index + 1}
                       </span>
-                      <p className="text-sm leading-relaxed text-rc2-ebony/82">{item.pain}</p>
+                      <p className="text-sm text-rc2-ebony/82 leading-relaxed">{item.pain}</p>
                     </div>
                     <TrackedLink
                       href={item.href}
-                      tracking={{ kind: "cta", location: "home_choose_by_pain", label: item.label, destination: item.href }}
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-rc2-orange transition-all group-hover:gap-2 md:justify-self-end"
+                      tracking={{
+                        kind: "cta",
+                        location: "home_choose_by_pain",
+                        label: item.label,
+                        destination: item.href,
+                      }}
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-rc2-orange md:justify-self-end group-hover:gap-2 transition-all"
                     >
                       Comece por {item.label}
                       <ArrowRight size={14} />
@@ -172,10 +228,11 @@ export default async function HomePage({ searchParams }: Props) {
         </div>
       </section>
 
-      <section id="servicos" className="bg-rc2-sand pb-20 pt-2 md:pb-24">
+      {/* ── O que entregamos ── */}
+      <section id="servicos" className="bg-rc2-sand pt-0 pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p className="hero-kicker mb-4">O que entregamos</p>
-          <h2 className="rc2-h2 mb-12 max-w-2xl text-rc2-ebony">
+          <SectionLabel className="block mb-5">O que entregamos</SectionLabel>
+          <h2 className="rc2-h2 text-rc2-ebony mb-12 max-w-2xl">
             Cinco serviços para transformar sua operação digital.
           </h2>
           <TrackedLink
@@ -186,26 +243,18 @@ export default async function HomePage({ searchParams }: Props) {
             Ver soluções por problema
             <ArrowRight size={14} />
           </TrackedLink>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-12">
-            {services.map((service, index) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {services.map((service) => (
               <ServiceCard
                 key={service.slug}
                 service={service}
-                className={cn(
-                  "lg:col-span-4",
-                  index === 0 && "lg:col-span-7",
-                  index === 1 && "lg:col-span-5",
-                  index === 2 && "lg:col-span-5",
-                  index === 3 && "lg:col-span-7",
-                  index === 4 && "lg:col-span-8"
-                )}
               />
             ))}
             {/* 6º card — CTA */}
             <TrackedLink
               href="/contato"
               tracking={{ kind: "cta", location: "home_services_grid", label: "solicitar_diagnostico", destination: "/contato" }}
-              className="group cut-panel lg:col-span-4 border border-rc2-forest bg-rc2-forest p-6 md:p-7 shadow-[0_16px_36px_-24px_rgba(11,45,34,0.78)]"
+              className="group rc2-card rc2-card-hover flex flex-col justify-between p-6 md:p-7 !bg-rc2-forest !border-rc2-forest shadow-[0_16px_36px_-24px_rgba(11,45,34,0.78)]"
             >
               <div>
                 <span className="inline-flex rounded-full border border-rc2-sand/45 bg-rc2-sand/14 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-rc2-sand mb-4">
@@ -228,8 +277,7 @@ export default async function HomePage({ searchParams }: Props) {
       </section>
 
       {/* ── Diferencial ── */}
-      <section className="relative overflow-hidden bg-rc2-forest rc2-section">
-        <div className="pointer-events-none absolute inset-0 opacity-35 [background:radial-gradient(circle_at_12%_86%,rgba(80,70,228,0.22),transparent_44%)]" />
+      <section className="bg-rc2-forest rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 max-w-3xl">
           <SectionLabel className="block mb-5 text-rc2-orange">Diferencial</SectionLabel>
           <h2 className="rc2-h2 rc2-display text-rc2-sand mb-6">
