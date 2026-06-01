@@ -53,6 +53,39 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      // Force apex domain to canonical www domain.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "rc2solucoes.com.br" }],
+        destination: "https://www.rc2solucoes.com.br/:path*",
+        permanent: true,
+      },
+      // Legacy/invalid URLs found by Search Console.
+      { source: "/index.htm", destination: "/", permanent: true },
+      { source: "/about", destination: "/sobre", permanent: true },
+      { source: "/about/", destination: "/sobre", permanent: true },
+      { source: "/services", destination: "/servicos", permanent: true },
+      { source: "/services/", destination: "/servicos", permanent: true },
+      {
+        source: "/servicos/automacao-de-atendimento",
+        destination: "/servicos/automacoes-com-ia",
+        permanent: true,
+      },
+      {
+        source: "/servicos/integracao-de-sistemas",
+        destination: "/servicos/automacao-de-processos",
+        permanent: true,
+      },
+      {
+        source: "/servicos/operacoes-digitais",
+        destination: "/servicos/automacao-de-processos",
+        permanent: true,
+      },
+    ];
+  },
+
   async headers() {
     return [
       {
