@@ -31,6 +31,17 @@ const SlugSchema = z
     "Use apenas letras minúsculas, números e hífens. Não use acentos, espaços ou caracteres especiais."
   );
 
+// Inputs <input type="datetime-local"> emitem "YYYY-MM-DDTHH:mm" (sem segundos
+// nem fuso), formato que z.string().datetime() rejeita. Coagimos para ISO 8601
+// completo antes da validação, preservando null/valores já em ISO.
+function datetimeLocalOptional() {
+  return z.preprocess((value) => {
+    if (typeof value !== "string" || value.trim() === "") return value;
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? value : parsed.toISOString();
+  }, z.string().datetime());
+}
+
 export const PostContentSchema = z.object({
   title: z.string().min(1, "Título é obrigatório").max(200),
   slug: SlugSchema,
@@ -51,9 +62,9 @@ export const PostPublicationSchema = z.object({
   tags: z.array(z.string()).optional().nullable(),
   content_type: ContentTypeEnum.optional().nullable(),
   status: PostStatusEnum.default("draft"),
-  published_at: z.string().datetime().optional().nullable(),
-  updated_at: z.string().datetime().optional(),
-  scheduled_publish_at: z.string().datetime().optional().nullable(),
+  published_at: datetimeLocalOptional().optional().nullable(),
+  updated_at: datetimeLocalOptional().optional(),
+  scheduled_publish_at: datetimeLocalOptional().optional().nullable(),
   reading_time_minutes: z.number().int().min(1).optional().nullable(),
 });
 

@@ -152,6 +152,55 @@ function FieldError({ errors, field }: { errors?: Record<string, string[]>; fiel
   return <p className="mt-1 text-xs text-red-600">{msgs[0]}</p>;
 }
 
+// Mapeia cada campo validado para a aba onde ele aparece e um rótulo legível,
+// para que erros de validação sejam sempre visíveis — mesmo quando o campo com
+// erro está numa aba que não está ativa.
+const FIELD_LOCATION: Record<string, { tab: TabKey; label: string }> = {
+  title: { tab: "conteudo", label: "Título" },
+  slug: { tab: "conteudo", label: "Slug" },
+  summary: { tab: "conteudo", label: "Resumo" },
+  content: { tab: "conteudo", label: "Conteúdo do artigo" },
+  seo_keyword_primary: { tab: "seo", label: "Palavra-chave primária" },
+  seo_keyword_secondary: { tab: "seo", label: "Palavras-chave secundárias" },
+  seo_meta_title: { tab: "seo", label: "Meta title" },
+  seo_meta_description: { tab: "seo", label: "Meta description" },
+  seo_index_status: { tab: "seo", label: "Status de indexação" },
+  category: { tab: "publicacao", label: "Categoria" },
+  tags: { tab: "publicacao", label: "Tags" },
+  content_type: { tab: "publicacao", label: "Tipo de conteúdo" },
+  status: { tab: "publicacao", label: "Status" },
+  published_at: { tab: "publicacao", label: "Data de publicação" },
+  updated_at: { tab: "publicacao", label: "Data de atualização" },
+  scheduled_publish_at: { tab: "publicacao", label: "Agendamento de publicação" },
+  reading_time_minutes: { tab: "publicacao", label: "Tempo de leitura" },
+  author_id: { tab: "autor", label: "Autor" },
+  author_name: { tab: "autor", label: "Nome do autor" },
+  author_title: { tab: "autor", label: "Cargo do autor" },
+  author_photo: { tab: "autor", label: "Foto do autor" },
+  author_bio: { tab: "autor", label: "Bio do autor" },
+  author_linkedin: { tab: "autor", label: "LinkedIn do autor" },
+  cover_url: { tab: "imagem", label: "URL da imagem de capa" },
+  cover_url_alt: { tab: "imagem", label: "ALT da imagem de capa" },
+  cover_url_caption: { tab: "imagem", label: "Legenda da imagem de capa" },
+  og_image: { tab: "imagem", label: "Imagem Open Graph" },
+  og_title: { tab: "imagem", label: "Título Open Graph" },
+  og_description: { tab: "imagem", label: "Descrição Open Graph" },
+  related_post_ids: { tab: "relacionados", label: "Posts relacionados" },
+  faq_items: { tab: "faq", label: "FAQ" },
+  cta_block: { tab: "cta", label: "CTA" },
+};
+
+const TAB_LABEL: Record<TabKey, string> = {
+  conteudo: "Conteúdo",
+  seo: "SEO",
+  publicacao: "Publicação",
+  autor: "Autor",
+  imagem: "Imagem & Social",
+  relacionados: "Posts Relacionados",
+  faq: "FAQ",
+  cta: "CTA",
+};
+
 export function PostFormRefactored({ authors, post, action }: PostFormProps) {
   const [state, formAction, pending] = useActionState(action, initialState);
   const [activeTab, setActiveTab] = useState<TabKey>("conteudo");
@@ -267,12 +316,49 @@ export function PostFormRefactored({ authors, post, action }: PostFormProps) {
   ];
   const editorialWarnings = getEditorialWarnings(formData, faqItems, ctaBlock);
 
+  const errorEntries = Object.entries(state.errors ?? {}).filter(
+    ([, msgs]) => Array.isArray(msgs) && msgs.length > 0
+  );
+
   return (
     <form action={handleSubmit} className="p-8 space-y-6 max-w-5xl">
       {state.message && (
         <p className="text-sm text-red-600 bg-red-50 border border-red-200 px-4 py-3 rounded">
           {state.message}
         </p>
+      )}
+
+      {errorEntries.length > 0 && (
+        <div className="rounded border border-red-300 bg-red-50 px-4 py-3">
+          <p className="text-sm font-medium text-red-800">
+            Não foi possível salvar. Corrija os campos abaixo:
+          </p>
+          <ul className="mt-2 list-disc pl-5 text-xs text-red-800/90 space-y-1">
+            {errorEntries.map(([field, msgs]) => {
+              const location = FIELD_LOCATION[field];
+              const label = location?.label ?? field;
+              const tabLabel = location ? TAB_LABEL[location.tab] : null;
+              return (
+                <li key={field}>
+                  {location ? (
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab(location.tab)}
+                      className="text-left underline hover:text-red-900"
+                    >
+                      {tabLabel ? `${tabLabel} — ` : ""}
+                      {label}: {msgs[0]}
+                    </button>
+                  ) : (
+                    <span>
+                      {label}: {msgs[0]}
+                    </span>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       )}
 
       {editorialWarnings.length > 0 && (
