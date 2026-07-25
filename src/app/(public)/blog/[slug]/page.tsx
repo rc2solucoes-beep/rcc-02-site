@@ -2,43 +2,16 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import DOMPurify from "isomorphic-dompurify";
 import { createPublicClient } from "@/lib/supabase/server";
 import type { Post, FaqItem } from "@/lib/types/post";
 import { ExternalLink, ChevronDown } from "lucide-react";
-import { TableOfContents, type TocHeading } from "@/components/blog/TableOfContents";
+import { TableOfContents } from "@/components/blog/TableOfContents";
 import { BackToTopButton } from "@/components/blog/BackToTopButton";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { BASE_URL } from "@/lib/siteMetadata";
+import { sanitizeAndAddIds, extractHeadings } from "@/lib/blog/sanitize";
 
 export const revalidate = 60;
-
-// Extrai headings h2 do HTML sanitizado para alimentar o TOC no servidor
-function extractHeadings(html: string): TocHeading[] {
-  const matches = [...html.matchAll(/<h2[^>]+id="([^"]+)"[^>]*>([\s\S]*?)<\/h2>/gi)];
-  return matches.map((m) => ({
-    id: m[1],
-    text: m[2].replace(/<[^>]*>/g, "").trim(),
-  }));
-}
-
-// Helper function to add IDs to headings using regex (server-safe)
-function sanitizeAndAddIds(html: string): string {
-  const sanitized = DOMPurify.sanitize(html);
-  let headingCounter = 0;
-
-  // Replace h2 and h3 opening tags with ID attributes and scroll-margin-top
-  return sanitized.replace(/<(h[23])([^>]*)>/gi, (match, tag, attrs) => {
-    // Skip if already has an id attribute
-    if (/\sid\s*=/i.test(attrs)) {
-      return match;
-    }
-
-    headingCounter++;
-    // Add scroll-margin-top: 120px to account for navbar height + padding
-    return `<${tag}${attrs} id="heading-${headingCounter}" style="scroll-margin-top: 120px;">`;
-  });
-}
 
 async function getPost(slug: string): Promise<Post | null> {
   try {
