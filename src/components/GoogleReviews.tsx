@@ -86,24 +86,25 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
   return (
     <div className="w-full space-y-8">
       {/* Resumo das Avaliações */}
-      <div className="text-center">
-        <div className="flex items-center justify-center gap-2 mb-2">
+      <div className="rc2-shadow-deep flex flex-col items-center gap-2 rounded-xl border border-border bg-[var(--surface-1)] p-6 text-center">
+        <div className="flex items-center gap-3">
           <div className="flex gap-0.5">
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                size={20}
+                size={22}
                 className={
                   i < Math.round(place.rating)
-                    ? "fill-yellow-400 text-yellow-400"
-                    : "text-gray-300"
+                    ? "fill-rc2-orange text-rc2-orange"
+                    : "text-rc2-ebony/20"
                 }
+                aria-hidden
               />
             ))}
           </div>
-          <span className="text-2xl font-bold">{place.rating.toFixed(1)}</span>
+          <span className="rc2-display text-3xl text-rc2-ebony">{place.rating.toFixed(1)}</span>
         </div>
-        <p className="text-gray-600">
+        <p className="text-sm text-rc2-ebony/60">
           {place.userRatingCount} avaliações no Google
         </p>
       </div>
@@ -113,37 +114,41 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
         {reviews.map((review, i) => {
           const isLastOdd = columns === 2 && i === reviews.length - 1 && reviews.length % 2 !== 0;
           return (
-            <div
+            <figure
               key={i}
-              className={`border border-gray-200 rounded-lg p-4 space-y-2${isLastOdd ? " sm:col-span-2 sm:max-w-[calc(50%-0.5rem)] sm:mx-auto sm:w-full" : ""}`}
+              className={`group rc2-card rc2-card-hover relative flex flex-col overflow-hidden p-6 pt-7${isLastOdd ? " sm:col-span-2 sm:max-w-[calc(50%-0.5rem)] sm:mx-auto sm:w-full" : ""}`}
             >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="font-semibold text-rc2-ebony">
-                    {review.authorAttribution.displayName}
-                  </p>
-                  <div className="flex gap-0.5 mt-1">
-                    {[...Array(5)].map((_, j) => (
-                      <Star
-                        key={j}
-                        size={14}
-                        className={
-                          j < review.rating
-                            ? "fill-yellow-400 text-yellow-400"
-                            : "text-gray-300"
-                        }
-                      />
-                    ))}
-                  </div>
+              {/* Acento estrutural — aba laranja no topo */}
+              <span
+                className="absolute left-0 top-0 h-1 w-10 bg-rc2-orange transition-all duration-200 group-hover:w-full group-hover:opacity-90"
+                aria-hidden
+              />
+              <div className="mb-3 flex items-center justify-between gap-4">
+                <div className="flex gap-0.5" aria-label={`${review.rating} de 5 estrelas`}>
+                  {[...Array(5)].map((_, j) => (
+                    <Star
+                      key={j}
+                      size={14}
+                      className={
+                        j < review.rating
+                          ? "fill-rc2-orange text-rc2-orange"
+                          : "text-rc2-ebony/20"
+                      }
+                      aria-hidden
+                    />
+                  ))}
                 </div>
-                <time className="text-sm text-gray-500 whitespace-nowrap">
+                <time className="whitespace-nowrap text-xs text-rc2-ebony/55">
                   {new Date(review.publishTime).toLocaleDateString("pt-BR")}
                 </time>
               </div>
-              <p className="text-gray-700 text-sm leading-relaxed">
+              <blockquote className="flex-1 text-sm leading-relaxed text-rc2-ebony/80">
                 {review.text}
-              </p>
-            </div>
+              </blockquote>
+              <figcaption className="mt-4 border-t border-border pt-3 text-sm font-semibold text-rc2-ebony">
+                {review.authorAttribution.displayName}
+              </figcaption>
+            </figure>
           );
         })}
       </div>

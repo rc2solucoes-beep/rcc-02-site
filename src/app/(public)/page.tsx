@@ -5,7 +5,7 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ServiceCard } from "@/components/marketing/ServiceCard";
 import { CTABlock } from "@/components/marketing/CTABlock";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
-import { GoogleReviews } from "@/components/GoogleReviews";
+import { HomeReviews } from "@/components/marketing/HomeReviews";
 import { HeroActions } from "@/components/marketing/HeroActions";
 import { buttonVariants } from "@/components/ui/button";
 import { services } from "@/lib/content/services";
@@ -323,7 +323,7 @@ export default async function HomePage({ searchParams }: Props) {
           <h2 className="rc2-h2 text-rc2-ebony mb-12">
             Avaliações de clientes satisfeitos
           </h2>
-          <GoogleReviews maxReviews={4} showGoogleLink={false} columns={2} />
+          <HomeReviews />
           <div className="mt-8 text-center">
             <TrackedLink
               href="/avaliacoes"

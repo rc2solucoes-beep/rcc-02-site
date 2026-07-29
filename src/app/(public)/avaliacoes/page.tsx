@@ -37,8 +37,10 @@ export default async function AvaliacoesPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
       />
       <main id="main-content">
-        <section className="bg-rc2-sand py-16 md:py-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section className="rc2-grain relative overflow-hidden bg-rc2-sand py-16 md:py-24">
+          <div className="rc2-blueprint pointer-events-none absolute inset-0 opacity-50" aria-hidden />
+          <div className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full bg-rc2-orange/10 blur-3xl" aria-hidden />
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-12">
               <SectionLabel className="block mb-5">Avaliações & Cases</SectionLabel>
               <h1 className="text-4xl md:text-5xl font-bold text-rc2-ebony mb-4">
@@ -52,8 +54,9 @@ export default async function AvaliacoesPage() {
           </div>
         </section>
 
-        <section className="py-16 md:py-24 bg-rc2-ink">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section className="rc2-grain relative overflow-hidden py-16 md:py-24 bg-rc2-ink">
+          <div className="rc2-blueprint-dark pointer-events-none absolute inset-0 opacity-60" aria-hidden />
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionLabel className="block mb-5 text-rc2-orange">Cases de Sucesso</SectionLabel>
             <div className="max-w-2xl border-l-2 border-rc2-orange pl-8">
               <h3 className="text-xl font-semibold text-rc2-sand mb-4">
