@@ -61,8 +61,9 @@ export default async function ServicosPage() {
 
       <section className="bg-rc2-sand rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-10 rounded-xl border border-[var(--surface-2)] bg-[var(--surface-1)] p-6 md:p-8">
-            <SectionLabel className="block mb-3">Soluções por problema</SectionLabel>
+          <div className="relative mb-10 overflow-hidden rounded-xl border border-[var(--surface-2)] bg-[var(--surface-1)] p-6 pt-7 md:p-8 md:pt-9">
+            <span className="absolute left-0 top-0 h-1 w-10 bg-rc2-orange" aria-hidden />
+            <SectionLabel className="rc2-rule block mb-3">Soluções por problema</SectionLabel>
             <h2 className="rc2-h4 mb-3 text-rc2-ebony">
               Comece pela dor real da sua operação.
             </h2>
@@ -83,10 +84,13 @@ export default async function ServicosPage() {
               <article
                 key={service.slug}
                 id={service.slug}
-                  className={`grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 p-8 md:p-10 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 last:border-b-0 last:pb-0 rounded-xl border ${isDark ? "bg-rc2-forest border-rc2-forest/80" : "bg-[var(--surface-1)] border-[var(--surface-2)]"}`}
+                  className={`relative overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 p-8 md:p-10 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 last:border-b-0 last:pb-0 rounded-xl border ${isDark ? "rc2-grain bg-rc2-forest border-rc2-forest/80" : "bg-[var(--surface-1)] border-[var(--surface-2)]"}`}
               >
+                {isDark && (
+                  <div className="rc2-blueprint-dark pointer-events-none absolute inset-0 opacity-50" aria-hidden />
+                )}
                 {/* Content */}
-                <div className={index % 2 === 1 ? "lg:order-2" : ""}>
+                <div className={`relative z-10 ${index % 2 === 1 ? "lg:order-2" : ""}`}>
                   <SectionLabel className={`block mb-3 ${isDark ? "text-rc2-orange" : ""}`}>
                     {String(index + 1).padStart(2, "0")} / {String(services.length).padStart(2, "0")}
                   </SectionLabel>
@@ -109,7 +113,7 @@ export default async function ServicosPage() {
                 </div>
 
                 {/* Lists */}
-                <div className={index % 2 === 1 ? "lg:order-1" : ""}>
+                <div className={`relative z-10 ${index % 2 === 1 ? "lg:order-1" : ""}`}>
                   <div className="mb-6">
                     <h3 className={`rc2-label mb-3 ${isDark ? "text-rc2-sand/90" : "text-rc2-ebony/80"}`}>O que pode ser implantado</h3>
                     <ul className="space-y-2">

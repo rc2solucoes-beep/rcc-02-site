@@ -22,10 +22,15 @@ export function ServiceCard({ service, className }: ServiceCardProps) {
   return (
     <div
       className={cn(
-        "group rc2-card rc2-card-hover flex flex-col p-6 border-t-2 border-t-rc2-orange/0 hover:border-t-rc2-orange",
+        "group rc2-card rc2-card-hover relative flex flex-col overflow-hidden p-6 pt-7",
         className
       )}
     >
+      {/* Acento estrutural permanente — aba laranja no topo */}
+      <span
+        className="absolute left-0 top-0 h-1 w-10 bg-rc2-orange transition-all duration-200 group-hover:w-full group-hover:opacity-90"
+        aria-hidden
+      />
       <span className="rc2-label text-rc2-orange mb-3">{service.shortTitle}</span>
       <h3 className="text-lg font-semibold text-rc2-ebony mb-3 leading-snug">
         {service.title}

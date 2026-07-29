@@ -83,23 +83,29 @@ export default async function HomePage({ searchParams }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
       />
       {/* ── Hero ── */}
-      <section className="bg-rc2-sand rc2-section md:py-28 lg:py-36">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionLabel className="block mb-5">
+      <section className="rc2-grain relative overflow-hidden bg-rc2-sand rc2-section md:py-28 lg:py-32">
+        {/* Atmosfera: grid blueprint + brilho laranja difuso */}
+        <div className="rc2-blueprint pointer-events-none absolute inset-0 opacity-50" aria-hidden />
+        <div
+          className="pointer-events-none absolute -right-32 -top-32 h-[460px] w-[460px] rounded-full bg-rc2-orange/10 blur-3xl"
+          aria-hidden
+        />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionLabel className="rc2-rule block mb-5">
             Consultoria em IA e Automações para PMEs
           </SectionLabel>
           <h1 className="rc2-h1 text-rc2-ebony max-w-4xl">
-            IA, automações e integrações para empresas que querem responder mais
-            rápido, vender melhor e reduzir retrabalho.
+            Nenhum lead esperando. Nenhuma tarefa repetida duas vezes.
           </h1>
           <p className="rc2-body-lg mt-6 text-rc2-ebony/75 max-w-2xl">
-            A RC2 ajuda PMEs a organizar atendimento, evitar perda de leads e
-            tirar tarefas manuais da equipe. Depois disso, aplicamos IA,
-            automações e integrações no que gera mais impacto.
+            A RC2 implanta atendimento automático no WhatsApp, integra seus
+            sistemas e coloca a operação para rodar sozinha. Primeira resposta ao
+            lead em menos de 2 minutos, 24h por dia — no ar em 30 dias, sem
+            contratar mais ninguém.
           </p>
 
           {heroVariant === "b" && (
-            <div className="mt-7 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-4xl">
+            <div className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-3 max-w-2xl">
               {socialProofItems.map((item) => (
                 <div
                   key={item}
@@ -118,22 +124,31 @@ export default async function HomePage({ searchParams }: Props) {
               ? "Diagnóstico inicial com mapa de oportunidades."
               : "Sem compromisso. Retorno em até 1 dia útil."}
           </p>
-          <p className="mt-6 text-xs text-rc2-ebony/75 italic">
+          <p className="mt-6 text-xs italic text-rc2-ebony/75">
             &ldquo;Tecnologia que funciona. Operação que entrega.&rdquo;
           </p>
         </div>
       </section>
 
       {/* ── Para quem é ── */}
-      <section className="bg-rc2-ink rc2-section">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionLabel className="block mb-5 text-rc2-orange">Para quem é</SectionLabel>
+      <section className="rc2-grain relative overflow-hidden bg-rc2-ink rc2-section">
+        <div className="rc2-blueprint-dark pointer-events-none absolute inset-0 opacity-60" aria-hidden />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionLabel className="rc2-rule block mb-5 text-rc2-orange">Para quem é</SectionLabel>
           <h2 className="rc2-h2 text-rc2-sand mb-10 max-w-lg">
             Sua empresa precisa da RC2 se você:
           </h2>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-rc2-sand/15 bg-rc2-sand/15 sm:grid-cols-2 lg:grid-cols-3">
             {forWhomItems.map((item, i) => (
-              <li key={i} className="rc2-card flex items-start gap-3 !border-rc2-sand/30 !bg-rc2-sand/12 px-4 py-3">
+              <li
+                key={i}
+                className="group relative flex items-start gap-3 bg-rc2-ink px-5 py-6 transition-colors hover:bg-rc2-sand/[0.04]"
+              >
+                {/* acento estrutural laranja no hover */}
+                <span
+                  className="absolute inset-y-0 left-0 w-0.5 bg-rc2-orange opacity-0 transition-opacity group-hover:opacity-100"
+                  aria-hidden
+                />
                 <Check
                   size={16}
                   className="text-rc2-orange shrink-0 mt-0.5"
@@ -152,7 +167,7 @@ export default async function HomePage({ searchParams }: Props) {
           <div className="rounded-2xl border border-rc2-ebony/15 bg-white p-6 sm:p-8 md:p-10 shadow-[0_16px_45px_-36px_rgba(17,24,39,0.55)]">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.35fr] gap-8 lg:gap-10">
               <div className="max-w-xl">
-                <SectionLabel className="block mb-4">Escolha pela sua dor</SectionLabel>
+                <SectionLabel className="rc2-rule block mb-4">Escolha pela sua dor</SectionLabel>
                 <h2 className="rc2-h3 text-rc2-ebony mb-3">
                   Se sua empresa tem esse cenário, já existe um próximo passo.
                 </h2>
@@ -231,7 +246,7 @@ export default async function HomePage({ searchParams }: Props) {
       {/* ── O que entregamos ── */}
       <section id="servicos" className="bg-rc2-sand pt-0 pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionLabel className="block mb-5">O que entregamos</SectionLabel>
+          <SectionLabel className="rc2-rule block mb-5">O que entregamos</SectionLabel>
           <h2 className="rc2-h2 text-rc2-ebony mb-12 max-w-2xl">
             Cinco serviços para transformar sua operação digital.
           </h2>
@@ -277,9 +292,10 @@ export default async function HomePage({ searchParams }: Props) {
       </section>
 
       {/* ── Diferencial ── */}
-      <section className="bg-rc2-forest rc2-section">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 max-w-3xl">
-          <SectionLabel className="block mb-5 text-rc2-orange">Diferencial</SectionLabel>
+      <section className="rc2-grain relative overflow-hidden bg-rc2-forest rc2-section">
+        <div className="rc2-blueprint-dark pointer-events-none absolute inset-0 opacity-50" aria-hidden />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 max-w-3xl">
+          <SectionLabel className="rc2-rule block mb-5 text-rc2-orange">Diferencial</SectionLabel>
           <h2 className="rc2-h2 rc2-display text-rc2-sand mb-6">
             Tecnologia com visão de operação.
           </h2>
@@ -303,7 +319,7 @@ export default async function HomePage({ searchParams }: Props) {
       {/* ── Avaliações ── */}
       <section className="bg-rc2-sand rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionLabel className="block mb-5">O que os clientes dizem</SectionLabel>
+          <SectionLabel className="rc2-rule block mb-5">O que os clientes dizem</SectionLabel>
           <h2 className="rc2-h2 text-rc2-ebony mb-12">
             Avaliações de clientes satisfeitos
           </h2>

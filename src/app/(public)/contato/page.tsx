@@ -53,8 +53,10 @@ export default async function ContatoPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
       />
-    <section className="bg-rc2-sand py-16 md:py-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="rc2-grain relative overflow-hidden bg-rc2-sand py-16 md:py-20">
+      <div className="rc2-blueprint pointer-events-none absolute inset-0 opacity-50" aria-hidden />
+      <div className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full bg-rc2-orange/10 blur-3xl" aria-hidden />
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Sidebar */}
           <div>

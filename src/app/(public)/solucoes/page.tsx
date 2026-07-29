@@ -72,7 +72,7 @@ export default function SolucoesPage() {
 
       <section className="bg-rc2-sand rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionLabel className="block mb-4">Mapeamento por dor</SectionLabel>
+          <SectionLabel className="rc2-rule block mb-4">Mapeamento por dor</SectionLabel>
           <p className="max-w-3xl text-rc2-ebony/75 leading-relaxed mb-10">
             Estas páginas partem do problema percebido no dia a dia e conectam sintomas,
             impacto e ações práticas para estruturar atendimento, vendas e operação.
@@ -82,8 +82,13 @@ export default function SolucoesPage() {
             {solutions.map((solution) => (
               <article
                 key={solution.slug}
-                className="rounded-xl border border-border bg-white p-6 md:p-7"
+                className="group rc2-card rc2-card-hover relative flex flex-col overflow-hidden p-6 pt-7 md:p-7 md:pt-8"
               >
+                {/* Acento estrutural — aba laranja no topo */}
+                <span
+                  className="absolute left-0 top-0 h-1 w-10 bg-rc2-orange transition-all duration-200 group-hover:w-full group-hover:opacity-90"
+                  aria-hidden
+                />
                 <h2 className="rc2-h4 text-rc2-ebony mb-3">{solution.shortTitle}</h2>
                 <p className="text-rc2-ebony/75 leading-relaxed mb-4">{solution.summary}</p>
 

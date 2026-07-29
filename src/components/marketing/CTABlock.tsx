@@ -32,12 +32,20 @@ export function CTABlock({
   return (
     <section
       className={cn(
-        "rc2-section",
+        "rc2-grain relative overflow-hidden rc2-section",
         isDark ? "bg-rc2-ink" : "bg-rc2-orange",
         className
       )}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+      {/* Atmosfera: grid blueprint para profundidade sutil */}
+      <div
+        className={cn(
+          "pointer-events-none absolute inset-0",
+          isDark ? "rc2-blueprint-dark opacity-60" : "rc2-blueprint-dark opacity-25"
+        )}
+        aria-hidden
+      />
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
         <h2
           className={cn(
             "rc2-h2 rc2-display max-w-3xl mx-auto",

@@ -23,14 +23,26 @@ export function PageHero({
   return (
     <section
       className={cn(
-        "rc2-section",
+        "rc2-grain relative overflow-hidden rc2-section",
         isDark ? "bg-rc2-ink text-rc2-sand" : "bg-rc2-sand text-rc2-ebony",
         className
       )}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Atmosfera: grid blueprint + brilho laranja difuso */}
+      <div
+        className={cn(
+          "pointer-events-none absolute inset-0 opacity-50",
+          isDark ? "rc2-blueprint-dark" : "rc2-blueprint"
+        )}
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full bg-rc2-orange/10 blur-3xl"
+        aria-hidden
+      />
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {label && (
-          <SectionLabel className={isDark ? "text-rc2-orange" : undefined}>
+          <SectionLabel className={cn("rc2-rule", isDark && "text-rc2-orange")}>
             {label}
           </SectionLabel>
         )}
