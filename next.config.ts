@@ -53,6 +53,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Remove the `X-Powered-By: Next.js` header (avoids disclosing the framework).
+  poweredByHeader: false,
+
   async redirects() {
     return [
       // Force apex domain to canonical www domain.
