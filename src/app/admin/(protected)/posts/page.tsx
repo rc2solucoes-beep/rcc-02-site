@@ -2,7 +2,7 @@ import { createSessionClient } from "@/lib/supabase/server";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import Link from "next/link";
 import type { Post } from "@/lib/types/post";
-import { Pencil, Plus } from "lucide-react";
+import { Pencil, Plus, Eye } from "lucide-react";
 
 export const revalidate = 0;
 
@@ -21,12 +21,14 @@ async function getPosts(): Promise<Post[]> {
 
 const STATUS_STYLES: Record<string, string> = {
   published: "bg-green-100 text-green-700",
+  scheduled: "bg-blue-100 text-blue-700",
   draft:     "bg-yellow-100 text-yellow-700",
   archived:  "bg-zinc-100 text-zinc-500",
 };
 
 const STATUS_LABEL: Record<string, string> = {
   published: "Publicado",
+  scheduled: "Agendado",
   draft:     "Rascunho",
   archived:  "Arquivado",
 };
@@ -75,13 +77,24 @@ export default async function PostsPage() {
                   <p className="font-medium text-rc2-ebony truncate">{post.title}</p>
                   <p className="text-xs text-muted-foreground truncate">/{post.slug}</p>
                 </div>
-                <Link
-                  href={`/admin/posts/${post.id}`}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-rc2-ebony/70 border border-border hover:border-rc2-orange hover:text-rc2-orange transition-colors shrink-0"
-                >
-                  <Pencil size={12} />
-                  Editar
-                </Link>
+                <div className="flex items-center gap-2 shrink-0">
+                  <Link
+                    href={`/blog/${post.slug}/preview`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-rc2-ebony/70 border border-border hover:border-rc2-orange hover:text-rc2-orange transition-colors"
+                  >
+                    <Eye size={12} />
+                    Visualizar
+                  </Link>
+                  <Link
+                    href={`/admin/posts/${post.id}`}
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-rc2-ebony/70 border border-border hover:border-rc2-orange hover:text-rc2-orange transition-colors"
+                  >
+                    <Pencil size={12} />
+                    Editar
+                  </Link>
+                </div>
               </div>
             ))}
           </div>
