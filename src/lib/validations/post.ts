@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { saoPauloInputToUtcIso } from "@/lib/datetime";
 
 export const PostCategoryEnum = z.enum([
   "Tecnologia",
@@ -33,12 +34,12 @@ const SlugSchema = z
 
 // Inputs <input type="datetime-local"> emitem "YYYY-MM-DDTHH:mm" (sem segundos
 // nem fuso), formato que z.string().datetime() rejeita. Coagimos para ISO 8601
-// completo antes da validação, preservando null/valores já em ISO.
+// completo antes da validação, interpretando o horário no fuso de Brasília
+// (ver src/lib/datetime.ts) e preservando null/valores já em ISO.
 function datetimeLocalOptional() {
   return z.preprocess((value) => {
     if (typeof value !== "string" || value.trim() === "") return value;
-    const parsed = new Date(value);
-    return Number.isNaN(parsed.getTime()) ? value : parsed.toISOString();
+    return saoPauloInputToUtcIso(value) ?? value;
   }, z.string().datetime());
 }
 

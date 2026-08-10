@@ -14,6 +14,7 @@ import type { Author } from "@/lib/types/author";
 import type { Post, FaqItem, CtaBlock } from "@/lib/types/post";
 import type { PostFormState } from "@/app/admin/(protected)/posts/actions";
 import { slugify } from "@/lib/utils";
+import { utcIsoToSaoPauloInput } from "@/lib/datetime";
 
 interface PostFormProps {
   authors: Author[];
@@ -223,9 +224,9 @@ export function PostFormRefactored({ authors, post, action }: PostFormProps) {
     tags: post?.tags?.join(", ") ?? "",
     content_type: post?.content_type ?? "",
     status: post?.status ?? "draft",
-    published_at: post?.published_at ? new Date(post.published_at).toISOString().slice(0, 16) : "",
-    updated_at: post?.updated_at ? new Date(post.updated_at).toISOString().slice(0, 16) : "",
-    scheduled_publish_at: post?.scheduled_publish_at ? new Date(post.scheduled_publish_at).toISOString().slice(0, 16) : "",
+    published_at: post?.published_at ? utcIsoToSaoPauloInput(post.published_at) : "",
+    updated_at: post?.updated_at ? utcIsoToSaoPauloInput(post.updated_at) : "",
+    scheduled_publish_at: post?.scheduled_publish_at ? utcIsoToSaoPauloInput(post.scheduled_publish_at) : "",
     reading_time_minutes: post?.reading_time_minutes?.toString() ?? "",
     // Autor
     author_id: post?.author_id ?? "",

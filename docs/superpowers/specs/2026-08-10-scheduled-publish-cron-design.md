@@ -113,13 +113,14 @@ select cron.unschedule('publish-scheduled-posts');
 
 ## Fora de escopo / follow-ups
 
-- **Fuso horário do `scheduled_publish_at`.** Hoje o valor do input
-  `datetime-local` (ex.: `"2026-08-12T14:00"`, sem offset) é gravado como string
-  em coluna `TIMESTAMPTZ` (`src/app/admin/(protected)/posts/actions.ts:96`). O
-  Postgres o interpreta no fuso da sessão (UTC no Supabase), então "14h" pode
-  virar 14h UTC (= 11h em America/Sao_Paulo). Isso afeta *a que horas* o post
-  publica, não *se* publica. Correção sugerida (follow-up): converter o
-  `datetime-local` para ISO com offset de America/Sao_Paulo antes de gravar.
+- **Fuso horário do `scheduled_publish_at`. — RESOLVIDO (2026-08-10).** O valor
+  do input `datetime-local` era interpretado no fuso do runtime (UTC na Vercel),
+  então "14h" virava 14h UTC (= 11h em America/Sao_Paulo). Corrigido em
+  `src/lib/datetime.ts` (`saoPauloInputToUtcIso` / `utcIsoToSaoPauloInput`,
+  offset fixo UTC-3 pois o Brasil não tem horário de verão desde 2019), ligado
+  na escrita (`src/lib/validations/post.ts`) e na exibição
+  (`src/components/admin/PostFormRefactored.tsx`). Cobertura em
+  `tests/unit/lib/datetime.test.ts`.
 - **UX: `scheduled` sem data.** Um post `scheduled` sem `scheduled_publish_at`
   fica invisível no público e nunca auto-publica. Poderia ser bloqueado na
   validação do formulário (exigir data quando status = `scheduled`) — follow-up
