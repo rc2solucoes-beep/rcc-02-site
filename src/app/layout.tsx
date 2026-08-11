@@ -26,7 +26,7 @@ const BASE_URL = SITE_BASE_URL;
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID ?? "GTM-MQF4K77";
 
 export const viewport: Viewport = {
-  themeColor: "#0D0D0F",
+  themeColor: "#081827",
   width: "device-width",
   initialScale: 1,
 };
