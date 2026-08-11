@@ -99,7 +99,7 @@ export function getOrganizationSchema(
     "@type": "Organization",
     name: "RC2 Soluções",
     url: baseUrl,
-    logo: `${baseUrl}/images/logo-base.png`,
+    logo: `${baseUrl}/images/logo-base-transparente-preto.png`,
     email: settings.contact_email || undefined,
     telephone: settings.phone || undefined,
     address: address,
@@ -149,7 +149,7 @@ export function getLocalBusinessSchema(
     "@type": "LocalBusiness",
     name: "RC2 Soluções",
     url: baseUrl,
-    logo: `${baseUrl}/images/logo-base.png`,
+    logo: `${baseUrl}/images/logo-base-transparente-preto.png`,
     email: settings.contact_email || undefined,
     telephone: settings.phone || undefined,
     address: address,
@@ -181,7 +181,7 @@ export function getWebPageSchema(
       "@type": "Organization",
       name: "RC2 Soluções",
       url: baseUrl,
-      logo: `${baseUrl}/images/logo-base.png`,
+      logo: `${baseUrl}/images/logo-base-transparente-preto.png`,
     },
   };
 }

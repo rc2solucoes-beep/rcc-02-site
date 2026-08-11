@@ -59,7 +59,7 @@ export function BlogPostArticle({ post, relatedPosts }: BlogPostArticleProps) {
       url: BASE_URL,
       logo: {
         "@type": "ImageObject",
-        url: `${BASE_URL}/images/logo-base.png`,
+        url: `${BASE_URL}/images/logo-base-transparente-preto.png`,
       },
     },
   };

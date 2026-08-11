@@ -4,12 +4,6 @@
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
-
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
-<!-- END:nextjs-agent-rules -->
-
 ---
 
 # RC2 Soluções — contexto de marca
@@ -118,6 +112,11 @@ executar.
 `#F5F0E8` · `#121212` · `#1E1610` · `#163020` · `#0D0D0F` · `#FFF` como fundo de
 página · `#000` em qualquer contexto.
 
+Exceção: os arquivos de imagem do logo em `public/images/` mantêm o Ink Black
+`#121212` por decisão de marca. Isso vale só para os arquivos de imagem — nenhum
+valor `#121212` pode aparecer em CSS ou componente. O logo em Ink Black nunca
+vai sobre área navy (1.04:1); em footer e seções escuras, use a versão clara.
+
 Rode `npm run audit:brand` antes de abrir PR.
 
 ## Ícones
@@ -138,14 +137,3 @@ mercado, simples assim, chatbot (é "agente de IA"), barato (é "acessível").
 - Um componente por vez. Não refatorar arquivos fora do escopo da tarefa.
 - Depois de qualquer mudança de estilo: `npm run build` e `npm run audit:brand`.
 - Se um componente já usa token correto, não mexer.
-
-## Exceções permitidas para hex literal
-
-- `src/app/api/contact/route.ts` usa hexes literais por limitação de clientes de
-  e-mail, que não resolvem variáveis CSS.
-- `src/components/marketing/FloatingWhatsApp.tsx` usa o verde oficial do
-  WhatsApp.
-- `src/components/blog/BlogPostArticle.tsx` usa `#0A66C2` (LinkedIn) e
-  `#25D366` (WhatsApp) como cores de marca de terceiros, permitidas nos botões
-  de compartilhamento. Sobre o verde do WhatsApp, texto e ícone devem usar
-  `#0B1726`, nunca branco.

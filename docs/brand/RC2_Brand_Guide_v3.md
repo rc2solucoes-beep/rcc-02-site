@@ -217,7 +217,7 @@ Ser a consultoria de referência em implementação de IA e automações para PM
 ## 4. Identidade Visual
 
 > **Seção integralmente substituída na versão 3.0.**
-> A paleta "High-End Tool" (Areia Industrial, Ink Black, Deep Forest) foi descontinuada. Nenhum material novo deve usar `#F5F0E8`, `#121212`, `#163020` ou `#1E1610`.
+> A paleta "High-End Tool" (Areia Industrial, Ink Black, Deep Forest) foi descontinuada. Nenhum material novo deve usar `#F5F0E8`, `#121212`, `#163020` ou `#1E1610` — com uma única exceção: o Ink Black `#121212` dos arquivos do logo, mantido por decisão registrada na seção 5.
 
 ### Direção criativa geral
 
@@ -298,7 +298,7 @@ O laranja acima de 10% da composição perde o registro de precisão. Ele só fu
 
 ### Proibições
 
-- Nunca usar as cores da paleta v2: `#F5F0E8`, `#121212`, `#163020`, `#1E1610`.
+- Nunca usar as cores da paleta v2: `#F5F0E8`, `#121212`, `#163020`, `#1E1610`. Única exceção: o Ink Black `#121212` do logo (seção 5).
 - Nunca usar verde como cor estrutural — apenas Success e WhatsApp.
 - Nunca usar roxo, ciano ou magenta em nenhum material.
 - Nunca usar `#FFFFFF` como fundo de página — branco é cor de card.
@@ -386,8 +386,12 @@ A família tipográfica permanece **Barlow** (Google Fonts, gratuita). Desenhada
 
 ## 5. Logo — The Signal Interrupt
 
-> **Atualizado na versão 3.0.**
-> O conceito e a geometria do símbolo permanecem. O que muda é a cor da âncora: o Ink Black `#121212` é substituído pelo navy `#0B1726`.
+> **Decisão da versão 3.0: o logo permanece inalterado.**
+> O Signal Interrupt mantém conceito, geometria e a âncora original em Ink Black `#121212`. Esta é a única exceção à descontinuação da paleta v2, e vale apenas para o logo — nenhum outro elemento pode usar `#121212`.
+>
+> A exceção é segura: sobre o fundo `#F7F5F1` o Ink Black dá 17.2:1, e sua diferença para o navy `#0B1726` é de apenas 1.04:1, imperceptível a olho. Não há ganho visual que justifique reemitir todos os arquivos da marca.
+>
+> **Restrição:** o logo em Ink Black nunca vai sobre área navy. `#121212` sobre `#081827` dá 1.04:1 e desaparece. Em footer e seções escuras, use sempre a versão clara.
 
 ### Conceito
 
@@ -403,13 +407,13 @@ As três barras formam um "gatilho de processo" — o momento exato em que uma t
 
 | Versão | Especificação |
 |---|---|
-| **Principal (fundo claro)** | Símbolo `#0B1726` + `#FF5F1F` · wordmark RC2 em Barlow Condensed ExtraBold `#0B1726` · fundo `#F7F5F1` |
+| **Principal (fundo claro)** | Símbolo `#121212` + `#FF5F1F` · wordmark RC2 em Barlow Condensed ExtraBold `#121212` · fundo `#F7F5F1` |
 | **Fundo navy** | Símbolo `#FFFFFF` + `#FF5F1F` · wordmark `#FFFFFF` |
 | **Horizontal** | Símbolo à esquerda + RC2 à direita, alinhados pela baseline. Header de site e documentos |
 | **Vertical** | Símbolo centralizado acima + RC2 abaixo. Posts quadrados e perfis sociais |
 | **Com tagline** | RC2 em ExtraBold + SOLUÇÕES em Barlow Condensed Light abaixo, letter-spacing +0.08em, cor `#66717D` |
 | **Símbolo isolado** | Apenas as três barras. Favicon 16×16, ícone de app, avatar. Deve ser legível em 16px |
-| **Monocromático escuro** | Três barras em `#0B1726`. Documentos, carimbos, bordado |
+| **Monocromático escuro** | Três barras em `#121212`. Documentos, carimbos, bordado |
 | **Monocromático claro** | Três barras em `#FFFFFF`. Fundos navy e impressos escuros |
 
 ### Instruções para o designer
@@ -516,7 +520,7 @@ Toda ocorrência dos valores legados no código deve ser substituída conforme a
 | Legado (v2) | Novo (v3) | Token |
 |---|---|---|
 | `#F5F0E8` Areia Industrial | `#F7F5F1` | `--rc2-bg` |
-| `#121212` Ink Black | `#081827` | `--rc2-dark` |
+| `#121212` Ink Black | `#081827` | `--rc2-dark` — exceto nos arquivos do logo |
 | `#1E1610` Ébano Quente | `#24313D` | `--rc2-text` |
 | `#163020` Deep Forest | `#0C2032` | `--rc2-dark-2` |
 | `#0D0D0F` theme-color | `#081827` | `--rc2-dark` |
@@ -579,7 +583,7 @@ Toda ocorrência dos valores legados no código deve ser substituída conforme a
 
 | | |
 |---|---|
-| **1. Rebriefar o logo** | Reenviar o Signal Interrupt ao designer com a âncora em `#0B1726`. Entregar SVG + PNG em todas as versões |
+| **1. Logo — sem alteração** | Decidido manter o Signal Interrupt como está. Verificar apenas se existe versão clara para uso sobre navy |
 | **2. Migrar o site** | Aplicar os tokens v3 no repositório seguindo a seção 8. Prioridade: header, hero, CTA, footer |
 | **3. Auditar acessibilidade** | Rodar Lighthouse e navegação por teclado em todas as páginas após a migração |
 | **4. Atualizar redes** | Perfis, capas e OG images na paleta v3 |
@@ -594,4 +598,4 @@ A RC2 Soluções é uma consultoria de IA, automações e operações digitais p
 
 A identidade visual v3 combina off-white, navy e Safety Orange: o navy transmite confiança e domínio técnico, o off-white dá respiro e qualidade premium, e o laranja marca — em até 10% da composição — os pontos de ação. A tipografia Barlow, de origem industrial californiana, mantém a precisão sem frieza.
 
-O logo Signal Interrupt comunica em forma geométrica o que a RC2 faz: um padrão interrompido no ponto exato de transformação. A tagline recomendada: **"Tecnologia que funciona. Operação que entrega."**
+O logo Signal Interrupt permanece inalterado na v3 e comunica em forma geométrica o que a RC2 faz: um padrão interrompido no ponto exato de transformação. A tagline recomendada: **"Tecnologia que funciona. Operação que entrega."**

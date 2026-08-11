@@ -107,14 +107,14 @@ export default async function RootLayout({
       "@type": "Organization",
       name: "RC2 Soluções",
       url: BASE_URL,
-      logo: `${BASE_URL}/images/logo-base.png`,
+      logo: `${BASE_URL}/images/logo-base-transparente-preto.png`,
     };
     schemaLocalBusiness = {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       name: "RC2 Soluções",
       url: BASE_URL,
-      logo: `${BASE_URL}/images/logo-base.png`,
+      logo: `${BASE_URL}/images/logo-base-transparente-preto.png`,
     };
   }
 

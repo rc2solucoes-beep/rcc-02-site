@@ -65,7 +65,7 @@ export default async function SolucaoPage({ params }: Props) {
       "@type": "Organization",
       name: "RC2 Soluções",
       url: BASE_URL,
-      logo: `${BASE_URL}/images/logo-base.png`,
+      logo: `${BASE_URL}/images/logo-base-transparente-preto.png`,
     },
   };
 
