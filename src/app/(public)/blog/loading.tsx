@@ -1,14 +1,14 @@
 export default function BlogLoading() {
   return (
     <>
-      <div className="bg-rc2-ink py-16 md:py-20 animate-pulse">
+      <div className="bg-rc2-dark py-16 md:py-20 animate-pulse">
         <div className="container mx-auto px-4 max-w-5xl">
-          <div className="h-3 w-20 bg-rc2-sand/20 rounded mb-4" />
-          <div className="h-9 w-2/3 bg-rc2-sand/20 rounded" />
+          <div className="h-3 w-20 bg-rc2-bg/20 rounded mb-4" />
+          <div className="h-9 w-2/3 bg-rc2-bg/20 rounded" />
         </div>
       </div>
 
-      <section className="bg-rc2-sand py-20">
+      <section className="bg-rc2-bg py-20">
         <div className="container mx-auto px-4 max-w-5xl animate-pulse">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="md:col-span-2 space-y-3">

@@ -35,7 +35,7 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
   if (loading) {
     return (
       <div className="w-full rounded-lg border border-border bg-white p-6" role="status" aria-live="polite">
-        <p className="text-sm text-rc2-ebony/70 mb-4">Carregando avaliações do Google...</p>
+        <p className="text-sm text-rc2-text/70 mb-4">Carregando avaliações do Google...</p>
         <div className="w-full h-40 bg-gray-200 animate-pulse rounded-lg" />
       </div>
     );
@@ -54,7 +54,7 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
           href="https://www.google.com/maps/search/RC2+Solu%C3%A7%C3%B5es"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-4 inline-block text-rc2-orange hover:underline"
+          className="mt-4 inline-block text-rc2-brand-text hover:underline"
         >
           Ver no Google Maps →
         </a>
@@ -75,7 +75,7 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
           href="https://www.google.com/maps/search/RC2+Solu%C3%A7%C3%B5es"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-4 inline-block text-rc2-orange hover:underline"
+          className="mt-4 inline-block text-rc2-brand-text hover:underline"
         >
           Ver no Google Maps →
         </a>
@@ -86,7 +86,7 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
   return (
     <div className="w-full space-y-8">
       {/* Resumo das Avaliações */}
-      <div className="rc2-shadow-deep flex flex-col items-center gap-2 rounded-xl border border-border bg-[var(--surface-1)] p-6 text-center">
+      <div className="rc2-shadow-deep flex flex-col items-center gap-2 rounded-xl border border-border bg-rc2-bg-alt p-6 text-center">
         <div className="flex items-center gap-3">
           <div className="flex gap-0.5">
             {[...Array(5)].map((_, i) => (
@@ -95,16 +95,16 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
                 size={22}
                 className={
                   i < Math.round(place.rating)
-                    ? "fill-rc2-orange text-rc2-orange"
-                    : "text-rc2-ebony/20"
+                    ? "fill-rc2-brand text-rc2-brand"
+                    : "text-rc2-text/20"
                 }
                 aria-hidden
               />
             ))}
           </div>
-          <span className="rc2-display text-3xl text-rc2-ebony">{place.rating.toFixed(1)}</span>
+          <span className="rc2-display text-3xl text-rc2-heading">{place.rating.toFixed(1)}</span>
         </div>
-        <p className="text-sm text-rc2-ebony/60">
+        <p className="text-sm text-rc2-text-secondary">
           {place.userRatingCount} avaliações no Google
         </p>
       </div>
@@ -120,7 +120,7 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
             >
               {/* Acento estrutural — aba laranja no topo */}
               <span
-                className="absolute left-0 top-0 h-1 w-10 bg-rc2-orange transition-all duration-200 group-hover:w-full group-hover:opacity-90"
+                className="absolute left-0 top-0 h-1 w-10 bg-rc2-brand transition-all duration-200 group-hover:w-full group-hover:opacity-90"
                 aria-hidden
               />
               <div className="mb-3 flex items-center justify-between gap-4">
@@ -131,21 +131,21 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
                       size={14}
                       className={
                         j < review.rating
-                          ? "fill-rc2-orange text-rc2-orange"
-                          : "text-rc2-ebony/20"
+                          ? "fill-rc2-brand text-rc2-brand"
+                          : "text-rc2-text/20"
                       }
                       aria-hidden
                     />
                   ))}
                 </div>
-                <time className="whitespace-nowrap text-xs text-rc2-ebony/55">
+                <time className="whitespace-nowrap text-xs text-rc2-text-secondary">
                   {new Date(review.publishTime).toLocaleDateString("pt-BR")}
                 </time>
               </div>
-              <blockquote className="flex-1 text-sm leading-relaxed text-rc2-ebony/80">
+              <blockquote className="flex-1 text-sm leading-relaxed text-rc2-text/80">
                 {review.text}
               </blockquote>
-              <figcaption className="mt-4 border-t border-border pt-3 text-sm font-semibold text-rc2-ebony">
+              <figcaption className="mt-4 border-t border-border pt-3 text-sm font-semibold text-rc2-heading">
                 {review.authorAttribution.displayName}
               </figcaption>
             </figure>
@@ -160,7 +160,7 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
             href="https://www.google.com/maps/search/RC2+Solu%C3%A7%C3%B5es"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-6 py-2 border border-rc2-ebony text-rc2-ebony hover:bg-rc2-ebony hover:text-rc2-sand transition-colors rounded"
+            className="inline-block px-6 py-2 border border-rc2-text text-rc2-text hover:bg-rc2-text hover:text-rc2-dark-text transition-colors rounded"
           >
             Ver todas as avaliações no Google →
           </a>

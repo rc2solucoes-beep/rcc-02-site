@@ -70,10 +70,10 @@ export default function SolucoesPage() {
         description="Identifique a dor mais urgente da sua operação e veja o caminho recomendado com serviços conectados à realidade da sua empresa."
       />
 
-      <section className="bg-rc2-sand rc2-section">
+      <section className="bg-rc2-bg rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionLabel className="rc2-rule block mb-4">Mapeamento por dor</SectionLabel>
-          <p className="max-w-3xl text-rc2-ebony/75 leading-relaxed mb-10">
+          <p className="max-w-3xl text-rc2-text/75 leading-relaxed mb-10">
             Estas páginas partem do problema percebido no dia a dia e conectam sintomas,
             impacto e ações práticas para estruturar atendimento, vendas e operação.
           </p>
@@ -86,16 +86,16 @@ export default function SolucoesPage() {
               >
                 {/* Acento estrutural — aba laranja no topo */}
                 <span
-                  className="absolute left-0 top-0 h-1 w-10 bg-rc2-orange transition-all duration-200 group-hover:w-full group-hover:opacity-90"
+                  className="absolute left-0 top-0 h-1 w-10 bg-rc2-brand transition-all duration-200 group-hover:w-full group-hover:opacity-90"
                   aria-hidden
                 />
-                <h2 className="rc2-h4 text-rc2-ebony mb-3">{solution.shortTitle}</h2>
-                <p className="text-rc2-ebony/75 leading-relaxed mb-4">{solution.summary}</p>
+                <h2 className="rc2-h4 text-rc2-heading mb-3">{solution.shortTitle}</h2>
+                <p className="text-rc2-text/75 leading-relaxed mb-4">{solution.summary}</p>
 
                 <ul className="space-y-2 mb-6">
                   {solution.symptoms.slice(0, 3).map((symptom) => (
-                    <li key={symptom} className="flex items-start gap-2.5 text-sm text-rc2-ebony/75">
-                      <CheckCircle2 size={15} className="mt-0.5 shrink-0 text-rc2-orange" aria-hidden="true" />
+                    <li key={symptom} className="flex items-start gap-2.5 text-sm text-rc2-text/75">
+                      <CheckCircle2 size={15} className="mt-0.5 shrink-0 text-rc2-brand" aria-hidden="true" />
                       <span>{symptom}</span>
                     </li>
                   ))}

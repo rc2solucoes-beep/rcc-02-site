@@ -53,8 +53,8 @@ export function Header() {
       className={cn(
         "sticky top-0 z-50 backdrop-blur-sm border-b transition-all duration-200",
         scrolled
-          ? "bg-rc2-sand/98 border-rc2-ebony/15 shadow-sm"
-          : "bg-rc2-sand/95 border-border"
+          ? "bg-rc2-bg/98 border-rc2-border shadow-sm"
+          : "bg-rc2-bg/95 border-border"
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -71,8 +71,8 @@ export function Header() {
                 className={cn(
                   "ui-focus-ring rounded-full text-sm transition-all duration-200 px-3 py-1",
                   isActive(link.href)
-                    ? "font-semibold text-rc2-orange-text bg-rc2-orange-text/10 ring-1 ring-rc2-orange-text/20"
-                    : "font-medium text-rc2-ebony hover:text-rc2-orange-text hover:bg-rc2-ebony/5"
+                    ? "font-semibold text-rc2-brand-text bg-rc2-brand-text/10 ring-1 ring-rc2-brand-text/20"
+                    : "font-medium text-rc2-text hover:text-rc2-brand-text hover:bg-rc2-text/5"
                 )}
               >
                 {link.label}
@@ -89,7 +89,7 @@ export function Header() {
               }
               className={cn(
                 buttonVariants({ variant: "default" }),
-                "ml-2 font-semibold tracking-wide uppercase text-xs px-5 h-9 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90 shadow-sm ring-1 ring-rc2-orange/20"
+                "ml-2 font-semibold tracking-wide uppercase text-xs px-5 h-9 bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90 shadow-sm ring-1 ring-rc2-brand/20"
               )}
             >
               Solicitar diagnóstico
@@ -99,7 +99,7 @@ export function Header() {
           {/* Mobile hamburger */}
           <button
             ref={mobileMenuButtonRef}
-            className="ui-focus-ring rounded md:hidden p-2 -mr-2 text-rc2-ebony hover:text-rc2-orange transition-colors"
+            className="ui-focus-ring rounded md:hidden p-2 -mr-2 text-rc2-text hover:text-rc2-brand-text transition-colors"
             onClick={() => setOpen(!open)}
             aria-label={open ? "Fechar menu" : "Abrir menu"}
             aria-expanded={open}
@@ -112,7 +112,7 @@ export function Header() {
 
       {/* Mobile menu */}
       {open && (
-        <div id="mobile-main-menu" className="md:hidden bg-rc2-sand border-t border-border px-4 pb-4 pt-2">
+        <div id="mobile-main-menu" className="md:hidden bg-rc2-bg border-t border-border px-4 pb-4 pt-2">
           <nav className="flex flex-col gap-1">
             {navLinks.map((link) => (
               <Link
@@ -122,8 +122,8 @@ export function Header() {
                 className={cn(
                   "ui-focus-ring rounded-sm py-2 text-sm transition-colors",
                   isActive(link.href)
-                    ? "font-semibold text-rc2-orange-text"
-                    : "font-medium text-rc2-ebony hover:text-rc2-orange-text"
+                    ? "font-semibold text-rc2-brand-text"
+                    : "font-medium text-rc2-text hover:text-rc2-brand-text"
                 )}
                 onClick={() => setOpen(false)}
               >
@@ -142,7 +142,7 @@ export function Header() {
               }}
               className={cn(
                 buttonVariants({ variant: "default" }),
-                "mt-3 font-semibold tracking-wide uppercase text-xs w-full justify-center bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90"
+                "mt-3 font-semibold tracking-wide uppercase text-xs w-full justify-center bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90"
               )}
             >
               Solicitar diagnóstico

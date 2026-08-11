@@ -27,7 +27,7 @@ export function HeroActions({ variant }: HeroActionsProps) {
         }
         className={cn(
           buttonVariants({ variant: "default" }),
-          "font-semibold tracking-wide uppercase text-xs px-8 h-12 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90"
+          "font-semibold tracking-wide uppercase text-xs px-8 h-12 bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90"
         )}
       >
         Solicitar diagnóstico
@@ -45,7 +45,7 @@ export function HeroActions({ variant }: HeroActionsProps) {
         }
         className={cn(
           buttonVariants({ variant: "outline" }),
-          "font-semibold tracking-wide uppercase text-xs px-8 h-12 border-rc2-ebony text-rc2-ebony hover:bg-rc2-ebony hover:text-rc2-sand"
+          "font-semibold tracking-wide uppercase text-xs px-8 h-12 border-rc2-text text-rc2-text hover:bg-rc2-text hover:text-rc2-dark-text"
         )}
       >
         Falar pelo WhatsApp

@@ -61,8 +61,8 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
             onClick={() => handleClick(heading.id)}
             className={`text-sm w-full text-left px-3 py-2 rounded transition-colors ${
               activeId === heading.id
-                ? "text-rc2-orange font-medium bg-rc2-orange/5"
-                : "text-rc2-ebony/70 hover:text-rc2-ebony hover:bg-rc2-ebony/5"
+                ? "text-rc2-brand-text font-medium bg-rc2-brand/5"
+                : "text-rc2-text/70 hover:text-rc2-text hover:bg-rc2-text/5"
             }`}
           >
             {heading.text}
@@ -78,14 +78,14 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
       <div className="mb-6 border border-border rounded bg-white overflow-hidden">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between px-5 py-4 hover:bg-rc2-ebony/[0.02] transition-colors"
+          className="w-full flex items-center justify-between px-5 py-4 hover:bg-rc2-text/[0.02] transition-colors"
         >
           <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
             Neste artigo
           </span>
           <ChevronDown
             size={14}
-            className={`text-rc2-ebony/40 transition-transform ${isOpen ? "rotate-180" : ""}`}
+            className={`text-rc2-text/40 transition-transform ${isOpen ? "rotate-180" : ""}`}
           />
         </button>
         {isOpen && (

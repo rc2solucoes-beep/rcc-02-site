@@ -1,12 +1,12 @@
 export default function BlogPostLoading() {
   return (
-    <article className="bg-rc2-sand">
-      <header className="bg-rc2-ink py-20 px-4 animate-pulse">
+    <article className="bg-rc2-bg">
+      <header className="bg-rc2-dark py-20 px-4 animate-pulse">
         <div className="container mx-auto max-w-3xl">
-          <div className="h-3 w-12 bg-rc2-sand/20 rounded mb-8" />
-          <div className="h-3 w-32 bg-rc2-orange/30 rounded mb-4" />
-          <div className="h-10 w-3/4 bg-rc2-sand/20 rounded mb-4" />
-          <div className="h-5 w-full bg-rc2-sand/10 rounded" />
+          <div className="h-3 w-12 bg-rc2-bg/20 rounded mb-8" />
+          <div className="h-3 w-32 bg-rc2-brand/30 rounded mb-4" />
+          <div className="h-10 w-3/4 bg-rc2-bg/20 rounded mb-4" />
+          <div className="h-5 w-full bg-rc2-bg/10 rounded" />
         </div>
       </header>
 

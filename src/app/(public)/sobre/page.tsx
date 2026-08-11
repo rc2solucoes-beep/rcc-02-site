@@ -84,20 +84,20 @@ export default async function SobrePage() {
         description="Consultoria especializada em IA, automações e operações digitais — com foco em resultado real para PMEs."
       />
 
-      <section className="bg-rc2-sand rc2-section">
+      <section className="bg-rc2-bg rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
             {/* Institucional */}
             <div>
               <SectionLabel className="block mb-5">A empresa</SectionLabel>
-              <div className="prose prose-neutral max-w-none text-rc2-ebony/80 leading-relaxed space-y-4">
+              <div className="prose prose-neutral max-w-none text-rc2-text/80 leading-relaxed space-y-4">
                 <p>
                   A RC2 Soluções é uma consultoria especializada em tecnologia,
                   automações, inteligência artificial, e-commerce e operações
                   digitais.
                 </p>
                 <p>
-                  Fundada por <strong className="text-rc2-ebony">Robson Azevedo</strong>, profissional com mais
+                  Fundada por <strong className="text-rc2-text">Robson Azevedo</strong>, profissional com mais
                   de 20 anos de experiência em TI, gestão de equipes e
                   transformação digital, a RC2 nasceu para ajudar empresas a
                   usarem tecnologia de forma prática, estratégica e orientada a
@@ -116,11 +116,11 @@ export default async function SobrePage() {
                 </p>
               </div>
 
-              <blockquote className="mt-8 rounded-r-xl border-l-2 border-rc2-orange bg-[var(--surface-1)] p-5 text-rc2-ebony/70 italic text-sm leading-relaxed">
+              <blockquote className="mt-8 rounded-r-xl border-l-2 border-rc2-brand bg-rc2-bg-alt p-5 text-rc2-text/70 italic text-sm leading-relaxed">
                 &ldquo;A IA não substitui uma operação mal estruturada. Primeiro
                 organizamos o processo. Depois automatizamos o que faz
                 sentido.&rdquo;
-                <cite className="block mt-2 not-italic font-medium text-rc2-ebony/70 text-xs">
+                <cite className="block mt-2 not-italic font-medium text-rc2-text/70 text-xs">
                   — Robson Azevedo, fundador
                 </cite>
               </blockquote>

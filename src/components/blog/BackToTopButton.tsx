@@ -27,7 +27,7 @@ export function BackToTopButton() {
     <button
       onClick={handleClick}
       aria-label="Voltar ao topo"
-      className={`fixed bottom-24 right-6 z-40 p-3 bg-rc2-orange text-white rounded-full shadow-lg hover:shadow-xl hover:bg-rc2-orange/90 transition-all duration-200 ${
+      className={`fixed bottom-24 right-6 z-40 p-3 bg-rc2-brand text-rc2-heading rounded-full shadow-lg hover:shadow-xl hover:bg-rc2-brand/90 transition-all duration-200 ${
         isVisible
           ? "opacity-100 translate-y-0"
           : "opacity-0 translate-y-16 pointer-events-none"

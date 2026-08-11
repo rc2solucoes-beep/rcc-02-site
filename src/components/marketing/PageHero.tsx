@@ -24,7 +24,7 @@ export function PageHero({
     <section
       className={cn(
         "rc2-grain relative overflow-hidden rc2-section",
-        isDark ? "bg-rc2-ink text-rc2-sand" : "bg-rc2-sand text-rc2-ebony",
+        isDark ? "bg-rc2-dark text-rc2-dark-text" : "bg-rc2-bg text-rc2-text",
         className
       )}
     >
@@ -37,19 +37,19 @@ export function PageHero({
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full bg-rc2-orange/10 blur-3xl"
+        className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full bg-rc2-brand/10 blur-3xl"
         aria-hidden
       />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {label && (
-          <SectionLabel className={cn("rc2-rule", isDark && "text-rc2-orange")}>
+          <SectionLabel className={cn("rc2-rule", isDark && "text-rc2-brand")}>
             {label}
           </SectionLabel>
         )}
         <h1
           className={cn(
             "rc2-h1 mt-3 max-w-4xl",
-            isDark ? "text-rc2-sand" : "text-rc2-ebony"
+            isDark ? "text-rc2-dark-text" : "text-rc2-heading"
           )}
         >
           {title}
@@ -58,7 +58,7 @@ export function PageHero({
           <p
             className={cn(
               "rc2-body-lg mt-5 max-w-2xl",
-              isDark ? "text-rc2-sand/85" : "text-rc2-ebony/80"
+              isDark ? "text-rc2-dark-text-secondary" : "text-rc2-text/80"
             )}
           >
             {description}

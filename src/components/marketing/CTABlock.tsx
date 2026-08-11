@@ -33,7 +33,7 @@ export function CTABlock({
     <section
       className={cn(
         "rc2-grain relative overflow-hidden rc2-section",
-        isDark ? "bg-rc2-ink" : "bg-rc2-orange",
+        isDark ? "bg-rc2-dark" : "bg-rc2-brand",
         className
       )}
     >
@@ -49,7 +49,7 @@ export function CTABlock({
         <h2
           className={cn(
             "rc2-h2 rc2-display max-w-3xl mx-auto",
-            isDark ? "text-rc2-sand" : "text-rc2-sand"
+            isDark ? "text-rc2-dark-text" : "text-rc2-heading"
           )}
         >
           {title}
@@ -58,7 +58,7 @@ export function CTABlock({
           <p
             className={cn(
               "rc2-body mt-4 max-w-2xl mx-auto",
-              isDark ? "text-rc2-sand/85" : "text-rc2-sand/95"
+              isDark ? "text-rc2-dark-text-secondary" : "text-rc2-heading"
             )}
           >
             {description}
@@ -75,8 +75,8 @@ export function CTABlock({
             }}
             className={cn(
               buttonVariants({ variant: "default" }),
-              "ui-focus-ring font-semibold tracking-wide uppercase text-xs px-8 h-11 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90 active:bg-rc2-orange active:ring-1 active:ring-rc2-orange/50 transition-all duration-150",
-              !isDark && "bg-rc2-sand text-rc2-orange hover:bg-rc2-sand/90 active:bg-rc2-sand active:ring-rc2-orange/50"
+              "ui-focus-ring font-semibold tracking-wide uppercase text-xs px-8 h-11 bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90 active:bg-rc2-brand active:ring-1 active:ring-rc2-brand/50 transition-all duration-150",
+              !isDark && "bg-rc2-bg text-rc2-brand-text hover:bg-rc2-bg/90 active:bg-rc2-bg active:ring-rc2-brand/50"
             )}
           >
             {primaryLabel}
@@ -95,8 +95,8 @@ export function CTABlock({
               className={cn(
                 "ui-focus-ring rounded-lg px-6 h-11 inline-flex items-center gap-1.5 border font-medium text-sm transition-all duration-200",
                 isDark
-                  ? "border-rc2-sand/40 text-rc2-sand hover:border-rc2-sand/80 hover:bg-rc2-sand/10 active:bg-rc2-sand/20 active:border-rc2-sand/90"
-                  : "border-rc2-ebony/40 text-rc2-ebony hover:border-rc2-ebony/80 hover:bg-rc2-ebony/10 active:bg-rc2-ebony/20 active:border-rc2-ebony/90"
+                  ? "border-rc2-dark-border text-rc2-dark-text hover:border-rc2-dark-text/80 hover:bg-rc2-dark-text/10 active:bg-rc2-dark-text/20 active:border-rc2-dark-text/90"
+                  : "border-rc2-heading/40 text-rc2-heading hover:border-rc2-heading/80 hover:bg-rc2-heading/10 active:bg-rc2-heading/20 active:border-rc2-heading/90"
               )}
             >
               {secondaryLabel}

@@ -39,7 +39,7 @@ export function HomeReviews() {
         >
           {/* Acento estrutural — aba laranja no topo */}
           <span
-            className="absolute left-0 top-0 h-1 w-10 bg-rc2-orange transition-all duration-200 group-hover:w-full group-hover:opacity-90"
+            className="absolute left-0 top-0 h-1 w-10 bg-rc2-brand transition-all duration-200 group-hover:w-full group-hover:opacity-90"
             aria-hidden
           />
           <div
@@ -50,17 +50,17 @@ export function HomeReviews() {
               <Star
                 key={i}
                 size={15}
-                className={i < review.rating ? "fill-rc2-orange text-rc2-orange" : "text-rc2-ebony/20"}
+                className={i < review.rating ? "fill-rc2-brand text-rc2-brand" : "text-rc2-text/20"}
                 aria-hidden
               />
             ))}
           </div>
-          <blockquote className="flex-1 text-sm leading-relaxed text-rc2-ebony/80">
+          <blockquote className="flex-1 text-sm leading-relaxed text-rc2-text/80">
             {review.text}
           </blockquote>
           <figcaption className="mt-4 flex items-center justify-between border-t border-border pt-3">
-            <span className="text-sm font-semibold text-rc2-ebony">{review.name}</span>
-            <time className="text-xs text-rc2-ebony/55">{review.date}</time>
+            <span className="text-sm font-semibold text-rc2-heading">{review.name}</span>
+            <time className="text-xs text-rc2-text-secondary">{review.date}</time>
           </figcaption>
         </figure>
       ))}

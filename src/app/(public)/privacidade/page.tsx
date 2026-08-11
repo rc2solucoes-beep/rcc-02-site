@@ -44,21 +44,21 @@ export default async function PrivacidadePage() {
         description="Última atualização: maio de 2026"
       />
 
-      <section className="bg-rc2-sand py-16">
+      <section className="bg-rc2-bg py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <div className="prose prose-neutral max-w-none text-rc2-ebony/80 leading-relaxed space-y-8">
+          <div className="prose prose-neutral max-w-none text-rc2-text/80 leading-relaxed space-y-8">
             <section>
-              <h2 className="text-xl font-semibold text-rc2-ebony mb-3">1. Quem somos</h2>
+              <h2 className="text-xl font-semibold text-rc2-heading mb-3">1. Quem somos</h2>
               <p>
                 A RC2 Soluções (CNPJ: 10.604.725/0001-42, endereço: Avenida Nova América, 202, Jardim Santa Cecília, Guarulhos/SP) é controladora dos dados pessoais tratados por meio deste site.
               </p>
               <p>
-                Contato do responsável: <a href="mailto:contato@rc2solucoes.com.br" className="text-rc2-orange-text underline">contato@rc2solucoes.com.br</a>
+                Contato do responsável: <a href="mailto:contato@rc2solucoes.com.br" className="text-rc2-brand-text underline">contato@rc2solucoes.com.br</a>
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-rc2-ebony mb-3">2. Dados coletados</h2>
+              <h2 className="text-xl font-semibold text-rc2-heading mb-3">2. Dados coletados</h2>
               <p>Coletamos os seguintes dados quando você preenche o formulário de contato:</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Nome completo</li>
@@ -74,7 +74,7 @@ export default async function PrivacidadePage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-rc2-ebony mb-3">3. Finalidade e base legal</h2>
+              <h2 className="text-xl font-semibold text-rc2-heading mb-3">3. Finalidade e base legal</h2>
               <ul className="list-disc pl-5 space-y-1">
                 <li><strong>Diagnóstico e proposta comercial</strong> — execução de etapas pré-contratuais (art. 7º, V, LGPD)</li>
                 <li><strong>Comunicação e atendimento</strong> — legítimo interesse (art. 7º, IX, LGPD)</li>
@@ -84,21 +84,21 @@ export default async function PrivacidadePage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-rc2-ebony mb-3">4. Retenção dos dados</h2>
+              <h2 className="text-xl font-semibold text-rc2-heading mb-3">4. Retenção dos dados</h2>
               <p>
                 Os dados são retidos pelo período necessário ao atendimento das finalidades descritas ou pelo prazo exigido por lei. Leads não convertidos são excluídos em até 24 meses.
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-rc2-ebony mb-3">5. Compartilhamento</h2>
+              <h2 className="text-xl font-semibold text-rc2-heading mb-3">5. Compartilhamento</h2>
               <p>
                 Não vendemos, alugamos ou compartilhamos dados com terceiros para fins comerciais. Podemos compartilhar com prestadores de serviço essenciais (hospedagem, e-mail, analytics) sob obrigação de confidencialidade.
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-rc2-ebony mb-3">6. Seus direitos (LGPD)</h2>
+              <h2 className="text-xl font-semibold text-rc2-heading mb-3">6. Seus direitos (LGPD)</h2>
               <p>Você pode, a qualquer momento:</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Confirmar a existência de tratamento dos seus dados</li>
@@ -109,35 +109,35 @@ export default async function PrivacidadePage() {
                 <li>Apresentar reclamação à ANPD</li>
               </ul>
               <p>
-                Para exercer seus direitos: <a href="mailto:contato@rc2solucoes.com.br" className="text-rc2-orange-text underline">contato@rc2solucoes.com.br</a>
+                Para exercer seus direitos: <a href="mailto:contato@rc2solucoes.com.br" className="text-rc2-brand-text underline">contato@rc2solucoes.com.br</a>
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-rc2-ebony mb-3">7. Cookies</h2>
+              <h2 className="text-xl font-semibold text-rc2-heading mb-3">7. Cookies</h2>
               <p>
                 Utilizamos cookies para funcionamento do site e analytics de privacidade (Umami — sem cookies de rastreamento individual). Você pode desativar cookies no seu navegador.
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-rc2-ebony mb-3">8. Segurança</h2>
+              <h2 className="text-xl font-semibold text-rc2-heading mb-3">8. Segurança</h2>
               <p>
                 Adotamos medidas técnicas e organizacionais adequadas para proteger seus dados contra acesso não autorizado, perda ou divulgação indevida.
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-rc2-ebony mb-3">9. Alterações</h2>
+              <h2 className="text-xl font-semibold text-rc2-heading mb-3">9. Alterações</h2>
               <p>
                 Esta política pode ser atualizada periodicamente. Alterações relevantes serão comunicadas nesta página.
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-rc2-ebony mb-3">10. Contato do Encarregado (DPO)</h2>
+              <h2 className="text-xl font-semibold text-rc2-heading mb-3">10. Contato do Encarregado (DPO)</h2>
               <p>
-                <a href="mailto:contato@rc2solucoes.com.br" className="text-rc2-orange-text underline">contato@rc2solucoes.com.br</a>
+                <a href="mailto:contato@rc2solucoes.com.br" className="text-rc2-brand-text underline">contato@rc2solucoes.com.br</a>
               </p>
             </section>
           </div>

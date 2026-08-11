@@ -25,7 +25,7 @@ export function Footer() {
   return (
     <footer className="border-t border-rc2-dark-border bg-rc2-dark text-rc2-dark-text">
       {/* Transição tonal do conteúdo principal */}
-      <div className="h-px bg-gradient-to-r from-transparent via-surface-3 to-transparent opacity-40" />
+      <div className="h-px bg-gradient-to-r from-transparent via-rc2-border to-transparent opacity-40" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           {/* Brand */}
@@ -39,7 +39,7 @@ export function Footer() {
 
           {/* Empresa */}
           <div>
-            <h3 className="rc2-label text-rc2-orange mb-4">Empresa</h3>
+            <h3 className="rc2-label text-rc2-brand mb-4">Empresa</h3>
             <ul className="space-y-2">
               {footerLinks.empresa.map((link) => (
                 <li key={link.href}>
@@ -66,7 +66,7 @@ export function Footer() {
 
           {/* Serviços */}
           <div>
-            <h3 className="rc2-label text-rc2-orange mb-4">Serviços</h3>
+            <h3 className="rc2-label text-rc2-brand mb-4">Serviços</h3>
             <ul className="space-y-2">
               {footerLinks.servicos.map((link) => (
                 <li key={link.href}>
@@ -83,7 +83,7 @@ export function Footer() {
 
           {/* Contato */}
           <div>
-            <h3 className="rc2-label text-rc2-orange mb-4">Contato</h3>
+            <h3 className="rc2-label text-rc2-brand mb-4">Contato</h3>
             <ul className="space-y-2">
               <li>
                 <TrackedLink
@@ -114,7 +114,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-6 border-t border-rc2-sand/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mt-12 pt-6 border-t border-rc2-dark-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs font-normal text-rc2-dark-text-secondary text-center sm:text-left">
             © 2026 RC2 Soluções. Todos os direitos reservados.
           </p>
