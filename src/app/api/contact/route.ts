@@ -141,15 +141,15 @@ async function sendLeadEmail(data: {
       <h2>Novo diagnóstico solicitado</h2>
       <table cellpadding="8" style="border-collapse:collapse;width:100%;font-family:sans-serif;font-size:14px;">
         <tr><td style="font-weight:bold;width:160px;">Nome</td><td>${escaped.name}</td></tr>
-        <tr style="background:#f5f5f5"><td style="font-weight:bold;">Empresa</td><td>${escaped.company}</td></tr>
+        <tr style="background:#F7F5F1"><td style="font-weight:bold;">Empresa</td><td>${escaped.company}</td></tr>
         <tr><td style="font-weight:bold;">E-mail</td><td><a href="mailto:${escaped.email}">${escaped.email}</a></td></tr>
-        <tr style="background:#f5f5f5"><td style="font-weight:bold;">WhatsApp</td><td><a href="https://wa.me/${whatsappNumbers}">${escaped.whatsapp}</a></td></tr>
+        <tr style="background:#F7F5F1"><td style="font-weight:bold;">WhatsApp</td><td><a href="https://wa.me/${whatsappNumbers}">${escaped.whatsapp}</a></td></tr>
         <tr><td style="font-weight:bold;">Segmento</td><td>${escaped.segment}</td></tr>
-        <tr style="background:#f5f5f5"><td style="font-weight:bold;">Porte</td><td>${escaped.size}</td></tr>
+        <tr style="background:#F7F5F1"><td style="font-weight:bold;">Porte</td><td>${escaped.size}</td></tr>
         <tr><td style="font-weight:bold;">Solução</td><td>${escaped.solution}</td></tr>
-        <tr style="background:#f5f5f5"><td style="font-weight:bold;">Desafio</td><td>${escaped.message}</td></tr>
+        <tr style="background:#F7F5F1"><td style="font-weight:bold;">Desafio</td><td>${escaped.message}</td></tr>
       </table>
-      <p style="margin-top:24px;font-size:12px;color:#888;">Enviado via www.rc2solucoes.com.br</p>
+      <p style="margin-top:24px;font-size:12px;color:#66717D;">Enviado via www.rc2solucoes.com.br</p>
     `,
   });
 }

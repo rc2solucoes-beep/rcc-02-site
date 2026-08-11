@@ -246,7 +246,7 @@ export function BlogPostArticle({ post, relatedPosts }: BlogPostArticleProps) {
                       post_slug: slug,
                       network: "whatsapp",
                     }}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-[#25D366] text-white text-sm font-medium rounded hover:bg-[#25D366]/90 transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-[#25D366] text-rc2-heading text-sm font-medium rounded hover:bg-[#25D366]/90 transition-colors"
                   >
                     WhatsApp
                   </TrackedLink>
@@ -264,7 +264,7 @@ export function BlogPostArticle({ post, relatedPosts }: BlogPostArticleProps) {
                       post_slug: slug,
                       network: "x",
                     }}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white text-sm font-medium rounded hover:bg-black/90 transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-rc2-dark text-white text-sm font-medium rounded hover:bg-rc2-dark/90 transition-colors"
                   >
                     X (Twitter)
                   </TrackedLink>

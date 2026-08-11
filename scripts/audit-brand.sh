@@ -7,7 +7,7 @@ set -uo pipefail
 
 DIRS="${DIRS:-app src components pages styles lib}"
 EXTS="--include=*.tsx --include=*.jsx --include=*.ts --include=*.js --include=*.css --include=*.scss --include=*.html"
-EXCLUDE="--exclude-dir=node_modules --exclude-dir=.next --exclude-dir=dist --exclude-dir=build"
+EXCLUDE="--exclude-dir=node_modules --exclude-dir=.next --exclude-dir=dist --exclude-dir=build --exclude-dir=admin"
 
 SEARCH_DIRS=""
 for d in $DIRS; do [ -d "$d" ] && SEARCH_DIRS="$SEARCH_DIRS $d"; done

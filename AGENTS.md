@@ -138,3 +138,14 @@ mercado, simples assim, chatbot (é "agente de IA"), barato (é "acessível").
 - Um componente por vez. Não refatorar arquivos fora do escopo da tarefa.
 - Depois de qualquer mudança de estilo: `npm run build` e `npm run audit:brand`.
 - Se um componente já usa token correto, não mexer.
+
+## Exceções permitidas para hex literal
+
+- `src/app/api/contact/route.ts` usa hexes literais por limitação de clientes de
+  e-mail, que não resolvem variáveis CSS.
+- `src/components/marketing/FloatingWhatsApp.tsx` usa o verde oficial do
+  WhatsApp.
+- `src/components/blog/BlogPostArticle.tsx` usa `#0A66C2` (LinkedIn) e
+  `#25D366` (WhatsApp) como cores de marca de terceiros, permitidas nos botões
+  de compartilhamento. Sobre o verde do WhatsApp, texto e ícone devem usar
+  `#0B1726`, nunca branco.
