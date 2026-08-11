@@ -269,20 +269,20 @@ export default async function HomePage({ searchParams }: Props) {
             <TrackedLink
               href="/contato"
               tracking={{ kind: "cta", location: "home_services_grid", label: "solicitar_diagnostico", destination: "/contato" }}
-              className="group rc2-card rc2-card-hover flex flex-col justify-between p-6 md:p-7 !bg-rc2-forest !border-rc2-forest shadow-[0_16px_36px_-24px_rgba(11,45,34,0.78)]"
+              className="group rc2-card-hover flex flex-col justify-between rounded-xl border border-rc2-dark-border bg-rc2-dark-elevated p-6 transition-all duration-200 md:p-7 shadow-[0_16px_36px_-24px_rgba(11,45,34,0.78)]"
             >
               <div>
-                <span className="inline-flex rounded-full border border-rc2-sand/45 bg-rc2-sand/14 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-rc2-sand mb-4">
+                <span className="inline-flex rounded-full border border-rc2-sand/45 bg-rc2-sand/14 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-rc2-dark-text mb-4">
                   Próximo passo
                 </span>
-                <h3 className="text-xl font-semibold text-rc2-sand mb-3 leading-tight">
+                <h3 className="text-xl font-semibold text-rc2-dark-text mb-3 leading-tight">
                   Não sabe por onde começar?
                 </h3>
-                <p className="text-sm text-rc2-sand/95 leading-relaxed max-w-[30ch]">
+                <p className="text-sm text-rc2-dark-text-secondary leading-relaxed max-w-[30ch]">
                   Diagnóstico gratuito para mapear gargalos e oportunidades de automação na sua operação.
                 </p>
               </div>
-              <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-rc2-sand group-hover:gap-3 transition-all duration-200">
+              <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-rc2-dark-text group-hover:gap-3 transition-all duration-200">
                 Solicitar diagnóstico
                 <ArrowRight size={14} />
               </span>
@@ -292,24 +292,24 @@ export default async function HomePage({ searchParams }: Props) {
       </section>
 
       {/* ── Diferencial ── */}
-      <section className="rc2-grain relative overflow-hidden bg-rc2-forest rc2-section">
+      <section className="rc2-grain relative overflow-hidden bg-rc2-dark-2 rc2-section">
         <div className="rc2-blueprint-dark pointer-events-none absolute inset-0 opacity-50" aria-hidden />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 max-w-3xl">
           <SectionLabel className="rc2-rule block mb-5 text-rc2-orange">Diferencial</SectionLabel>
-          <h2 className="rc2-h2 rc2-display text-rc2-sand mb-6">
+          <h2 className="rc2-h2 rc2-display text-rc2-dark-text mb-6">
             Tecnologia com visão de operação.
           </h2>
-          <p className="text-rc2-sand/90 text-lg leading-relaxed mb-6">
+          <p className="text-rc2-dark-text-secondary text-lg leading-relaxed mb-6">
             A RC2 não entrega só ferramenta. Entrega processo funcionando no dia
             a dia da empresa. Atuamos do diagnóstico à implantação para
             organizar atendimento, conectar sistemas e dar previsibilidade à
             operação comercial.
           </p>
-          <p className="text-rc2-sand/85 italic text-sm border-l-2 border-rc2-orange pl-4">
+          <p className="text-rc2-dark-text-secondary italic text-sm border-l-2 border-rc2-orange pl-4">
             &ldquo;A IA não substitui uma operação mal estruturada. Primeiro
             organizamos o processo. Depois automatizamos o que faz sentido.&rdquo;
           </p>
-          <p className="mt-8 text-xs text-rc2-sand/85">
+          <p className="mt-8 text-xs text-rc2-dark-text-secondary">
             Mais de 20 anos de experiência em tecnologia, operações digitais,
             e-commerce, automações e gestão de equipes.
           </p>

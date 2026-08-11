@@ -84,7 +84,7 @@ export default async function ServicosPage() {
               <article
                 key={service.slug}
                 id={service.slug}
-                  className={`relative overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 p-8 md:p-10 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 last:border-b-0 last:pb-0 rounded-xl border ${isDark ? "rc2-grain bg-rc2-forest border-rc2-forest/80" : "bg-[var(--surface-1)] border-[var(--surface-2)]"}`}
+                  className={`relative overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 p-8 md:p-10 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 last:border-b-0 last:pb-0 rounded-xl border ${isDark ? "rc2-grain bg-rc2-dark-2 border-y border-rc2-dark-border" : "bg-[var(--surface-1)] border-[var(--surface-2)]"}`}
               >
                 {isDark && (
                   <div className="rc2-blueprint-dark pointer-events-none absolute inset-0 opacity-50" aria-hidden />
@@ -94,13 +94,13 @@ export default async function ServicosPage() {
                   <SectionLabel className={`block mb-3 ${isDark ? "text-rc2-orange" : ""}`}>
                     {String(index + 1).padStart(2, "0")} / {String(services.length).padStart(2, "0")}
                   </SectionLabel>
-                  <h2 className={`rc2-h3 mb-4 ${isDark ? "text-rc2-sand" : "text-rc2-ebony"}`}>
+                  <h2 className={`rc2-h3 mb-4 ${isDark ? "text-rc2-dark-text" : "text-rc2-ebony"}`}>
                     {service.title}
                   </h2>
-                  <p className={`leading-relaxed mb-6 ${isDark ? "text-rc2-sand/80" : "text-rc2-ebony/70"}`}>
+                  <p className={`leading-relaxed mb-6 ${isDark ? "text-rc2-dark-text-secondary" : "text-rc2-ebony/70"}`}>
                     {service.description}
                   </p>
-                  <p className={`text-sm font-medium italic border-l-2 border-rc2-orange pl-4 ${isDark ? "text-rc2-sand/85" : "text-rc2-ebony/80"}`}>
+                  <p className={`text-sm font-medium italic border-l-2 border-rc2-orange pl-4 ${isDark ? "text-rc2-dark-text-secondary" : "text-rc2-ebony/80"}`}>
                     {service.cta}
                   </p>
                   <Link
@@ -115,23 +115,23 @@ export default async function ServicosPage() {
                 {/* Lists */}
                 <div className={`relative z-10 ${index % 2 === 1 ? "lg:order-1" : ""}`}>
                   <div className="mb-6">
-                    <h3 className={`rc2-label mb-3 ${isDark ? "text-rc2-sand/90" : "text-rc2-ebony/80"}`}>O que pode ser implantado</h3>
+                    <h3 className={`rc2-label mb-3 ${isDark ? "text-rc2-dark-text" : "text-rc2-ebony/80"}`}>O que pode ser implantado</h3>
                     <ul className="space-y-2">
                       {service.items.map((item, i) => (
                         <li key={i} className="flex items-start gap-2.5">
                           <Check size={14} className={`shrink-0 mt-0.5 ${isDark ? "text-rc2-orange" : "text-rc2-orange"}`} strokeWidth={2.5} />
-                          <span className={`text-sm ${isDark ? "text-rc2-sand/80" : "text-rc2-ebony/80"}`}>{item}</span>
+                          <span className={`text-sm ${isDark ? "text-rc2-dark-text-secondary" : "text-rc2-ebony/80"}`}>{item}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
                   <div>
-                    <h3 className={`rc2-label mb-3 ${isDark ? "text-rc2-sand/90" : "text-rc2-ebony/80"}`}>Benefícios</h3>
+                    <h3 className={`rc2-label mb-3 ${isDark ? "text-rc2-dark-text" : "text-rc2-ebony/80"}`}>Benefícios</h3>
                     <ul className="space-y-2">
                       {service.benefits.map((benefit, i) => (
                         <li key={i} className="flex items-start gap-2.5">
                           <span className={`mt-0.5 text-xs ${isDark ? "text-rc2-orange" : "text-rc2-orange"}`}>→</span>
-                          <span className={`text-sm ${isDark ? "text-rc2-sand/80" : "text-rc2-ebony/80"}`}>{benefit}</span>
+                          <span className={`text-sm ${isDark ? "text-rc2-dark-text-secondary" : "text-rc2-ebony/80"}`}>{benefit}</span>
                         </li>
                       ))}
                     </ul>

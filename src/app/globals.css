@@ -200,7 +200,7 @@
       .bg-rc2-forest
     ):focus-visible {
     outline-color: var(--rc2-focus-ring-dark);
-    --tw-ring-color: var(--rc2-focus-ring-dark);
+    --tw-ring-color: var(--rc2-focus-ring-dark) !important;
   }
 
   html {
@@ -242,7 +242,7 @@
   /* Placeholder e metadado descartável usam o token muted da marca. */
   input::placeholder,
   textarea::placeholder {
-    color: var(--rc2-text-muted);
+    color: var(--rc2-text-secondary);
   }
 }
 
@@ -323,33 +323,6 @@
   /* Focus ring — aplicado a links e botões fora do shadcn */
   .ui-focus-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rc2-focus-ring focus-visible:ring-offset-2;
-  }
-
-  /* Focus ring — variante sutil para inputs e áreas densas */
-  .ui-focus-ring-subtle {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rc2-focus-ring focus-visible:ring-offset-2;
-  }
-
-  :is(
-      .dark,
-      .bg-secondary,
-      .bg-rc2-dark,
-      .bg-rc2-dark-2,
-      .bg-rc2-dark-elevated,
-      .bg-rc2-dark-card,
-      .bg-rc2-ink,
-      .bg-rc2-forest
-    ) :focus-visible,
-  :is(
-      .bg-secondary,
-      .bg-rc2-dark,
-      .bg-rc2-dark-2,
-      .bg-rc2-dark-elevated,
-      .bg-rc2-dark-card,
-      .bg-rc2-ink,
-      .bg-rc2-forest
-    ):focus-visible {
-    --tw-ring-color: var(--rc2-focus-ring-dark);
   }
 
   /* Active state — para botões e links em estado pressionado/ativo */

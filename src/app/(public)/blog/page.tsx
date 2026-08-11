@@ -131,7 +131,7 @@ export default async function BlogPage() {
                       </div>
                     )}
                     {!post.cover_url && (
-                      <div className="aspect-video w-full bg-rc2-forest/10 mb-5 flex items-center justify-center">
+                      <div className="aspect-video w-full bg-rc2-surface-2 mb-5 flex items-center justify-center">
                         <span className="text-rc2-forest/30 text-4xl font-bold font-condensed uppercase tracking-widest">RC2</span>
                       </div>
                     )}
