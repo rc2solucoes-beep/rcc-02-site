@@ -82,30 +82,30 @@ export default async function BlogPage() {
         variant="light"
       />
 
-      <section className="bg-rc2-sand py-20">
+      <section className="bg-rc2-bg py-20">
         <div className="container mx-auto px-4 max-w-5xl">
           {posts.length === 0 ? (
             <div className="text-center py-16">
-              <div className="inline-block rounded-full bg-surface-2 p-4 mb-6">
+              <div className="inline-block rounded-full bg-rc2-surface-2 p-4 mb-6">
                 <span className="text-3xl">📚</span>
               </div>
               <SectionLabel className="mb-3">Em breve</SectionLabel>
-              <h2 className="text-2xl font-semibold text-rc2-ebony mb-3">Ainda não há artigos publicados</h2>
-              <p className="text-text-secondary text-lg mb-8 max-w-md mx-auto">
+              <h2 className="text-2xl font-semibold text-rc2-heading mb-3">Ainda não há artigos publicados</h2>
+              <p className="text-rc2-text-secondary text-lg mb-8 max-w-md mx-auto">
                 Enquanto isso, veja nossas soluções ou solicite um diagnóstico para sua operação.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <TrackedLink
                   href="/servicos"
                   tracking={{ kind: "cta", location: "blog_empty_state", label: "explorar_servicos", destination: "/servicos" }}
-                  className="inline-flex items-center gap-2 px-6 h-11 bg-rc2-orange text-rc2-sand font-semibold text-sm rounded-md hover:bg-rc2-orange/90 transition-colors"
+                  className="inline-flex items-center gap-2 px-6 h-11 bg-rc2-brand text-rc2-heading font-semibold text-sm rounded-md hover:bg-rc2-brand/90 transition-colors"
                 >
                   Explorar serviços
                 </TrackedLink>
                 <TrackedLink
                   href="/contato"
                   tracking={{ kind: "cta", location: "blog_empty_state", label: "solicitar_diagnostico", destination: "/contato" }}
-                  className="inline-flex items-center gap-2 px-6 h-11 border border-border text-rc2-ebony font-medium text-sm rounded-md hover:bg-surface-1 transition-colors"
+                  className="inline-flex items-center gap-2 px-6 h-11 border border-border text-rc2-text font-medium text-sm rounded-md hover:bg-rc2-bg-alt transition-colors"
                 >
                   Solicitar diagnóstico
                 </TrackedLink>
@@ -132,17 +132,17 @@ export default async function BlogPage() {
                     )}
                     {!post.cover_url && (
                       <div className="aspect-video w-full bg-rc2-surface-2 mb-5 flex items-center justify-center">
-                        <span className="text-rc2-forest/30 text-4xl font-bold font-condensed uppercase tracking-widest">RC2</span>
+                        <span className="text-rc2-heading/30 text-4xl font-bold font-condensed uppercase tracking-widest">RC2</span>
                       </div>
                     )}
-                    <time className="text-xs text-rc2-ebony/70 uppercase tracking-wider">
+                    <time className="text-xs text-rc2-text/70 uppercase tracking-wider">
                       {formatDate(post.published_at)}
                     </time>
-                    <h2 className={`font-semibold text-rc2-ebony mt-1.5 group-hover:text-rc2-orange transition-colors leading-snug ${index === 0 ? "text-2xl" : "text-lg"}`}>
+                    <h2 className={`font-semibold text-rc2-heading mt-1.5 group-hover:text-rc2-brand-text transition-colors leading-snug ${index === 0 ? "text-2xl" : "text-lg"}`}>
                       {post.title}
                     </h2>
-                    <p className="text-rc2-ebony/70 text-sm mt-2 line-clamp-3">{post.summary}</p>
-                    <span className="inline-block mt-3 text-sm font-medium text-rc2-orange group-hover:underline underline-offset-4">
+                    <p className="text-rc2-text/70 text-sm mt-2 line-clamp-3">{post.summary}</p>
+                    <span className="inline-block mt-3 text-sm font-medium text-rc2-brand-text group-hover:underline underline-offset-4">
                       Ler artigo →
                     </span>
                   </Link>

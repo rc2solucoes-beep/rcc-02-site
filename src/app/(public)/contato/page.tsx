@@ -53,34 +53,34 @@ export default async function ContatoPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
       />
-    <section className="rc2-grain relative overflow-hidden bg-rc2-sand py-16 md:py-20">
+    <section className="rc2-grain relative overflow-hidden bg-rc2-bg py-16 md:py-20">
       <div className="rc2-blueprint pointer-events-none absolute inset-0 opacity-50" aria-hidden />
-      <div className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full bg-rc2-orange/10 blur-3xl" aria-hidden />
+      <div className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full bg-rc2-brand/10 blur-3xl" aria-hidden />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Sidebar */}
           <div>
             <SectionLabel className="block mb-4">Diagnóstico gratuito</SectionLabel>
-            <h1 className="rc2-display text-4xl md:text-5xl text-rc2-ebony mb-6 leading-tight">
+            <h1 className="rc2-display text-4xl md:text-5xl text-rc2-heading mb-6 leading-tight">
               Solicite um diagnóstico para sua empresa
             </h1>
-            <p className="text-rc2-ebony/70 leading-relaxed mb-8">
+            <p className="text-rc2-text/70 leading-relaxed mb-8">
               Se sua empresa está com atendimento lento, leads sem resposta,
               tarefas manuais ou sistemas desconectados, este diagnóstico ajuda
               a priorizar o que resolver primeiro.
             </p>
-            <p className="text-rc2-ebony/70 leading-relaxed mb-8">
+            <p className="text-rc2-text/70 leading-relaxed mb-8">
               Em poucos passos, mapeamos seu cenário atual, identificamos
               gargalos e sugerimos um plano inicial de execução com IA,
               automações e integrações.
             </p>
 
             {/* What you get */}
-            <div className="p-6 border border-[var(--surface-2)] bg-[var(--surface-1)] rounded-lg">
-              <h2 className="text-sm font-semibold text-rc2-ebony mb-4 uppercase tracking-wide">
+            <div className="p-6 border border-rc2-surface-2 bg-rc2-bg-alt rounded-lg">
+              <h2 className="text-sm font-semibold text-rc2-heading mb-4 uppercase tracking-wide">
                 O que você recebe
               </h2>
-              <ul className="space-y-3 text-sm text-rc2-ebony/70">
+              <ul className="space-y-3 text-sm text-rc2-text/70">
                 {[
                   "Mapeamento inicial da operação",
                   "Identificação de gargalos",
@@ -90,7 +90,7 @@ export default async function ContatoPage() {
                   "Proposta para execução",
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className="text-rc2-orange mt-0.5 text-xs shrink-0">→</span>
+                    <span className="text-rc2-brand mt-0.5 text-xs shrink-0">→</span>
                     {item}
                   </li>
                 ))}
@@ -98,7 +98,7 @@ export default async function ContatoPage() {
             </div>
 
             <div className="mt-6">
-              <p className="text-xs text-rc2-ebony/70 mb-2">Prefere falar diretamente?</p>
+              <p className="text-xs text-rc2-text/70 mb-2">Prefere falar diretamente?</p>
               <TrackedLink
                 href={CONTACT_WHATSAPP_URL}
                 target="_blank"
@@ -109,7 +109,7 @@ export default async function ContatoPage() {
                   label: "falar_pelo_whatsapp",
                   destination: CONTACT_WHATSAPP_URL,
                 }}
-                className="text-sm font-semibold text-rc2-orange underline underline-offset-4 hover:opacity-70 transition-opacity"
+                className="text-sm font-semibold text-rc2-brand-text underline underline-offset-4 hover:opacity-70 transition-opacity"
               >
                 Falar pelo WhatsApp →
               </TrackedLink>

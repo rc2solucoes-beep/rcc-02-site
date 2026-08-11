@@ -49,15 +49,15 @@ function Label({
   required?: boolean;
 }) {
   return (
-    <label htmlFor={htmlFor} className="block text-sm font-medium text-rc2-ebony mb-1.5">
+    <label htmlFor={htmlFor} className="block text-sm font-medium text-rc2-text mb-1.5">
       {children}
-      {required && <span className="text-rc2-orange ml-0.5" aria-hidden>*</span>}
+      {required && <span className="text-rc2-brand-text ml-0.5" aria-hidden>*</span>}
     </label>
   );
 }
 
 const inputBase =
-  "w-full rounded-md border border-border bg-white px-4 py-3 text-sm text-rc2-ebony placeholder:text-rc2-placeholder outline-none focus:border-rc2-orange focus:ring-2 focus:ring-rc2-orange/20 transition-colors shadow-sm";
+  "w-full rounded-md border border-border bg-white px-4 py-3 text-sm text-rc2-text placeholder:text-rc2-text-secondary outline-none focus:border-rc2-focus-ring focus:ring-2 focus:ring-rc2-focus-ring/20 transition-colors shadow-sm";
 
 const FORM_CONTEXT = {
   form_name: "diagnostico_gratuito" as const,
@@ -101,17 +101,17 @@ function ProgressBar({ step }: { step: 1 | 2 }) {
     <div className="mb-8">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <div className={cn("text-sm font-semibold", step === 1 ? "text-rc2-orange" : "text-rc2-ebony/40")}>
+          <div className={cn("text-sm font-semibold", step === 1 ? "text-rc2-brand-text" : "text-rc2-text-secondary")}>
             Etapa 1 de 2
           </div>
-          <div className={cn("w-24 h-1 rounded-full", step >= 1 ? "bg-rc2-orange" : "bg-rc2-ebony/10")} />
-          <div className={cn("text-sm font-semibold", step === 2 ? "text-rc2-orange" : "text-rc2-ebony/40")}>
+          <div className={cn("w-24 h-1 rounded-full", step >= 1 ? "bg-rc2-brand" : "bg-rc2-border")} />
+          <div className={cn("text-sm font-semibold", step === 2 ? "text-rc2-brand-text" : "text-rc2-text-secondary")}>
             Etapa 2 de 2
           </div>
         </div>
-        <span className="text-xs text-rc2-ebony/60">Tempo estimado: 1 minuto</span>
+        <span className="text-xs text-rc2-text-secondary">Tempo estimado: 1 minuto</span>
       </div>
-      <p className="text-xs text-rc2-ebony/70">
+      <p className="text-xs text-rc2-text-secondary">
         {step === 1 ? "Etapa 1 de 2 — Informações iniciais" : "Etapa 2 de 2 — Dados da empresa"}
       </p>
     </div>
@@ -251,18 +251,18 @@ export function ContactForm() {
   if (submitted) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
-        <div className="inline-block rounded-full bg-rc2-orange/10 p-3 mb-4">
+        <div className="inline-block rounded-full bg-rc2-brand/10 p-3 mb-4">
           <span className="text-3xl">✓</span>
         </div>
-        <span className="rc2-label block mb-4 text-rc2-orange">Recebido</span>
-        <h2 className="text-2xl font-semibold text-rc2-ebony mb-3">
+        <span className="rc2-label block mb-4 text-rc2-brand-text">Recebido</span>
+        <h2 className="text-2xl font-semibold text-rc2-heading mb-3">
           Diagnóstico solicitado com sucesso!
         </h2>
-        <p className="text-rc2-ebony/70 max-w-md">
+        <p className="text-rc2-text/70 max-w-md">
           Diagnóstico solicitado com sucesso. Recebemos suas informações e retornaremos
           pelo e-mail ou WhatsApp informado.
         </p>
-        <p className="text-rc2-ebony/70 max-w-md mt-2">
+        <p className="text-rc2-text/70 max-w-md mt-2">
           Se preferir acelerar o contato, fale agora pelo WhatsApp.
         </p>
         <a
@@ -276,13 +276,13 @@ export function ContactForm() {
               destination: "https://wa.me/5511988028550",
             })
           }
-          className="mt-6 text-sm font-medium text-rc2-orange underline underline-offset-4"
+          className="mt-6 text-sm font-medium text-rc2-brand-text underline underline-offset-4"
         >
           Abrir WhatsApp agora →
         </a>
         <Link
           href="/servicos"
-          className="mt-3 text-sm text-rc2-ebony/75 underline underline-offset-4 hover:text-rc2-ebony"
+          className="mt-3 text-sm text-rc2-text/75 underline underline-offset-4 hover:text-rc2-text"
         >
           Ver serviços
         </Link>
@@ -390,7 +390,7 @@ export function ContactForm() {
             <button
               type="button"
               onClick={handleStep1Next}
-              className="ui-focus-ring flex-1 px-10 h-12 bg-rc2-orange text-rc2-sand font-semibold tracking-wide uppercase text-xs hover:bg-rc2-orange/90 active:bg-rc2-orange active:ring-1 active:ring-rc2-orange/50 transition-all duration-150 rounded-md flex items-center justify-center gap-2"
+              className="ui-focus-ring flex-1 px-10 h-12 bg-rc2-brand text-rc2-heading font-semibold tracking-wide uppercase text-xs hover:bg-rc2-brand/90 active:bg-rc2-brand active:ring-1 active:ring-rc2-brand/50 transition-all duration-150 rounded-md flex items-center justify-center gap-2"
             >
               Continuar para dados da empresa
               <ChevronRight size={16} />
@@ -524,7 +524,7 @@ export function ContactForm() {
           )}
 
           {/* Action buttons */}
-          <p className="text-xs text-rc2-ebony/70">
+          <p className="text-xs text-rc2-text/70">
             Você pode voltar sem perder as informações preenchidas.
           </p>
           <div className="mt-8 flex gap-3">
@@ -532,7 +532,7 @@ export function ContactForm() {
               type="button"
               onClick={handleStep1Back}
               disabled={isSubmitting}
-              className="ui-focus-ring px-6 h-12 border border-border text-rc2-ebony font-semibold tracking-wide uppercase text-xs hover:bg-surface-1 active:ring-1 active:ring-rc2-orange/50 transition-all duration-150 rounded-md flex items-center justify-center gap-2 disabled:opacity-60"
+              className="ui-focus-ring px-6 h-12 border border-border text-rc2-text font-semibold tracking-wide uppercase text-xs hover:bg-rc2-bg-alt active:ring-1 active:ring-rc2-brand/50 transition-all duration-150 rounded-md flex items-center justify-center gap-2 disabled:opacity-60"
             >
               <ChevronLeft size={16} />
               Voltar
@@ -540,22 +540,22 @@ export function ContactForm() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="ui-focus-ring flex-1 px-10 h-12 bg-rc2-orange text-rc2-sand font-semibold tracking-wide uppercase text-xs hover:bg-rc2-orange/90 active:bg-rc2-orange active:ring-1 active:ring-rc2-orange/50 transition-all duration-150 disabled:opacity-60 disabled:cursor-not-allowed rounded-md"
+              className="ui-focus-ring flex-1 px-10 h-12 bg-rc2-brand text-rc2-heading font-semibold tracking-wide uppercase text-xs hover:bg-rc2-brand/90 active:bg-rc2-brand active:ring-1 active:ring-rc2-brand/50 transition-all duration-150 disabled:opacity-60 disabled:cursor-not-allowed rounded-md"
             >
               {isSubmitting ? "Enviando solicitação..." : "Solicitar diagnóstico"}
             </button>
           </div>
           {isSubmitting && (
-            <p className="text-xs text-rc2-ebony/70" aria-live="polite">
+            <p className="text-xs text-rc2-text/70" aria-live="polite">
               Estamos registrando seu diagnóstico. Não feche esta página.
             </p>
           )}
         </>
       )}
 
-      <p className="text-xs text-rc2-ebony/70">
+      <p className="text-xs text-rc2-text/70">
         Ao enviar, você concorda com nossa{" "}
-        <a href="/privacidade" className="ui-focus-ring rounded-sm underline hover:text-rc2-ebony transition-colors">
+        <a href="/privacidade" className="ui-focus-ring rounded-sm underline hover:text-rc2-text transition-colors">
           Política de Privacidade
         </a>
         .

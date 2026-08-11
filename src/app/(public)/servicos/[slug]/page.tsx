@@ -149,30 +149,30 @@ export default async function ServicePage({ params }: Props) {
         description={service.description}
       />
 
-      <section className="bg-rc2-sand py-16 md:py-20">
+      <section className="bg-rc2-bg py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-14">
           <div className="rounded-lg border border-border bg-white p-5 md:p-6">
             <SectionLabel className="block mb-3">Resumo rápido</SectionLabel>
-            <h2 className="text-lg font-semibold text-rc2-ebony mb-3">
+            <h2 className="text-lg font-semibold text-rc2-heading mb-3">
               Este serviço é indicado quando sua operação enfrenta:
             </h2>
             <ul className="space-y-2">
               {topPainPoints.map((item) => (
-                <li key={item} className="flex items-start gap-2.5 text-sm text-rc2-ebony/80">
-                  <span className="text-rc2-orange mt-0.5 text-xs shrink-0">•</span>
+                <li key={item} className="flex items-start gap-2.5 text-sm text-rc2-text/80">
+                  <span className="text-rc2-brand mt-0.5 text-xs shrink-0">•</span>
                   <span>{item}</span>
                 </li>
               ))}
             </ul>
-            <p className="mt-4 text-sm text-rc2-ebony/75 leading-relaxed">
-              <span className="font-semibold text-rc2-ebony">Quando contratar:</span> quando essas dores já afetam atendimento, vendas ou rotina da equipe.
+            <p className="mt-4 text-sm text-rc2-text/75 leading-relaxed">
+              <span className="font-semibold text-rc2-heading">Quando contratar:</span> quando essas dores já afetam atendimento, vendas ou rotina da equipe.
             </p>
           </div>
 
-          <div className="rounded-lg border border-rc2-orange/25 bg-white p-5 md:p-6">
+          <div className="rounded-lg border border-rc2-brand/25 bg-white p-5 md:p-6">
             <SectionLabel className="block mb-3">Atalho rápido</SectionLabel>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm text-rc2-ebony/75">
+              <p className="text-sm text-rc2-text/75">
                 Se este cenário já descreve sua operação, você pode acelerar o próximo passo.
               </p>
               <div className="flex flex-wrap items-center gap-3">
@@ -186,7 +186,7 @@ export default async function ServicePage({ params }: Props) {
                     label: "falar_pelo_whatsapp",
                     destination: serviceWhatsappUrl,
                   }}
-                  className="text-sm font-semibold text-rc2-orange hover:underline underline-offset-4"
+                  className="text-sm font-semibold text-rc2-brand-text hover:underline underline-offset-4"
                 >
                   Falar pelo WhatsApp
                 </TrackedLink>
@@ -201,7 +201,7 @@ export default async function ServicePage({ params }: Props) {
                       source_page: `/servicos/${slug}`,
                       source_type: "service_page",
                     }}
-                    className="text-sm text-rc2-ebony/75 hover:text-rc2-ebony hover:underline underline-offset-4"
+                    className="text-sm text-rc2-text/75 hover:text-rc2-text hover:underline underline-offset-4"
                   >
                     Ver solução por problema relacionada
                   </TrackedLink>
@@ -215,8 +215,8 @@ export default async function ServicePage({ params }: Props) {
             <ul className="space-y-3">
               {service.painPoints.map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <span className="text-rc2-orange font-bold text-sm mt-0.5" aria-hidden="true">•</span>
-                  <span className="text-rc2-ebony/80">{item}</span>
+                  <span className="text-rc2-brand font-bold text-sm mt-0.5" aria-hidden="true">•</span>
+                  <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ul>
@@ -227,8 +227,8 @@ export default async function ServicePage({ params }: Props) {
             <ul className="space-y-3">
               {topUseCases.map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <Check size={16} className="text-rc2-orange shrink-0 mt-0.5" strokeWidth={2.5} aria-hidden="true" />
-                  <span className="text-rc2-ebony/80">{item}</span>
+                  <Check size={16} className="text-rc2-brand shrink-0 mt-0.5" strokeWidth={2.5} aria-hidden="true" />
+                  <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ul>
@@ -239,8 +239,8 @@ export default async function ServicePage({ params }: Props) {
             <ul className="space-y-3">
               {topItems.map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <Check size={16} className="text-rc2-orange shrink-0 mt-0.5" strokeWidth={2.5} aria-hidden="true" />
-                  <span className="text-rc2-ebony/80">{item}</span>
+                  <Check size={16} className="text-rc2-brand shrink-0 mt-0.5" strokeWidth={2.5} aria-hidden="true" />
+                  <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ul>
@@ -251,8 +251,8 @@ export default async function ServicePage({ params }: Props) {
             <ol className="space-y-3">
               {service.implementationSteps.map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-full bg-rc2-orange text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
-                  <span className="text-rc2-ebony/80">{item}</span>
+                  <span className="w-6 h-6 rounded-full bg-rc2-brand text-rc2-heading text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+                  <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ol>
@@ -262,7 +262,7 @@ export default async function ServicePage({ params }: Props) {
             <SectionLabel className="block mb-4">Integrações possíveis</SectionLabel>
             <div className="flex flex-wrap gap-2">
               {topIntegrations.map((integration) => (
-                <span key={integration} className="px-3 py-1.5 rounded bg-white border border-border text-sm text-rc2-ebony/80">
+                <span key={integration} className="px-3 py-1.5 rounded bg-white border border-border text-sm text-rc2-text/80">
                   {integration}
                 </span>
               ))}
@@ -274,8 +274,8 @@ export default async function ServicePage({ params }: Props) {
             <ul className="space-y-3">
               {topMetrics.map((metric, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <span className="text-rc2-orange font-bold text-sm mt-0.5" aria-hidden="true">→</span>
-                  <span className="text-rc2-ebony/80">{metric}</span>
+                  <span className="text-rc2-brand font-bold text-sm mt-0.5" aria-hidden="true">→</span>
+                  <span className="text-rc2-text/80">{metric}</span>
                 </li>
               ))}
             </ul>
@@ -286,12 +286,12 @@ export default async function ServicePage({ params }: Props) {
             <ul className="space-y-3 mb-8">
               {topBenefits.map((benefit, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <span className="text-rc2-orange font-bold text-sm mt-0.5" aria-hidden="true">→</span>
-                  <span className="text-rc2-ebony/80">{benefit}</span>
+                  <span className="text-rc2-brand font-bold text-sm mt-0.5" aria-hidden="true">→</span>
+                  <span className="text-rc2-text/80">{benefit}</span>
                 </li>
               ))}
             </ul>
-            <blockquote className="border-l-2 border-rc2-orange pl-4 text-rc2-ebony/70 italic text-sm leading-relaxed">
+            <blockquote className="border-l-2 border-rc2-brand pl-4 text-rc2-text/70 italic text-sm leading-relaxed">
               {service.cta}
             </blockquote>
             <div className="mt-8">
@@ -300,7 +300,7 @@ export default async function ServicePage({ params }: Props) {
                 tracking={{ kind: "cta", location: "service_detail_benefits", label: "solicitar_diagnostico", destination: "/contato" }}
                 className={cn(
                   buttonVariants({ variant: "default" }),
-                  "font-semibold tracking-wide uppercase text-xs px-8 h-11 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90"
+                  "font-semibold tracking-wide uppercase text-xs px-8 h-11 bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90"
                 )}
               >
                 Solicitar diagnóstico
@@ -313,10 +313,10 @@ export default async function ServicePage({ params }: Props) {
             <div className="space-y-2">
               {topFaq.map((item, idx) => (
                 <details key={idx} className="group border border-border rounded-lg overflow-hidden bg-white">
-                  <summary className="px-4 py-3 cursor-pointer list-none text-rc2-ebony font-medium hover:bg-rc2-ebony/[0.02]">
+                  <summary className="px-4 py-3 cursor-pointer list-none text-rc2-heading font-medium hover:bg-rc2-text/[0.02]">
                     {item.question}
                   </summary>
-                  <div className="px-4 pb-4 text-sm text-rc2-ebony/75 leading-relaxed border-t border-border">
+                  <div className="px-4 pb-4 text-sm text-rc2-text/75 leading-relaxed border-t border-border">
                     {item.answer}
                   </div>
                 </details>
@@ -339,7 +339,7 @@ export default async function ServicePage({ params }: Props) {
                     source_page: `/servicos/${slug}`,
                     source_type: "service_page",
                   }}
-                  className="text-sm text-rc2-orange hover:underline underline-offset-4"
+                  className="text-sm text-rc2-brand-text hover:underline underline-offset-4"
                 >
                   {link.label}
                 </TrackedLink>
@@ -364,7 +364,7 @@ export default async function ServicePage({ params }: Props) {
                     source_page: `/servicos/${slug}`,
                     source_type: "service_page",
                   }}
-                  className="flex items-center gap-2 text-sm text-rc2-ebony/70 hover:text-rc2-ebony transition-colors"
+                  className="flex items-center gap-2 text-sm text-rc2-text/70 hover:text-rc2-text transition-colors"
                 >
                   <ArrowLeft size={14} aria-hidden="true" />
                   <span>{prev.shortTitle}</span>
@@ -373,7 +373,7 @@ export default async function ServicePage({ params }: Props) {
             </div>
             <Link
               href="/servicos"
-              className="text-sm text-rc2-ebony/70 hover:text-rc2-ebony transition-colors"
+              className="text-sm text-rc2-text/70 hover:text-rc2-text transition-colors"
             >
               ← Todos os serviços
             </Link>
@@ -389,7 +389,7 @@ export default async function ServicePage({ params }: Props) {
                     source_page: `/servicos/${slug}`,
                     source_type: "service_page",
                   }}
-                  className="flex items-center gap-2 text-sm text-rc2-ebony/70 hover:text-rc2-ebony transition-colors"
+                  className="flex items-center gap-2 text-sm text-rc2-text/70 hover:text-rc2-text transition-colors"
                 >
                   <span>{next.shortTitle}</span>
                   <ArrowLeft size={14} className="rotate-180" aria-hidden="true" />

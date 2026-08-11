@@ -121,33 +121,33 @@ export default async function SolucoesComIAPage() {
         description="A RC2 aplica IA em problemas reais do dia a dia: atendimento lento, perda de leads, retrabalho e falta de integração entre sistemas."
       />
 
-      <section className="bg-rc2-sand py-16 md:py-20">
+      <section className="bg-rc2-bg py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-10 rounded-lg border border-[var(--surface-2)] bg-white p-6 md:p-8">
+          <div className="mb-10 rounded-lg border border-rc2-surface-2 bg-white p-6 md:p-8">
             <SectionLabel className="block mb-3">Exemplos práticos</SectionLabel>
-            <div className="space-y-3 text-sm text-rc2-ebony/80">
-              <p><span className="font-semibold text-rc2-ebony">Atendimento:</span> dúvidas frequentes chegam pelo WhatsApp; a IA responde o básico e encaminha casos complexos para a equipe, reduzindo fila de resposta.</p>
-              <p><span className="font-semibold text-rc2-ebony">Leads:</span> novos contatos entram sem contexto; a IA faz perguntas iniciais e envia oportunidades mais qualificadas para o vendedor certo.</p>
-              <p><span className="font-semibold text-rc2-ebony">Equipe interna:</span> informações ficam espalhadas; a IA consulta documentos e entrega respostas rápidas sem busca manual em várias ferramentas.</p>
-              <p><span className="font-semibold text-rc2-ebony">Pós-venda:</span> solicitações chegam misturadas; a IA classifica demandas e organiza o fluxo antes da análise humana, melhorando previsibilidade operacional.</p>
+            <div className="space-y-3 text-sm text-rc2-text/80">
+              <p><span className="font-semibold text-rc2-heading">Atendimento:</span> dúvidas frequentes chegam pelo WhatsApp; a IA responde o básico e encaminha casos complexos para a equipe, reduzindo fila de resposta.</p>
+              <p><span className="font-semibold text-rc2-heading">Leads:</span> novos contatos entram sem contexto; a IA faz perguntas iniciais e envia oportunidades mais qualificadas para o vendedor certo.</p>
+              <p><span className="font-semibold text-rc2-heading">Equipe interna:</span> informações ficam espalhadas; a IA consulta documentos e entrega respostas rápidas sem busca manual em várias ferramentas.</p>
+              <p><span className="font-semibold text-rc2-heading">Pós-venda:</span> solicitações chegam misturadas; a IA classifica demandas e organiza o fluxo antes da análise humana, melhorando previsibilidade operacional.</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {blocks.map((block) => (
-              <div key={block.label} className="bg-[var(--surface-1)] border border-[var(--surface-2)] rounded-lg p-8 md:p-10">
+              <div key={block.label} className="bg-rc2-bg-alt border border-rc2-surface-2 rounded-lg p-8 md:p-10">
                 <SectionLabel className="block mb-3">{block.label}</SectionLabel>
-                <h2 className="text-xl md:text-2xl font-semibold text-rc2-ebony mb-2">
+                <h2 className="text-xl md:text-2xl font-semibold text-rc2-heading mb-2">
                   {block.title}
                 </h2>
                 {block.subtitle && (
-                  <p className="text-sm text-rc2-ebony/70 mb-4">{block.subtitle}</p>
+                  <p className="text-sm text-rc2-text/70 mb-4">{block.subtitle}</p>
                 )}
                 <ul className="mt-4 space-y-2">
                   {block.items.map((item, i) => (
                     <li key={i} className="flex items-start gap-2.5">
-                      <span className="text-rc2-orange text-xs mt-1 shrink-0">→</span>
-                      <span className="text-sm text-rc2-ebony/80">{item}</span>
+                      <span className="text-rc2-brand text-xs mt-1 shrink-0">→</span>
+                      <span className="text-sm text-rc2-text/80">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -157,7 +157,7 @@ export default async function SolucoesComIAPage() {
 
           {/* Bridge text */}
           <div className="mt-16 max-w-2xl">
-            <p className="text-rc2-ebony/70 text-lg leading-relaxed border-l-2 border-rc2-orange pl-5 italic">
+            <p className="text-rc2-text/70 text-lg leading-relaxed border-l-2 border-rc2-brand pl-5 italic">
               Você não precisa chegar com a solução pronta. A RC2 ajuda a
               identificar por onde começar, priorizando o que gera impacto real
               com menor complexidade.

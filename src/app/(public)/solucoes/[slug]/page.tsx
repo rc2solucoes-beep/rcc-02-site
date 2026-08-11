@@ -107,15 +107,15 @@ export default async function SolucaoPage({ params }: Props) {
 
       <PageHero label="Soluções por problema" title={solution.title} description={solution.description} />
 
-      <section className="bg-rc2-sand py-16 md:py-20">
+      <section className="bg-rc2-bg py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-14">
           <div id="publico">
             <SectionLabel className="block mb-4">Para quem é esta solução</SectionLabel>
             <ul className="space-y-3">
               {solution.targetAudience.map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <span className="text-rc2-orange font-bold text-sm mt-0.5" aria-hidden="true">•</span>
-                  <span className="text-rc2-ebony/80">{item}</span>
+                  <span className="text-rc2-brand font-bold text-sm mt-0.5" aria-hidden="true">•</span>
+                  <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ul>
@@ -126,8 +126,8 @@ export default async function SolucaoPage({ params }: Props) {
             <ul className="space-y-3">
               {solution.symptoms.map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <Check size={16} className="text-rc2-orange shrink-0 mt-0.5" strokeWidth={2.5} aria-hidden="true" />
-                  <span className="text-rc2-ebony/80">{item}</span>
+                  <Check size={16} className="text-rc2-brand shrink-0 mt-0.5" strokeWidth={2.5} aria-hidden="true" />
+                  <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ul>
@@ -138,17 +138,17 @@ export default async function SolucaoPage({ params }: Props) {
             <ul className="space-y-3">
               {solution.businessImpact.map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <span className="text-rc2-orange font-bold text-sm mt-0.5" aria-hidden="true">→</span>
-                  <span className="text-rc2-ebony/80">{item}</span>
+                  <span className="text-rc2-brand font-bold text-sm mt-0.5" aria-hidden="true">→</span>
+                  <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="rounded-lg border border-rc2-orange/25 bg-white p-5 md:p-6">
+          <div className="rounded-lg border border-rc2-brand/25 bg-white p-5 md:p-6">
             <SectionLabel className="block mb-3">Atalho rápido</SectionLabel>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm text-rc2-ebony/75">
+              <p className="text-sm text-rc2-text/75">
                 Se esse problema já está acontecendo no seu dia a dia, você pode avançar agora.
               </p>
               <div className="flex flex-wrap items-center gap-3">
@@ -162,7 +162,7 @@ export default async function SolucaoPage({ params }: Props) {
                     label: "falar_pelo_whatsapp",
                     destination: solutionWhatsappUrl,
                   }}
-                  className="text-sm font-semibold text-rc2-orange hover:underline underline-offset-4"
+                  className="text-sm font-semibold text-rc2-brand-text hover:underline underline-offset-4"
                 >
                   Falar sobre este problema
                 </TrackedLink>
@@ -177,7 +177,7 @@ export default async function SolucaoPage({ params }: Props) {
                       source_page: `/solucoes/${slug}`,
                       source_type: "solution_page",
                     }}
-                    className="text-sm text-rc2-ebony/75 hover:text-rc2-ebony hover:underline underline-offset-4"
+                    className="text-sm text-rc2-text/75 hover:text-rc2-text hover:underline underline-offset-4"
                   >
                     Ver serviço relacionado
                   </TrackedLink>
@@ -191,8 +191,8 @@ export default async function SolucaoPage({ params }: Props) {
             <ul className="space-y-3">
               {solution.rootCauses.map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <span className="text-rc2-orange font-bold text-sm mt-0.5" aria-hidden="true">•</span>
-                  <span className="text-rc2-ebony/80">{item}</span>
+                  <span className="text-rc2-brand font-bold text-sm mt-0.5" aria-hidden="true">•</span>
+                  <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ul>
@@ -203,8 +203,8 @@ export default async function SolucaoPage({ params }: Props) {
             <ol className="space-y-3">
               {solution.recommendedApproach.map((item, index) => (
                 <li key={item} className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-full bg-rc2-orange text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{index + 1}</span>
-                  <span className="text-rc2-ebony/80">{item}</span>
+                  <span className="w-6 h-6 rounded-full bg-rc2-brand text-rc2-heading text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{index + 1}</span>
+                  <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ol>
@@ -215,8 +215,8 @@ export default async function SolucaoPage({ params }: Props) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {solution.relatedServices.map((service) => (
                 <article key={service.href} className="rounded-lg border border-border bg-white p-5">
-                  <h3 className="font-semibold text-rc2-ebony mb-2">{service.label}</h3>
-                  <p className="text-sm text-rc2-ebony/75 leading-relaxed mb-3">{service.description}</p>
+                  <h3 className="font-semibold text-rc2-heading mb-2">{service.label}</h3>
+                  <p className="text-sm text-rc2-text/75 leading-relaxed mb-3">{service.description}</p>
                   <TrackedLink
                     href={service.href}
                     tracking={{
@@ -227,7 +227,7 @@ export default async function SolucaoPage({ params }: Props) {
                       source_page: `/solucoes/${slug}`,
                       source_type: "solution_page",
                     }}
-                    className="text-sm text-rc2-orange hover:underline underline-offset-4"
+                    className="text-sm text-rc2-brand-text hover:underline underline-offset-4"
                   >
                     Ver serviço
                   </TrackedLink>
@@ -241,8 +241,8 @@ export default async function SolucaoPage({ params }: Props) {
             <ul className="space-y-3">
               {solution.metrics.map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <span className="text-rc2-orange font-bold text-sm mt-0.5" aria-hidden="true">→</span>
-                  <span className="text-rc2-ebony/80">{item}</span>
+                  <span className="text-rc2-brand font-bold text-sm mt-0.5" aria-hidden="true">→</span>
+                  <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ul>
@@ -253,10 +253,10 @@ export default async function SolucaoPage({ params }: Props) {
             <div className="space-y-2">
               {solution.faq.map((item) => (
                 <details key={item.question} className="group border border-border rounded-lg overflow-hidden bg-white">
-                  <summary className="px-4 py-3 cursor-pointer list-none text-rc2-ebony font-medium hover:bg-rc2-ebony/[0.02]">
+                  <summary className="px-4 py-3 cursor-pointer list-none text-rc2-heading font-medium hover:bg-rc2-text/[0.02]">
                     {item.question}
                   </summary>
-                  <div className="px-4 pb-4 text-sm text-rc2-ebony/75 leading-relaxed border-t border-border">
+                  <div className="px-4 pb-4 text-sm text-rc2-text/75 leading-relaxed border-t border-border">
                     {item.answer}
                   </div>
                 </details>
@@ -279,7 +279,7 @@ export default async function SolucaoPage({ params }: Props) {
                     source_page: `/solucoes/${slug}`,
                     source_type: "solution_page",
                   }}
-                  className="text-sm text-rc2-orange hover:underline underline-offset-4"
+                  className="text-sm text-rc2-brand-text hover:underline underline-offset-4"
                 >
                   {link.label}
                 </TrackedLink>
@@ -291,7 +291,7 @@ export default async function SolucaoPage({ params }: Props) {
             aria-label="Navegação de retorno"
             className="pt-8 border-t border-border"
           >
-            <Link href="/solucoes" className="inline-flex items-center gap-2 text-sm text-rc2-ebony/70 hover:text-rc2-ebony transition-colors">
+            <Link href="/solucoes" className="inline-flex items-center gap-2 text-sm text-rc2-text/70 hover:text-rc2-text transition-colors">
               <ArrowLeft size={14} aria-hidden="true" />
               <span>Todas as soluções</span>
             </Link>
