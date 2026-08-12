@@ -12,9 +12,15 @@ test.describe("Páginas de serviço", () => {
   test("listagem exibe todos os 5 serviços", async ({ page }) => {
     await page.goto("/servicos");
     await expect(page).toHaveTitle(/Serviços/);
-    // Cada serviço tem um link para diagnóstico
-    const ctaLinks = page.getByRole("link", { name: /Solicitar diagnóstico/i });
-    await expect(ctaLinks).toHaveCount(5);
+
+    const serviceLinks = page.getByRole("main").getByRole("link", { name: /Ver serviço/i });
+    await expect(serviceLinks).toHaveCount(SERVICE_SLUGS.length);
+
+    for (const slug of SERVICE_SLUGS) {
+      await expect(
+        page.getByRole("main").locator(`a[href="/servicos/${slug}"]`)
+      ).toBeVisible();
+    }
   });
 
   for (const slug of SERVICE_SLUGS) {
@@ -47,7 +53,6 @@ test.describe("Blog público", () => {
   test("estado vazio mostra mensagem", async ({ page }) => {
     await page.goto("/blog");
     // Either shows posts or the empty state
-    const hasContent = await page.getByText(/Em breve|Ler artigo/i).isVisible();
-    expect(hasContent).toBe(true);
+    await expect(page.getByText(/Em breve|Ler artigo/i).first()).toBeVisible();
   });
 });
