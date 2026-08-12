@@ -48,7 +48,7 @@ export function CTABlock({
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
         <h2
           className={cn(
-            "rc2-h2 rc2-display max-w-3xl mx-auto",
+            "rc2-h2 rc2-bold max-w-3xl mx-auto",
             isDark ? "text-rc2-dark-text" : "text-rc2-heading"
           )}
         >

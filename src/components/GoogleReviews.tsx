@@ -102,7 +102,7 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
               />
             ))}
           </div>
-          <span className="rc2-display text-3xl text-rc2-heading">{place.rating.toFixed(1)}</span>
+          <span className="rc2-bold text-3xl text-rc2-heading">{place.rating.toFixed(1)}</span>
         </div>
         <p className="text-sm text-rc2-text-secondary">
           {place.userRatingCount} avaliações no Google

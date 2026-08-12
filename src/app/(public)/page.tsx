@@ -325,7 +325,7 @@ export default async function HomePage({ searchParams }: Props) {
         <div className="rc2-blueprint-dark pointer-events-none absolute inset-0 opacity-50" aria-hidden />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 max-w-3xl">
           <SectionLabel className="rc2-rule block mb-5 text-rc2-brand">Diferencial</SectionLabel>
-          <h2 className="rc2-h2 rc2-display text-rc2-dark-text mb-6">
+          <h2 className="rc2-h2 text-rc2-dark-text mb-6">
             Tecnologia com visão de operação.
           </h2>
           <p className="text-rc2-dark-text-secondary text-lg leading-relaxed mb-6">

@@ -82,9 +82,10 @@ export default async function SobrePage() {
         label="Sobre a RC2"
         title="Tecnologia que funciona. Operação que entrega."
         description="Consultoria especializada em IA, automações e operações digitais — com foco em resultado real para PMEs."
+        className="rc2-section--opening"
       />
 
-      <section className="bg-rc2-bg rc2-section">
+      <section className="bg-rc2-bg rc2-section rc2-section--argument">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
             {/* Institucional */}
@@ -138,6 +139,7 @@ export default async function SobrePage() {
       <CTABlock
         title="Quer conhecer melhor a RC2?"
         description="Solicite um diagnóstico gratuito e veja como trabalhamos na prática."
+        className="rc2-section--closing"
       />
     </>
   );

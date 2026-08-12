@@ -57,9 +57,10 @@ export default async function ServicosPage() {
         label="Serviços"
         title="Cinco serviços para resolver gargalos reais da sua operação."
         description="Da organização do atendimento à integração entre sistemas, a RC2 conecta tecnologia ao que trava vendas, atendimento e produtividade no dia a dia."
+        className="rc2-section--opening"
       />
 
-      <section className="bg-rc2-bg rc2-section">
+      <section className="bg-rc2-bg rc2-section rc2-section--proof">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="relative mb-10 overflow-hidden rounded-xl border border-rc2-surface-2 bg-rc2-bg-alt p-6 pt-7 md:p-8 md:pt-9">
             <span className="absolute left-0 top-0 h-1 w-10 bg-rc2-brand" aria-hidden />
@@ -147,6 +148,7 @@ export default async function ServicosPage() {
       <CTABlock
         title="Pronto para transformar sua operação?"
         description="Solicite um diagnóstico gratuito e descubra por onde começar."
+        className="rc2-section--closing"
       />
     </>
   );

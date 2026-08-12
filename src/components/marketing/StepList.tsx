@@ -20,7 +20,7 @@ export function StepList({ steps, variant = "light", className }: StepListProps)
         <li key={i} className="flex gap-6 py-6 first:pt-0 last:pb-0">
           <span
             className={cn(
-              "rc2-display text-4xl md:text-5xl leading-none shrink-0 w-10 text-right",
+              "rc2-bold text-4xl md:text-5xl leading-none shrink-0 w-10 text-right",
               isDark ? "text-rc2-brand/30" : "text-rc2-brand-text/20"
             )}
             aria-hidden
