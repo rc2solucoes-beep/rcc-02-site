@@ -73,3 +73,6 @@ contrast-audit.html
 
 # Codex CLI
 .codex/
+
+# Isolated feature worktrees
+.worktrees/
