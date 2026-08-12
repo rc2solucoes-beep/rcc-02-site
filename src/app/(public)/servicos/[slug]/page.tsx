@@ -303,7 +303,7 @@ export default async function ServicePage({ params }: Props) {
                   "font-semibold tracking-wide uppercase text-xs px-8 h-11 bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90"
                 )}
               >
-                Solicitar diagnóstico
+                Ver se serve para o meu caso
               </TrackedLink>
             </div>
           </div>
@@ -414,6 +414,7 @@ export default async function ServicePage({ params }: Props) {
       <CTABlock
         title="Esse serviço faz sentido para você?"
         description="Solicite um diagnóstico gratuito e descubra como podemos ajudar sua operação."
+        primaryLabel="Aplicar isso na minha operação"
         secondaryHref={serviceWhatsappUrl}
       />
     </>

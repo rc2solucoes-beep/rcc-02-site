@@ -119,11 +119,15 @@ export default async function HomePage({ searchParams }: Props) {
 
           <HeroActions variant={heroVariant} />
 
-          <p className="mt-5 text-sm text-rc2-text/70">
-            {heroVariant === "b"
-              ? "Diagnóstico inicial com mapa de oportunidades."
-              : "Sem compromisso. Retorno em até 1 dia útil."}
-          </p>
+          <div className="mt-5 text-sm text-rc2-text/70 max-w-2xl">
+            <p className="font-semibold text-rc2-text">
+              A RC2 usa no próprio comercial o que implementa nos clientes: um
+              agente de IA filtra, e quem conversa com você é o Robson.
+            </p>
+            <p className="mt-1">
+              20+ anos em TI, e-commerce e operação digital.
+            </p>
+          </div>
           <p className="mt-6 text-xs italic text-rc2-text/75">
             &ldquo;Tecnologia que funciona. Operação que entrega.&rdquo;
           </p>
@@ -232,7 +236,7 @@ export default async function HomePage({ searchParams }: Props) {
                       }}
                       className="inline-flex items-center gap-1.5 text-sm font-semibold text-rc2-brand-text md:justify-self-end group-hover:gap-2 transition-all"
                     >
-                      Comece por {item.label}
+                      {item.href === "/contato" ? "Diagnosticar minha dor" : `Comece por ${item.label}`}
                       <ArrowRight size={14} />
                     </TrackedLink>
                   </article>
@@ -283,11 +287,36 @@ export default async function HomePage({ searchParams }: Props) {
                 </p>
               </div>
               <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-rc2-dark-text group-hover:gap-3 transition-all duration-200">
-                Solicitar diagnóstico
+                Mapear meus gargalos
                 <ArrowRight size={14} />
               </span>
             </TrackedLink>
           </div>
+        </div>
+      </section>
+
+      {/* ── Posicionamento ── */}
+      <section className="bg-rc2-bg-alt rc2-section">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionLabel className="rc2-rule block mb-5">Posicionamento</SectionLabel>
+          <h2 className="rc2-h2 text-rc2-heading mb-10">
+            O que a RC2 não é
+          </h2>
+          <div className="space-y-5 max-w-4xl">
+            <p className="rc2-rule text-lg text-rc2-text leading-relaxed">
+              Não é agência de marketing que também "faz automação".
+            </p>
+            <p className="rc2-rule text-lg text-rc2-text leading-relaxed">
+              Não é revenda de ferramenta com treinamento incluso.
+            </p>
+            <p className="rc2-rule text-lg text-rc2-text leading-relaxed">
+              Não é entusiasta de IA que nunca operou um negócio de verdade.
+            </p>
+          </div>
+          <p className="mt-10 text-xl md:text-2xl font-semibold text-rc2-heading leading-snug max-w-3xl">
+            A RC2 implementa. Do diagnóstico ao processo rodando — e fica até
+            funcionar.
+          </p>
         </div>
       </section>
 
@@ -343,6 +372,7 @@ export default async function HomePage({ searchParams }: Props) {
       <CTABlock
         title="Quer descobrir onde a IA pode gerar resultado na sua empresa?"
         description="Solicite um diagnóstico inicial e receba um mapa de oportunidades para automatizar atendimento, vendas e processos."
+        primaryLabel="Começar pelo diagnóstico"
         secondaryHref={HOME_WHATSAPP_URL}
       />
     </>

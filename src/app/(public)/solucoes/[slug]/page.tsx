@@ -310,7 +310,12 @@ export default async function SolucaoPage({ params }: Props) {
         ]}
       />
 
-      <CTABlock title={solution.ctaTitle} description={solution.ctaDescription} secondaryHref={solutionWhatsappUrl} />
+      <CTABlock
+        title={solution.ctaTitle}
+        description={solution.ctaDescription}
+        primaryLabel="Aplicar isso na minha operação"
+        secondaryHref={solutionWhatsappUrl}
+      />
     </>
   );
 }

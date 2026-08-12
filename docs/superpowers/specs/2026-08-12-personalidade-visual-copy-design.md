@@ -28,8 +28,10 @@ Conteúdo:
 
 O texto de apoio abaixo das ações do hero será substituído por duas linhas:
 
-- “Quem atende é o Robson. Não um comercial, não um júnior.” com maior peso;
+- “A RC2 usa no próprio comercial o que implementa nos clientes: um agente de IA filtra, e quem conversa com você é o Robson.” com maior peso;
 - “20+ anos em TI, e-commerce e operação digital.” como apoio secundário.
+
+No viewport de 390 px, a primeira linha deve ocupar no máximo três linhas. Se ultrapassar esse limite, a implementação deve parar antes das demais alterações para comunicar o problema.
 
 A assinatura em itálico existente permanece abaixo desse bloco. Não haverá mudança nas classes dos botões ou no componente `HeroActions` além do rótulo do CTA primário.
 
@@ -42,8 +44,8 @@ Todos os destinos permanecem inalterados. O valor padrão de `CTABlock` também 
 | Header desktop e mobile | Solicitar diagnóstico |
 | Hero da home | Ver onde minha operação trava |
 | Link para `/contato` em “Escolha pela sua dor” | Diagnosticar minha dor |
-| Sexto card após serviços na home | Mapear o que dá para automatizar |
-| CTA intermediário da página individual de serviço | Aplicar isso na minha operação |
+| Sexto card após serviços na home | Mapear meus gargalos |
+| CTA intermediário da página individual de serviço | Ver se serve para o meu caso |
 | CTA final da página individual de serviço | Aplicar isso na minha operação |
 | CTA final da página individual de solução | Aplicar isso na minha operação |
 | CTA padrão no fim de post do blog | Falar sobre o meu caso |
@@ -71,4 +73,4 @@ Os textos novos seguem a seção 3 do guia de marca: linguagem profissional, dir
 3. `npm run audit:brand` deve concluir sem violações.
 4. A home deve ser capturada antes e depois em 1440 px e 390 px.
 5. No viewport de 390 px, cada novo rótulo de CTA deve ser inspecionado para identificar quebra de linha.
-
+6. “Mapear meus gargalos” deve permanecer em uma linha no sexto card da home em 1440 px e 390 px; qualquer necessidade de encurtar exige comunicação prévia.

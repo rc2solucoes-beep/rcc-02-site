@@ -353,7 +353,7 @@ export function BlogPostArticle({ post, relatedPosts }: BlogPostArticleProps) {
                       tracking={{ kind: "cta", location: "blog_post_default_cta", label: "solicitar_diagnostico", destination: "/contato" }}
                       className="inline-block px-6 py-2.5 bg-rc2-brand text-rc2-heading font-medium rounded hover:bg-rc2-brand/90 transition-colors"
                     >
-                      Solicitar diagnóstico →
+                      Falar sobre o meu caso →
                     </TrackedLink>
                   </div>
                 </div>

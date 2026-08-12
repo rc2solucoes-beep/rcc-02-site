@@ -30,7 +30,7 @@ export function HeroActions({ variant }: HeroActionsProps) {
           "font-semibold tracking-wide uppercase text-xs px-8 h-12 bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90"
         )}
       >
-        Solicitar diagnóstico
+        Ver onde minha operação trava
       </Link>
       <Link
         href={WHATSAPP_URL}
