@@ -1,4 +1,5 @@
 import { buttonVariants } from "@/components/ui/button";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { cn } from "@/lib/utils";
 
@@ -46,64 +47,68 @@ export function CTABlock({
         aria-hidden
       />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-        <h2
-          className={cn(
-            "rc2-h2 rc2-bold max-w-3xl mx-auto",
-            isDark ? "text-rc2-dark-text" : "text-rc2-heading"
-          )}
-        >
-          {title}
-        </h2>
-        {description && (
-          <p
+        <ScrollReveal direction="none">
+          <h2
             className={cn(
-              "rc2-body mt-4 max-w-2xl mx-auto",
-              isDark ? "text-rc2-dark-text-secondary" : "text-rc2-heading"
+              "rc2-h2 rc2-bold max-w-3xl mx-auto",
+              isDark ? "text-rc2-dark-text" : "text-rc2-heading"
             )}
           >
-            {description}
-          </p>
-        )}
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <TrackedLink
-            href={primaryHref}
-            tracking={{
-              kind: primaryHref.startsWith("https://wa.me") ? "whatsapp" : "cta",
-              location: "cta_block_primary",
-              label: "cta_block_primary",
-              destination: primaryHref,
-            }}
-            className={cn(
-              buttonVariants({ variant: "default" }),
-              "ui-focus-ring font-semibold tracking-wide uppercase text-xs px-8 h-11 bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90 active:bg-rc2-brand active:ring-1 active:ring-rc2-brand/50 transition-all duration-150",
-              !isDark && "bg-rc2-bg text-rc2-brand-text hover:bg-rc2-bg/90 active:bg-rc2-bg active:ring-rc2-brand/50"
-            )}
-          >
-            {primaryLabel}
-          </TrackedLink>
-          {!hideSecondary && (
-            <TrackedLink
-              href={secondaryHref}
-              target={secondaryHref.startsWith("http") ? "_blank" : undefined}
-              rel={secondaryHref.startsWith("http") ? "noopener noreferrer" : undefined}
-              tracking={{
-                kind: secondaryHref.startsWith("https://wa.me") ? "whatsapp" : "cta",
-                location: "cta_block_secondary",
-                label: "cta_block_secondary",
-                destination: secondaryHref,
-              }}
+            {title}
+          </h2>
+          {description && (
+            <p
               className={cn(
-                "ui-focus-ring rounded-lg px-6 h-11 inline-flex items-center gap-1.5 border font-medium text-sm transition-all duration-200",
-                isDark
-                  ? "border-rc2-dark-border text-rc2-dark-text hover:border-rc2-dark-text/80 hover:bg-rc2-dark-text/10 active:bg-rc2-dark-text/20 active:border-rc2-dark-text/90"
-                  : "border-rc2-heading/40 text-rc2-heading hover:border-rc2-heading/80 hover:bg-rc2-heading/10 active:bg-rc2-heading/20 active:border-rc2-heading/90"
+                "rc2-body mt-4 max-w-2xl mx-auto",
+                isDark ? "text-rc2-dark-text-secondary" : "text-rc2-heading"
               )}
             >
-              {secondaryLabel}
-              <span>→</span>
-            </TrackedLink>
+              {description}
+            </p>
           )}
-        </div>
+        </ScrollReveal>
+        <ScrollReveal delay={120} distance="18px">
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <TrackedLink
+              href={primaryHref}
+              tracking={{
+                kind: primaryHref.startsWith("https://wa.me") ? "whatsapp" : "cta",
+                location: "cta_block_primary",
+                label: "cta_block_primary",
+                destination: primaryHref,
+              }}
+              className={cn(
+                buttonVariants({ variant: "default" }),
+                "ui-focus-ring font-semibold tracking-wide uppercase text-xs px-8 h-11 bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90 active:bg-rc2-brand active:ring-1 active:ring-rc2-brand/50 transition-all duration-150",
+                !isDark && "bg-rc2-bg text-rc2-brand-text hover:bg-rc2-bg/90 active:bg-rc2-bg active:ring-rc2-brand/50"
+              )}
+            >
+              {primaryLabel}
+            </TrackedLink>
+            {!hideSecondary && (
+              <TrackedLink
+                href={secondaryHref}
+                target={secondaryHref.startsWith("http") ? "_blank" : undefined}
+                rel={secondaryHref.startsWith("http") ? "noopener noreferrer" : undefined}
+                tracking={{
+                  kind: secondaryHref.startsWith("https://wa.me") ? "whatsapp" : "cta",
+                  location: "cta_block_secondary",
+                  label: "cta_block_secondary",
+                  destination: secondaryHref,
+                }}
+                className={cn(
+                  "ui-focus-ring rounded-lg px-6 h-11 inline-flex items-center gap-1.5 border font-medium text-sm transition-all duration-200",
+                  isDark
+                    ? "border-rc2-dark-border text-rc2-dark-text hover:border-rc2-dark-text/80 hover:bg-rc2-dark-text/10 active:bg-rc2-dark-text/20 active:border-rc2-dark-text/90"
+                    : "border-rc2-heading/40 text-rc2-heading hover:border-rc2-heading/80 hover:bg-rc2-heading/10 active:bg-rc2-heading/20 active:border-rc2-heading/90"
+                )}
+              >
+                {secondaryLabel}
+                <span>→</span>
+              </TrackedLink>
+            )}
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

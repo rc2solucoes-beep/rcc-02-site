@@ -51,10 +51,10 @@ export function Header() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 backdrop-blur-sm border-b transition-all duration-200",
+        "sticky top-0 z-50 border-b transition-all duration-300 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-rc2-brand after:transition-opacity after:duration-300",
         scrolled
-          ? "bg-rc2-bg/98 border-rc2-border shadow-sm"
-          : "bg-rc2-bg/95 border-border"
+          ? "bg-rc2-bg/98 border-rc2-border shadow-[var(--shadow-soft)] backdrop-blur-md after:opacity-70"
+          : "bg-rc2-bg/92 border-border backdrop-blur-sm after:opacity-0"
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
