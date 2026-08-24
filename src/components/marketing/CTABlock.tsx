@@ -79,7 +79,7 @@ export function CTABlock({
               }}
               className={cn(
                 buttonVariants({ variant: "default" }),
-                "ui-focus-ring font-semibold tracking-wide uppercase text-xs px-8 h-11 bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90 active:bg-rc2-brand active:ring-1 active:ring-rc2-brand/50 transition-all duration-150",
+                "ui-focus-ring font-semibold tracking-wide uppercase text-xs px-8 h-11 bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90 active:bg-rc2-brand active:ring-1 active:ring-rc2-brand/50 transition-[background-color,color,box-shadow] duration-150",
                 !isDark && "bg-rc2-bg text-rc2-brand-text hover:bg-rc2-bg/90 active:bg-rc2-bg active:ring-rc2-brand/50"
               )}
             >
@@ -97,7 +97,7 @@ export function CTABlock({
                   destination: secondaryHref,
                 }}
                 className={cn(
-                  "ui-focus-ring rounded-lg px-6 h-11 inline-flex items-center gap-1.5 border font-medium text-sm transition-all duration-200",
+                  "ui-focus-ring rounded-lg px-6 h-11 inline-flex items-center gap-1.5 border font-medium text-sm transition-[background-color,border-color,color,box-shadow] duration-200",
                   isDark
                     ? "border-rc2-dark-border text-rc2-dark-text hover:border-rc2-dark-text/80 hover:bg-rc2-dark-text/10 active:bg-rc2-dark-text/20 active:border-rc2-dark-text/90"
                     : "border-rc2-heading/40 text-rc2-heading hover:border-rc2-heading/80 hover:bg-rc2-heading/10 active:bg-rc2-heading/20 active:border-rc2-heading/90"

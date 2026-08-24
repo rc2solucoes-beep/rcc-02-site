@@ -34,9 +34,13 @@ const sizeOptions = [
   "Mais de 200 colaboradores",
 ];
 
-function FieldError({ message }: { message?: string }) {
+function FieldError({ id, message }: { id: string; message?: string }) {
   if (!message) return null;
-  return <p className="mt-1.5 text-xs text-destructive font-medium" role="alert">{message}</p>;
+  return (
+    <p id={id} className="mt-1.5 text-xs text-destructive font-medium" role="alert">
+      {message}
+    </p>
+  );
 }
 
 function Label({
@@ -65,6 +69,10 @@ const FORM_CONTEXT = {
   source_page: "/contato",
   source_type: "contact_page",
 };
+
+function getErrorDescription(fieldId: string, hasError: boolean) {
+  return hasError ? `${fieldId}-error` : undefined;
+}
 
 function categorizeCompanySegment(segment: string): CompanySegmentCategory {
   const normalizedSegment = segment
@@ -341,9 +349,11 @@ export function ContactForm() {
               autoComplete="name"
               placeholder="Seu nome completo"
               className={cn(inputBase, errors.name && "border-destructive")}
+              aria-invalid={errors.name ? "true" : "false"}
+              aria-describedby={getErrorDescription("name", Boolean(errors.name))}
               {...register("name")}
             />
-            <FieldError message={errors.name?.message} />
+            <FieldError id="name-error" message={errors.name?.message} />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -355,9 +365,11 @@ export function ContactForm() {
                 autoComplete="email"
                 placeholder="seu@email.com"
                 className={cn(inputBase, errors.email && "border-destructive")}
+                aria-invalid={errors.email ? "true" : "false"}
+                aria-describedby={getErrorDescription("email", Boolean(errors.email))}
                 {...register("email")}
               />
-              <FieldError message={errors.email?.message} />
+              <FieldError id="email-error" message={errors.email?.message} />
             </div>
             <div>
               <Label htmlFor="whatsapp" required>WhatsApp</Label>
@@ -368,9 +380,11 @@ export function ContactForm() {
                 inputMode="tel"
                 placeholder="(11) 99999-9999"
                 className={cn(inputBase, errors.whatsapp && "border-destructive")}
+                aria-invalid={errors.whatsapp ? "true" : "false"}
+                aria-describedby={getErrorDescription("whatsapp", Boolean(errors.whatsapp))}
                 {...register("whatsapp")}
               />
-              <FieldError message={errors.whatsapp?.message} />
+              <FieldError id="whatsapp-error" message={errors.whatsapp?.message} />
             </div>
           </div>
 
@@ -381,16 +395,18 @@ export function ContactForm() {
               rows={4}
               placeholder="Exemplo: muitos contatos sem resposta, tarefas manuais, dados espalhados ou sistemas que não conversam."
               className={cn(inputBase, "resize-none", errors.message && "border-destructive")}
+              aria-invalid={errors.message ? "true" : "false"}
+              aria-describedby={getErrorDescription("message", Boolean(errors.message))}
               {...register("message")}
             />
-            <FieldError message={errors.message?.message} />
+            <FieldError id="message-error" message={errors.message?.message} />
           </div>
 
           <div className="mt-8 flex gap-3">
             <button
               type="button"
               onClick={handleStep1Next}
-              className="ui-focus-ring flex-1 px-10 h-12 bg-rc2-brand text-rc2-heading font-semibold tracking-wide uppercase text-xs hover:bg-rc2-brand/90 active:bg-rc2-brand active:ring-1 active:ring-rc2-brand/50 transition-all duration-150 rounded-md flex items-center justify-center gap-2"
+              className="ui-focus-ring flex-1 px-10 h-12 bg-rc2-brand text-rc2-heading font-semibold tracking-wide uppercase text-xs hover:bg-rc2-brand/90 active:bg-rc2-brand active:ring-1 active:ring-rc2-brand/50 transition-[background-color,color,box-shadow] duration-150 rounded-md flex items-center justify-center gap-2"
             >
               Continuar para dados da empresa
               <ChevronRight size={16} />
@@ -410,9 +426,11 @@ export function ContactForm() {
               autoComplete="organization"
               placeholder="Nome da empresa"
               className={cn(inputBase, errors.company && "border-destructive")}
+              aria-invalid={errors.company ? "true" : "false"}
+              aria-describedby={getErrorDescription("company", Boolean(errors.company))}
               {...register("company")}
             />
-            <FieldError message={errors.company?.message} />
+            <FieldError id="company-error" message={errors.company?.message} />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -423,15 +441,19 @@ export function ContactForm() {
                 type="text"
                 placeholder="Ex: Varejo, Saúde, Logística..."
                 className={cn(inputBase, errors.segment && "border-destructive")}
+                aria-invalid={errors.segment ? "true" : "false"}
+                aria-describedby={getErrorDescription("segment", Boolean(errors.segment))}
                 {...register("segment")}
               />
-              <FieldError message={errors.segment?.message} />
+              <FieldError id="segment-error" message={errors.segment?.message} />
             </div>
             <div>
               <Label htmlFor="size" required>Porte (colaboradores)</Label>
               <select
                 id="size"
                 className={cn(inputBase, "cursor-pointer", errors.size && "border-destructive")}
+                aria-invalid={errors.size ? "true" : "false"}
+                aria-describedby={getErrorDescription("size", Boolean(errors.size))}
                 {...register("size")}
                 defaultValue=""
               >
@@ -440,7 +462,7 @@ export function ContactForm() {
                   <option key={opt} value={opt}>{opt}</option>
                 ))}
               </select>
-              <FieldError message={errors.size?.message} />
+              <FieldError id="size-error" message={errors.size?.message} />
             </div>
           </div>
 
@@ -449,6 +471,8 @@ export function ContactForm() {
             <select
               id="solution"
               className={cn(inputBase, "cursor-pointer", errors.solution && "border-destructive")}
+              aria-invalid={errors.solution ? "true" : "false"}
+              aria-describedby={getErrorDescription("solution", Boolean(errors.solution))}
               {...register("solution")}
               defaultValue=""
             >
@@ -457,7 +481,7 @@ export function ContactForm() {
                 <option key={opt} value={opt}>{opt}</option>
               ))}
             </select>
-            <FieldError message={errors.solution?.message} />
+            <FieldError id="solution-error" message={errors.solution?.message} />
           </div>
 
           {serverError && (
@@ -532,7 +556,7 @@ export function ContactForm() {
               type="button"
               onClick={handleStep1Back}
               disabled={isSubmitting}
-              className="ui-focus-ring px-6 h-12 border border-border text-rc2-text font-semibold tracking-wide uppercase text-xs hover:bg-rc2-bg-alt active:ring-1 active:ring-rc2-brand/50 transition-all duration-150 rounded-md flex items-center justify-center gap-2 disabled:opacity-60"
+              className="ui-focus-ring px-6 h-12 border border-border text-rc2-text font-semibold tracking-wide uppercase text-xs hover:bg-rc2-bg-alt active:ring-1 active:ring-rc2-brand/50 transition-[background-color,border-color,color,box-shadow,opacity] duration-150 rounded-md flex items-center justify-center gap-2 disabled:opacity-60"
             >
               <ChevronLeft size={16} />
               Voltar
@@ -540,7 +564,7 @@ export function ContactForm() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="ui-focus-ring flex-1 px-10 h-12 bg-rc2-brand text-rc2-heading font-semibold tracking-wide uppercase text-xs hover:bg-rc2-brand/90 active:bg-rc2-brand active:ring-1 active:ring-rc2-brand/50 transition-all duration-150 disabled:opacity-60 disabled:cursor-not-allowed rounded-md"
+              className="ui-focus-ring flex-1 px-10 h-12 bg-rc2-brand text-rc2-heading font-semibold tracking-wide uppercase text-xs hover:bg-rc2-brand/90 active:bg-rc2-brand active:ring-1 active:ring-rc2-brand/50 transition-[background-color,color,box-shadow,opacity] duration-150 disabled:opacity-60 disabled:cursor-not-allowed rounded-md"
             >
               {isSubmitting ? "Enviando solicitação..." : "Solicitar diagnóstico"}
             </button>

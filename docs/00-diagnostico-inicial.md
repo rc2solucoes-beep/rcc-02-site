@@ -10,7 +10,7 @@
 | Arquivo | Localização | Status |
 |---|---|---|
 | `Estrutura e copy - MVP.docx` | `documentos-base/` | Lido |
-| `RC2_Brand_Guide_v2.docx` | `documentos-base/` | Lido |
+| `RC2_Brand_Guide_v2.1.md` | `documentos-base/` | Lido |
 | `Plano_Consolidado_RC2_Site_Institucional_Blog_CMS.docx` | `documentos-base/` | Lido |
 | `logo-base.png` | `documentos-base/` | Presente |
 | `logo-base-transparente.png` | `documentos-base/` | Presente |
@@ -65,16 +65,23 @@ Site institucional B2B para venda de serviços de consultoria em IA, automaçõe
 
 ## 3. Escopo visual e de marca
 
-### 3.1 Paleta de cores (Brand Guide v2)
+### 3.1 Paleta de cores (Brand Guide v2.1)
 | Nome | Hex | Uso | Proporção |
 |---|---|---|---|
-| Areia Industrial | `#F5F0E8` | Fundo principal | 50% |
-| Ink Black | `#121212` | Seções escuras, headers | 20% |
-| Deep Forest | `#163020` | Rodapés, seções de prova social | 20% |
-| Safety Orange | `#FF5F1F` | CTA, detalhe do logo, destaque | máx. 10% |
-| Ébano Quente | `#1E1610` | Texto corrido e titulação | — |
+| Warm Base | `#F7F5F1` | Fundo principal de páginas e documentos | 60–70% junto aos demais neutros claros |
+| Warm Alt | `#FBFAF8` | Fundo alternativo e seções de respiro | 60–70% junto aos demais neutros claros |
+| Surface White | `#FFFFFF` | Cards, inputs, modais e superfícies elevadas | Apenas superfície, não fundo de página |
+| Navy Core | `#081827` | Footer, CTA bands e áreas escuras principais | 20–30% junto à família Navy / Slate |
+| Navy Secondary | `#0C2032` | Seções escuras secundárias, incluindo Diferencial | 20–30% junto à família Navy / Slate |
+| Graphite Navy | `#0B1726` | Títulos e texto sobre Safety Orange | — |
+| Body Slate | `#24313D` | Texto principal em fundo claro | — |
+| Muted Slate | `#66717D` | Texto secundário | — |
+| Safety Orange | `#FF5F1F` | CTA, ícones de ação, indicadores e estados ativos | até 10% |
+| Orange Text | `#C2410C` | Links, labels e textos pequenos em fundo claro | uso pontual |
 
-> ⛔ PROIBIDO: branco puro `#FFFFFF`, azuis, roxos, cianos, gradientes coloridos.
+> ⛔ PROIBIDO: reintroduzir verde escuro como cor estrutural, usar azul saturado,
+> roxo, ciano, neon ou gradientes coloridos. `#FFFFFF` é permitido apenas como
+> superfície elevada, nunca como fundo predominante de página.
 
 ### 3.2 Tipografia
 - **Família única:** Barlow (Google Fonts, gratuita)

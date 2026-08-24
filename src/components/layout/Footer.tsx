@@ -39,7 +39,7 @@ export function Footer() {
 
           {/* Empresa */}
           <div>
-            <h3 className="rc2-label text-rc2-brand mb-4">Empresa</h3>
+            <h3 className="rc2-label mb-4 text-rc2-brand">Empresa</h3>
             <ul className="space-y-2">
               {footerLinks.empresa.map((link) => (
                 <li key={link.href}>
@@ -66,7 +66,7 @@ export function Footer() {
 
           {/* Serviços */}
           <div>
-            <h3 className="rc2-label text-rc2-brand mb-4">Serviços</h3>
+            <h3 className="rc2-label mb-4 text-rc2-brand">Serviços</h3>
             <ul className="space-y-2">
               {footerLinks.servicos.map((link) => (
                 <li key={link.href}>
@@ -83,7 +83,7 @@ export function Footer() {
 
           {/* Contato */}
           <div>
-            <h3 className="rc2-label text-rc2-brand mb-4">Contato</h3>
+            <h3 className="rc2-label mb-4 text-rc2-brand">Contato</h3>
             <ul className="space-y-2">
               <li>
                 <TrackedLink

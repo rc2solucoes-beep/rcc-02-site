@@ -131,7 +131,7 @@ Expected: PASS.
 ### Task 4: Verificar marca, build, responsividade e evidências visuais
 
 **Files:**
-- Verify: `docs/brand/RC2_Brand_Guide_v3.md`
+- Verify: `documentos-base/RC2_Brand_Guide_v2.1.md`
 - Create: `.playwright-mcp/audit/personalidade-home-after-desktop-1440.png`
 - Create: `.playwright-mcp/audit/personalidade-home-after-mobile-390.png`
 

@@ -1,11 +1,66 @@
 {
   "version": 1,
   "skills": {
+    "anti-ui-slop": {
+      "source": "uizze.com",
+      "sourceUrl": "https://uizze.com",
+      "sourceType": "well-known",
+      "computedHash": "44a261275fb5f971b3dd0696ad35c9492b6916979d3e85c67e24e0ef2f4b687f",
+      "wellKnownDigest": "sha256:038986a2aff7a3ecb114caec85c0fe742127af010410ad09cbfd32d19b55cd79"
+    },
+    "design-taste-frontend": {
+      "source": "Leonxlnx/taste-skill",
+      "sourceType": "github",
+      "skillPath": "skills/taste-skill/SKILL.md",
+      "computedHash": "899b84384f74f540ea5284d9b2e9234e050998b42eacc805410b518d4226c0b3"
+    },
     "frontend-design": {
       "source": "anthropics/skills",
       "sourceType": "github",
       "skillPath": "skills/frontend-design/SKILL.md",
       "computedHash": "516bd2154eb843a8240e43d5b285229129853114ad7075a5e141e1c08e408c84"
+    },
+    "huashu-design": {
+      "source": "alchaincyf/huashu-design",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "da0cc733e121f3760f7feef869f7737948c784bccaba647932e1bc7c9d1b914a"
+    },
+    "playwright-dev": {
+      "source": "microsoft/playwright",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/playwright-dev/SKILL.md",
+      "computedHash": "bb80c82768dfae153e4e087bd539a9cf774f4505821bad86e90be0930a9e3a29"
+    },
+    "playwright-devops": {
+      "source": "microsoft/playwright",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/playwright-devops/SKILL.md",
+      "computedHash": "5f6899cfc05fcd27045190a7fc733eb299460a49573bbe898f74f800af8b7e77"
+    },
+    "playwright-test-results": {
+      "source": "microsoft/playwright",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/playwright-test-results/SKILL.md",
+      "computedHash": "c1b81d75d37b87c8fa3aaaff601dcf0b72128fbcce7a70a0f3d193e99e9c5daf"
+    },
+    "playwright-triage": {
+      "source": "microsoft/playwright",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/playwright-triage/SKILL.md",
+      "computedHash": "fdf69315e247a0e0baaf6bdbbf7b5042fe37bb816d563ca7d0cee6fd62d87966"
+    },
+    "shadcn-ui": {
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/stitch-build/skills/shadcn-ui/SKILL.md",
+      "computedHash": "57e2cc881eb395418d28f1529e2d453b85f1d77a8de000c8af59512fab7b318d"
+    },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/ui-ux-pro-max/SKILL.md",
+      "computedHash": "d1de8ff8d228cd4204bf06eb959ef4317d5b927908d9f42765971e33e80c8a7e"
     }
   }
 }

@@ -118,7 +118,7 @@
 ## 3. RC2 Brand System Skill — a criar
 
 > Esta é a skill mais importante para o projeto. Deve ser criada **antes da Fase 2**.
-> Objetivo: transformar o Brand Guide v2 em regras operacionais para o Claude Code.
+> Objetivo: transformar o Brand Guide v2.1 em regras operacionais para o Claude Code.
 
 **Conteúdo mínimo da skill:**
 
@@ -126,12 +126,19 @@
 # RC2 Brand System
 
 ## Paleta de cores
-- Areia Industrial: #F5F0E8 (50% da composição — fundo principal)
-- Ink Black: #121212 (20% — seções escuras, headers)
-- Deep Forest: #163020 (20% — rodapés, prova social)
-- Safety Orange: #FF5F1F (máx. 10% — CTA, detalhe do logo)
-- Ébano Quente: #1E1610 (texto corrido e títulos)
-- PROIBIDO: #FFFFFF, azul, roxo, ciano, gradientes coloridos
+- Warm Base: #F7F5F1 (fundo principal)
+- Warm Alt: #FBFAF8 (fundo alternativo)
+- Surface White: #FFFFFF (cards, inputs, modais e superfícies elevadas; nunca fundo de página)
+- Navy Core: #081827 (footer, CTA bands e seções escuras principais)
+- Navy Secondary: #0C2032 (seções escuras secundárias)
+- Navy Elevated: #11283A (superfície elevada em contexto dark)
+- Graphite Navy: #0B1726 (títulos e texto sobre Safety Orange)
+- Body Slate: #24313D (texto principal)
+- Muted Slate: #66717D (texto secundário)
+- Safety Orange: #FF5F1F (CTA, ícones de ação, indicadores e estados ativos; máximo 10%)
+- Orange Text: #C2410C (links, labels e microtextos em fundo claro)
+- Accent Soft: #FFF0E9 (badges e highlights suaves)
+- PROIBIDO: verde estrutural, azul saturado, roxo, ciano, neon e gradientes coloridos
 
 ## Tipografia (Barlow — Google Fonts)
 - Display: Barlow Condensed ExtraBold 800 | uppercase | tracking +0.04em
@@ -140,11 +147,11 @@
 - H3: Barlow Medium 500
 - Body: Barlow Regular 400 | 14-16px | line-height 1.7
 - Labels: Barlow Condensed Medium | uppercase | letter-spacing +0.10em
-- NUNCA usar #000000 para texto — usar #1E1610
+- NUNCA usar #000000 para texto — usar #0B1726 para títulos ou #24313D para corpo
 
 ## CTA e botões
-- Primário: fundo #FF5F1F, texto Areia ou Ink Black, Barlow Bold
-- Secundário: outline, borda #121212, texto Ébano Quente
+- Primário: fundo #FF5F1F, texto #0B1726, Barlow Bold
+- Secundário: outline, borda #AEB7BF ou token equivalente, texto #0B1726
 - CTA principal: "Solicitar diagnóstico" (consistente em todas as páginas)
 - CTA secundário: "Falar pelo WhatsApp"
 
@@ -155,18 +162,18 @@
 - Evitar: chatbot (usar "agente de IA"), sistema (usar "solução"), barato (usar "acessível")
 
 ## O que evitar na UI
-- Fundo branco puro (#FFFFFF) — sempre usar #F5F0E8
+- Fundo branco puro (#FFFFFF) como página — usar #F7F5F1; branco fica reservado para cards e inputs
 - Gradientes coloridos
 - Ícones de robôs, cérebros digitais ou chips
 - Layouts sobrecarregados
 - Tipografias além de Barlow
 
 ## Proporção de layout
-50% Areia Industrial · 20% Ink Black · 20% Deep Forest · 10% Safety Orange máximo
+60–70% neutros claros · 20–30% Navy / Slate · até 10% Safety Orange e derivados
 ```
 
 **Como criar:**
-1. Usar a skill `everything-claude-code:skill-create` para gerar a skill com base no Brand Guide v2
+1. Usar a skill `everything-claude-code:skill-create` para gerar a skill com base no Brand Guide v2.1
 2. Salvar em `C:\Users\rsaze\.claude\plugins\cache\` ou local equivalente
 3. Testar carregando com: `Skill("rc2-brand-system")`
 

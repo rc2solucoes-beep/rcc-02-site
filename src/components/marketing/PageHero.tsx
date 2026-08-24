@@ -1,4 +1,5 @@
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { cn } from "@/lib/utils";
 
 interface PageHeroProps {
@@ -42,32 +43,40 @@ export function PageHero({
       />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {label && (
-          <SectionLabel className={cn("rc2-rule", isDark && "text-rc2-brand")}>
-            {label}
-          </SectionLabel>
+          <ScrollReveal distance="16px" duration={500}>
+            <SectionLabel className={cn("rc2-rule", isDark && "text-rc2-brand")}>
+              {label}
+            </SectionLabel>
+          </ScrollReveal>
         )}
-        <h1
-          className={cn(
-            "rc2-h1 mt-3 max-w-4xl",
-            isDark ? "text-rc2-dark-text" : "text-rc2-heading"
-          )}
-        >
-          {title}
-        </h1>
-        {description && (
-          <p
+        <ScrollReveal delay={90} distance="20px" duration={560}>
+          <h1
             className={cn(
-              "rc2-body-lg mt-5 max-w-2xl",
-              isDark ? "text-rc2-dark-text-secondary" : "text-rc2-text/80"
+              "rc2-h1 mt-3 max-w-4xl",
+              isDark ? "text-rc2-dark-text" : "text-rc2-heading"
             )}
           >
-            {description}
-          </p>
+            {title}
+          </h1>
+        </ScrollReveal>
+        {description && (
+          <ScrollReveal delay={160} distance="20px" duration={560}>
+            <p
+              className={cn(
+                "rc2-body-lg mt-5 max-w-2xl",
+                isDark ? "text-rc2-dark-text-secondary" : "text-rc2-text/80"
+              )}
+            >
+              {description}
+            </p>
+          </ScrollReveal>
         )}
         {action && (
-          <div className="mt-8">
-            {action}
-          </div>
+          <ScrollReveal delay={230} distance="18px" duration={520}>
+            <div className="mt-8">
+              {action}
+            </div>
+          </ScrollReveal>
         )}
       </div>
     </section>

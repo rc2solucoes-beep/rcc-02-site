@@ -123,6 +123,11 @@
   --rc2-on-brand: #0B1726;
   --rc2-focus-ring: #C2410C;
   --rc2-focus-ring-dark: #FF5F1F;
+  --rc2-whatsapp: #25D366;
+  --rc2-fixed-inline: 1rem;
+  --rc2-fixed-bottom: calc(env(safe-area-inset-bottom) + 1rem);
+  --rc2-fixed-stack-gap: 0.75rem;
+  --rc2-whatsapp-stack-offset: 0px;
 
   /* shadcn — semântica consumindo a fonte de verdade RC2 */
   --background: var(--rc2-bg);
@@ -268,7 +273,7 @@
 /* ────────────────────────────────────────────────
    Utilitários RC2 customizados
 ──────────────────────────────────────────────── */
-@layer utilities {
+@layer components {
   /* Eyebrow / Label — uppercase com tracking generoso */
   .rc2-label {
     font-family: var(--font-barlow-condensed), sans-serif;
@@ -362,7 +367,7 @@
   }
 
   .rc2-card {
-    @apply rounded-xl border border-border bg-[var(--surface-1)] transition-all duration-200;
+    @apply rounded-xl border border-border bg-rc2-bg-alt transition-[border-color,box-shadow,transform] duration-200;
     box-shadow: var(--shadow-soft);
   }
 
@@ -374,9 +379,10 @@
   .rc2-action-link {
     @apply inline-flex items-center gap-1.5 text-sm font-semibold
            text-rc2-brand-text
-           transition-all duration-200 hover:gap-3
+           transition-[color,text-decoration-color] duration-200 hover:underline
            focus-visible:outline-none focus-visible:ring-2
            focus-visible:ring-rc2-focus-ring focus-visible:ring-offset-2;
+    text-underline-offset: 4px;
   }
 
   /* Hero entrance — authored first impression only */
@@ -435,15 +441,19 @@
     position: absolute;
     left: 0.03em;
     right: 0.03em;
-    bottom: 0.02em;
-    height: 0.12em;
+    bottom: -0.01em;
+    height: 0.09em;
     background: var(--rc2-brand);
     opacity: 0.85;
     z-index: -1;
   }
 
   .rc2-hero-enter {
-    animation: rc2-hero-enter var(--hero-enter-duration, 400ms) var(--ease-fluid) var(--hero-enter-delay, 0ms) both;
+    animation: rc2-hero-enter var(--hero-enter-duration, 400ms) var(--ease-fluid) var(--hero-enter-delay, 0ms) backwards;
+  }
+
+  .rc2-hero-shift {
+    animation: rc2-hero-shift var(--hero-enter-duration, 400ms) var(--ease-fluid) var(--hero-enter-delay, 0ms) backwards;
   }
 
   .rc2-hero-enter--1 { --hero-enter-duration: 300ms; --hero-enter-delay: 100ms; }
@@ -461,6 +471,97 @@
     to {
       opacity: 1;
       transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes rc2-hero-shift {
+    from {
+      transform: translate3d(0, 20px, 0);
+    }
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .rc2-quote-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--rc2-border);
+    border-radius: var(--radius-xl);
+    background: var(--rc2-bg-alt);
+    padding: 1.25rem;
+    color: var(--rc2-text-secondary);
+    font-style: italic;
+    line-height: 1.7;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .rc2-quote-card::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 1.25rem;
+    width: 2.75rem;
+    height: 2px;
+    background: var(--rc2-brand);
+  }
+
+  .rc2-quote-card--dark {
+    border-color: var(--rc2-dark-border);
+    background: color-mix(in srgb, var(--rc2-dark-card) 82%, transparent);
+    color: var(--rc2-dark-text-secondary);
+  }
+
+  .rc2-blog-cover {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    box-shadow:
+      0 1px 0 oklch(1 0 0 / 0.65) inset,
+      var(--shadow-soft);
+  }
+
+  .rc2-blog-cover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px oklch(0 0 0 / 0.16);
+    pointer-events: none;
+  }
+
+  .rc2-whatsapp-float {
+    bottom: calc(var(--rc2-fixed-bottom) + var(--rc2-whatsapp-stack-offset));
+    right: var(--rc2-fixed-inline);
+    height: 3rem;
+    width: 3rem;
+    background: var(--rc2-whatsapp);
+  }
+
+  .rc2-mobile-anchor-nav {
+    bottom: var(--rc2-fixed-bottom);
+    left: var(--rc2-fixed-inline);
+    right: var(--rc2-fixed-inline);
+  }
+
+  .rc2-back-to-top {
+    bottom: calc(var(--rc2-fixed-bottom) + var(--rc2-whatsapp-stack-offset) + 4rem);
+    right: var(--rc2-fixed-inline);
+  }
+
+  @media (min-width: 640px) {
+    .rc2-whatsapp-float {
+      bottom: 1.5rem;
+      right: 1.5rem;
+      height: 3.5rem;
+      width: 3.5rem;
+    }
+
+    .rc2-back-to-top {
+      bottom: 6rem;
+      right: 1.5rem;
     }
   }
 
@@ -504,16 +605,18 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .rc2-hero-stage::before,
-    .rc2-hero-orbit,
-    .rc2-hero-enter,
-    .scroll-reveal {
+     .rc2-hero-stage::before,
+     .rc2-hero-orbit,
+     .rc2-hero-enter,
+     .rc2-hero-shift,
+     .scroll-reveal {
       animation: none !important;
       transition: none !important;
     }
 
-    .rc2-hero-enter,
-    .scroll-reveal,
+     .rc2-hero-enter,
+     .rc2-hero-shift,
+     .scroll-reveal,
     .scroll-reveal[data-reveal-state="hidden"] {
       opacity: 1 !important;
       transform: none !important;
@@ -626,11 +729,25 @@
   .prose-rc2 strong { font-weight: 700; }
   .prose-rc2 em { font-style: italic; }
   .prose-rc2 blockquote {
-    border-left: 3px solid var(--rc2-brand);
-    padding-left: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--rc2-border);
+    border-radius: var(--radius-xl);
+    background: var(--rc2-bg-alt);
+    padding: 1.25rem;
     margin: 1.5rem 0;
     color: var(--rc2-text-secondary);
     font-style: italic;
+    box-shadow: var(--shadow-soft);
+  }
+  .prose-rc2 blockquote::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 1.25rem;
+    width: 2.75rem;
+    height: 2px;
+    background: var(--rc2-brand);
   }
   .prose-rc2 a {
     color: var(--rc2-brand-text);

@@ -28,7 +28,7 @@ export function ServiceCard({ service, className }: ServiceCardProps) {
     >
       {/* Acento estrutural permanente — aba laranja no topo */}
       <span
-        className="absolute left-0 top-0 h-1 w-10 bg-rc2-brand transition-all duration-200 group-hover:w-full group-hover:opacity-90"
+        className="absolute left-0 top-0 h-1 w-14 origin-left scale-x-[0.72] bg-rc2-brand transition-[opacity,transform] duration-200 group-hover:scale-x-100 group-hover:opacity-90"
         aria-hidden
       />
       <span className="rc2-label text-rc2-brand-text mb-3">{service.shortTitle}</span>
@@ -45,7 +45,7 @@ export function ServiceCard({ service, className }: ServiceCardProps) {
       )}
       <Link
         href={`/servicos/${service.slug}`}
-        className="ui-focus-ring rounded-lg mt-5 inline-flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-rc2-brand-text bg-rc2-brand/5 hover:bg-rc2-brand/10 active:bg-rc2-brand/20 hover:gap-3 transition-all duration-200"
+        className="ui-focus-ring rounded-lg mt-5 inline-flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-rc2-brand-text bg-rc2-brand/5 hover:bg-rc2-brand/10 active:bg-rc2-brand/20 hover:underline transition-[background-color,text-decoration-color] duration-200"
       >
         Ver serviço
         <ArrowRight size={14} />

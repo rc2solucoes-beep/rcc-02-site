@@ -4,6 +4,7 @@ import { ContactForm } from "@/components/marketing/ContactForm";
 import { CTABlock } from "@/components/marketing/CTABlock";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
 const CONTACT_WHATSAPP_MESSAGE = "Olá, quero solicitar um diagnóstico para minha empresa.";
@@ -59,7 +60,7 @@ export default async function ContatoPage() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Sidebar */}
-          <div>
+          <ScrollReveal direction="left" distance="24px">
             <SectionLabel className="block mb-4">Diagnóstico gratuito</SectionLabel>
             <h1 className="rc2-display text-4xl md:text-5xl text-rc2-heading mb-6 leading-tight">
               Solicite um diagnóstico para sua empresa
@@ -90,7 +91,7 @@ export default async function ContatoPage() {
                   "Proposta para execução",
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className="text-rc2-brand mt-0.5 text-xs shrink-0">→</span>
+                    <span className="text-rc2-brand-text mt-0.5 text-xs shrink-0">→</span>
                     {item}
                   </li>
                 ))}
@@ -114,12 +115,12 @@ export default async function ContatoPage() {
                 Falar pelo WhatsApp →
               </TrackedLink>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Form */}
-          <div>
+          <ScrollReveal delay={120} direction="right" distance="24px">
             <ContactForm />
-          </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>

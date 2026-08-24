@@ -10,6 +10,7 @@ import { CTABlock } from "@/components/marketing/CTABlock";
 import { PageAnchorNav } from "@/components/marketing/PageAnchorNav";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -151,7 +152,7 @@ export default async function ServicePage({ params }: Props) {
 
       <section className="bg-rc2-bg py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-14">
-          <div className="rounded-lg border border-border bg-white p-5 md:p-6">
+          <ScrollReveal className="rounded-lg border border-border bg-white p-5 md:p-6">
             <SectionLabel className="block mb-3">Resumo rápido</SectionLabel>
             <h2 className="text-lg font-semibold text-rc2-heading mb-3">
               Este serviço é indicado quando sua operação enfrenta:
@@ -159,7 +160,7 @@ export default async function ServicePage({ params }: Props) {
             <ul className="space-y-2">
               {topPainPoints.map((item) => (
                 <li key={item} className="flex items-start gap-2.5 text-sm text-rc2-text/80">
-                  <span className="text-rc2-brand mt-0.5 text-xs shrink-0">•</span>
+                  <span className="text-rc2-brand-text mt-0.5 text-xs shrink-0">•</span>
                   <span>{item}</span>
                 </li>
               ))}
@@ -167,9 +168,9 @@ export default async function ServicePage({ params }: Props) {
             <p className="mt-4 text-sm text-rc2-text/75 leading-relaxed">
               <span className="font-semibold text-rc2-heading">Quando contratar:</span> quando essas dores já afetam atendimento, vendas ou rotina da equipe.
             </p>
-          </div>
+          </ScrollReveal>
 
-          <div className="rounded-lg border border-rc2-brand/25 bg-white p-5 md:p-6">
+          <ScrollReveal delay={80} className="rounded-lg border border-rc2-brand/25 bg-white p-5 md:p-6">
             <SectionLabel className="block mb-3">Atalho rápido</SectionLabel>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-rc2-text/75">
@@ -208,45 +209,45 @@ export default async function ServicePage({ params }: Props) {
                 )}
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
-          <div id="problemas">
+          <ScrollReveal id="problemas" direction="left" distance="22px">
             <SectionLabel className="block mb-4">Problemas que resolvemos</SectionLabel>
             <ul className="space-y-3">
               {service.painPoints.map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <span className="text-rc2-brand font-bold text-sm mt-0.5" aria-hidden="true">•</span>
+                  <span className="text-rc2-brand-text font-bold text-sm mt-0.5" aria-hidden="true">•</span>
                   <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ul>
-          </div>
+          </ScrollReveal>
 
-          <div id="casos-de-uso">
+          <ScrollReveal id="casos-de-uso" direction="right" distance="22px">
             <SectionLabel className="block mb-4">Casos de uso</SectionLabel>
             <ul className="space-y-3">
               {topUseCases.map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <Check size={16} className="text-rc2-brand shrink-0 mt-0.5" strokeWidth={2.5} aria-hidden="true" />
+                  <Check size={16} className="text-rc2-brand-text shrink-0 mt-0.5" strokeWidth={2.5} aria-hidden="true" />
                   <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ul>
-          </div>
+          </ScrollReveal>
 
-          <div id="items">
+          <ScrollReveal id="items" direction="left" distance="22px">
             <SectionLabel className="block mb-4">O que pode ser implantado</SectionLabel>
             <ul className="space-y-3">
               {topItems.map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <Check size={16} className="text-rc2-brand shrink-0 mt-0.5" strokeWidth={2.5} aria-hidden="true" />
+                  <Check size={16} className="text-rc2-brand-text shrink-0 mt-0.5" strokeWidth={2.5} aria-hidden="true" />
                   <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ul>
-          </div>
+          </ScrollReveal>
 
-          <div id="implantacao">
+          <ScrollReveal id="implantacao" direction="right" distance="22px">
             <SectionLabel className="block mb-4">Como funciona a implantação</SectionLabel>
             <ol className="space-y-3">
               {service.implementationSteps.map((item, i) => (
@@ -256,9 +257,9 @@ export default async function ServicePage({ params }: Props) {
                 </li>
               ))}
             </ol>
-          </div>
+          </ScrollReveal>
 
-          <div id="integracoes">
+          <ScrollReveal id="integracoes">
             <SectionLabel className="block mb-4">Integrações possíveis</SectionLabel>
             <div className="flex flex-wrap gap-2">
               {topIntegrations.map((integration) => (
@@ -267,31 +268,31 @@ export default async function ServicePage({ params }: Props) {
                 </span>
               ))}
             </div>
-          </div>
+          </ScrollReveal>
 
-          <div id="indicadores">
+          <ScrollReveal id="indicadores" direction="left" distance="22px">
             <SectionLabel className="block mb-4">Indicadores que podem ser acompanhados</SectionLabel>
             <ul className="space-y-3">
               {topMetrics.map((metric, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <span className="text-rc2-brand font-bold text-sm mt-0.5" aria-hidden="true">→</span>
+                  <span className="text-rc2-brand-text font-bold text-sm mt-0.5" aria-hidden="true">→</span>
                   <span className="text-rc2-text/80">{metric}</span>
                 </li>
               ))}
             </ul>
-          </div>
+          </ScrollReveal>
 
-          <div id="benefits">
+          <ScrollReveal id="benefits" direction="right" distance="22px">
             <SectionLabel className="block mb-4">Benefícios</SectionLabel>
             <ul className="space-y-3 mb-8">
               {topBenefits.map((benefit, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <span className="text-rc2-brand font-bold text-sm mt-0.5" aria-hidden="true">→</span>
+                  <span className="text-rc2-brand-text font-bold text-sm mt-0.5" aria-hidden="true">→</span>
                   <span className="text-rc2-text/80">{benefit}</span>
                 </li>
               ))}
             </ul>
-            <blockquote className="border-l-2 border-rc2-brand pl-4 text-rc2-text/70 italic text-sm leading-relaxed">
+            <blockquote className="rc2-quote-card text-sm">
               {service.cta}
             </blockquote>
             <div className="mt-8">
@@ -306,9 +307,9 @@ export default async function ServicePage({ params }: Props) {
                 Ver se serve para o meu caso
               </TrackedLink>
             </div>
-          </div>
+          </ScrollReveal>
 
-          <div id="faq">
+          <ScrollReveal id="faq" direction="none">
             <SectionLabel className="block mb-4">Perguntas frequentes</SectionLabel>
             <div className="space-y-2">
               {topFaq.map((item, idx) => (
@@ -322,9 +323,9 @@ export default async function ServicePage({ params }: Props) {
                 </details>
               ))}
             </div>
-          </div>
+          </ScrollReveal>
 
-          <div id="links-relacionados">
+          <ScrollReveal id="links-relacionados">
             <SectionLabel className="block mb-4">Links relacionados</SectionLabel>
             <div className="flex flex-wrap gap-3">
               {service.relatedLinks.map((link) => (
@@ -345,8 +346,12 @@ export default async function ServicePage({ params }: Props) {
                 </TrackedLink>
               ))}
             </div>
-          </div>
+          </ScrollReveal>
 
+          <ScrollReveal
+            as="div"
+            direction="none"
+          >
           <nav
             id="navigation"
             aria-label="Navegação entre serviços"
@@ -397,6 +402,7 @@ export default async function ServicePage({ params }: Props) {
               )}
             </div>
           </nav>
+          </ScrollReveal>
         </div>
       </section>
 

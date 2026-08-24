@@ -26,7 +26,7 @@
 - [ ] Primeiro commit e push para GitHub
 
 ### Design system
-- [ ] Configurar tokens de cor RC2 no `tailwind.config.ts` (`#F5F0E8`, `#121212`, `#163020`, `#FF5F1F`, `#1E1610`)
+- [ ] Configurar tokens de cor RC2 no `tailwind.config.ts` conforme `documentos-base/RC2_Brand_Guide_v2.1.md`: Warm Base `#F7F5F1`, Warm Alt `#FBFAF8`, Surface White `#FFFFFF`, família Navy / Slate (`#081827`, `#0C2032`, `#11283A`, `#0B1726`, `#24313D`, `#66717D`) e Safety Orange `#FF5F1F` com Orange Text `#C2410C`
 - [ ] Configurar fonte Barlow (Google Fonts — pesos 300, 400, 500, 600, 700, 800 + Condensed)
 - [ ] Configurar escala tipográfica no Tailwind (Display, H1, H2, H3, Body, Label, Caption)
 - [ ] Criar componente `<Button>` com variantes: primário (Safety Orange), secundário (outline), ghost

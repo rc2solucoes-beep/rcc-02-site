@@ -59,7 +59,7 @@
 
 ### OG Image
 - [ ] Criar `/public/og-image.png` (1200×630px)
-  - Fundo: `#121212` (rc2-ink) ou `#F5F0E8` (rc2-sand)
+  - Fundo: `#081827` (Navy Core) ou `#F7F5F1` (Warm Base)
   - Logo RC2 + tagline
   - Validar em [opengraph.xyz](https://opengraph.xyz)
 

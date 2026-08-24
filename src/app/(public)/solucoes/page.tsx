@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { PageHero } from "@/components/marketing/PageHero";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { solutions } from "@/lib/content/solutions";
 import { BASE_URL, buildOg } from "@/lib/siteMetadata";
@@ -72,21 +73,26 @@ export default function SolucoesPage() {
 
       <section className="bg-rc2-bg rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionLabel className="rc2-rule block mb-4">Mapeamento por dor</SectionLabel>
-          <p className="max-w-3xl text-rc2-text/75 leading-relaxed mb-10">
-            Estas páginas partem do problema percebido no dia a dia e conectam sintomas,
-            impacto e ações práticas para estruturar atendimento, vendas e operação.
-          </p>
+          <ScrollReveal distance="18px">
+            <SectionLabel className="rc2-rule block mb-4">Mapeamento por dor</SectionLabel>
+            <p className="max-w-3xl text-rc2-text/75 leading-relaxed mb-10">
+              Estas páginas partem do problema percebido no dia a dia e conectam sintomas,
+              impacto e ações práticas para estruturar atendimento, vendas e operação.
+            </p>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {solutions.map((solution) => (
-              <article
+            {solutions.map((solution, index) => (
+              <ScrollReveal
                 key={solution.slug}
+                as="article"
+                delay={(index % 2) * 90 + Math.floor(index / 2) * 50}
+                distance="24px"
                 className="group rc2-card rc2-card-hover relative flex flex-col overflow-hidden p-6 pt-7 md:p-7 md:pt-8"
               >
                 {/* Acento estrutural — aba laranja no topo */}
                 <span
-                  className="absolute left-0 top-0 h-1 w-10 bg-rc2-brand transition-all duration-200 group-hover:w-full group-hover:opacity-90"
+                  className="absolute left-0 top-0 h-1 w-14 origin-left scale-x-[0.72] bg-rc2-brand transition-[opacity,transform] duration-200 group-hover:scale-x-100 group-hover:opacity-90"
                   aria-hidden
                 />
                 <h2 className="rc2-h4 text-rc2-heading mb-3">{solution.shortTitle}</h2>
@@ -116,7 +122,7 @@ export default function SolucoesPage() {
                   Ver solução completa
                   <ArrowRight size={14} />
                 </TrackedLink>
-              </article>
+              </ScrollReveal>
             ))}
           </div>
         </div>

@@ -39,7 +39,7 @@ export function HomeReviews() {
         >
           {/* Acento estrutural — aba laranja no topo */}
           <span
-            className="absolute left-0 top-0 h-1 w-10 bg-rc2-brand transition-all duration-200 group-hover:w-full group-hover:opacity-90"
+            className="absolute left-0 top-0 h-1 w-14 origin-left scale-x-[0.72] bg-rc2-brand transition-[opacity,transform] duration-200 group-hover:scale-x-100 group-hover:opacity-90"
             aria-hidden
           />
           <div

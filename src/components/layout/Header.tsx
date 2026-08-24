@@ -21,6 +21,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
@@ -41,6 +42,31 @@ export function Header() {
         requestAnimationFrame(() => {
           mobileMenuButtonRef.current?.focus();
         });
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const focusableElements = [
+        mobileMenuButtonRef.current,
+        ...Array.from(
+          mobileMenuRef.current?.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+          ) ?? []
+        ),
+      ].filter((element): element is HTMLElement => Boolean(element));
+
+      if (focusableElements.length === 0) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
       }
     };
 
@@ -51,7 +77,7 @@ export function Header() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 border-b transition-all duration-300 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-rc2-brand after:transition-opacity after:duration-300",
+        "sticky top-0 z-50 border-b transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-rc2-brand after:transition-opacity after:duration-300",
         scrolled
           ? "bg-rc2-bg/98 border-rc2-border shadow-[var(--shadow-soft)] backdrop-blur-md after:opacity-70"
           : "bg-rc2-bg/92 border-border backdrop-blur-sm after:opacity-0"
@@ -69,7 +95,7 @@ export function Header() {
                 href={link.href}
                 aria-current={isActive(link.href) ? "page" : undefined}
                 className={cn(
-                  "ui-focus-ring rounded-full text-sm transition-all duration-200 px-3 py-1",
+                  "ui-focus-ring rounded-full text-sm transition-[background-color,color,box-shadow] duration-200 px-3 py-1",
                   isActive(link.href)
                     ? "font-semibold text-rc2-brand-text bg-rc2-brand-text/10 ring-1 ring-rc2-brand-text/20"
                     : "font-medium text-rc2-text hover:text-rc2-brand-text hover:bg-rc2-text/5"
@@ -112,7 +138,7 @@ export function Header() {
 
       {/* Mobile menu */}
       {open && (
-        <div id="mobile-main-menu" className="md:hidden bg-rc2-bg border-t border-border px-4 pb-4 pt-2">
+        <div ref={mobileMenuRef} id="mobile-main-menu" className="md:hidden bg-rc2-bg border-t border-border px-4 pb-4 pt-2">
           <nav className="flex flex-col gap-1">
             {navLinks.map((link) => (
               <Link
@@ -120,7 +146,7 @@ export function Header() {
                 href={link.href}
                 aria-current={isActive(link.href) ? "page" : undefined}
                 className={cn(
-                  "ui-focus-ring rounded-sm py-2 text-sm transition-colors",
+                  "ui-focus-ring flex min-h-[44px] items-center rounded-sm py-2 text-sm transition-colors",
                   isActive(link.href)
                     ? "font-semibold text-rc2-brand-text"
                     : "font-medium text-rc2-text hover:text-rc2-brand-text"
@@ -142,7 +168,7 @@ export function Header() {
               }}
               className={cn(
                 buttonVariants({ variant: "default" }),
-                "mt-3 font-semibold tracking-wide uppercase text-xs w-full justify-center bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90"
+                "mt-3 h-11 min-h-[44px] font-semibold tracking-wide uppercase text-xs w-full justify-center bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90"
               )}
             >
               Solicitar diagnóstico

@@ -12,7 +12,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 > ferramenta e será regenerado. Não edite nada dentro dele. Todo o conteúdo da
 > RC2 vive abaixo desta linha.
 
-Fonte de verdade visual: `docs/brand/RC2_Brand_Guide_v3.md`, seções 4, 4B e 8.
+Fonte de verdade visual: `documentos-base/RC2_Brand_Guide_v2.1.md`, especialmente
+as seções 4 e 5.
 
 ## Projeto
 
@@ -26,10 +27,11 @@ configuração de tema — consulte `node_modules/next/dist/docs/` antes de escr
 qualquer coisa que dependa dessas áreas. Se a API que você conhece não existir
 mais, pare e diga qual é a substituta antes de implementar.
 
-## Identidade visual v3
+## Identidade visual v2.1
 
-Off-white + Navy + Safety Orange. A paleta anterior ("High-End Tool": Areia
-Industrial, Ink Black, Deep Forest) está **descontinuada**.
+Warm Base + Navy / Slate + Safety Orange. A paleta anterior com Areia
+Industrial `#F5F0E8`, Ink Black `#121212`, Deep Forest `#163020` e Ébano Quente
+`#1E1610` está **descontinuada** para interface.
 
 Todos os valores vivem em `styles/rc2-tokens.css` e no theme do Tailwind.
 **Nenhum hex literal em componente.** Se você precisa de uma cor que não existe
@@ -107,7 +109,7 @@ executar.
     ícones de robô/cérebro/chip, tipografia serifada.
 12. **`meta theme-color` é `#081827`.**
 
-## Valores legados — não podem existir no repositório
+## Valores legados — não podem existir em CSS ou componente
 
 `#F5F0E8` · `#121212` · `#1E1610` · `#163020` · `#0D0D0F` · `#FFF` como fundo de
 página · `#000` em qualquer contexto.

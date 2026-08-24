@@ -3,6 +3,7 @@ import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 import { PageHero } from "@/components/marketing/PageHero";
 import { CTABlock } from "@/components/marketing/CTABlock";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StepList, type Step } from "@/components/marketing/StepList";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
@@ -89,7 +90,7 @@ export default async function SobrePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
             {/* Institucional */}
-            <div>
+            <ScrollReveal direction="left" distance="24px">
               <SectionLabel className="block mb-5">A empresa</SectionLabel>
               <div className="prose prose-neutral max-w-none text-rc2-text/80 leading-relaxed space-y-4">
                 <p>
@@ -117,7 +118,7 @@ export default async function SobrePage() {
                 </p>
               </div>
 
-              <blockquote className="mt-8 rounded-r-xl border-l-2 border-rc2-brand bg-rc2-bg-alt p-5 text-rc2-text/70 italic text-sm leading-relaxed">
+              <blockquote className="rc2-quote-card mt-8 text-sm">
                 &ldquo;A IA não substitui uma operação mal estruturada. Primeiro
                 organizamos o processo. Depois automatizamos o que faz
                 sentido.&rdquo;
@@ -125,13 +126,13 @@ export default async function SobrePage() {
                   — Robson Azevedo, fundador
                 </cite>
               </blockquote>
-            </div>
+            </ScrollReveal>
 
             {/* Método */}
-            <div>
+            <ScrollReveal delay={120} direction="right" distance="24px">
               <SectionLabel className="block mb-5">Nossa forma de trabalhar</SectionLabel>
               <StepList steps={steps} />
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>

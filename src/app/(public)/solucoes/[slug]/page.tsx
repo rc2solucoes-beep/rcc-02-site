@@ -9,6 +9,7 @@ import { PageAnchorNav } from "@/components/marketing/PageAnchorNav";
 import { CTABlock } from "@/components/marketing/CTABlock";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { getSolutionBySlug, solutions } from "@/lib/content/solutions";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -109,43 +110,43 @@ export default async function SolucaoPage({ params }: Props) {
 
       <section className="bg-rc2-bg py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-14">
-          <div id="publico">
+          <ScrollReveal id="publico" direction="left" distance="22px">
             <SectionLabel className="block mb-4">Para quem é esta solução</SectionLabel>
             <ul className="space-y-3">
               {solution.targetAudience.map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <span className="text-rc2-brand font-bold text-sm mt-0.5" aria-hidden="true">•</span>
+                  <span className="text-rc2-brand-text font-bold text-sm mt-0.5" aria-hidden="true">•</span>
                   <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ul>
-          </div>
+          </ScrollReveal>
 
-          <div id="sinais">
+          <ScrollReveal id="sinais" direction="right" distance="22px">
             <SectionLabel className="block mb-4">Sinais do problema</SectionLabel>
             <ul className="space-y-3">
               {solution.symptoms.map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <Check size={16} className="text-rc2-brand shrink-0 mt-0.5" strokeWidth={2.5} aria-hidden="true" />
+                  <Check size={16} className="text-rc2-brand-text shrink-0 mt-0.5" strokeWidth={2.5} aria-hidden="true" />
                   <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ul>
-          </div>
+          </ScrollReveal>
 
-          <div id="impacto">
+          <ScrollReveal id="impacto" direction="left" distance="22px">
             <SectionLabel className="block mb-4">Impacto no negócio</SectionLabel>
             <ul className="space-y-3">
               {solution.businessImpact.map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <span className="text-rc2-brand font-bold text-sm mt-0.5" aria-hidden="true">→</span>
+                  <span className="text-rc2-brand-text font-bold text-sm mt-0.5" aria-hidden="true">→</span>
                   <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ul>
-          </div>
+          </ScrollReveal>
 
-          <div className="rounded-lg border border-rc2-brand/25 bg-white p-5 md:p-6">
+          <ScrollReveal className="rounded-lg border border-rc2-brand/25 bg-white p-5 md:p-6">
             <SectionLabel className="block mb-3">Atalho rápido</SectionLabel>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-rc2-text/75">
@@ -184,21 +185,21 @@ export default async function SolucaoPage({ params }: Props) {
                 )}
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
-          <div id="causas">
+          <ScrollReveal id="causas" direction="right" distance="22px">
             <SectionLabel className="block mb-4">Causas comuns</SectionLabel>
             <ul className="space-y-3">
               {solution.rootCauses.map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <span className="text-rc2-brand font-bold text-sm mt-0.5" aria-hidden="true">•</span>
+                  <span className="text-rc2-brand-text font-bold text-sm mt-0.5" aria-hidden="true">•</span>
                   <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ul>
-          </div>
+          </ScrollReveal>
 
-          <div id="abordagem">
+          <ScrollReveal id="abordagem" direction="left" distance="22px">
             <SectionLabel className="block mb-4">Caminho recomendado</SectionLabel>
             <ol className="space-y-3">
               {solution.recommendedApproach.map((item, index) => (
@@ -208,9 +209,9 @@ export default async function SolucaoPage({ params }: Props) {
                 </li>
               ))}
             </ol>
-          </div>
+          </ScrollReveal>
 
-          <div id="servicos-relacionados">
+          <ScrollReveal id="servicos-relacionados">
             <SectionLabel className="block mb-4">Serviços relacionados</SectionLabel>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {solution.relatedServices.map((service) => (
@@ -234,21 +235,21 @@ export default async function SolucaoPage({ params }: Props) {
                 </article>
               ))}
             </div>
-          </div>
+          </ScrollReveal>
 
-          <div id="indicadores">
+          <ScrollReveal id="indicadores" direction="right" distance="22px">
             <SectionLabel className="block mb-4">Indicadores para acompanhar</SectionLabel>
             <ul className="space-y-3">
               {solution.metrics.map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <span className="text-rc2-brand font-bold text-sm mt-0.5" aria-hidden="true">→</span>
+                  <span className="text-rc2-brand-text font-bold text-sm mt-0.5" aria-hidden="true">→</span>
                   <span className="text-rc2-text/80">{item}</span>
                 </li>
               ))}
             </ul>
-          </div>
+          </ScrollReveal>
 
-          <div id="faq">
+          <ScrollReveal id="faq" direction="none">
             <SectionLabel className="block mb-4">Perguntas frequentes</SectionLabel>
             <div className="space-y-2">
               {solution.faq.map((item) => (
@@ -262,9 +263,9 @@ export default async function SolucaoPage({ params }: Props) {
                 </details>
               ))}
             </div>
-          </div>
+          </ScrollReveal>
 
-          <div id="links-relacionados">
+          <ScrollReveal id="links-relacionados">
             <SectionLabel className="block mb-4">Links relacionados</SectionLabel>
             <div className="flex flex-wrap gap-3">
               {solution.relatedLinks.map((link) => (
@@ -285,8 +286,9 @@ export default async function SolucaoPage({ params }: Props) {
                 </TrackedLink>
               ))}
             </div>
-          </div>
+          </ScrollReveal>
 
+          <ScrollReveal direction="none">
           <nav
             aria-label="Navegação de retorno"
             className="pt-8 border-t border-border"
@@ -296,6 +298,7 @@ export default async function SolucaoPage({ params }: Props) {
               <span>Todas as soluções</span>
             </Link>
           </nav>
+          </ScrollReveal>
         </div>
       </section>
 

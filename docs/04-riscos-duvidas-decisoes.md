@@ -76,13 +76,13 @@
 | Testes E2E: Playwright | Plano Consolidado | Descartado: Puppeteer, Cypress |
 | Analytics: Plausible + Search Console | Plano Consolidado | Descartados: GA4 (pós-MVP), PostHog, Umami (como padrão) |
 | Monitoramento: Sentry | Plano Consolidado | — |
-| Tipografia: Barlow (Google Fonts) | Brand Guide v2 | Única família tipográfica |
-| Paleta: "The High-End Tool" | Brand Guide v2 | 5 cores definidas com proporções |
-| Logo: Signal Interrupt | Brand Guide v2 | 3 barras horizontais com interrupção em Safety Orange |
+| Tipografia: Barlow (Google Fonts) | Brand Guide v2.1 | Única família tipográfica |
+| Paleta: "The High-End Tool 2.1" | Brand Guide v2.1 | Warm Base + Navy / Slate + Safety Orange, com proporção 60–70% neutros claros · 20–30% Navy / Slate · até 10% Safety Orange |
+| Logo: Signal Interrupt | Brand Guide v2.1 | 3 barras horizontais com interrupção em Safety Orange |
 | CTA único: "Solicitar diagnóstico" | Copy + Brand Guide | Consistente em todas as páginas |
 | Sem WordPress | Plano Consolidado | Decisão explícita e definitiva |
 | 1 administrador no MVP | Plano Consolidado | RBAC e múltiplos admins são evolução pós-MVP |
-| Fundo nunca branco puro (#FFFFFF) | Brand Guide v2 | Base é sempre Areia Industrial (#F5F0E8) |
+| Fundo de página nunca branco puro (`#FFFFFF`) | Brand Guide v2.1 | Base de página é `#F7F5F1`; `#FFFFFF` é reservado para cards, inputs, modais e superfícies elevadas |
 
 ---
 

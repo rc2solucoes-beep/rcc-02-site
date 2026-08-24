@@ -1,4 +1,4 @@
-# Migração visual v2 → v3 · roteiro para o Codex CLI
+# Aplicação visual v2.1 · roteiro para o Codex CLI
 
 Ordem importa. Cada fase depende da anterior. Não pule para a fase 3 antes dos
 tokens existirem — o agente vai inventar hex literais.
@@ -7,19 +7,19 @@ tokens existirem — o agente vai inventar hex literais.
 
 ```bash
 cd seu-repo
-git checkout -b feat/identidade-visual-v3
+git checkout -b feat/identidade-visual-v2-1
 
 mkdir -p docs/brand styles scripts
 # AGENTS.md: MESCLE com o existente, nao sobrescreva
 # o bloco nextjs-agent-rules e gerenciado por ferramenta
 cp ~/Downloads/AGENTS.md .
 cp ~/Downloads/MIGRACAO.md docs/brand/
-cp ~/Downloads/rc2-tokens-v3.css styles/rc2-tokens.css
+cp ~/Downloads/rc2-tokens-v2-1.css styles/rc2-tokens.css
 cp ~/Downloads/audit-brand.sh scripts/
-cp ~/Downloads/RC2_Brand_Guide_v3.md docs/brand/
+cp ~/Downloads/RC2_Brand_Guide_v2.1.md documentos-base/
 chmod +x scripts/audit-brand.sh
 
-git add -A && git commit -m "chore: tokens e contexto de marca v3"
+git add -A && git commit -m "chore: tokens e contexto de marca v2.1"
 ```
 
 Adicione ao `package.json`:
@@ -79,7 +79,7 @@ componente tiver sido tocado.
 
 ## Fase 2 — Primitivos
 
-> Migre os componentes primitivos para os tokens v3: botão, link, card, input,
+> Migre os componentes primitivos para os tokens v2.1: botão, link, card, input,
 > badge e o estado de foco global. Regras críticas do AGENTS.md que se aplicam
 > aqui: o botão primário tem fundo --rc2-brand e texto --rc2-heading, nunca
 > branco; o anel de foco é --rc2-focus-ring em área clara e
@@ -105,7 +105,7 @@ se propaga para o site inteiro.
 
 Não peça a home inteira de uma vez. Uma seção por prompt:
 
-> Migre o hero da home para os tokens v3. Fundo --rc2-bg, headline
+> Migre o hero da home para os tokens v2.1. Fundo --rc2-bg, headline
 > --rc2-heading, subtítulo --rc2-text, eyebrow em --rc2-brand-text uppercase com
 > tracking 0.10em. O CTA primário "Solicitar diagnóstico" segue a regra do botão
 > primário. O botão de WhatsApp fica secundário, com o verde próprio do WhatsApp
@@ -140,7 +140,7 @@ As rotas conhecidas do sitemap:
 
 Em lote, por família:
 
-> Migre as cinco páginas de /servicos para os tokens v3. Elas provavelmente
+> Migre as cinco páginas de /servicos para os tokens v2.1. Elas provavelmente
 > compartilham um template — se compartilharem, migre o template e valide numa
 > página. Se não, migre uma por uma e me avise da duplicação.
 
@@ -171,8 +171,8 @@ Manualmente, sem o agente:
 
 Fora do código, mas parte da migração:
 
-- Logo Signal Interrupt rebriefado com âncora `#0B1726` (seção 5 do RC2_Brand_Guide_v3.md)
-- `og_image_home.png` e demais OG images na paleta v3
+- Logo Signal Interrupt rebriefado com âncora `#0B1726` (seção 5 do `documentos-base/RC2_Brand_Guide_v2.1.md`)
+- `og_image_home.png` e demais OG images na paleta v2.1
 - Favicon a partir do símbolo isolado, legível em 16px
 - Capas de LinkedIn e Instagram
 

@@ -119,15 +119,15 @@
 
 | Item | Especificação | Origem |
 |---|---|---|
-| Paleta principal | `#F5F0E8`, `#121212`, `#163020`, `#FF5F1F`, `#1E1610` | [Brand] |
-| Proporção de cores | 50/20/20/10% | [Brand] |
+| Paleta principal | `#F7F5F1`, `#FBFAF8`, `#FFFFFF`, `#081827`, `#0C2032`, `#11283A`, `#0B1726`, `#24313D`, `#66717D`, `#FF5F1F`, `#C2410C`, `#FFF0E9` | [Brand] |
+| Proporção de cores | 60–70% neutros claros · 20–30% Navy / Slate · até 10% Safety Orange e derivados | [Brand] |
 | Tipografia | Barlow (Google Fonts) — 6 pesos usados | [Brand] |
 | Logo | Signal Interrupt (3 barras horizontais) | [Brand] |
 | Ícones | Phosphor Icons ou Lucide (outline/filled consistente) | [Brand] |
 | Fotos | Ambientes reais, temperatura quente, sem stock genérico | [Brand] |
-| Sem branco puro | Nunca `#FFFFFF` | [Brand] |
-| Sem azul/roxo/ciano | Proibido na paleta | [Brand] |
-| Sem gradientes | Zero gradientes coloridos | [Brand] |
+| Branco puro | `#FFFFFF` apenas como superfície elevada; fundo de página é `#F7F5F1` | [Brand] |
+| Sem azul saturado/roxo/ciano/neon | Proibidos como cores de identidade | [Brand] |
+| Sem gradientes coloridos | Apenas gradientes tonais discretos dentro da família Navy/Neutral quando funcionais | [Brand] |
 | Tagline | "Tecnologia que funciona. Operação que entrega." | [Brand] |
 | CTA primário | "Solicitar diagnóstico" | [Copy] [Brand] |
 | CTA secundário | "Falar pelo WhatsApp" | [Copy] |

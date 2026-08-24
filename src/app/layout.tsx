@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
-import Script from "next/script";
 import { Suspense } from "react";
+import { DelayedGtm } from "@/components/tracking/DelayedGtm";
 import { PageViewTracker } from "@/components/tracking/PageViewTracker";
 import { getOrgSettings, getOrganizationSchema, getLocalBusinessSchema } from "@/lib/schema";
 import { SITE_NAME, BASE_URL as SITE_BASE_URL } from "@/lib/siteMetadata";
@@ -9,15 +9,15 @@ import "./globals.css";
 
 const barlow = Barlow({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
-  style: ["normal", "italic"],
+  weight: "400",
+  style: "normal",
   variable: "--font-barlow",
   display: "swap",
 });
 
 const barlowCondensed = Barlow_Condensed({
   subsets: ["latin"],
-  weight: ["400", "500", "700", "800"],
+  weight: "800",
   variable: "--font-barlow-condensed",
   display: "swap",
 });
@@ -147,18 +147,13 @@ export default async function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-        <Script
-          id="gtm"
-          strategy="afterInteractive"
+        <script
+          id="gtm-datalayer"
           dangerouslySetInnerHTML={{
-            __html: `window.dataLayer = window.dataLayer || [];
-(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','${GTM_ID}');`,
+            __html: "window.dataLayer = window.dataLayer || [];",
           }}
         />
+        <DelayedGtm gtmId={GTM_ID} />
         <Suspense fallback={null}>
           <PageViewTracker />
         </Suspense>

@@ -228,7 +228,7 @@ export function BlogPostArticle({ post, relatedPosts }: BlogPostArticleProps) {
                       post_slug: slug,
                       network: "linkedin",
                     }}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-[#0A66C2] text-white text-sm font-medium rounded hover:bg-[#0A66C2]/90 transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-rc2-dark text-rc2-dark-text text-sm font-medium rounded hover:bg-rc2-dark/90 transition-colors"
                   >
                     <ExternalLink size={16} /> LinkedIn
                   </TrackedLink>
@@ -246,7 +246,7 @@ export function BlogPostArticle({ post, relatedPosts }: BlogPostArticleProps) {
                       post_slug: slug,
                       network: "whatsapp",
                     }}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-[#25D366] text-rc2-heading text-sm font-medium rounded hover:bg-[#25D366]/90 transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--rc2-whatsapp)] text-rc2-heading text-sm font-medium rounded hover:opacity-90 transition-opacity"
                   >
                     WhatsApp
                   </TrackedLink>
@@ -264,7 +264,7 @@ export function BlogPostArticle({ post, relatedPosts }: BlogPostArticleProps) {
                       post_slug: slug,
                       network: "x",
                     }}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-rc2-dark text-white text-sm font-medium rounded hover:bg-rc2-dark/90 transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-rc2-dark text-rc2-dark-text text-sm font-medium rounded hover:bg-rc2-dark/90 transition-colors"
                   >
                     X (Twitter)
                   </TrackedLink>
@@ -371,7 +371,7 @@ export function BlogPostArticle({ post, relatedPosts }: BlogPostArticleProps) {
                         className="group border border-border rounded overflow-hidden hover:border-rc2-brand transition-colors"
                       >
                         {relPost.cover_url && (
-                          <div className="relative aspect-video overflow-hidden bg-rc2-surface-2">
+                          <div className="rc2-blog-cover relative aspect-video overflow-hidden bg-rc2-surface-2">
                             <Image
                               src={relPost.cover_url}
                               alt={relPost.title}
@@ -437,7 +437,7 @@ export function BlogPostArticle({ post, relatedPosts }: BlogPostArticleProps) {
                         href={post.author_linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-sm text-[#0A66C2] hover:underline font-medium"
+                        className="inline-flex items-center gap-2 text-sm text-rc2-brand-text hover:underline font-medium"
                       >
                         <ExternalLink size={16} /> LinkedIn
                       </a>

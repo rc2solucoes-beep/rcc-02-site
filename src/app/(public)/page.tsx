@@ -98,11 +98,11 @@ export default async function HomePage({ searchParams }: Props) {
               Consultoria em IA e Automações para PMEs
             </SectionLabel>
           </div>
-          <h1 className="rc2-h1 rc2-hero-enter rc2-hero-enter--2 text-rc2-heading max-w-4xl text-balance">
+          <h1 className="rc2-h1 rc2-hero-shift rc2-hero-enter--2 text-rc2-heading max-w-4xl text-balance">
             <span className="rc2-hero-kicker">Nenhum lead esperando.</span>{" "}
             Nenhuma tarefa repetida duas vezes.
           </h1>
-          <p className="rc2-body-lg rc2-hero-enter rc2-hero-enter--3 mt-6 text-rc2-text/75 max-w-2xl">
+          <p className="rc2-body-lg rc2-hero-shift rc2-hero-enter--3 mt-6 text-rc2-text/75 max-w-2xl">
             A RC2 implanta atendimento automático no WhatsApp, integra seus
             sistemas e coloca a operação para rodar sozinha. Primeira resposta ao
             lead em menos de 2 minutos, 24h por dia — no ar em 30 dias, sem
@@ -179,7 +179,7 @@ export default async function HomePage({ searchParams }: Props) {
       {/* ── Escolha pela dor ── */}
       <section className="bg-rc2-bg pt-10 pb-14 md:pt-14 md:pb-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="rounded-2xl border border-rc2-border bg-white p-6 sm:p-8 md:p-10 shadow-[0_16px_45px_-36px_rgba(17,24,39,0.55)]">
+          <div className="rounded-2xl border border-rc2-border bg-rc2-surface p-6 shadow-[var(--shadow-soft)] sm:p-8 md:p-10">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.35fr] gap-8 lg:gap-10">
               <ScrollReveal direction="left" className="max-w-xl">
                 <SectionLabel className="rc2-rule block mb-4">Escolha pela sua dor</SectionLabel>
@@ -235,7 +235,7 @@ export default async function HomePage({ searchParams }: Props) {
                     className="group grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3 md:gap-5 px-4 py-4 sm:px-5 sm:py-5"
                   >
                     <div className="flex items-start gap-3">
-                      <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-rc2-border bg-white text-[11px] font-semibold text-rc2-text/80">
+                      <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-rc2-border bg-rc2-surface text-[11px] font-semibold text-rc2-text/80">
                         {index + 1}
                       </span>
                       <p className="text-sm text-rc2-text/82 leading-relaxed">{item.pain}</p>
@@ -248,7 +248,7 @@ export default async function HomePage({ searchParams }: Props) {
                         label: item.label,
                         destination: item.href,
                       }}
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-rc2-brand-text md:justify-self-end group-hover:gap-2 transition-all"
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-rc2-brand-text md:justify-self-end hover:underline transition-[color,text-decoration-color] duration-200 underline-offset-4"
                     >
                       {item.href === "/contato" ? "Diagnosticar minha dor" : `Comece por ${item.label}`}
                       <ArrowRight size={14} />
@@ -292,7 +292,7 @@ export default async function HomePage({ searchParams }: Props) {
               <TrackedLink
                 href="/contato"
                 tracking={{ kind: "cta", location: "home_services_grid", label: "solicitar_diagnostico", destination: "/contato" }}
-                className="group rc2-card-hover flex h-full flex-col justify-between rounded-xl border border-rc2-dark-border bg-rc2-dark-elevated p-6 transition-all duration-200 md:p-7 shadow-[0_16px_36px_-24px_rgba(11,45,34,0.78)]"
+                className="group rc2-card-hover flex h-full flex-col justify-between rounded-xl border border-rc2-dark-border bg-rc2-dark-elevated p-6 transition-[border-color,box-shadow,transform] duration-200 md:p-7 shadow-[var(--shadow-lift)]"
               >
                 <div>
                   <span className="inline-flex rounded-full border border-rc2-dark-border bg-rc2-dark-text/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-rc2-dark-text mb-4">
@@ -305,7 +305,7 @@ export default async function HomePage({ searchParams }: Props) {
                     Diagnóstico gratuito para mapear gargalos e oportunidades de automação na sua operação.
                   </p>
                 </div>
-                <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-rc2-dark-text group-hover:gap-3 transition-all duration-200">
+                <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-rc2-dark-text group-hover:underline transition-[color,text-decoration-color] duration-200 underline-offset-4">
                   Mapear meus gargalos
                   <ArrowRight size={14} />
                 </span>
@@ -363,7 +363,7 @@ export default async function HomePage({ searchParams }: Props) {
             </p>
           </ScrollReveal>
           <ScrollReveal delay={180} direction="left" distance="20px">
-            <p className="text-rc2-dark-text-secondary italic text-sm border-l-2 border-rc2-brand pl-4">
+            <p className="rc2-quote-card rc2-quote-card--dark text-sm">
               &ldquo;A IA não substitui uma operação mal estruturada. Primeiro
               organizamos o processo. Depois automatizamos o que faz sentido.&rdquo;
             </p>

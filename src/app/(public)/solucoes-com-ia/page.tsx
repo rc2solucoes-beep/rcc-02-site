@@ -3,6 +3,7 @@ import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 import { PageHero } from "@/components/marketing/PageHero";
 import { CTABlock } from "@/components/marketing/CTABlock";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
 const IA_WHATSAPP_MESSAGE =
@@ -123,7 +124,7 @@ export default async function SolucoesComIAPage() {
 
       <section className="bg-rc2-bg py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-10 rounded-lg border border-rc2-surface-2 bg-white p-6 md:p-8">
+          <ScrollReveal className="mb-10 rounded-lg border border-rc2-surface-2 bg-white p-6 md:p-8">
             <SectionLabel className="block mb-3">Exemplos práticos</SectionLabel>
             <div className="space-y-3 text-sm text-rc2-text/80">
               <p><span className="font-semibold text-rc2-heading">Atendimento:</span> dúvidas frequentes chegam pelo WhatsApp; a IA responde o básico e encaminha casos complexos para a equipe, reduzindo fila de resposta.</p>
@@ -131,11 +132,15 @@ export default async function SolucoesComIAPage() {
               <p><span className="font-semibold text-rc2-heading">Equipe interna:</span> informações ficam espalhadas; a IA consulta documentos e entrega respostas rápidas sem busca manual em várias ferramentas.</p>
               <p><span className="font-semibold text-rc2-heading">Pós-venda:</span> solicitações chegam misturadas; a IA classifica demandas e organiza o fluxo antes da análise humana, melhorando previsibilidade operacional.</p>
             </div>
-          </div>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {blocks.map((block) => (
-              <div key={block.label} className="bg-rc2-bg-alt border border-rc2-surface-2 rounded-lg p-8 md:p-10">
+            {blocks.map((block, index) => (
+              <ScrollReveal
+                key={block.label}
+                delay={(index % 2) * 90 + Math.floor(index / 2) * 50}
+                className="bg-rc2-bg-alt border border-rc2-surface-2 rounded-lg p-8 md:p-10"
+              >
                 <SectionLabel className="block mb-3">{block.label}</SectionLabel>
                 <h2 className="text-xl md:text-2xl font-semibold text-rc2-heading mb-2">
                   {block.title}
@@ -146,23 +151,23 @@ export default async function SolucoesComIAPage() {
                 <ul className="mt-4 space-y-2">
                   {block.items.map((item, i) => (
                     <li key={i} className="flex items-start gap-2.5">
-                      <span className="text-rc2-brand text-xs mt-1 shrink-0">→</span>
+                      <span className="text-rc2-brand-text text-xs mt-1 shrink-0">→</span>
                       <span className="text-sm text-rc2-text/80">{item}</span>
                     </li>
                   ))}
                 </ul>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
 
           {/* Bridge text */}
-          <div className="mt-16 max-w-2xl">
-            <p className="text-rc2-text/70 text-lg leading-relaxed border-l-2 border-rc2-brand pl-5 italic">
+          <ScrollReveal className="mt-16 max-w-2xl" direction="none">
+            <p className="rc2-quote-card text-lg">
               Você não precisa chegar com a solução pronta. A RC2 ajuda a
               identificar por onde começar, priorizando o que gera impacto real
               com menor complexidade.
             </p>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 

@@ -1,5 +1,10 @@
 # RC2 Soluções — Brand Strategy & Identity Guide
 
+> **Documento legado.** Este arquivo foi substituído como fonte de verdade por
+> `documentos-base/RC2_Brand_Guide_v2.1.md`. Use o documento em
+> `documentos-base/` para decisões atuais de paleta, tokens, logo e aplicação
+> visual.
+
 **Versão 3.0** — Identidade Visual Off-white · Navy · Safety Orange
 Substitui integralmente a paleta "High-End Tool" da versão 2.0.
 
@@ -584,9 +589,9 @@ Toda ocorrência dos valores legados no código deve ser substituída conforme a
 | | |
 |---|---|
 | **1. Logo — sem alteração** | Decidido manter o Signal Interrupt como está. Verificar apenas se existe versão clara para uso sobre navy |
-| **2. Migrar o site** | Aplicar os tokens v3 no repositório seguindo a seção 8. Prioridade: header, hero, CTA, footer |
+| **2. Migrar o site** | Aplicar os tokens v2.1 no repositório seguindo `documentos-base/RC2_Brand_Guide_v2.1.md`. Prioridade: header, hero, CTA, footer |
 | **3. Auditar acessibilidade** | Rodar Lighthouse e navegação por teclado em todas as páginas após a migração |
-| **4. Atualizar redes** | Perfis, capas e OG images na paleta v3 |
+| **4. Atualizar redes** | Perfis, capas e OG images na paleta v2.1 |
 | **5. Gerar 1 mini case** | Documentar o primeiro projeto com resultado mensurável — mesmo que anônimo |
 | **6. Publicar conteúdo** | 3x/semana no LinkedIn: insights de implementação, dores de PMEs |
 

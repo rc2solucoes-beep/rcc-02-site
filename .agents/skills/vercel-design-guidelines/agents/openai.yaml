@@ -1,0 +1,4 @@
+interface:
+  display_name: "Vercel Design Guidelines"
+  short_description: "Apply Vercel's web interface quality checklist."
+  default_prompt: "Use the Vercel Design Guidelines skill to review this interface."

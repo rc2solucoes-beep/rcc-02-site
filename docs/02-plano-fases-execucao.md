@@ -26,7 +26,7 @@
 - [ ] Confirmar analytics: Plausible ou Umami auto-hospedado
 - [ ] Criar conta Cloudflare Turnstile ou hCaptcha
 - [ ] Verificar e instalar MCPs: GitHub, Playwright, Supabase, Context7
-- [ ] Criar a RC2 Brand System Skill (baseada no Brand Guide v2)
+- [ ] Criar a RC2 Brand System Skill (baseada no `documentos-base/RC2_Brand_Guide_v2.1.md`)
 - [ ] Documentar tokens de acesso no gerenciador de senhas (nunca no código)
 - [ ] Criar arquivo `.env.example` com todas as variáveis necessárias
 

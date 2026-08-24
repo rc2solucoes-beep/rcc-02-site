@@ -14,6 +14,7 @@ interface ScrollRevealProps {
   children: ReactNode;
   as?: "div" | "li" | "article";
   className?: string;
+  id?: string;
   delay?: number;
   direction?: "up" | "down" | "left" | "right" | "none";
   distance?: string;
@@ -37,6 +38,7 @@ export function ScrollReveal({
   children,
   as: Component = "div",
   className,
+  id,
   delay = 0,
   direction = "up",
   distance = "24px",
@@ -92,6 +94,7 @@ export function ScrollReveal({
   } as CSSProperties;
 
   const props = {
+    id,
     className: cn("scroll-reveal", className),
     "data-reveal-state": "visible",
     style,
