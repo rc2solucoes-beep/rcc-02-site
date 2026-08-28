@@ -9,6 +9,7 @@ import { HomeReviews } from "@/components/marketing/HomeReviews";
 import { HeroActions } from "@/components/marketing/HeroActions";
 import { buttonVariants } from "@/components/ui/button";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { FadeIn } from "@/components/ui/FadeIn";
 import { services } from "@/lib/content/services";
 import { cn } from "@/lib/utils";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
@@ -153,10 +154,8 @@ export default async function HomePage({ searchParams }: Props) {
           </ScrollReveal>
           <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-rc2-dark-border bg-rc2-dark-border sm:grid-cols-2 lg:grid-cols-3">
             {forWhomItems.map((item, i) => (
-              <ScrollReveal
-                as="li"
+              <li
                 key={i}
-                delay={i * 80}
                 className="group relative flex items-start gap-3 bg-rc2-dark px-5 py-6 transition-colors hover:bg-rc2-dark-text/[0.04]"
               >
                 {/* acento estrutural laranja no hover */}
@@ -169,8 +168,10 @@ export default async function HomePage({ searchParams }: Props) {
                   className="text-rc2-brand shrink-0 mt-0.5"
                   strokeWidth={2.5}
                 />
-                <span className="text-sm text-rc2-dark-text-secondary leading-relaxed">{item}</span>
-              </ScrollReveal>
+                <FadeIn delay={i * 60} className="text-sm text-rc2-dark-text-secondary leading-relaxed">
+                  {item}
+                </FadeIn>
+              </li>
             ))}
           </ul>
         </div>
@@ -227,18 +228,17 @@ export default async function HomePage({ searchParams }: Props) {
                     label: "Diagnóstico inicial",
                   },
                 ].map((item, index) => (
-                  <ScrollReveal
-                    as="article"
+                  <article
                     key={item.href + item.pain}
-                    delay={index * 70}
-                    direction="right"
                     className="group grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3 md:gap-5 px-4 py-4 sm:px-5 sm:py-5"
                   >
                     <div className="flex items-start gap-3">
                       <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-rc2-border bg-rc2-surface text-[11px] font-semibold text-rc2-text/80">
                         {index + 1}
                       </span>
-                      <p className="text-sm text-rc2-text/82 leading-relaxed">{item.pain}</p>
+                      <FadeIn delay={index * 60} className="text-sm text-rc2-text/82 leading-relaxed">
+                        {item.pain}
+                      </FadeIn>
                     </div>
                     <TrackedLink
                       href={item.href}
@@ -253,7 +253,7 @@ export default async function HomePage({ searchParams }: Props) {
                       {item.href === "/contato" ? "Diagnosticar minha dor" : `Comece por ${item.label}`}
                       <ArrowRight size={14} />
                     </TrackedLink>
-                  </ScrollReveal>
+                  </article>
                 ))}
               </div>
             </div>

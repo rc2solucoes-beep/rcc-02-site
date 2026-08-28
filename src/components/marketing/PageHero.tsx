@@ -1,5 +1,6 @@
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { FadeIn } from "@/components/ui/FadeIn";
 import { cn } from "@/lib/utils";
 
 interface PageHeroProps {
@@ -60,7 +61,7 @@ export function PageHero({
           </h1>
         </ScrollReveal>
         {description && (
-          <ScrollReveal delay={160} distance="20px" duration={560}>
+          <FadeIn delay={160} duration={560}>
             <p
               className={cn(
                 "rc2-body-lg mt-5 max-w-2xl",
@@ -69,7 +70,7 @@ export function PageHero({
             >
               {description}
             </p>
-          </ScrollReveal>
+          </FadeIn>
         )}
         {action && (
           <ScrollReveal delay={230} distance="18px" duration={520}>

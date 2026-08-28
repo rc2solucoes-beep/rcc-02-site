@@ -1,5 +1,6 @@
 import { buttonVariants } from "@/components/ui/button";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { FadeIn } from "@/components/ui/FadeIn";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { cn } from "@/lib/utils";
 
@@ -56,17 +57,15 @@ export function CTABlock({
           >
             {title}
           </h2>
-          {description && (
-            <p
-              className={cn(
-                "rc2-body mt-4 max-w-2xl mx-auto",
-                isDark ? "text-rc2-dark-text-secondary" : "text-rc2-heading"
-              )}
-            >
-              {description}
-            </p>
-          )}
         </ScrollReveal>
+        {description && (
+          <FadeIn className={cn(
+            "rc2-body mt-4 max-w-2xl mx-auto",
+            isDark ? "text-rc2-dark-text-secondary" : "text-rc2-heading"
+          )}>
+            {description}
+          </FadeIn>
+        )}
         <ScrollReveal delay={120} distance="18px">
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <TrackedLink

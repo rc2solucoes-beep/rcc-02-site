@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Service } from "@/lib/content/services";
+import { FadeIn } from "@/components/ui/FadeIn";
 import { cn } from "@/lib/utils";
 
 interface ServiceCardProps {
@@ -35,13 +36,13 @@ export function ServiceCard({ service, className }: ServiceCardProps) {
       <h3 className="text-lg font-semibold text-rc2-heading mb-3 leading-snug">
         {service.title}
       </h3>
-      <p className="text-sm text-rc2-text/70 leading-relaxed flex-1">
+      <FadeIn className="text-sm text-rc2-text/70 leading-relaxed flex-1">
         {service.summary}
-      </p>
+      </FadeIn>
       {resolveText && (
-        <p className="mt-3 text-xs text-rc2-text/70">
+        <FadeIn className="mt-3 text-xs text-rc2-text/70">
           <span className="font-semibold text-rc2-text/80">Resolve:</span> {resolveText}
-        </p>
+        </FadeIn>
       )}
       <Link
         href={`/servicos/${service.slug}`}
