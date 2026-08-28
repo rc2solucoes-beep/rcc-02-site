@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { BASE_URL, buildOg } from "@/lib/siteMetadata";
-import Link from "next/link";
-import Image from "next/image";
 import { createPublicClient } from "@/lib/supabase/server";
 import { PageHero } from "@/components/marketing/PageHero";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { BlogCard } from "@/components/blog/BlogCard";
 import type { Post } from "@/lib/types/post";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
@@ -50,7 +49,6 @@ function formatDate(iso: string | null) {
 
 export default async function BlogPage() {
   const posts = await getPosts();
-  const hasFewPosts = posts.length > 0 && posts.length <= 2;
   let schemaWebPage;
 
   try {
@@ -115,109 +113,19 @@ export default async function BlogPage() {
                 </TrackedLink>
               </div>
             </ScrollReveal>
-          ) : hasFewPosts ? (
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
-              <div className="space-y-6">
-                {posts.map((post, index) => (
-                  <ScrollReveal
-                    key={post.id}
-                    as="article"
-                    delay={index * 90}
-                    distance="22px"
-                    className="max-w-3xl"
-                  >
-                    <Link
-                      href={`/blog/${post.slug}`}
-                      className="group grid gap-5 rounded-xl border border-rc2-border bg-rc2-surface p-4 shadow-[var(--shadow-soft)] transition-[border-color,box-shadow] duration-200 hover:border-rc2-brand/35 hover:shadow-[var(--shadow-lift)] md:grid-cols-[minmax(0,18rem)_1fr] md:p-5"
-                    >
-                      {post.cover_url && (
-                        <div className="rc2-blog-cover relative aspect-video w-full overflow-hidden md:aspect-[4/3]">
-                          <Image
-                            src={post.cover_url}
-                            alt={post.title}
-                            fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                            sizes="(min-width: 768px) 18rem, 100vw"
-                          />
-                        </div>
-                      )}
-                      {!post.cover_url && (
-                        <div className="rc2-blog-cover aspect-video w-full bg-rc2-surface-2 flex items-center justify-center md:aspect-[4/3]">
-                          <span className="text-rc2-heading/30 text-4xl font-bold font-condensed uppercase tracking-widest">RC2</span>
-                        </div>
-                      )}
-                      <div className="flex min-w-0 flex-col justify-center">
-                        <time className="text-xs text-rc2-text-secondary uppercase tracking-wider">
-                          {formatDate(post.published_at)}
-                        </time>
-                        <h2 className="mt-1.5 text-xl font-semibold leading-snug text-rc2-heading transition-colors group-hover:text-rc2-brand-text">
-                          {post.title}
-                        </h2>
-                        <p className="mt-2 line-clamp-3 text-sm text-rc2-text-secondary">{post.summary}</p>
-                        <span className="mt-4 inline-block text-sm font-medium text-rc2-brand-text underline-offset-4 group-hover:underline">
-                          Ler artigo →
-                        </span>
-                      </div>
-                    </Link>
-                  </ScrollReveal>
-                ))}
-              </div>
-              <ScrollReveal delay={140} direction="none">
-                <aside className="rounded-xl border border-rc2-border bg-rc2-bg-alt p-5 shadow-[var(--shadow-soft)]">
-                  <SectionLabel className="mb-3 block">Comece por aqui</SectionLabel>
-                  <div className="space-y-3 text-sm">
-                    <Link className="ui-focus-ring block rounded-md text-rc2-text hover:text-rc2-brand-text hover:underline underline-offset-4 transition-[color,text-decoration-color]" href="/servicos">
-                      Serviços
-                    </Link>
-                    <Link className="ui-focus-ring block rounded-md text-rc2-text hover:text-rc2-brand-text hover:underline underline-offset-4 transition-[color,text-decoration-color]" href="/solucoes">
-                      Soluções
-                    </Link>
-                    <Link className="ui-focus-ring block rounded-md text-rc2-text hover:text-rc2-brand-text hover:underline underline-offset-4 transition-[color,text-decoration-color]" href="/contato">
-                      Solicitar diagnóstico
-                    </Link>
-                  </div>
-                </aside>
-              </ScrollReveal>
-            </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {posts.map((post, index) => (
-                <ScrollReveal
+            <div className="space-y-6">
+              {posts.map((post) => (
+                <BlogCard
                   key={post.id}
-                  as="article"
-                  delay={(index % 2) * 90 + Math.floor(index / 2) * 50}
-                  distance={index === 0 ? "30px" : "22px"}
-                  className={index === 0 && posts.length > 1 ? "md:col-span-2" : ""}
-                >
-                  <Link href={`/blog/${post.slug}`} className="group block">
-                    {post.cover_url && (
-                      <div className="rc2-blog-cover relative aspect-video w-full overflow-hidden mb-5">
-                        <Image
-                          src={post.cover_url}
-                          alt={post.title}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          sizes={index === 0 ? "100vw" : "50vw"}
-                        />
-                      </div>
-                    )}
-                    {!post.cover_url && (
-                      <div className="rc2-blog-cover aspect-video w-full bg-rc2-surface-2 mb-5 flex items-center justify-center">
-                        <span className="text-rc2-heading/30 text-4xl font-bold font-condensed uppercase tracking-widest">RC2</span>
-                      </div>
-                    )}
-                    <time className="text-xs text-rc2-text/70 uppercase tracking-wider">
-                      {formatDate(post.published_at)}
-                    </time>
-                    <h2 className={`font-semibold text-rc2-heading mt-1.5 group-hover:text-rc2-brand-text transition-colors leading-snug ${index === 0 ? "text-2xl" : "text-lg"}`}>
-                      {post.title}
-                    </h2>
-                    <p className="text-rc2-text/70 text-sm mt-2 line-clamp-3">{post.summary}</p>
-                    <span className="inline-block mt-3 text-sm font-medium text-rc2-brand-text group-hover:underline underline-offset-4">
-                      Ler artigo →
-                    </span>
-                  </Link>
-                </ScrollReveal>
+                  image={post.cover_url}
+                  title={post.title}
+                  summary={post.summary}
+                  slug={post.slug}
+                  author={post.author_name}
+                  publishedAt={post.published_at}
+                  readingTimeMinutes={post.reading_time_minutes}
+                />
               ))}
             </div>
           )}
