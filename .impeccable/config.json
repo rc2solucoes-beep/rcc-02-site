@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "codex-grid-background",
+        "value": ".rc2-blueprint",
+        "createdAt": "2026-08-28T19:46:28.233Z",
+        "reason": "RC2 v3 brand system: intentional grid texture in hero and section backgrounds, not generated UI signature"
+      }
+    ]
+  }
+}
