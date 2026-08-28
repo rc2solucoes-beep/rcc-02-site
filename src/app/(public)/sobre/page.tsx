@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 import { PageHero } from "@/components/marketing/PageHero";
-import { CTABlock } from "@/components/marketing/CTABlock";
+import { HomeCtaBlock } from "@/components/marketing/HomeCtaBlock";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StepList, type Step } from "@/components/marketing/StepList";
@@ -137,7 +137,7 @@ export default async function SobrePage() {
         </div>
       </section>
 
-      <CTABlock
+      <HomeCtaBlock
         title="Quer conhecer melhor a RC2?"
         description="Solicite um diagnóstico gratuito e veja como trabalhamos na prática."
         className="rc2-section--closing"

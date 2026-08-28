@@ -1,0 +1,660 @@
+
+> rc2-site@0.1.0 dev E:\MyProjects\rcc-02-site
+> next dev
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.20.160.1:3000
+- Environments: .env.local
+✓ Ready in 450ms
+
+ GET / 200 in 667ms (next.js: 191ms, application-code: 477ms)
+ GET / 200 in 94ms (next.js: 3ms, application-code: 91ms)
+ GET / 200 in 193ms (next.js: 11ms, application-code: 182ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html
+                          lang="pt-BR"
+                          className="h-full barlow_b670ff9e-module__i5eOHG__variable barlow_condensed_71990325-module_..."
+-                         suppresshydrationwarning="true"
+-                         data-lt-installed="true"
+                        >
+                  ...
+ 
+ GET /servicos 200 in 208ms (next.js: 88ms, application-code: 119ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /solucoes-com-ia 200 in 152ms (next.js: 97ms, application-code: 55ms)
+ GET /sobre 200 in 128ms (next.js: 86ms, application-code: 42ms)
+ GET /blog 200 in 820ms (next.js: 84ms, application-code: 737ms)
+[browser] Image with src "https://ccaonec11w7vkoy6.public.blob.vercel-storage.com/blog/covers/1786999364897-capa-custo-de-agente-de-ia.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+✓ Compiled in 155ms
+ GET /blog 200 in 228ms (next.js: 104ms, application-code: 124ms)
+ GET /blog 200 in 42ms (next.js: 3ms, application-code: 39ms)
+ GET /blog 200 in 129ms (next.js: 67ms, application-code: 62ms)
+ GET /blog 200 in 454ms (next.js: 6ms, application-code: 448ms)
+[browser] Image with src "https://ccaonec11w7vkoy6.public.blob.vercel-storage.com/blog/covers/1786999364897-capa-custo-de-agente-de-ia.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /blog 200 in 306ms (next.js: 8ms, application-code: 298ms)
+[browser] Image with src "https://ccaonec11w7vkoy6.public.blob.vercel-storage.com/blog/covers/1786999364897-capa-custo-de-agente-de-ia.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /blog 200 in 319ms (next.js: 6ms, application-code: 313ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/blog" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html
+                          lang="pt-BR"
+                          className="h-full barlow_b670ff9e-module__i5eOHG__variable barlow_condensed_71990325-module_..."
+-                         suppresshydrationwarning="true"
+-                         data-lt-installed="true"
+                        >
+                  ...
+ 
+[browser] Image with src "https://ccaonec11w7vkoy6.public.blob.vercel-storage.com/blog/covers/1786999364897-capa-custo-de-agente-de-ia.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[browser] Image with src "https://ccaonec11w7vkoy6.public.blob.vercel-storage.com/blog/covers/1786999364897-capa-custo-de-agente-de-ia.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /blog/atendimento-automatizado-contexto 200 in 1231ms (next.js: 786ms, generate-params: 648ms, application-code: 445ms)
+ GET /blog 200 in 212ms (next.js: 9ms, application-code: 202ms)
+ GET /blog 200 in 165ms (next.js: 3ms, application-code: 162ms)
+✓ Compiled in 562ms
+ GET /blog 200 in 189ms (next.js: 3ms, application-code: 186ms)
+ GET / 200 in 160ms (next.js: 13ms, application-code: 147ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET / 200 in 120ms (next.js: 41ms, application-code: 79ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /servicos 200 in 168ms (next.js: 62ms, application-code: 107ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /servicos 200 in 126ms (next.js: 40ms, application-code: 86ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /solucoes 200 in 171ms (next.js: 82ms, application-code: 89ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /solucoes 200 in 103ms (next.js: 45ms, application-code: 58ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /solucoes-com-ia 200 in 132ms (next.js: 61ms, application-code: 71ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /solucoes-com-ia 200 in 101ms (next.js: 44ms, application-code: 57ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /servicos/automacoes-com-ia 200 in 713ms (next.js: 540ms, generate-params: 421ms, application-code: 173ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /servicos/automacoes-com-ia 200 in 130ms (next.js: 47ms, generate-params: 10ms, application-code: 83ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /solucoes/atendimento-lento 200 in 674ms (next.js: 537ms, generate-params: 415ms, application-code: 137ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /solucoes/atendimento-lento 200 in 129ms (next.js: 50ms, generate-params: 9ms, application-code: 79ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /sobre 200 in 122ms (next.js: 52ms, application-code: 70ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /sobre 200 in 100ms (next.js: 50ms, application-code: 50ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /contato 200 in 178ms (next.js: 97ms, application-code: 81ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /contato 200 in 99ms (next.js: 49ms, application-code: 50ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /avaliacoes 200 in 157ms (next.js: 107ms, application-code: 50ms)
+Fetching: https://places.googleapis.com/v1/places/ChIJjRqtgyX1zpQRspVNluur1vk?fields=displayName,formattedAddress,rating,reviews,userRatingCount&key=***
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /api/google/places 200 in 1112ms (next.js: 50ms, application-code: 1062ms)
+ GET /avaliacoes 200 in 91ms (next.js: 48ms, application-code: 43ms)
+ GET /api/google/places 200 in 6ms (next.js: 1904µs, application-code: 4ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /blog 200 in 241ms (next.js: 43ms, application-code: 197ms)
+[browser] Image with src "https://ccaonec11w7vkoy6.public.blob.vercel-storage.com/blog/covers/1786999364897-capa-custo-de-agente-de-ia.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /blog 200 in 177ms (next.js: 48ms, application-code: 129ms)
+[browser] Image with src "https://ccaonec11w7vkoy6.public.blob.vercel-storage.com/blog/covers/1786999364897-capa-custo-de-agente-de-ia.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /blog/atendimento-omnichannel-pme 200 in 371ms (next.js: 67ms, generate-params: 14ms, application-code: 304ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /blog/atendimento-omnichannel-pme 200 in 267ms (next.js: 46ms, generate-params: 11ms, application-code: 221ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /privacidade 200 in 391ms (next.js: 331ms, application-code: 60ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /privacidade 200 in 101ms (next.js: 54ms, application-code: 47ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /termos 200 in 343ms (next.js: 290ms, application-code: 52ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /termos 200 in 95ms (next.js: 51ms, application-code: 44ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET / 200 in 89ms (next.js: 4ms, application-code: 86ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /servicos 200 in 147ms (next.js: 56ms, application-code: 91ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /servicos/automacoes-com-ia 200 in 138ms (next.js: 61ms, generate-params: 15ms, application-code: 77ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /contato 200 in 103ms (next.js: 56ms, application-code: 47ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /blog 200 in 546ms (next.js: 52ms, application-code: 494ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+[browser] Image with src "https://ccaonec11w7vkoy6.public.blob.vercel-storage.com/blog/covers/1786999364897-capa-custo-de-agente-de-ia.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+ GET / 200 in 87ms (next.js: 3ms, application-code: 84ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /servicos 200 in 94ms (next.js: 3ms, application-code: 92ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /servicos/automacoes-com-ia 200 in 89ms (next.js: 13ms, generate-params: 11ms, application-code: 76ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /solucoes/atendimento-lento 200 in 108ms (next.js: 23ms, generate-params: 20ms, application-code: 85ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /contato 200 in 50ms (next.js: 3ms, application-code: 48ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /blog 200 in 204ms (next.js: 3ms, application-code: 201ms)
+[browser] Image with src "https://ccaonec11w7vkoy6.public.blob.vercel-storage.com/blog/covers/1786999364897-capa-custo-de-agente-de-ia.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /contato 200 in 58ms (next.js: 3ms, application-code: 55ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET / 200 in 97ms (next.js: 3ms, application-code: 94ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /servicos/automacoes-com-ia 200 in 237ms (next.js: 144ms, generate-params: 25ms, application-code: 93ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /admin 200 in 169ms (next.js: 44ms, proxy.ts: 51ms, application-code: 75ms)
+[/api/admin/init] Access denied: no active session
+ POST /api/admin/init 401 in 279ms (next.js: 86ms, application-code: 193ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+✓ Compiled in 566ms
+✓ Compiled in 506ms
+✓ Compiled in 212ms
+✓ Compiled in 233ms
+✓ Compiled in 201ms
+✓ Compiled in 201ms
+✓ Compiled in 424ms
+✓ Compiled in 194ms
+✓ Compiled in 202ms
+✓ Compiled in 507ms
+✓ Compiled in 273ms
+ GET / 200 in 390ms (next.js: 103ms, application-code: 287ms)
+ GET /contato 200 in 311ms (next.js: 118ms, application-code: 192ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /servicos/automacoes-com-ia 200 in 342ms (next.js: 151ms, generate-params: 26ms, application-code: 191ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+✓ Compiled in 164ms
+ GET /contato 200 in 378ms (next.js: 117ms, application-code: 261ms)
+ GET /servicos/automacoes-com-ia 200 in 196ms (next.js: 131ms, generate-params: 10ms, application-code: 65ms)
+ GET /servicos/automacoes-com-ia 200 in 163ms (next.js: 14ms, generate-params: 10ms, application-code: 149ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /servicos/automacoes-com-ia 200 in 160ms (next.js: 14ms, generate-params: 11ms, application-code: 146ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /servicos/automacoes-com-ia 200 in 113ms (next.js: 17ms, generate-params: 14ms, application-code: 95ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /blog 200 in 1307ms (next.js: 223ms, application-code: 1084ms)
+[browser] Image with src "https://ccaonec11w7vkoy6.public.blob.vercel-storage.com/blog/covers/1778942911603-rc2-omnichannel.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+ GET / 200 in 313ms (next.js: 203ms, application-code: 110ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /blog 200 in 232ms (next.js: 10ms, application-code: 222ms)
+[browser] Image with src "https://ccaonec11w7vkoy6.public.blob.vercel-storage.com/blog/covers/1786999364897-capa-custo-de-agente-de-ia.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /blog/custo-de-agente-de-ia 200 in 660ms (next.js: 246ms, generate-params: 17ms, application-code: 413ms)
+ GET / 200 in 84ms (next.js: 21ms, application-code: 64ms)
+✓ Compiled in 584ms
+ GET /contato 200 in 965ms (next.js: 129ms, application-code: 836ms)
+ GET /contato 200 in 600ms (next.js: 200ms, application-code: 401ms)
+ GET /contato 200 in 282ms (next.js: 67ms, application-code: 215ms)
+ GET /contato 200 in 282ms (next.js: 122ms, application-code: 160ms)
+ GET / 200 in 1129ms (next.js: 301ms, application-code: 828ms)
+ GET /servicos/automacoes-com-ia 200 in 767ms (next.js: 135ms, generate-params: 11ms, application-code: 632ms)
+ GET /contato 200 in 164ms (next.js: 3ms, application-code: 160ms)
+ GET / 200 in 754ms (next.js: 223ms, application-code: 531ms)
+ GET /contato 200 in 161ms (next.js: 4ms, application-code: 157ms)
+ GET / 200 in 522ms (next.js: 9ms, application-code: 514ms)
+ GET / 200 in 522ms (next.js: 61ms, application-code: 461ms)
+ GET / 200 in 522ms (next.js: 36ms, application-code: 487ms)
+ GET / 200 in 538ms (next.js: 95ms, application-code: 443ms)
+ GET /contato 200 in 250ms (next.js: 3ms, application-code: 247ms)
+ GET /servicos/automacoes-com-ia 200 in 657ms (next.js: 33ms, generate-params: 19µs, application-code: 624ms)
+ GET /contato 200 in 491ms (next.js: 4ms, application-code: 487ms)
+ GET /contato 200 in 519ms (next.js: 37ms, application-code: 482ms)
+ GET /contato 200 in 521ms (next.js: 9ms, application-code: 512ms)
+ GET /contato 200 in 409ms (next.js: 15ms, application-code: 394ms)
+ GET /contato 200 in 267ms (next.js: 51ms, application-code: 216ms)
+ GET /contato 200 in 272ms (next.js: 82ms, application-code: 190ms)
+ GET /contato 200 in 136ms (next.js: 6ms, application-code: 129ms)
+ GET / 200 in 752ms (next.js: 4ms, application-code: 748ms)
+ GET / 200 in 705ms (next.js: 68ms, application-code: 637ms)
+ GET /contato 200 in 184ms (next.js: 4ms, application-code: 180ms)
+ GET /contato 200 in 185ms (next.js: 29ms, application-code: 155ms)
+ GET / 200 in 620ms (next.js: 42ms, application-code: 577ms)
+ GET / 200 in 620ms (next.js: 67ms, application-code: 552ms)
+ GET / 200 in 623ms (next.js: 94ms, application-code: 529ms)
+ GET /contato 200 in 162ms (next.js: 4ms, application-code: 158ms)
+ GET / 200 in 525ms (next.js: 25ms, application-code: 500ms)
+ GET /contato 200 in 332ms (next.js: 4ms, application-code: 328ms)
+ GET /contato 200 in 358ms (next.js: 28ms, application-code: 331ms)
+ GET /contato 200 in 367ms (next.js: 4ms, application-code: 363ms)
+ GET /contato 200 in 377ms (next.js: 36ms, application-code: 341ms)
+ GET /contato 200 in 346ms (next.js: 31ms, application-code: 314ms)
+ GET /contato 200 in 282ms (next.js: 75ms, application-code: 207ms)
+ GET /contato 200 in 115ms (next.js: 5ms, application-code: 111ms)
+ GET /contato 200 in 115ms (next.js: 34ms, application-code: 81ms)
+ GET / 200 in 601ms (next.js: 5ms, application-code: 596ms)
+ GET / 200 in 573ms (next.js: 7ms, application-code: 566ms)
+ GET / 200 in 509ms (next.js: 61ms, application-code: 448ms)
+ GET / 200 in 510ms (next.js: 40ms, application-code: 471ms)
+ GET / 200 in 474ms (next.js: 53ms, application-code: 421ms)
+ GET / 200 in 345ms (next.js: 16ms, application-code: 329ms)
+ GET /servicos/automacoes-com-ia 200 in 245ms (next.js: 14ms, generate-params: 10ms, application-code: 232ms)
+ GET /servicos/automacoes-com-ia 200 in 397ms (next.js: 37ms, generate-params: 17µs, application-code: 360ms)
+ GET /servicos/automacoes-com-ia 200 in 399ms (next.js: 4ms, generate-params: 16µs, application-code: 395ms)
+ GET /servicos/automacoes-com-ia 200 in 375ms (next.js: 36ms, generate-params: 18µs, application-code: 339ms)
+ GET /servicos/automacoes-com-ia 200 in 378ms (next.js: 66ms, generate-params: 18µs, application-code: 312ms)
+ GET /servicos/automacoes-com-ia 200 in 347ms (next.js: 67ms, generate-params: 17µs, application-code: 280ms)
+ GET / 200 in 485ms (next.js: 4ms, application-code: 481ms)
+ GET / 200 in 485ms (next.js: 28ms, application-code: 457ms)
+ GET / 200 in 485ms (next.js: 50ms, application-code: 435ms)
+ GET / 200 in 486ms (next.js: 73ms, application-code: 413ms)
+ GET / 200 in 486ms (next.js: 103ms, application-code: 383ms)
+ GET / 200 in 486ms (next.js: 124ms, application-code: 362ms)
+ GET /servicos/automacoes-com-ia 200 in 291ms (next.js: 16ms, generate-params: 10ms, application-code: 276ms)
+ GET /servicos/automacoes-com-ia 200 in 246ms (next.js: 4ms, generate-params: 17µs, application-code: 242ms)
+ GET /servicos/automacoes-com-ia 200 in 247ms (next.js: 35ms, generate-params: 16µs, application-code: 212ms)
+ GET /servicos/automacoes-com-ia 200 in 247ms (next.js: 66ms, generate-params: 16µs, application-code: 180ms)
+ GET /servicos/automacoes-com-ia 200 in 183ms (next.js: 36ms, generate-params: 19µs, application-code: 147ms)
+ GET /servicos/automacoes-com-ia 200 in 152ms (next.js: 3ms, generate-params: 19µs, application-code: 149ms)
+ GET / 200 in 248ms (next.js: 3ms, application-code: 245ms)
+ GET /servicos/automacoes-com-ia 200 in 205ms (next.js: 4ms, generate-params: 42µs, application-code: 202ms)
+ GET /servicos/automacoes-com-ia 200 in 167ms (next.js: 3ms, generate-params: 16µs, application-code: 164ms)
+ GET /servicos/automacoes-com-ia 200 in 168ms (next.js: 36ms, generate-params: 17µs, application-code: 132ms)
+ GET /servicos/automacoes-com-ia 200 in 136ms (next.js: 25ms, generate-params: 18µs, application-code: 111ms)
+ GET /servicos/automacoes-com-ia 200 in 137ms (next.js: 45ms, generate-params: 17µs, application-code: 92ms)
+ GET /servicos/automacoes-com-ia 200 in 107ms (next.js: 15ms, generate-params: 11ms, application-code: 93ms)
+ GET /servicos/automacoes-com-ia 200 in 225ms (next.js: 4ms, generate-params: 16µs, application-code: 221ms)
+ GET /servicos/automacoes-com-ia 200 in 190ms (next.js: 4ms, generate-params: 18µs, application-code: 185ms)
+ GET /servicos/automacoes-com-ia 200 in 153ms (next.js: 38ms, generate-params: 24µs, application-code: 115ms)
+ GET /servicos/automacoes-com-ia 200 in 157ms (next.js: 4ms, generate-params: 18µs, application-code: 152ms)
+ GET /servicos/automacoes-com-ia 200 in 155ms (next.js: 36ms, generate-params: 17µs, application-code: 119ms)
+ GET /servicos/automacoes-com-ia 200 in 93ms (next.js: 11ms, generate-params: 17µs, application-code: 82ms)
+ GET /servicos/automacoes-com-ia 200 in 238ms (next.js: 4ms, generate-params: 16µs, application-code: 235ms)
+ GET /servicos/automacoes-com-ia 200 in 202ms (next.js: 4ms, generate-params: 22µs, application-code: 198ms)
+ GET /servicos/automacoes-com-ia 200 in 201ms (next.js: 36ms, generate-params: 30µs, application-code: 166ms)
+ GET /servicos/automacoes-com-ia 200 in 135ms (next.js: 3ms, generate-params: 18µs, application-code: 132ms)
+ GET /servicos/automacoes-com-ia 200 in 137ms (next.js: 3ms, generate-params: 17µs, application-code: 134ms)
+ GET /servicos/automacoes-com-ia 200 in 109ms (next.js: 22ms, generate-params: 11ms, application-code: 87ms)
+ GET /servicos/automacoes-com-ia 200 in 230ms (next.js: 4ms, generate-params: 17µs, application-code: 226ms)
+ GET /servicos/automacoes-com-ia 200 in 193ms (next.js: 4ms, generate-params: 18µs, application-code: 189ms)
+ GET /servicos/automacoes-com-ia 200 in 161ms (next.js: 4ms, generate-params: 18µs, application-code: 157ms)
+ GET /servicos/automacoes-com-ia 200 in 128ms (next.js: 4ms, generate-params: 17µs, application-code: 124ms)
+ GET /servicos/automacoes-com-ia 200 in 121ms (next.js: 3ms, generate-params: 15µs, application-code: 118ms)
+ GET /servicos/automacoes-com-ia 200 in 158ms (next.js: 4ms, generate-params: 19µs, application-code: 154ms)
+ GET /servicos/automacoes-com-ia 200 in 223ms (next.js: 4ms, generate-params: 17µs, application-code: 218ms)
+ GET /servicos/automacoes-com-ia 200 in 186ms (next.js: 4ms, generate-params: 19µs, application-code: 182ms)
+ GET /servicos/automacoes-com-ia 200 in 151ms (next.js: 3ms, generate-params: 17µs, application-code: 148ms)
+ GET /servicos/automacoes-com-ia 200 in 152ms (next.js: 39ms, generate-params: 16µs, application-code: 113ms)
+ GET /servicos/automacoes-com-ia 200 in 97ms (next.js: 16ms, generate-params: 11ms, application-code: 82ms)
+ GET /servicos/automacoes-com-ia 200 in 130ms (next.js: 36ms, generate-params: 17µs, application-code: 94ms)
+ GET /servicos/automacoes-com-ia 200 in 221ms (next.js: 4ms, generate-params: 19µs, application-code: 217ms)
+ GET /servicos/automacoes-com-ia 200 in 198ms (next.js: 4ms, generate-params: 21µs, application-code: 194ms)
+ GET /servicos/automacoes-com-ia 200 in 165ms (next.js: 4ms, generate-params: 20µs, application-code: 161ms)
+ GET /servicos/automacoes-com-ia 200 in 165ms (next.js: 37ms, generate-params: 22µs, application-code: 127ms)
+ GET /servicos/automacoes-com-ia 200 in 162ms (next.js: 3ms, generate-params: 21µs, application-code: 159ms)
+ GET /servicos/automacoes-com-ia 200 in 130ms (next.js: 12ms, generate-params: 21µs, application-code: 118ms)
+ GET /servicos/automacoes-com-ia 200 in 240ms (next.js: 3ms, generate-params: 20µs, application-code: 237ms)
+ GET /servicos/automacoes-com-ia 200 in 206ms (next.js: 3ms, generate-params: 19µs, application-code: 203ms)
+ GET /servicos/automacoes-com-ia 200 in 170ms (next.js: 4ms, generate-params: 16µs, application-code: 166ms)
+ GET /servicos/automacoes-com-ia 200 in 170ms (next.js: 36ms, generate-params: 18µs, application-code: 133ms)
+ GET /servicos/automacoes-com-ia 200 in 170ms (next.js: 3ms, generate-params: 19µs, application-code: 168ms)
+ GET /servicos/automacoes-com-ia 200 in 172ms (next.js: 23ms, generate-params: 10ms, application-code: 149ms)
+ GET /servicos/automacoes-com-ia 200 in 217ms (next.js: 3ms, generate-params: 19µs, application-code: 214ms)
+ GET /servicos/automacoes-com-ia 200 in 150ms (next.js: 4ms, generate-params: 19µs, application-code: 146ms)
+ GET /servicos/automacoes-com-ia 200 in 185ms (next.js: 3ms, generate-params: 17µs, application-code: 182ms)
+ GET /servicos/automacoes-com-ia 200 in 151ms (next.js: 35ms, generate-params: 19µs, application-code: 116ms)
+ GET /servicos/automacoes-com-ia 200 in 116ms (next.js: 3ms, generate-params: 18µs, application-code: 113ms)
+ GET /servicos/automacoes-com-ia 200 in 226ms (next.js: 35ms, generate-params: 20µs, application-code: 191ms)
+ GET /servicos/automacoes-com-ia 200 in 240ms (next.js: 4ms, generate-params: 19µs, application-code: 236ms)
+ GET /servicos/automacoes-com-ia 200 in 203ms (next.js: 36ms, generate-params: 19µs, application-code: 167ms)
+ GET /servicos/automacoes-com-ia 200 in 205ms (next.js: 4ms, generate-params: 21µs, application-code: 201ms)
+ GET /servicos/automacoes-com-ia 200 in 203ms (next.js: 69ms, generate-params: 20µs, application-code: 135ms)
+ GET /servicos/automacoes-com-ia 200 in 94ms (next.js: 3ms, generate-params: 18µs, application-code: 91ms)
+ GET /servicos/automacoes-com-ia 200 in 79ms (next.js: 14ms, generate-params: 11ms, application-code: 65ms)
+ GET /servicos/automacoes-com-ia 200 in 209ms (next.js: 3ms, generate-params: 21µs, application-code: 206ms)
+ GET /servicos/automacoes-com-ia 200 in 183ms (next.js: 4ms, generate-params: 15µs, application-code: 179ms)
+ GET /servicos/automacoes-com-ia 200 in 183ms (next.js: 46ms, generate-params: 16µs, application-code: 137ms)
+ GET /servicos/automacoes-com-ia 200 in 183ms (next.js: 66ms, generate-params: 17µs, application-code: 117ms)
+ GET /servicos/automacoes-com-ia 200 in 55ms (next.js: 10ms, generate-params: 20µs, application-code: 45ms)
+ GET /servicos/automacoes-com-ia 200 in 215ms (next.js: 95ms, generate-params: 18µs, application-code: 121ms)
+ GET /servicos/automacoes-com-ia 200 in 40ms (next.js: 4ms, generate-params: 16µs, application-code: 35ms)
+✓ Compiled in 690ms
+ GET /contato 200 in 616ms (next.js: 107ms, application-code: 508ms)
+ GET / 200 in 446ms (next.js: 99ms, application-code: 346ms)
+ GET /servicos/automacoes-com-ia 200 in 301ms (next.js: 148ms, generate-params: 10ms, application-code: 153ms)
+ GET /servicos/automacoes-com-ia 200 in 91ms (next.js: 3ms, generate-params: 17µs, application-code: 88ms)
+ GET /servicos/automacoes-com-ia 200 in 48ms (next.js: 3ms, generate-params: 23µs, application-code: 45ms)
+✓ Compiled in 142ms
+ GET /contato 200 in 472ms (next.js: 111ms, application-code: 361ms)
+ GET /servicos/automacoes-com-ia 200 in 672ms (next.js: 120ms, generate-params: 11ms, application-code: 552ms)
+ GET / 200 in 471ms (next.js: 274ms, application-code: 197ms)
+ GET /servicos/automacoes-com-ia 200 in 136ms (next.js: 7ms, generate-params: 18µs, application-code: 129ms)
+ GET /servicos/automacoes-com-ia 200 in 60ms (next.js: 14ms, generate-params: 11ms, application-code: 46ms)
+✓ Compiled in 214ms
+ GET /contato 200 in 300ms (next.js: 226ms, application-code: 73ms)
+ GET /servicos/automacoes-com-ia 200 in 352ms (next.js: 143ms, generate-params: 16ms, application-code: 209ms)
+ GET /servicos/automacoes-com-ia 200 in 91ms (next.js: 3ms, generate-params: 18µs, application-code: 88ms)
+ GET /servicos/automacoes-com-ia 200 in 54ms (next.js: 3ms, generate-params: 18µs, application-code: 51ms)
+✓ Compiled in 141ms
+ GET /contato 200 in 357ms (next.js: 100ms, application-code: 257ms)
+ GET /contato 200 in 198ms (next.js: 58ms, application-code: 140ms)
+ GET /servicos/automacoes-com-ia 200 in 272ms (next.js: 24ms, generate-params: 10ms, application-code: 247ms)
+ GET /servicos/automacoes-com-ia 200 in 190ms (next.js: 3ms, generate-params: 19µs, application-code: 187ms)
+ GET /servicos/automacoes-com-ia 200 in 151ms (next.js: 3ms, generate-params: 16µs, application-code: 148ms)
+ GET /servicos/automacoes-com-ia 200 in 152ms (next.js: 34ms, generate-params: 15µs, application-code: 117ms)
+ GET /servicos/automacoes-com-ia 200 in 78ms (next.js: 3ms, generate-params: 15µs, application-code: 75ms)
+ GET /servicos/automacoes-com-ia 200 in 42ms (next.js: 3ms, generate-params: 16µs, application-code: 39ms)
+✓ Compiled in 684ms
+ GET /contato 200 in 533ms (next.js: 384ms, application-code: 148ms)
+ GET /servicos/automacoes-com-ia 200 in 539ms (next.js: 145ms, generate-params: 13ms, application-code: 394ms)
+ GET /servicos/automacoes-com-ia 200 in 100ms (next.js: 3ms, generate-params: 17µs, application-code: 98ms)
+ GET /servicos/automacoes-com-ia 200 in 54ms (next.js: 3ms, generate-params: 20µs, application-code: 51ms)
+ GET / 200 in 706ms (next.js: 256ms, application-code: 450ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html
+                          lang="pt-BR"
+                          className="h-full barlow_b670ff9e-module__i5eOHG__variable barlow_condensed_71990325-module_..."
+-                         suppresshydrationwarning="true"
+-                         data-lt-installed="true"
+                        >
+                  ...
+ 
+ GET /servicos 200 in 459ms (next.js: 320ms, application-code: 140ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /solucoes-com-ia 200 in 397ms (next.js: 289ms, application-code: 108ms)
+ GET /sobre 200 in 346ms (next.js: 262ms, application-code: 84ms)
+ GET /blog 200 in 571ms (next.js: 300ms, application-code: 272ms)
+[browser] Image with src "https://ccaonec11w7vkoy6.public.blob.vercel-storage.com/blog/covers/1786999364897-capa-custo-de-agente-de-ia.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /contato 200 in 60ms (next.js: 17ms, application-code: 43ms)
+ GET / 200 in 101ms (next.js: 4ms, application-code: 97ms)
+✓ Compiled in 982ms
+ GET /contato 200 in 397ms (next.js: 134ms, application-code: 263ms)
+ GET /contato 200 in 3.2s (next.js: 1939ms, application-code: 1276ms)
+ GET /contato 200 in 558ms (next.js: 360ms, application-code: 199ms)
+ GET /contato 200 in 161ms (next.js: 92ms, application-code: 69ms)
+ GET /contato 200 in 38ms (next.js: 10ms, application-code: 28ms)
+ GET /contato 200 in 69ms (next.js: 3ms, application-code: 66ms)
+ GET /servicos/automacoes-com-ia 200 in 3.3s (next.js: 808ms, generate-params: 11ms, application-code: 2.5s)
+ GET /servicos/automacoes-com-ia 200 in 442ms (next.js: 48ms, generate-params: 32ms, application-code: 393ms)
+ GET /servicos/automacoes-com-ia 200 in 120ms (next.js: 3ms, generate-params: 15µs, application-code: 117ms)
+ GET /servicos/automacoes-com-ia 200 in 51ms (next.js: 8ms, generate-params: 15µs, application-code: 43ms)
+ GET /servicos/automacoes-com-ia 200 in 312ms (next.js: 35ms, generate-params: 16µs, application-code: 278ms)
+ GET /servicos/automacoes-com-ia 200 in 185ms (next.js: 9ms, generate-params: 16µs, application-code: 177ms)
+ GET /servicos/automacoes-com-ia 200 in 577ms (next.js: 37ms, generate-params: 15µs, application-code: 541ms)
+ GET /servicos/automacoes-com-ia 200 in 143ms (next.js: 3ms, generate-params: 17µs, application-code: 140ms)
+ GET /servicos/automacoes-com-ia 200 in 256ms (next.js: 27ms, generate-params: 10ms, application-code: 229ms)
+ GET /servicos/automacoes-com-ia 200 in 336ms (next.js: 3ms, generate-params: 18µs, application-code: 333ms)
+ GET /servicos/automacoes-com-ia 200 in 102ms (next.js: 3ms, generate-params: 14µs, application-code: 99ms)
+ GET /servicos/automacoes-com-ia 200 in 123ms (next.js: 82ms, generate-params: 17µs, application-code: 41ms)
+ GET /servicos/automacoes-com-ia 200 in 124ms (next.js: 41ms, generate-params: 18µs, application-code: 83ms)
+ GET /servicos/automacoes-com-ia 200 in 125ms (next.js: 4ms, generate-params: 17µs, application-code: 120ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+✓ Compiled in 37ms
+ GET /contato 200 in 531ms (next.js: 152ms, application-code: 379ms)
+ GET /contato 200 in 125ms (next.js: 4ms, application-code: 121ms)
+ GET /contato 200 in 133ms (next.js: 4ms, application-code: 129ms)
+ GET /contato 200 in 133ms (next.js: 28ms, application-code: 104ms)
+ GET /servicos/automacoes-com-ia 200 in 528ms (next.js: 146ms, generate-params: 10ms, application-code: 382ms)
+ GET /servicos/automacoes-com-ia 200 in 246ms (next.js: 3ms, generate-params: 17µs, application-code: 244ms)
+ GET /servicos/automacoes-com-ia 200 in 284ms (next.js: 3ms, generate-params: 17µs, application-code: 280ms)
+ GET /servicos/automacoes-com-ia 200 in 244ms (next.js: 4ms, generate-params: 17µs, application-code: 240ms)
+ GET /servicos/automacoes-com-ia 200 in 200ms (next.js: 4ms, generate-params: 19µs, application-code: 196ms)
+ GET /servicos/automacoes-com-ia 200 in 243ms (next.js: 77ms, generate-params: 21µs, application-code: 166ms)
+ GET /servicos/automacoes-com-ia 200 in 234ms (next.js: 4ms, generate-params: 16µs, application-code: 230ms)
+ GET /servicos/automacoes-com-ia 200 in 201ms (next.js: 3ms, generate-params: 17µs, application-code: 198ms)
+ GET /servicos/automacoes-com-ia 200 in 232ms (next.js: 14ms, generate-params: 10ms, application-code: 218ms)
+ GET /servicos/automacoes-com-ia 200 in 187ms (next.js: 3ms, generate-params: 16µs, application-code: 184ms)
+ GET /servicos/automacoes-com-ia 200 in 157ms (next.js: 3ms, generate-params: 16µs, application-code: 154ms)
+ GET /servicos/automacoes-com-ia 200 in 158ms (next.js: 10ms, generate-params: 17µs, application-code: 148ms)
+ GET /servicos/automacoes-com-ia 200 in 150ms (next.js: 3ms, generate-params: 17µs, application-code: 146ms)
+ GET /servicos/automacoes-com-ia 200 in 116ms (next.js: 3ms, generate-params: 16µs, application-code: 113ms)
+ GET /servicos/automacoes-com-ia 200 in 75ms (next.js: 3ms, generate-params: 16µs, application-code: 72ms)
+ GET /servicos/automacoes-com-ia 200 in 40ms (next.js: 3ms, generate-params: 17µs, application-code: 38ms)
+ GET /contato 200 in 207ms (next.js: 3ms, application-code: 204ms)
+ GET /contato 200 in 173ms (next.js: 49ms, application-code: 124ms)
+ GET /contato 200 in 125ms (next.js: 29ms, application-code: 96ms)
+ GET /contato 200 in 126ms (next.js: 3ms, application-code: 123ms)
+ GET /contato 200 in 117ms (next.js: 3ms, application-code: 113ms)
+ GET /servicos/automacoes-com-ia 200 in 291ms (next.js: 13ms, generate-params: 10ms, application-code: 278ms)
+ GET /contato 200 in 90ms (next.js: 4ms, application-code: 87ms)
+ GET /contato 200 in 63ms (next.js: 3ms, application-code: 61ms)
+ GET /contato 200 in 63ms (next.js: 26ms, application-code: 37ms)
+ GET /servicos/automacoes-com-ia 200 in 161ms (next.js: 3ms, generate-params: 17µs, application-code: 158ms)
+ GET /contato 200 in 180ms (next.js: 3ms, application-code: 177ms)
+ GET /contato 200 in 155ms (next.js: 26ms, application-code: 128ms)
+ GET /contato 200 in 155ms (next.js: 3ms, application-code: 152ms)
+ GET /servicos/automacoes-com-ia 200 in 232ms (next.js: 4ms, generate-params: 18µs, application-code: 228ms)
+ GET /servicos/automacoes-com-ia 200 in 232ms (next.js: 36ms, generate-params: 18µs, application-code: 196ms)
+ GET /servicos/automacoes-com-ia 200 in 233ms (next.js: 66ms, generate-params: 31µs, application-code: 167ms)
+ GET /servicos/automacoes-com-ia 200 in 231ms (next.js: 14ms, generate-params: 11ms, application-code: 218ms)
+ GET /servicos/automacoes-com-ia 200 in 177ms (next.js: 3ms, generate-params: 15µs, application-code: 174ms)
+ GET /servicos/automacoes-com-ia 200 in 177ms (next.js: 34ms, generate-params: 15µs, application-code: 144ms)
+ GET /servicos/automacoes-com-ia 200 in 221ms (next.js: 3ms, generate-params: 15µs, application-code: 218ms)
+ GET /servicos/automacoes-com-ia 200 in 188ms (next.js: 3ms, generate-params: 17µs, application-code: 184ms)
+ GET /servicos/automacoes-com-ia 200 in 155ms (next.js: 3ms, generate-params: 15µs, application-code: 152ms)
+ GET /servicos/automacoes-com-ia 200 in 118ms (next.js: 4ms, generate-params: 15µs, application-code: 114ms)
+ GET /servicos/automacoes-com-ia 200 in 73ms (next.js: 35ms, generate-params: 18µs, application-code: 39ms)
+ GET /servicos/automacoes-com-ia 200 in 75ms (next.js: 3ms, generate-params: 18µs, application-code: 71ms)
+ GET /servicos/automacoes-com-ia 200 in 193ms (next.js: 35ms, generate-params: 16µs, application-code: 158ms)
+ GET /servicos/automacoes-com-ia 200 in 194ms (next.js: 4ms, generate-params: 16µs, application-code: 190ms)
+ GET /servicos/automacoes-com-ia 200 in 129ms (next.js: 51ms, generate-params: 15µs, application-code: 78ms)
+ GET /servicos/automacoes-com-ia 200 in 130ms (next.js: 72ms, generate-params: 16µs, application-code: 58ms)
+ GET /servicos/automacoes-com-ia 200 in 131ms (next.js: 32ms, generate-params: 15µs, application-code: 99ms)
+ GET /servicos/automacoes-com-ia 200 in 132ms (next.js: 3ms, generate-params: 16µs, application-code: 129ms)
+ GET /servicos/automacoes-com-ia 200 in 225ms (next.js: 14ms, generate-params: 10ms, application-code: 210ms)
+ GET /servicos/automacoes-com-ia 200 in 223ms (next.js: 46ms, generate-params: 20µs, application-code: 178ms)
+ GET /servicos/automacoes-com-ia 200 in 146ms (next.js: 3ms, generate-params: 16µs, application-code: 143ms)
+ GET /servicos/automacoes-com-ia 200 in 146ms (next.js: 33ms, generate-params: 15µs, application-code: 113ms)
+ GET /servicos/automacoes-com-ia 200 in 146ms (next.js: 95ms, generate-params: 16µs, application-code: 51ms)
+ GET /servicos/automacoes-com-ia 200 in 146ms (next.js: 64ms, generate-params: 15µs, application-code: 82ms)
+ GET /servicos/automacoes-com-ia 200 in 107ms (next.js: 3ms, generate-params: 18µs, application-code: 104ms)
+ GET /servicos/automacoes-com-ia 200 in 108ms (next.js: 36ms, generate-params: 17µs, application-code: 72ms)
+ GET /servicos/automacoes-com-ia 200 in 108ms (next.js: 68ms, generate-params: 19µs, application-code: 40ms)
+✓ Compiled in 457ms
+ GET /contato 200 in 512ms (next.js: 98ms, application-code: 414ms)
+ GET /contato 200 in 3.5s (next.js: 810ms, application-code: 2.7s)
+ GET /servicos/automacoes-com-ia 200 in 256ms (next.js: 114ms, generate-params: 18µs, application-code: 143ms)
+ GET /servicos/automacoes-com-ia 200 in 67ms (next.js: 32ms, generate-params: 16µs, application-code: 35ms)
+ GET /servicos/automacoes-com-ia 200 in 42ms (next.js: 3ms, generate-params: 16µs, application-code: 39ms)
+ GET /servicos/automacoes-com-ia 200 in 187ms (next.js: 3ms, generate-params: 17µs, application-code: 184ms)
+ GET /contato 200 in 708ms (next.js: 137ms, application-code: 571ms)
+ GET /servicos/automacoes-com-ia 200 in 3.9s (next.js: 1288ms, generate-params: 10ms, application-code: 2.6s)
+ GET /servicos/automacoes-com-ia 200 in 67ms (next.js: 35ms, generate-params: 17µs, application-code: 33ms)
+ GET /servicos/automacoes-com-ia 200 in 68ms (next.js: 3ms, generate-params: 15µs, application-code: 65ms)
+ GET /servicos/automacoes-com-ia 200 in 531ms (next.js: 33ms, generate-params: 13ms, application-code: 498ms)
+ GET /servicos/automacoes-com-ia 200 in 271ms (next.js: 3ms, generate-params: 15µs, application-code: 269ms)
+ GET /servicos/automacoes-com-ia 200 in 154ms (next.js: 3ms, generate-params: 17µs, application-code: 152ms)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+[browser] [Meta Pixel] - Invalid PixelID: null. (https://connect.facebook.net/en_US/fbevents.js:198:528)
+ GET /blog 200 in 1750ms (next.js: 304ms, application-code: 1445ms)
+[browser] Image with src "https://ccaonec11w7vkoy6.public.blob.vercel-storage.com/blog/covers/1786999364897-capa-custo-de-agente-de-ia.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[browser] Image with src "https://ccaonec11w7vkoy6.public.blob.vercel-storage.com/blog/covers/1786999364897-capa-custo-de-agente-de-ia.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+ GET / 200 in 393ms (next.js: 282ms, application-code: 111ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+✓ Compiled in 323ms
+ GET / 200 in 556ms (next.js: 155ms, application-code: 401ms)
+ GET / 200 in 190ms (next.js: 28ms, application-code: 161ms)
+ GET / 200 in 112ms (next.js: 57ms, application-code: 56ms)
+ GET / 200 in 113ms (next.js: 31ms, application-code: 83ms)
+ GET / 200 in 155ms (next.js: 7ms, application-code: 149ms)
+ GET / 200 in 602ms (next.js: 217ms, application-code: 384ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html
+                          lang="pt-BR"
+                          className="h-full barlow_bb261f34-module__oy_G2a__variable barlow_condensed_7129086c-module_..."
+-                         suppresshydrationwarning="true"
+-                         data-lt-installed="true"
+                        >
+                  ...
+ 
+✓ Compiled in 31ms
+ GET / 200 in 238ms (next.js: 149ms, application-code: 89ms)
+✓ Compiled in 30ms
+ GET / 200 in 221ms (next.js: 134ms, application-code: 87ms)
+✓ Compiled in 42ms
+ GET / 200 in 236ms (next.js: 149ms, application-code: 87ms)
+✓ Compiled in 95ms
+ GET / 200 in 472ms (next.js: 323ms, application-code: 149ms)
+✓ Compiled in 19ms
+✓ Compiled in 37ms
+✓ Compiled in 809ms
+✓ Compiled in 35ms
+✓ Compiled in 29ms
+✓ Compiled in 39ms
+ GET / 200 in 1620ms (next.js: 810ms, application-code: 811ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html
+                          lang="pt-BR"
+                          className="h-full barlow_bb261f34-module__oy_G2a__variable barlow_condensed_7129086c-module_..."
+-                         suppresshydrationwarning="true"
+-                         data-lt-installed="true"
+                        >
+                  ...
+ 
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /blog 200 in 1138ms (next.js: 304ms, application-code: 835ms)
+[browser] Image with src "https://ccaonec11w7vkoy6.public.blob.vercel-storage.com/blog/covers/1786999364897-capa-custo-de-agente-de-ia.png" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /contato 200 in 341ms (next.js: 260ms, application-code: 81ms)
+ GET / 200 in 64ms (next.js: 4ms, application-code: 60ms)
+^C ELIFECYCLE  Command failed with exit code 3221225786.

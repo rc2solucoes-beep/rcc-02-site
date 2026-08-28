@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 import { Check } from "lucide-react";
 import { PageHero } from "@/components/marketing/PageHero";
-import { CTABlock } from "@/components/marketing/CTABlock";
+import { ServicesCtaBlock } from "@/components/marketing/ServicesCtaBlock";
 import { services } from "@/lib/content/services";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
@@ -152,11 +152,7 @@ export default async function ServicosPage() {
         </div>
       </section>
 
-      <CTABlock
-        title="Pronto para transformar sua operação?"
-        description="Solicite um diagnóstico gratuito e descubra por onde começar."
-        className="rc2-section--closing"
-      />
+      <ServicesCtaBlock />
     </>
   );
 }

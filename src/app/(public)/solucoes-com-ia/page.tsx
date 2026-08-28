@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 import { PageHero } from "@/components/marketing/PageHero";
-import { CTABlock } from "@/components/marketing/CTABlock";
+import { HomeCtaBlock } from "@/components/marketing/HomeCtaBlock";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
@@ -171,7 +171,7 @@ export default async function SolucoesComIAPage() {
         </div>
       </section>
 
-      <CTABlock
+      <HomeCtaBlock
         title="Quer saber quais soluções fazem sentido para sua empresa?"
         description="Solicite um diagnóstico de oportunidades com IA e receba um mapa personalizado para sua operação."
         secondaryHref={IA_WHATSAPP_URL}

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 import { ContactForm } from "@/components/marketing/ContactForm";
-import { CTABlock } from "@/components/marketing/CTABlock";
+import { ContactCtaBlock } from "@/components/marketing/ContactCtaBlock";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
@@ -125,14 +125,7 @@ export default async function ContatoPage() {
       </div>
     </section>
 
-      <CTABlock
-        title="Não consegue preencher agora?"
-        description="Chame a gente pelo WhatsApp e vamos agendar um diagnóstico em tempo real."
-        primaryLabel="Falar pelo WhatsApp"
-        primaryHref={CONTACT_WHATSAPP_URL}
-        hideSecondary={true}
-        variant="dark"
-      />
+      <ContactCtaBlock />
     </>
   );
 }

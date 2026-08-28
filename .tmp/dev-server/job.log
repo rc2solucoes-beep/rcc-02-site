@@ -1,0 +1,12 @@
+
+> rc2-site@0.1.0 dev E:\MyProjects\rcc-02-site
+> next dev
+
+Ôû▓ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.20.160.1:3000
+- Environments: .env.local
+Ô£ô Ready in 447ms
+
+ GET /solucoes-com-ia 200 in 1242ms (next.js: 903ms, application-code: 339ms)
+ GET / 200 in 207ms (next.js: 43ms, application-code: 164ms)

@@ -1,0 +1,5 @@
+▲ Next.js 16.2.4
+- Local:         http://localhost:3005
+- Network:       http://172.20.160.1:3005
+✓ Ready in 176ms
+Fetching: https://places.googleapis.com/v1/places/ChIJjRqtgyX1zpQRspVNluur1vk?fields=displayName,formattedAddress,rating,reviews,userRatingCount&key=***

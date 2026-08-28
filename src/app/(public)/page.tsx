@@ -3,7 +3,7 @@ import { Check, ArrowRight } from "lucide-react";
 import { buildOg } from "@/lib/siteMetadata";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ServiceCard } from "@/components/marketing/ServiceCard";
-import { CTABlock } from "@/components/marketing/CTABlock";
+import { HomeCtaBlock } from "@/components/marketing/HomeCtaBlock";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { HomeReviews } from "@/components/marketing/HomeReviews";
 import { HeroActions } from "@/components/marketing/HeroActions";
@@ -407,12 +407,7 @@ export default async function HomePage({ searchParams }: Props) {
       </section>
 
       {/* ── CTA Final ── */}
-      <CTABlock
-        title="Quer descobrir onde a IA pode gerar resultado na sua empresa?"
-        description="Solicite um diagnóstico inicial e receba um mapa de oportunidades para automatizar atendimento, vendas e processos."
-        primaryLabel="Começar pelo diagnóstico"
-        secondaryHref={HOME_WHATSAPP_URL}
-      />
+      <HomeCtaBlock />
     </>
   );
 }
