@@ -137,11 +137,7 @@ export default async function SobrePage() {
         </div>
       </section>
 
-      <HomeCtaBlock
-        title="Quer conhecer melhor a RC2?"
-        description="Solicite um diagnóstico gratuito e veja como trabalhamos na prática."
-        className="rc2-section--closing"
-      />
+      <HomeCtaBlock />
     </>
   );
 }

@@ -7,17 +7,17 @@ import { FadeIn } from "@/components/ui/FadeIn";
 import { cn } from "@/lib/utils";
 
 interface BlogCardProps {
-  image?: string;
+  image?: string | null;
   title: string;
   summary: string;
   slug: string;
-  author?: string;
-  publishedAt?: string | Date;
-  readingTimeMinutes?: number;
+  author?: string | null;
+  publishedAt?: string | Date | null;
+  readingTimeMinutes?: number | null;
   category?: string;
 }
 
-function formatDate(date: string | Date | undefined): string {
+function formatDate(date: string | Date | null | undefined): string {
   if (!date) return "";
   const d = typeof date === "string" ? new Date(date) : date;
   return d.toLocaleDateString("pt-BR", {

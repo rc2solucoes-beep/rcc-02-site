@@ -12,7 +12,7 @@ export interface CTABlockBaseProps {
   primaryTracking?: {
     kind: "cta" | "whatsapp";
     location: string;
-    label?: string;
+    label: string;
     destination?: string;
   };
   secondaryLabel?: string;
@@ -20,7 +20,7 @@ export interface CTABlockBaseProps {
   secondaryTracking?: {
     kind: "cta" | "whatsapp";
     location: string;
-    label?: string;
+    label: string;
     destination?: string;
   };
   hideSecondary?: boolean;
@@ -84,7 +84,7 @@ export function CTABlockBase({
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <TrackedLink
               href={primaryHref}
-              tracking={primaryTracking}
+              tracking={primaryTracking || { kind: "cta", location: "cta_block", label: "primary" }}
               className={cn(
                 buttonVariants({ variant: "default" }),
                 "ui-focus-ring font-semibold tracking-wide uppercase text-xs px-8 h-11 bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90 active:bg-rc2-brand active:ring-1 active:ring-rc2-brand/50 transition-[background-color,color,box-shadow] duration-150",
@@ -98,7 +98,7 @@ export function CTABlockBase({
                 href={secondaryHref}
                 target={secondaryHref.startsWith("http") ? "_blank" : undefined}
                 rel={secondaryHref.startsWith("http") ? "noopener noreferrer" : undefined}
-                tracking={secondaryTracking}
+                tracking={secondaryTracking || { kind: "cta", location: "cta_block", label: "secondary" }}
                 className={cn(
                   "ui-focus-ring rounded-lg px-6 h-11 inline-flex items-center gap-1.5 border font-medium text-sm transition-[background-color,border-color,color,box-shadow] duration-200",
                   isDark

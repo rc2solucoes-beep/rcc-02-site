@@ -171,11 +171,7 @@ export default async function SolucoesComIAPage() {
         </div>
       </section>
 
-      <HomeCtaBlock
-        title="Quer saber quais soluções fazem sentido para sua empresa?"
-        description="Solicite um diagnóstico de oportunidades com IA e receba um mapa personalizado para sua operação."
-        secondaryHref={IA_WHATSAPP_URL}
-      />
+      <HomeCtaBlock />
     </>
   );
 }
