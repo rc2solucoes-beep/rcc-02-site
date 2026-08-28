@@ -623,6 +623,28 @@
     }
   }
 
+  /* Fade in — simple opacity transition for small text */
+  .fade-in {
+    opacity: 0;
+    animation: fade-in var(--fade-in-duration, 400ms) ease-in-out var(--fade-in-delay, 0ms) forwards;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fade-in {
+      animation: none !important;
+      opacity: 1 !important;
+    }
+  }
+
   /* Focus ring — aplicado a links e botões fora do shadcn */
   .ui-focus-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rc2-focus-ring focus-visible:ring-offset-2;
