@@ -1,0 +1,1484 @@
+# 1. Resumo executivo
+
+A RC2 hoje tem uma boa matéria-prima, mas comunica coisas demais ao mesmo tempo.
+
+Atualmente ela se apresenta como consultoria de IA e automações para PMEs, porém a home coloca atendimento automático, WhatsApp, leads, primeira resposta em menos de dois minutos e operação 24h como promessa central. Ao mesmo tempo, vende agentes internos, automação de processos, integrações, e-commerce, sites e landing pages.
+
+O problema é que o **Zapbox passou a ter o direito natural de ocupar o território de atendimento e vendas pelo WhatsApp**.
+
+Portanto, a RC2 deve subir um nível.
+
+## Novo papel recomendado
+
+**RC2 = empresa especializada em automação de processos, integração de sistemas e IA aplicada à operação.**
+
+Sua função é entrar onde existem:
+
+* tarefas manuais;
+* sistemas desconectados;
+* informação espalhada;
+* processos que não escalam;
+* operações digitais que cresceram sem arquitetura;
+* oportunidades claras para IA, mas sem processo estruturado.
+
+O Zapbox passa a ser o **produto próprio** da RC2.
+
+O Agenda Confirmada permanece uma **solução vertical da RC2 para clínicas**.
+
+A proposta de valor que eu recomendaria é:
+
+> **A RC2 conecta sistemas, automatiza processos e aplica IA para transformar operações manuais em fluxos mais eficientes, integrados e mensuráveis.**
+
+E uma versão mais curta:
+
+> **RC2 transforma processos em operações automatizadas, integradas e inteligentes.**
+
+---
+
+# 2. Diagnóstico do site atual
+
+## Estrutura atual
+
+O sitemap XML não foi renderizado diretamente pela ferramenta por ser servido como `application/xml`; por isso reconstruí a arquitetura por meio da navegação atual, páginas indexadas e links internos.
+
+Hoje existem, entre outros:
+
+### Institucional
+
+* `/`
+* `/sobre`
+* `/contato`
+* `/avaliacoes`
+* `/blog`
+* `/privacidade`
+* `/termos`
+
+### Serviços
+
+* `/servicos`
+* `/servicos/automacoes-com-ia`
+* `/servicos/agentes-de-ia`
+* `/servicos/automacao-de-processos`
+* `/servicos/e-commerce`
+* `/servicos/sites-e-landing-pages`
+
+### Soluções
+
+* `/solucoes`
+* `/solucoes-com-ia`
+* `/solucoes/atendimento-lento`
+* `/solucoes/leads-sem-resposta`
+* `/solucoes/processos-manuais`
+* `/solucoes/sistemas-desconectados`
+* `/solucoes/whatsapp-desorganizado`
+
+### Conteúdo
+
+O blog já contém artigos recentes sobre processos manuais, governança de agentes, custos de IA, atendimento automatizado, WhatsApp, omnichannel e IA para PMEs.
+
+---
+
+## O que deve ser mantido
+
+### “Tecnologia que funciona. Operação que entrega.”
+
+É uma boa assinatura.
+
+Ela combina perfeitamente com sua trajetória profissional e diferencia a RC2 de uma empresa que apenas instala ferramentas.
+
+### “A IA não substitui uma operação mal estruturada.”
+
+Também é uma ótima tese.
+
+Hoje a página Sobre já diz que a RC2 começa entendendo processo, desenha a solução, implanta, treina e evolui. Esse método deve ser mantido e fortalecido.
+
+### Foco em problema, não em ferramenta
+
+A camada “Soluções por problema” tem uma ideia conceitualmente boa: partir de retrabalho, sistemas desconectados e processos manuais em vez de começar por n8n ou API.
+
+### Automação de processos
+
+É provavelmente o serviço atual mais alinhado ao futuro posicionamento.
+
+A página já fala corretamente de copiar dados entre sistemas, tarefas repetitivas, APIs, webhooks, tratamento de erros e monitoramento.
+
+### Agentes para processos internos
+
+Também deve permanecer, mas reposicionado para **IA para Operações**. A página atual cobre consulta a documentos, relatórios, tarefas, conhecimento interno e integração com sistemas.
+
+---
+
+## O que deve ser reformulado
+
+### Hero
+
+Hoje:
+
+> “Nenhum lead esperando. Nenhuma tarefa repetida duas vezes.”
+
+E logo depois:
+
+> atendimento automático no WhatsApp, primeira resposta em menos de dois minutos, 24 horas por dia.
+
+Essa promessa agora pertence muito mais ao Zapbox/Sales AI.
+
+A RC2 deve abrir falando de **operação**, não de WhatsApp.
+
+### Serviços
+
+Os cinco serviços atuais misturam:
+
+* automação;
+* IA;
+* e-commerce;
+* sites;
+* atendimento.
+
+Isso dá sensação de empresa generalista.
+
+### “Diagnóstico gratuito”
+
+Hoje a página promete entregar mapeamento, gargalos, sugestões, priorização, roadmap e proposta.
+
+Isso é muito valor consultivo entregue gratuitamente.
+
+Eu dividiria em:
+
+**Conversa de Diagnóstico — gratuita**
+20–30 minutos para verificar fit.
+
+**Discovery Operacional — pago**
+Para mapear processos, arquitetura, integrações, riscos e roadmap.
+
+---
+
+## O que deve ser removido como oferta principal
+
+### Sites e landing pages
+
+Pode continuar sendo uma capacidade técnica, mas não deveria ocupar o mesmo nível de Automação, Integrações e IA.
+
+A página atual faz a RC2 se aproximar de uma agência de sites.
+
+### E-commerce como “implantação de loja”
+
+Sua experiência em e-commerce é real e relevante, mas a oferta deve subir de nível.
+
+Em vez de:
+
+> implantação de e-commerce
+
+usar:
+
+> **Operações Digitais & Commerce**
+
+Com foco em:
+
+* ERP;
+* plataforma;
+* logística;
+* atendimento;
+* pagamentos;
+* dados;
+* automação;
+* integração.
+
+### Atendimento automático com IA como serviço RC2 genérico
+
+O conteúdo atual é quase exatamente a proposta do Zapbox Sales AI: WhatsApp, qualificação, FAQ, handoff humano e atendimento 24/7.
+
+Esse território deve migrar para Zapbox.
+
+---
+
+## O que está faltando
+
+### Zapbox na arquitetura da RC2
+
+Hoje não encontrei menção ao Zapbox na home, serviços ou página Sobre.
+
+Isso é uma oportunidade perdida.
+
+Ter um produto próprio aumenta enormemente a percepção de capacidade técnica.
+
+### Agenda Confirmada
+
+Também precisa aparecer como solução especializada da RC2.
+
+### Operação gerenciada
+
+A RC2 não deve apenas implantar.
+
+Ela deve conseguir vender recorrência para:
+
+* monitoramento;
+* manutenção;
+* observabilidade;
+* ajustes;
+* evolução;
+* suporte operacional.
+
+### Discovery pago
+
+É uma oferta natural para projetos mais complexos.
+
+---
+
+# 3. Principal problema de posicionamento
+
+Hoje o visitante pode concluir que a RC2 é simultaneamente:
+
+* agência de automação;
+* consultoria de IA;
+* integradora;
+* empresa de chatbot;
+* empresa de e-commerce;
+* criadora de sites;
+* consultoria de marketing digital;
+* operação de atendimento.
+
+Individualmente, todos esses serviços fazem sentido.
+
+Juntos, enfraquecem a especialização.
+
+O maior conflito passou a ser:
+
+> **RC2 vendendo atendimento pelo WhatsApp enquanto Zapbox existe justamente para ocupar esse território.**
+
+Além disso, as páginas “serviços”, “soluções por problema” e “soluções com IA” explicam repetidamente problemas muito parecidos por ângulos diferentes.
+
+Minha recomendação é reduzir a mensagem da RC2 a três grandes competências:
+
+> **Automatizar processos.
+> Integrar sistemas.
+> Aplicar IA à operação.**
+
+---
+
+# 4. Novo posicionamento recomendado
+
+## 1. O que a RC2 deveria representar na mente do cliente?
+
+> **A empresa que entra numa operação cheia de tarefas manuais, sistemas desconectados e processos improvisados e coloca tecnologia para fazê-la funcionar melhor.**
+
+Não “empresa de IA”.
+
+Não “software house”.
+
+Não “agência de automação”.
+
+---
+
+## 2. Problema central associado à marca
+
+> **Operações que cresceram, mas os processos e sistemas não acompanharam.**
+
+Sintomas:
+
+* muito trabalho manual;
+* copiar e colar;
+* planilhas virando sistema;
+* informação duplicada;
+* sistemas isolados;
+* tarefas dependentes de pessoas;
+* dificuldade de usar IA com segurança;
+* falta de rastreabilidade.
+
+---
+
+## 3. Cliente prioritário
+
+Eu priorizaria **PMEs com operação digital já existente**, não empresas começando do zero.
+
+Características melhores do que simplesmente número de funcionários:
+
+* utilizam vários sistemas;
+* possuem equipe comercial ou operacional;
+* usam ERP, CRM, e-commerce, planilhas ou sistemas próprios;
+* já sentem retrabalho;
+* têm volume suficiente para automação gerar economia;
+* possuem gestor ou dono capaz de decidir;
+* precisam integrar tecnologia sem reconstruir tudo.
+
+Perfis de comprador:
+
+* empresário;
+* diretor;
+* gerente de operações;
+* gerente comercial;
+* gerente de tecnologia;
+* responsável por e-commerce/digital.
+
+---
+
+## 4. Categoria
+
+Eu apresentaria como:
+
+> **Consultoria e implementação de automação, integrações e IA para operações empresariais.**
+
+Ou simplesmente:
+
+> **Automação, Integrações e IA para Operações.**
+
+---
+
+## 5. Principal promessa
+
+> **Menos trabalho manual, menos sistemas isolados e mais operação acontecendo com controle.**
+
+---
+
+## 6. Frase de posicionamento
+
+Minha recomendação:
+
+> **A RC2 conecta sistemas, automatiza processos e aplica IA para fazer sua operação funcionar melhor.**
+
+Alternativa mais institucional:
+
+> **RC2 transforma processos em operações automatizadas, integradas e inteligentes.**
+
+---
+
+## 7. Serviços que dispersam
+
+Desceriam de prioridade:
+
+* sites institucionais;
+* landing pages;
+* construção genérica de e-commerce;
+* chatbot/WhatsApp genérico;
+* marketing digital.
+
+---
+
+## 8. Oportunidades
+
+Subiriam:
+
+* automação de processos;
+* integração de sistemas;
+* IA para operações;
+* discovery operacional;
+* operação gerenciada;
+* operações digitais integradas;
+* produtos próprios.
+
+---
+
+# 5. Cliente ideal e problemas prioritários
+
+## ICP principal
+
+Empresa pequena ou média com operação suficientemente complexa para já sentir atrito entre tecnologia e pessoas.
+
+### Problema A — trabalho manual
+
+> “Tem gente copiando, conferindo e atualizando coisas que um sistema poderia fazer.”
+
+Oferta:
+
+**Automação de Processos**
+
+### Problema B — sistemas desconectados
+
+> “ERP, CRM, e-commerce, planilha e atendimento não conversam.”
+
+Oferta:
+
+**Integração de Sistemas**
+
+### Problema C — informação difícil de usar
+
+> “Temos dados, documentos e sistemas, mas a equipe perde tempo procurando informação.”
+
+Oferta:
+
+**IA para Operações**
+
+### Problema D — operação digital fragmentada
+
+> “Vendas, e-commerce, ERP, logística, atendimento e dados cresceram separados.”
+
+Oferta:
+
+**Operações Digitais & Commerce**
+
+### Problema E — WhatsApp
+
+Oferta padronizada:
+
+**Zapbox**
+
+### Problema F — agenda de clínicas
+
+Oferta especializada:
+
+**Agenda Confirmada**
+
+---
+
+# 6. Portfólio recomendado
+
+## Marca RC2
+
+### Produtos próprios
+
+#### Zapbox
+
+**Categoria:** produto SaaS/managed service
+
+**Tagline:**
+**Transforme seu WhatsApp em uma operação organizada de atendimento e vendas.**
+
+**Problema:** WhatsApp desorganizado, múltiplos atendentes, leads e histórico.
+
+**Benefício:** equipe, processo e contexto em um único ambiente.
+
+**Público:** empresas que usam WhatsApp para vendas e atendimento.
+
+**Pitch:**
+“O Zapbox transforma o WhatsApp da empresa em uma operação profissional. Vários atendentes podem trabalhar no mesmo número, com histórico, responsáveis e processo comercial. E a operação pode evoluir com CRM, automações e Sales AI.”
+
+**CTA:**
+**Conhecer Zapbox**
+
+---
+
+### Solução vertical RC2
+
+#### Agenda Confirmada
+
+**Categoria:** solução especializada para clínicas
+
+**Tagline:**
+**Confirmações automáticas, menos trabalho manual e mais previsibilidade na agenda.**
+
+**Problema:** recepção confirmando agenda manualmente, faltas e horários vagos.
+
+**Benefício:** organizar lembretes, confirmações e fluxos de agenda.
+
+**Público:** clínicas e consultórios.
+
+**Pitch:**
+“O Agenda Confirmada automatiza lembretes e confirmações pelo WhatsApp. Nas operações mais estruturadas, integra-se ao sistema da clínica para acompanhar cancelamentos, horários liberados e indicadores de agenda.”
+
+**CTA:**
+**Ver Agenda Confirmada**
+
+---
+
+## Serviços estratégicos
+
+### Automação de Processos
+
+**Tagline:**
+**Pare de usar pessoas para tarefas que podem acontecer automaticamente.**
+
+**CTA:**
+**Mapear um processo**
+
+---
+
+### Integração de Sistemas
+
+**Tagline:**
+**Faça seus sistemas conversarem sem usar sua equipe como ponte.**
+
+**CTA:**
+**Quero integrar meus sistemas**
+
+---
+
+### IA para Operações
+
+**Tagline:**
+**Coloque IA sobre os dados e processos que sua equipe já usa.**
+
+**CTA:**
+**Explorar IA na operação**
+
+---
+
+## Serviço especializado
+
+### Operações Digitais & Commerce
+
+**Tagline:**
+**Conecte vendas digitais, ERP, logística, atendimento e dados em uma única operação.**
+
+Isso aproveita fortemente sua experiência real em e-commerce, D2C e integração sem posicionar a RC2 como “criadora de lojas”.
+
+---
+
+## Serviços complementares
+
+Não precisam de página própria:
+
+* dashboards;
+* formulários;
+* landing pages;
+* portais;
+* interfaces;
+* infraestrutura;
+* APIs;
+* bancos;
+* observabilidade.
+
+São componentes de projetos maiores.
+
+---
+
+# 7. Novos serviços sugeridos
+
+| Serviço                           | Problema                                                             | Modelo        | Conexão                           | Prioridade |
+| --------------------------------- | -------------------------------------------------------------------- | ------------- | --------------------------------- | ---------- |
+| **Discovery Operacional**         | empresa sabe que tem gargalo, mas não sabe arquitetura ou prioridade | projeto pago  | entrada para qualquer projeto RC2 | **Alta**   |
+| **Operação Gerenciada**           | automação foi implantada, mas precisa de monitoramento e evolução    | MRR           | todos os serviços                 | **Alta**   |
+| **Operações Digitais & Commerce** | e-commerce, ERP, logística e atendimento fragmentados                | projeto + MRR | experiência forte do fundador     | **Média**  |
+
+## Discovery Operacional
+
+### Entrega
+
+* mapa do processo;
+* sistemas envolvidos;
+* gargalos;
+* fluxos;
+* integrações;
+* riscos;
+* arquitetura proposta;
+* prioridades;
+* estimativa.
+
+### Modelo
+
+R$1,5 mil–R$5 mil, dependendo da complexidade.
+
+---
+
+## Operação Gerenciada
+
+### Entrega
+
+* monitoramento;
+* alertas;
+* correções;
+* backups;
+* observabilidade;
+* revisão de workflows;
+* manutenção de integrações;
+* análise de consumo;
+* evolução.
+
+### Modelo
+
+MRR.
+
+Essa oferta é importante para melhorar LTV e tornar a RC2 menos dependente apenas de projetos.
+
+---
+
+# 8. Papel estratégico do Zapbox
+
+Zapbox deve assumir tudo que for:
+
+> **WhatsApp + equipe + atendimento + vendas + CRM + Sales AI.**
+
+A RC2 não deveria competir com o próprio produto.
+
+Portanto, páginas atuais sobre:
+
+* WhatsApp desorganizado;
+* leads sem resposta;
+* atendimento lento;
+* automação de atendimento;
+
+precisam gradualmente apontar para Zapbox.
+
+Hoje essas páginas são muito orientadas exatamente a esse território.
+
+## No header
+
+**Zapbox ↗**
+
+Link direto para `zapbox.cloud`.
+
+## No footer
+
+### Produto
+
+**Zapbox — Atendimento e vendas pelo WhatsApp**
+
+## Na Home
+
+Seção:
+
+### Produto criado pela RC2
+
+**Zapbox**
+
+> Organize atendimento e vendas pelo WhatsApp com equipe, histórico, CRM, automações e IA.
+
+---
+
+# 9. Papel estratégico do Agenda Confirmada
+
+Diferentemente do Zapbox, Agenda Confirmada **não precisa ser uma marca independente**.
+
+Ele fica dentro da RC2.
+
+É a primeira prova de um modelo importante:
+
+> a RC2 identifica um problema repetível e o transforma em uma solução vertical.
+
+Posicionamento:
+
+> **Agenda Confirmada — automação de confirmações e agenda para clínicas.**
+
+Ela demonstra:
+
+* especialização;
+* produto vertical;
+* automação real;
+* capacidade de integração;
+* metodologia;
+* potencial de recorrência.
+
+URL:
+
+`/solucoes/agenda-confirmada`
+
+---
+
+# 10. O que remover ou consolidar
+
+## Consolidar
+
+### `/servicos`
+
+Transformar em:
+
+`/solucoes`
+
+Uma única página para:
+
+* Automação;
+* Integrações;
+* IA para Operações;
+* Operações Digitais;
+* Agenda Confirmada.
+
+### `/solucoes-com-ia`
+
+Incorporar em:
+
+`/solucoes#ia-para-operacoes`
+
+### `/servicos/agentes-de-ia`
+
+Pode ser incorporada a IA para Operações.
+
+### `/servicos/automacao-de-processos`
+
+Conteúdo incorporado em Automação + Integrações.
+
+### `/solucoes/processos-manuais`
+
+Incorporar na página principal de Soluções ou transformar em artigo.
+
+### `/solucoes/sistemas-desconectados`
+
+Mesmo tratamento.
+
+---
+
+## Migrar para Zapbox
+
+Gradualmente:
+
+* `/servicos/automacoes-com-ia`
+* `/solucoes/atendimento-lento`
+* `/solucoes/leads-sem-resposta`
+* `/solucoes/whatsapp-desorganizado`
+
+Antes do redirecionamento, criar páginas equivalentes no Zapbox.
+
+Depois usar 301.
+
+---
+
+## Despriorizar
+
+### `/servicos/sites-e-landing-pages`
+
+Remover da navegação principal.
+
+### `/servicos/e-commerce`
+
+Reformular para Operações Digitais & Commerce ou incorporar na página de Soluções.
+
+---
+
+## Avaliações
+
+A página atual usa a expressão “Cases de Sucesso”, mas o conteúdo disponível é majoritariamente avaliação e uma demonstração do próprio site como projeto construído com IA.
+
+Até existirem cases documentados:
+
+**chamar de Avaliações e Projetos**, não “cases de sucesso”.
+
+---
+
+# 11. Novo sitemap
+
+## Arquitetura recomendada
+
+```text
+/
+├── /solucoes
+│   └── /solucoes/agenda-confirmada
+│
+├── Zapbox → https://zapbox.cloud/
+│
+├── /sobre
+├── /blog
+├── /contato
+├── /privacidade
+└── /termos
+```
+
+É propositalmente enxuto.
+
+---
+
+## Header
+
+**Soluções | Zapbox ↗ | Agenda Confirmada | Sobre | Conteúdo | [Falar com a RC2]**
+
+---
+
+## Footer
+
+### Soluções
+
+* Automação de Processos
+* Integração de Sistemas
+* IA para Operações
+* Operações Digitais
+* Agenda Confirmada
+
+### Produto
+
+* Zapbox
+
+### Empresa
+
+* Sobre
+* Conteúdo
+* Contato
+* Privacidade
+* Termos
+
+---
+
+## `/solucoes`
+
+### Objetivo
+
+Explicar toda a capacidade da RC2 sem criar página para cada microserviço.
+
+### Público
+
+Gestores que já têm um problema operacional.
+
+### Conteúdo
+
+* automação;
+* integrações;
+* IA;
+* operações digitais;
+* discovery;
+* operação gerenciada.
+
+### CTA
+
+**Falar sobre minha operação**
+
+---
+
+## `/sobre`
+
+### Objetivo
+
+Construir confiança.
+
+### Conteúdo
+
+* método;
+* experiência;
+* fundador;
+* filosofia;
+* produtos próprios;
+* forma de trabalhar.
+
+### CTA
+
+**Conversar com a RC2**
+
+---
+
+## `/contato`
+
+Não deveria prometer roadmap gratuito.
+
+### CTA
+
+**Agendar conversa de diagnóstico**
+
+---
+
+# 12. Nova arquitetura da Home
+
+## 01 — Hero
+
+**Objetivo:** explicar em 10 segundos.
+
+**Headline:**
+**Sua operação não precisa de mais ferramentas. Precisa funcionar melhor.**
+
+**Subheadline:**
+A RC2 conecta sistemas, automatiza processos e aplica inteligência artificial para reduzir trabalho manual, retrabalho e gargalos na operação de pequenas e médias empresas.
+
+**Visual:**
+Diagrama simples:
+
+```text
+PROCESSOS
++
+SISTEMAS
++
+DADOS
+↓
+RC2
+↓
+OPERAÇÃO INTEGRADA
+```
+
+**CTA:**
+**Falar sobre minha operação**
+
+Secundário:
+
+**Conhecer soluções**
+
+---
+
+## 02 — Problemas
+
+**Headline:**
+**Onde sua operação perde tempo hoje?**
+
+Quatro cards:
+
+* trabalho manual;
+* sistemas desconectados;
+* informação espalhada;
+* operação digital fragmentada.
+
+---
+
+## 03 — Soluções
+
+**Headline:**
+**Tecnologia aplicada ao processo certo.**
+
+Cards:
+
+* Automação de Processos;
+* Integração de Sistemas;
+* IA para Operações;
+* Operações Digitais.
+
+---
+
+## 04 — Produtos e soluções próprias
+
+**Headline:**
+**Também transformamos problemas recorrentes em produtos.**
+
+### Zapbox
+
+Atendimento e vendas pelo WhatsApp.
+
+### Agenda Confirmada
+
+Automação de agenda para clínicas.
+
+---
+
+## 05 — Método
+
+**Headline:**
+**Primeiro entendemos a operação. Depois escolhemos a tecnologia.**
+
+Etapas:
+
+**Diagnóstico → Desenho → Implantação → Treinamento → Medição → Evolução**
+
+---
+
+## 06 — Prova de capacidade
+
+**Headline:**
+**Experiência de operação antes da automação.**
+
+Conteúdo sobre o fundador e experiência real.
+
+---
+
+## 07 — Demonstrações
+
+**Headline:**
+**Tecnologia que você pode ver funcionando.**
+
+* conversar com Valéria;
+* experimentar Zapbox;
+* screenshots;
+* fluxos;
+* diagramas;
+* Agenda Confirmada demonstrável.
+
+---
+
+## 08 — Filosofia
+
+> “A IA não substitui uma operação mal estruturada. Primeiro organizamos o processo. Depois automatizamos o que faz sentido.”
+
+Manter.
+
+---
+
+## 09 — Conteúdo
+
+3 artigos selecionados.
+
+Priorizar:
+
+* automação;
+* integração;
+* IA operacional.
+
+Conteúdo de WhatsApp começa a direcionar para Zapbox.
+
+---
+
+## 10 — CTA final
+
+### **Tem um processo que ainda depende demais de trabalho manual?**
+
+Conte para a RC2 como funciona hoje.
+
+**[Falar sobre minha operação]**
+
+---
+
+# 13. Copy completa da Home
+
+## Três alternativas de hero
+
+### Alternativa A — Recomendada
+
+**Sua operação não precisa de mais ferramentas. Precisa funcionar melhor.**
+
+A RC2 conecta sistemas, automatiza processos e aplica inteligência artificial para reduzir trabalho manual, retrabalho e gargalos na operação.
+
+**[Falar sobre minha operação]**
+**[Conhecer soluções]**
+
+**Estratégia:** posicionamento operacional, não tecnológico.
+
+---
+
+### Alternativa B — Dor
+
+**Se sua equipe é a ponte entre seus sistemas, existe algo errado.**
+
+Integramos ferramentas, automatizamos tarefas e aplicamos IA para fazer processos acontecerem com menos intervenção manual.
+
+**[Mapear meus gargalos]**
+
+**Estratégia:** muito forte para integração/automação.
+
+---
+
+### Alternativa C — Marca
+
+**Tecnologia que funciona. Operação que entrega.**
+
+Automação, integração de sistemas e IA aplicada para empresas que precisam fazer mais com processos melhores — não com mais improviso.
+
+**[Conhecer a RC2]**
+
+**Estratégia:** mais institucional.
+
+---
+
+## Copy recomendada da Home
+
+### Seção de dor
+
+# Onde sua operação perde tempo?
+
+**Processos manuais**
+Informações copiadas, tarefas repetidas e controles dependentes de pessoas.
+
+**Sistemas desconectados**
+ERP, CRM, planilhas, e-commerce e ferramentas trabalhando isolados.
+
+**Informação espalhada**
+Sua equipe sabe que o dado existe, mas perde tempo procurando.
+
+**Operação fragmentada**
+Vendas, atendimento, logística e sistemas cresceram sem arquitetura comum.
+
+---
+
+### Soluções
+
+# O processo vem antes da ferramenta.
+
+## Automação de Processos
+
+Transformamos tarefas repetitivas em fluxos monitoráveis, com regras claras e tratamento de exceções.
+
+**Automatizar um processo →**
+
+## Integração de Sistemas
+
+Conectamos ferramentas e dados para sua equipe deixar de copiar informações de um lugar para outro.
+
+**Integrar meus sistemas →**
+
+## IA para Operações
+
+Criamos agentes e assistentes capazes de consultar informações, organizar solicitações e executar ações autorizadas dentro dos processos da empresa.
+
+**Explorar IA →**
+
+## Operações Digitais
+
+Estruturamos operações que conectam e-commerce, ERP, logística, atendimento, dados e automações.
+
+**Organizar minha operação digital →**
+
+---
+
+### Produtos
+
+# Problemas recorrentes também podem virar produtos.
+
+## Zapbox
+
+### Seu WhatsApp virou uma operação.
+
+Centralize atendimento, equipe e histórico e evolua com CRM, automações e inteligência artificial.
+
+**Conhecer Zapbox →**
+
+## Agenda Confirmada
+
+### Menos confirmação manual. Mais controle da agenda.
+
+Automatize lembretes e confirmações pelo WhatsApp e evolua para uma operação integrada ao sistema da clínica.
+
+**Conhecer Agenda Confirmada →**
+
+---
+
+### Método
+
+# Não começamos pela ferramenta.
+
+**1. Entender**
+Mapeamos processo, problema e impacto.
+
+**2. Desenhar**
+Definimos fluxo, sistemas, regras e exceções.
+
+**3. Implantar**
+Construímos e testamos com situações reais.
+
+**4. Medir**
+Acompanhamos erros, volume, tempo e resultado.
+
+**5. Evoluir**
+Automatizamos novas etapas quando fizer sentido.
+
+---
+
+### Autoridade
+
+# Experiência de quem já operou tecnologia no mundo real.
+
+A RC2 é liderada por Robson Azevedo, profissional com mais de 20 anos de atuação em tecnologia, operações digitais, e-commerce, integração de sistemas e gestão de equipes.
+
+Sua trajetória inclui criação e escala de operação D2C nos Estados Unidos, gestão de tecnologia e e-commerce, liderança de operações 24×7 na América Latina e projetos envolvendo ERP, CRM, atendimento omnichannel, automação e IA.
+
+**Conhecer a trajetória →**
+
+---
+
+### Prova
+
+# Veja antes de acreditar.
+
+Experimente produtos, converse com nossos agentes e veja exemplos reais de fluxos, integrações e arquiteturas construídas pela RC2.
+
+**[Conversar com a Valéria]**
+**[Conhecer o Zapbox]**
+
+---
+
+### CTA final
+
+# Tem um processo que ainda depende demais de planilha, copiar e colar ou memória?
+
+Mostre para a RC2 como ele funciona hoje.
+
+A primeira conversa serve para entender se existe um problema que vale automatizar.
+
+**[Falar sobre minha operação]**
+
+---
+
+# 14. Pitch de cada produto e serviço
+
+## RC2
+
+> “A RC2 ajuda pequenas e médias empresas a automatizar processos, integrar sistemas e aplicar inteligência artificial dentro da operação. Entramos onde ainda existe muito trabalho manual, ferramenta desconectada ou informação espalhada, desenhamos a arquitetura e colocamos o fluxo para funcionar.”
+
+---
+
+## Automação de Processos
+
+> “Se sua equipe executa a mesma tarefa todos os dias seguindo praticamente as mesmas regras, provavelmente existe espaço para automação. A RC2 mapeia o processo, trata exceções e cria um fluxo monitorável para reduzir retrabalho.”
+
+---
+
+## Integração de Sistemas
+
+> “Quando ERP, CRM, planilhas, e-commerce e atendimento não conversam, funcionários viram a integração. A RC2 conecta esses sistemas para a informação circular automaticamente e com rastreabilidade.”
+
+---
+
+## IA para Operações
+
+> “Nós aplicamos IA dentro de processos reais. Agentes podem consultar documentos, resumir informações, classificar solicitações, apoiar equipes e executar ações autorizadas conectadas aos sistemas da empresa.”
+
+---
+
+## Operações Digitais & Commerce
+
+> “A RC2 estrutura operações digitais além da loja virtual. Integramos plataforma, ERP, logística, pagamentos, atendimento, dados e processos para o canal digital funcionar como operação.”
+
+---
+
+## Zapbox
+
+> “Zapbox transforma o WhatsApp em uma operação profissional de atendimento e vendas. Sua equipe trabalha no mesmo número com histórico e responsáveis e pode evoluir com CRM, automações e Sales AI.”
+
+---
+
+## Agenda Confirmada
+
+> “Agenda Confirmada automatiza lembretes e confirmações pelo WhatsApp para clínicas. Em operações mais estruturadas, integra-se ao sistema de gestão para acompanhar cancelamentos, horários e indicadores.”
+
+---
+
+## Discovery Operacional
+
+> “Antes de investir em automação complexa, mapeamos processo, sistemas, riscos e oportunidades. O resultado é um desenho técnico e operacional que mostra o que automatizar, em qual ordem e com qual arquitetura.”
+
+---
+
+## Operação Gerenciada
+
+> “Depois da implantação, a RC2 continua acompanhando fluxos, integrações e agentes. Monitoramos falhas, consumo e comportamento para que a automação permaneça saudável enquanto a operação muda.”
+
+---
+
+# 15. Estratégia de confiança sem cases
+
+A ausência de cases maduros não precisa ser escondida. O erro seria tentar substituir cases por números artificiais.
+
+| Elemento                                                   | Impacto    | Facilidade |
+| ---------------------------------------------------------- | ---------- | ---------- |
+| **Valéria funcionando no WhatsApp**                        | Muito alto | Alta       |
+| **Zapbox funcionando**                                     | Muito alto | Alta       |
+| **Screenshots reais**                                      | Alto       | Alta       |
+| **Vídeos de demonstração de 60–120s**                      | Alto       | Média      |
+| **Arquiteturas e diagramas reais**                         | Alto       | Alta       |
+| **Experiência do fundador**                                | Alto       | Alta       |
+| **Metodologia clara**                                      | Alto       | Alta       |
+| **Projetos de laboratório identificados como laboratório** | Médio/alto | Média      |
+| **Artigos técnicos profundos**                             | Médio      | Alta       |
+| **Avaliações Google reais**                                | Alto       | Alta       |
+| **Cases futuros com baseline**                             | Muito alto | Média      |
+
+## Regra
+
+Nunca chamar laboratório de cliente.
+
+Nunca chamar demonstração de resultado comercial.
+
+Nunca usar métrica sem documentação.
+
+Em compensação, mostrar:
+
+> **“Construímos isso. Você pode testar.”**
+
+é legítimo e poderoso.
+
+---
+
+# 16. Narrativa do fundador
+
+Seu CV possui uma combinação rara que deve ser explorada:
+
+### Operação
+
+Você não veio apenas de desenvolvimento.
+
+Já liderou operações e equipes.
+
+### Tecnologia
+
+Infraestrutura, APIs, e-commerce, ERP, CRM, automações, omnichannel e IA.
+
+### Gestão
+
+Já coordenou equipes e processos em ambientes corporativos.
+
+### Escala
+
+Na Edenred, coordenou operação de suporte/monitoramento 24×7 para 10 países da América Latina.
+
+### Negócio digital
+
+Na Uno Healthcare, estruturou um canal D2C nos EUA que gerou US$384 mil em receita e 636 pedidos em aproximadamente 11 meses, além de liderar equipe multidisciplinar de 10 profissionais.
+
+### Integração
+
+Na Forta Tech, trabalhou com Shopify, Tray, Totvs, logística, CRM e atendimento com IA.
+
+### Empreendedorismo
+
+Depois de uma longa trajetória corporativa, a fase atual representa maior dedicação ao desenvolvimento da RC2 e de seus próprios produtos.
+
+---
+
+## Narrativa curta para o site
+
+> **A RC2 é liderada por Robson Azevedo, profissional com mais de 20 anos de experiência em tecnologia e operações digitais.**
+>
+> Antes de concentrar sua atuação na RC2, Robson liderou equipes e operações envolvendo infraestrutura, e-commerce, canais D2C, ERP, CRM, atendimento omnichannel, integração de sistemas e automação em empresas no Brasil e no exterior.
+>
+> Essa experiência deu origem à filosofia da RC2: tecnologia só faz sentido quando melhora um processo real e continua funcionando depois da implantação.
+
+Não colocaria na Home:
+
+* lista de cursos;
+* dezenas de ferramentas;
+* formação completa;
+* tecnologias individuais.
+
+Isso fica no LinkedIn/CV.
+
+---
+
+# 17. Jornada de conversão
+
+## Entrada geral
+
+```text
+Google / indicação / conteúdo
+↓
+Home RC2
+↓
+“Isso parece meu problema”
+↓
+Soluções
+↓
+Confiança
+↓
+Conversa de diagnóstico
+```
+
+---
+
+## WhatsApp
+
+Se o problema for claramente:
+
+* vários atendentes;
+* WhatsApp;
+* CRM comercial;
+* Sales AI;
+
+direcionar:
+
+**Zapbox**
+
+---
+
+## Clínica
+
+Se for:
+
+* confirmação;
+* falta;
+* agenda;
+* recepção;
+
+direcionar:
+
+**Agenda Confirmada**
+
+---
+
+## Operação complexa
+
+Se for:
+
+* ERP;
+* sistemas;
+* processo;
+* integração;
+* IA interna;
+
+direcionar:
+
+**RC2**
+
+---
+
+## CTA principal da RC2
+
+**Falar sobre minha operação**
+
+Eu prefiro isso a:
+
+> Solicitar diagnóstico gratuito
+
+porque reduz a promessa de consultoria gratuita e parece mais humano.
+
+---
+
+## Quando usar WhatsApp
+
+* dúvida rápida;
+* lead já bem qualificado;
+* produto Zapbox;
+* contato inicial simples.
+
+## Quando usar demonstração
+
+* Zapbox;
+* Sales AI;
+* Valéria.
+
+## Quando usar reunião
+
+* integração;
+* automação complexa;
+* IA operacional;
+* Agenda Confirmada completo;
+* Enterprise.
+
+## Quando usar discovery pago
+
+Quando a resposta exigir:
+
+* mapear vários sistemas;
+* arquitetura;
+* levantamento de requisitos;
+* documentação;
+* muitas entrevistas;
+* roadmap.
+
+---
+
+# 18. Roadmap de implementação
+
+## Fase 1 — Essencial para reposicionar agora
+
+| Item                                                    | Impacto | Esforço | Prioridade |
+| ------------------------------------------------------- | ------- | ------- | ---------: |
+| Reescrever hero/home                                    | Alto    | Médio   |      **5** |
+| Reduzir serviços para 3–4 pilares                       | Alto    | Médio   |      **5** |
+| Inserir Zapbox no header/footer/home                    | Alto    | Baixo   |      **5** |
+| Inserir Agenda Confirmada                               | Alto    | Médio   |      **5** |
+| Reformular `/servicos` em `/solucoes`                   | Alto    | Médio   |      **5** |
+| Remover sites da oferta principal                       | Alto    | Baixo   |      **5** |
+| Reposicionar e-commerce                                 | Médio   | Baixo   |      **4** |
+| Trocar diagnóstico gratuito por conversa de diagnóstico | Alto    | Baixo   |      **5** |
+
+---
+
+## Fase 2 — Fortalecimento comercial
+
+| Item                              | Impacto | Esforço | Prioridade |
+| --------------------------------- | ------- | ------- | ---------: |
+| Demonstração da Valéria           | Alto    | Baixo   |      **5** |
+| Vídeos dos produtos               | Alto    | Médio   |      **5** |
+| Nova página Sobre                 | Alto    | Médio   |      **4** |
+| Discovery pago                    | Alto    | Médio   |      **4** |
+| Operação Gerenciada               | Alto    | Médio   |      **4** |
+| Diagramas/projetos de laboratório | Médio   | Médio   |      **3** |
+| Reorganizar avaliações            | Médio   | Baixo   |      **3** |
+
+---
+
+## Fase 3 — Crescimento
+
+| Item                               | Impacto    | Esforço | Prioridade |
+| ---------------------------------- | ---------- | ------- | ---------: |
+| Migrar SEO de WhatsApp para Zapbox | Alto       | Alto    |      **4** |
+| Cases com baseline                 | Muito alto | Alto    |      **5** |
+| Conteúdo de integração/automação   | Alto       | Médio   |      **4** |
+| Páginas por segmento comprovado    | Médio      | Alto    |      **2** |
+| Novas soluções verticais           | Alto       | Alto    |      **2** |
+
+---
+
+# Se eu estivesse assumindo a RC2 amanhã
+
+1. **Tiraria WhatsApp do centro da RC2 e entregaria esse território ao Zapbox.**
+
+2. **Reposicionaria a RC2 em três palavras: Automação, Integração e IA para Operações.**
+
+3. **Reescreveria imediatamente o hero para “Sua operação não precisa de mais ferramentas. Precisa funcionar melhor.”**
+
+4. **Reduziria a quantidade de páginas e transformaria `/solucoes` na principal página comercial dos serviços.**
+
+5. **Colocaria Zapbox no header, footer e Home como produto próprio da RC2.**
+
+6. **Colocaria Agenda Confirmada dentro de Soluções como primeira oferta vertical.**
+
+7. **Retiraria sites e landing pages do portfólio principal e transformaria e-commerce em Operações Digitais & Commerce.**
+
+8. **Usaria sua experiência real de 20+ anos como principal âncora de autoridade enquanto os cases da RC2 amadurecem.**
+
+9. **Transformaria Valéria, Zapbox, diagramas e demos em prova prática: “não temos apenas slides; você pode testar o que construímos”.**
+
+10. **Criaria dois níveis de venda: conversa inicial gratuita para verificar fit e Discovery pago quando houver arquitetura e mapeamento real a fazer.**
+
+A pergunta final é: **um potencial cliente consegue entender em 10 segundos o que a RC2 faz, para quem e por que deveria conversar com ela?**
+
+Com o site atual, ainda não completamente.
+
+Com esse reposicionamento, a resposta passa a ser:
+
+> **“A RC2 ajuda PMEs com processos manuais e sistemas desconectados a automatizar, integrar e aplicar IA na operação — e ainda cria produtos próprios como Zapbox e soluções especializadas como Agenda Confirmada.”**
