@@ -3,6 +3,13 @@
 > Inventário completo de ferramentas, MCPs, Skills e dependências do projeto.
 > Baseado no `Plano_Consolidado_RC2_Site_Institucional_Blog_CMS.docx`.
 
+> **Atualizado.** O agent principal do projeto é o **Claude Code**. As skills do
+> repositório vivem em `.agents/skills/` e são expostas ao Claude Code por
+> **junctions** em `.claude/skills/` (a pasta `.claude` é ignorada pelo Git).
+> As skills `rc2-brand-system` e `rc2-site-migration` **já existem**.
+> Nenhum MCP foi configurado ainda — a seção 1 permanece como plano.
+> O CTA vigente é **"Falar sobre minha operação"**; ver `AGENTS.md`.
+
 ---
 
 ## 1. MCPs recomendados
@@ -86,6 +93,42 @@
 
 ## 2. Skills recomendadas
 
+### 2.0 Skills instaladas no ambiente atual
+
+Skills do repositório em `.agents/skills/`, ligadas ao Claude Code por junction
+em `.claude/skills/`. Verificar com `npx skills list --agent claude-code`.
+
+| Skill | Origem | Finalidade |
+|---|---|---|
+| `rc2-brand-system` | **local (projeto)** | Identidade visual v2.1 como regra operacional |
+| `rc2-site-migration` | **local (projeto)** | Posicionamento, arquitetura de informação e migração SEO |
+| `impeccable` | local | Design e QA de interface |
+| `find-skills` | vercel-labs/skills | Descoberta e instalação de skills |
+| `seo` | affaan-m/ECC | SEO técnico, on-page e dados estruturados |
+| `site-architecture` | coreyhaines31/marketingskills | Hierarquia de páginas, navegação e links internos |
+| `software-design-philosophy` | wondelai/skills | Complexidade, módulos e interfaces |
+| `storybrand-messaging` | wondelai/skills | Clareza de mensagem e copy |
+| `tailwind-design-system` | wshobson/agents | Design system em Tailwind |
+| `ux-heuristics` | wondelai/skills | Auditoria de usabilidade |
+
+As skills `playwright-*` (microsoft/playwright) também estão ligadas, mas são de
+desenvolvimento do próprio Playwright — não fazem parte do escopo RC2.
+
+**Precedência:** `AGENTS.md`, `rc2-brand-system` e `rc2-site-migration` vencem
+qualquer skill genérica de design ou de copy.
+
+### 2.0.1 Plugins instalados (escopo project)
+
+Declarados em `.claude/settings.json`, todos de `claude-plugins-official`:
+
+- `typescript-lsp`
+- `frontend-design`
+- `commit-commands`
+- `security-guidance`
+
+Plugins ficam em **escopo project** para valerem para qualquer pessoa que abrir
+o repositório, e não apenas na máquina de quem instalou.
+
 ### 2.1 Skills essenciais para o projeto
 
 | Skill | Finalidade | Status no ambiente atual |
@@ -99,7 +142,8 @@
 | `vercel:vercel-storage` | Supabase e storage via Vercel | ✅ Disponível |
 | `everything-claude-code:security-review` | Revisão de segurança antes de deploy | ✅ Disponível |
 | `everything-claude-code:tdd` | Desenvolvimento orientado a testes | ✅ Disponível |
-| **RC2 Brand System Skill** | Identidade RC2 como regra operacional para o Claude Code | ❌ **Ainda não existe — precisa ser criada** |
+| `rc2-brand-system` | Identidade RC2 como regra operacional para o Claude Code | ✅ **Criada** — `.agents/skills/rc2-brand-system/` |
+| `rc2-site-migration` | Posicionamento, IA do site e migração SEO | ✅ **Criada** — `.agents/skills/rc2-site-migration/` |
 
 ### 2.2 Skills de apoio recomendadas
 
@@ -115,12 +159,18 @@
 
 ---
 
-## 3. RC2 Brand System Skill — a criar
+## 3. RC2 Brand System Skill — criada
 
-> Esta é a skill mais importante para o projeto. Deve ser criada **antes da Fase 2**.
-> Objetivo: transformar o Brand Guide v2.1 em regras operacionais para o Claude Code.
+> ✅ Criada em `.agents/skills/rc2-brand-system/SKILL.md`, com junction em
+> `.claude/skills/rc2-brand-system`. Transforma o Brand Guide v2.1 em regras
+> operacionais para o Claude Code.
+>
+> **A skill é a fonte operacional; o Brand Guide v2.1 é a fonte de verdade.**
+> O bloco abaixo é o rascunho histórico que originou a skill e é mantido apenas
+> como registro — **não editar para configurar comportamento**. Em caso de
+> divergência, valem `AGENTS.md`, o Brand Guide e a skill, nessa ordem.
 
-**Conteúdo mínimo da skill:**
+**Rascunho histórico (referência, não vigente):**
 
 ```markdown
 # RC2 Brand System
@@ -152,8 +202,9 @@
 ## CTA e botões
 - Primário: fundo #FF5F1F, texto #0B1726, Barlow Bold
 - Secundário: outline, borda #AEB7BF ou token equivalente, texto #0B1726
-- CTA principal: "Solicitar diagnóstico" (consistente em todas as páginas)
+- CTA principal: "Falar sobre minha operação" (consistente em todas as páginas, destino `/contato`)
 - CTA secundário: "Falar pelo WhatsApp"
+- Descontinuados: "Solicitar diagnóstico" e "Diagnóstico gratuito"
 
 ## Tom de voz
 - Especialista confiável — parceiro, não fornecedor
@@ -172,10 +223,13 @@
 60–70% neutros claros · 20–30% Navy / Slate · até 10% Safety Orange e derivados
 ```
 
-**Como criar:**
-1. Usar a skill `everything-claude-code:skill-create` para gerar a skill com base no Brand Guide v2.1
-2. Salvar em `C:\Users\rsaze\.claude\plugins\cache\` ou local equivalente
-3. Testar carregando com: `Skill("rc2-brand-system")`
+**Como está instalada:**
+1. Arquivo em `.agents/skills/rc2-brand-system/SKILL.md`, versionado no repositório
+2. Exposta ao Claude Code por junction: `.claude/skills/rc2-brand-system` → `.agents/skills/rc2-brand-system`
+3. Verificar com `npx skills list --agent claude-code`; carregar com `Skill("rc2-brand-system")`
+
+Skills locais do projeto **não** entram no `skills-lock.json` — o lock registra
+apenas skills instaladas a partir de fontes externas.
 
 ---
 
@@ -217,13 +271,30 @@ npx shadcn@latest init
 
 ## 6. Verificação do ambiente atual
 
-Para verificar MCPs instalados, execute no terminal do Claude Code:
-```
-/mcp
-```
-ou consulte as configurações em `Settings → MCP Servers`.
+Agent principal: **Claude Code**.
 
-Para listar Skills disponíveis, consulte o painel de Skills do Claude Code.
+Para listar as skills e ver quais estão ligadas ao Claude Code:
+```
+npx skills list --agent claude-code
+```
+
+Estrutura real das skills:
+```
+.agents/skills/<skill>/SKILL.md     ← conteúdo versionado no repositório
+.claude/skills/<skill>              ← junction apontando para o diretório acima
+```
+
+`.claude/` é ignorada pelo Git, então os junctions **não aparecem** em
+`git status` e precisam ser recriados por quem clonar o repositório.
+No Windows, criar com:
+```powershell
+New-Item -ItemType Junction -Path ".claude\skills\<skill>" -Target ".agents\skills\<skill>"
+```
+
+Para verificar MCPs, execute `/mcp` no terminal do Claude Code.
+**Nenhum MCP foi configurado até o momento** — a seção 1 é plano, não inventário.
+
+Plugins ativos ficam em `.claude/settings.json` (escopo project).
 
 ---
 
