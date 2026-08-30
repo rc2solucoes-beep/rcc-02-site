@@ -17,14 +17,15 @@ import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getOrgSettings();
   return {
-    title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
+    title: "RC2 Soluções — Automação, Integrações e IA para Operações",
     description:
-      "Consultoria para PMEs que precisam responder mais rápido, perder menos leads e reduzir tarefas manuais com IA, automações e integrações.",
+      "Consultoria e implementação de automação de processos, integração de sistemas e IA para operações de PMEs que cresceram e precisam funcionar melhor.",
     alternates: { canonical: `${BASE_URL}/` },
     openGraph: buildOg({
       url: BASE_URL,
-      title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
-      description: "Para PMEs que querem responder mais rápido, perder menos leads e reduzir retrabalho com IA e automação.",
+      title: "RC2 Soluções — Automação, Integrações e IA para Operações",
+      description:
+        "Automação de processos, integração de sistemas e IA para operações. Para PMEs cuja operação cresceu e precisa funcionar melhor.",
       imageUrl: settings.og_image_url,
     }),
   };
@@ -63,11 +64,11 @@ export default async function HomePage({ searchParams }: Props) {
     schemaWebPage = getWebPageSchema(
       settings,
       {
-        title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
+        title: "RC2 Soluções — Automação, Integrações e IA para Operações",
         description:
-          "Consultoria para PMEs que precisam responder mais rápido, perder menos leads e reduzir tarefas manuais com IA, automações e integrações.",
+          "Consultoria e implementação de automação de processos, integração de sistemas e IA para operações de PMEs que cresceram e precisam funcionar melhor.",
         url: BASE_URL,
-        keywords: "IA, automação, consultoria digital, PME, n8n, agentes de IA, e-commerce, atendimento automático, integrações",
+        keywords: "automação de processos, integração de sistemas, IA para operações, operações digitais e commerce, consultoria de operação, PME",
         image: `${BASE_URL}/og-image.png`,
       },
       BASE_URL
