@@ -301,11 +301,11 @@ export default async function HomePage({ searchParams }: Props) {
                     Não sabe por onde começar?
                   </h3>
                   <p className="text-sm text-rc2-dark-text-secondary leading-relaxed max-w-[30ch]">
-                    Conversa de diagnóstico para mapear gargalos e oportunidades de automação na sua operação.
+                    Conversa de 20 a 30 minutos para entender o cenário e indicar o próximo passo.
                   </p>
                 </div>
                 <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-rc2-dark-text group-hover:underline transition-[color,text-decoration-color] duration-200 underline-offset-4">
-                  Mapear meus gargalos
+                  Falar sobre minha operação
                   <ArrowRight size={14} />
                 </span>
               </TrackedLink>

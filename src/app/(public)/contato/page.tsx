@@ -7,20 +7,20 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
-const CONTACT_WHATSAPP_MESSAGE = "Olá, quero solicitar um diagnóstico para minha empresa.";
+const CONTACT_WHATSAPP_MESSAGE = "Olá, quero falar sobre a operação da minha empresa.";
 const CONTACT_WHATSAPP_URL = `https://wa.me/5511988028550?text=${encodeURIComponent(CONTACT_WHATSAPP_MESSAGE)}`;
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getOrgSettings();
   return {
-    title: "Contato — Solicite um Diagnóstico",
+    title: "Contato — Falar sobre a sua operação",
     description:
-      "Solicite um diagnóstico e receba um plano inicial para organizar atendimento, reduzir retrabalho e priorizar automações.",
+      "Converse com a RC2 sobre automação de processos, integração de sistemas e IA para operações. Conversa inicial de 20 a 30 minutos, sem compromisso.",
     alternates: { canonical: `${BASE_URL}/contato` },
     openGraph: buildOg({
       url: `${BASE_URL}/contato`,
-      title: "Contato — Solicite um Diagnóstico | RC2 Soluções",
-      description: "Solicite um diagnóstico e receba um plano inicial para organizar atendimento, reduzir retrabalho e priorizar automações.",
+      title: "Contato — Falar sobre a sua operação | RC2 Soluções",
+      description: "Converse com a RC2 sobre automação de processos, integração de sistemas e IA para operações. Conversa inicial sem compromisso.",
       imageUrl: settings.og_image_url,
     }),
   };
@@ -34,11 +34,11 @@ export default async function ContatoPage() {
     schemaWebPage = getWebPageSchema(
       settings,
       {
-        title: "Contato — Solicite um Diagnóstico",
+        title: "Contato — Falar sobre a sua operação",
         description:
-          "Solicite um diagnóstico e receba um plano inicial para organizar atendimento, reduzir retrabalho e priorizar automações.",
+          "Converse com a RC2 sobre automação de processos, integração de sistemas e IA para operações. Conversa inicial de 20 a 30 minutos, sem compromisso.",
         url: `${BASE_URL}/contato`,
-        keywords: "contato, diagnóstico gratuito, consultoria, IA, automação, oportunidades",
+        keywords: "contato, conversa inicial, discovery operacional, consultoria, automação de processos, integração de sistemas, IA para operações",
         image: `${BASE_URL}/og-image.png`,
       },
       BASE_URL
@@ -61,34 +61,27 @@ export default async function ContatoPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Sidebar */}
           <ScrollReveal direction="left" distance="24px">
-            <SectionLabel className="block mb-4">Diagnóstico gratuito</SectionLabel>
+            <SectionLabel className="block mb-4">Conversa inicial</SectionLabel>
             <h1 className="rc2-display text-4xl md:text-5xl text-rc2-heading mb-6 leading-tight">
-              Solicite um diagnóstico para sua empresa
+              Vamos falar sobre a sua operação
             </h1>
             <p className="text-rc2-text/70 leading-relaxed mb-8">
-              Se sua empresa está com atendimento lento, leads sem resposta,
-              tarefas manuais ou sistemas desconectados, este diagnóstico ajuda
-              a priorizar o que resolver primeiro.
-            </p>
-            <p className="text-rc2-text/70 leading-relaxed mb-8">
-              Em poucos passos, mapeamos seu cenário atual, identificamos
-              gargalos e sugerimos um plano inicial de execução com IA,
-              automações e integrações.
+              Se sua operação tem tarefas manuais, sistemas que não conversam ou
+              processos que dependem de pessoas específicas, comece por uma
+              conversa. São 20 a 30 minutos, sem compromisso.
             </p>
 
-            {/* What you get */}
+            {/* Conversa inicial — escopo delimitado */}
             <div className="p-6 border border-rc2-surface-2 bg-rc2-bg-alt rounded-lg">
               <h2 className="text-sm font-semibold text-rc2-heading mb-4 uppercase tracking-wide">
-                O que você recebe
+                O que acontece nessa conversa
               </h2>
               <ul className="space-y-3 text-sm text-rc2-text/70">
                 {[
-                  "Mapeamento inicial da operação",
-                  "Identificação de gargalos",
-                  "Sugestão de automações possíveis",
-                  "Priorização por impacto e complexidade",
-                  "Roadmap de implantação",
-                  "Proposta para execução",
+                  "Entendemos o cenário da sua operação",
+                  "Ouvimos qual é o principal problema hoje",
+                  "Verificamos se há aderência com o trabalho da RC2",
+                  "Indicamos qual deve ser o próximo passo",
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-2">
                     <span className="text-rc2-brand-text mt-0.5 text-xs shrink-0">→</span>
@@ -96,6 +89,35 @@ export default async function ContatoPage() {
                   </li>
                 ))}
               </ul>
+              <p className="mt-5 text-xs text-rc2-text-secondary leading-relaxed">
+                A conversa não inclui levantamento completo, mapa de processos,
+                arquitetura ou roadmap. Esse trabalho pertence ao Discovery
+                Operacional.
+              </p>
+            </div>
+
+            {/* Discovery Operacional — etapa paga, separada da conversa */}
+            <div className="mt-6 rounded-lg border border-rc2-border bg-rc2-surface p-6">
+              <SectionLabel className="block mb-3">Próximo passo, quando necessário</SectionLabel>
+              <h2 className="text-base font-semibold text-rc2-heading mb-3">
+                Discovery Operacional
+              </h2>
+              <p className="text-sm text-rc2-text/70 leading-relaxed mb-4">
+                Quando o problema envolve vários sistemas ou exige decisão de
+                arquitetura, o próximo passo é um trabalho estruturado e pago:
+                levantamento do processo, sistemas envolvidos, integrações,
+                riscos, prioridades, estimativa e roadmap.
+              </p>
+              <p className="text-sm text-rc2-text/70">
+                <span className="font-semibold text-rc2-heading">
+                  R$ 1.500 a R$ 5.000
+                </span>
+                , conforme a complexidade.
+              </p>
+              <p className="mt-4 text-xs text-rc2-text-secondary leading-relaxed">
+                Nem toda demanda precisa de Discovery. Problemas simples e já bem
+                definidos seguem direto para proposta.
+              </p>
             </div>
 
             <div className="mt-6">
