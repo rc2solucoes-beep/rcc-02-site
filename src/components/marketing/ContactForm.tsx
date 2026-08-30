@@ -346,6 +346,7 @@ export function ContactForm() {
             <input
               id="name"
               type="text"
+              required
               autoComplete="name"
               placeholder="Seu nome completo"
               className={cn(inputBase, errors.name && "border-destructive")}
@@ -362,6 +363,7 @@ export function ContactForm() {
               <input
                 id="email"
                 type="email"
+                required
                 autoComplete="email"
                 placeholder="seu@email.com"
                 className={cn(inputBase, errors.email && "border-destructive")}
@@ -376,6 +378,7 @@ export function ContactForm() {
               <input
                 id="whatsapp"
                 type="tel"
+                required
                 autoComplete="tel"
                 inputMode="tel"
                 placeholder="(11) 99999-9999"
@@ -393,6 +396,7 @@ export function ContactForm() {
             <textarea
               id="message"
               rows={4}
+              required
               placeholder="Exemplo: muitos contatos sem resposta, tarefas manuais, dados espalhados ou sistemas que não conversam."
               className={cn(inputBase, "resize-none", errors.message && "border-destructive")}
               aria-invalid={errors.message ? "true" : "false"}
@@ -423,6 +427,7 @@ export function ContactForm() {
             <input
               id="company"
               type="text"
+              required
               autoComplete="organization"
               placeholder="Nome da empresa"
               className={cn(inputBase, errors.company && "border-destructive")}
@@ -439,6 +444,7 @@ export function ContactForm() {
               <input
                 id="segment"
                 type="text"
+                required
                 placeholder="Ex: Varejo, Saúde, Logística..."
                 className={cn(inputBase, errors.segment && "border-destructive")}
                 aria-invalid={errors.segment ? "true" : "false"}
@@ -451,6 +457,7 @@ export function ContactForm() {
               <Label htmlFor="size" required>Porte (colaboradores)</Label>
               <select
                 id="size"
+                required
                 className={cn(inputBase, "cursor-pointer", errors.size && "border-destructive")}
                 aria-invalid={errors.size ? "true" : "false"}
                 aria-describedby={getErrorDescription("size", Boolean(errors.size))}
@@ -470,6 +477,7 @@ export function ContactForm() {
             <Label htmlFor="solution" required>Qual solução você procura?</Label>
             <select
               id="solution"
+              required
               className={cn(inputBase, "cursor-pointer", errors.solution && "border-destructive")}
               aria-invalid={errors.solution ? "true" : "false"}
               aria-describedby={getErrorDescription("solution", Boolean(errors.solution))}

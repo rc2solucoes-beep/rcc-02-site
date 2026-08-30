@@ -18,6 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: pageInfo.title,
     description: pageInfo.description,
+    alternates: { canonical: pageInfo.url },
     openGraph: buildOg({
       title: pageInfo.title,
       description: pageInfo.description,

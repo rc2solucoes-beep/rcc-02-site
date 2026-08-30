@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Termos de Uso",
   description:
     "Termos de Uso do site RC2 Soluções — condições de acesso e utilização.",
+  alternates: { canonical: `${BASE_URL}/termos` },
   robots: { index: false, follow: false },
 };
 

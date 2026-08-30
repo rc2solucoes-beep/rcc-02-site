@@ -104,7 +104,7 @@ export function Footer() {
               <li>
                 <a
                   href="mailto:contato@rc2solucoes.com.br"
-                  className="text-sm text-rc2-dark-text-secondary hover:text-rc2-dark-text transition-colors"
+                  className="text-sm text-rc2-dark-text-secondary hover:text-rc2-dark-text transition-colors break-words"
                 >
                   contato@rc2solucoes.com.br
                 </a>
