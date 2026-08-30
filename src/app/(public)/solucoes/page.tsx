@@ -212,6 +212,12 @@ export default function SolucoesPage() {
                 </a>
                 , produto da própria RC2.
               </p>
+              <p className="text-sm text-rc2-dark-text-secondary leading-relaxed mb-4">
+                Quando fazem parte do escopo contratado, as integrações entre o
+                Zapbox e os demais sistemas da operação podem entrar no
+                acompanhamento técnico da RC2 — o fluxo entre as plataformas,
+                não o atendimento que roda dentro delas.
+              </p>
               <p className="text-sm text-rc2-dark-text-secondary leading-relaxed">
                 Projetos novos e mudanças estruturais de arquitetura saem do
                 escopo recorrente e voltam a ser tratados como projeto.
