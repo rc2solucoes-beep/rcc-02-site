@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Política de Privacidade",
   description:
     "Política de Privacidade da RC2 Soluções — como coletamos, usamos e protegemos seus dados pessoais, em conformidade com a LGPD.",
+  alternates: { canonical: `${BASE_URL}/privacidade` },
   robots: { index: false, follow: false },
 };
 

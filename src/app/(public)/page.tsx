@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Check, ArrowRight } from "lucide-react";
-import { buildOg } from "@/lib/siteMetadata";
+import { buildOg, BASE_URL } from "@/lib/siteMetadata";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ServiceCard } from "@/components/marketing/ServiceCard";
 import { HomeCtaBlock } from "@/components/marketing/HomeCtaBlock";
@@ -20,9 +20,9 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
     description:
       "Consultoria para PMEs que precisam responder mais rápido, perder menos leads e reduzir tarefas manuais com IA, automações e integrações.",
-    alternates: { canonical: "https://rc2solucoes.com.br" },
+    alternates: { canonical: `${BASE_URL}/` },
     openGraph: buildOg({
-      url: "https://rc2solucoes.com.br",
+      url: BASE_URL,
       title: "RC2 Soluções — IA, Automações e Operações Digitais para PMEs",
       description: "Para PMEs que querem responder mais rápido, perder menos leads e reduzir retrabalho com IA e automação.",
       imageUrl: settings.og_image_url,
@@ -45,7 +45,6 @@ const socialProofItems = [
   "Diagnóstico prático com próximos passos acionáveis",
 ];
 
-const BASE_URL = "https://rc2solucoes.com.br";
 const HOME_WHATSAPP_MESSAGE =
   "Olá, quero entender onde a IA e automações podem ajudar minha empresa.";
 const HOME_WHATSAPP_URL = `https://wa.me/5511988028550?text=${encodeURIComponent(HOME_WHATSAPP_MESSAGE)}`;
