@@ -55,7 +55,8 @@ next-env.d.ts
 Thumbs.db
 
 # MCP and secrets
-.mcp.json
+# .mcp.json é a configuração MCP compartilhada do projeto e pode ser versionada.
+# Credenciais nunca devem ser armazenadas nela — use variáveis de ambiente.
 .claude/
 .env*.local
 
