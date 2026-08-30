@@ -419,7 +419,7 @@ export default async function ServicePage({ params }: Props) {
 
       <CTABlock
         title="Esse serviço faz sentido para você?"
-        description="Solicite um diagnóstico gratuito e descubra como podemos ajudar sua operação."
+        description="Fale com a RC2 sobre sua operação e veja como podemos ajudar."
         primaryLabel="Aplicar isso na minha operação"
         secondaryHref={serviceWhatsappUrl}
       />

@@ -57,7 +57,7 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: SITE_NAME,
       title: `${SITE_NAME} — IA, Automações e Operações Digitais`,
       description:
-        "Consultoria especializada em IA, automações e operações digitais para PMEs. Diagnóstico gratuito.",
+        "Consultoria especializada em IA, automações e operações digitais para PMEs.",
       images: [{ url: ogImageUrl, width: 1200, height: 630, alt: `${SITE_NAME} — IA e Automações para PMEs` }],
     },
     twitter: {

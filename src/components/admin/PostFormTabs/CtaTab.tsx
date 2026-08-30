@@ -50,7 +50,7 @@ const PRESETS: Record<CtaType, Partial<CtaBlock>> = {
     title: "Quer identificar gargalos nos processos da sua empresa?",
     description:
       "Fale com a RC2 Soluções e descubra como tornar sua operação mais eficiente.",
-    primaryButton: { text: "Solicitar Diagnóstico Gratuito →", url: "/contato" },
+    primaryButton: { text: "Falar sobre minha operação →", url: "/contato" },
   },
   next_steps: {
     title: "O que fazer agora?",
@@ -202,7 +202,7 @@ export function CtaTab({ ctaBlock, onChange }: CtaTabProps) {
                   type="text"
                   value={ctaBlock.primaryButton?.text ?? ""}
                   onChange={(e) => updateButton("primaryButton", "text", e.target.value)}
-                  placeholder="Solicitar diagnóstico →"
+                  placeholder="Falar sobre minha operação →"
                   className={inputBase}
                 />
               </div>
