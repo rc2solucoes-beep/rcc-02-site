@@ -4,7 +4,7 @@ export function HomeCtaBlock() {
   return (
     <CTABlockBase
       title="Quer descobrir onde a IA pode gerar resultado na sua empresa?"
-      description="Solicite um diagnóstico inicial e receba um mapa de oportunidades para automatizar atendimento, vendas e processos."
+      description="Comece por uma conversa de 20 a 30 minutos, sem compromisso, para entender o cenário e definir o próximo passo."
       primaryLabel="Falar sobre minha operação"
       primaryHref="/contato"
       primaryTracking={{

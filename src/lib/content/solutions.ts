@@ -125,7 +125,7 @@ export const solutions: Solution[] = [
     ],
     ctaTitle: "Quer reduzir o tempo de resposta da sua empresa?",
     ctaDescription:
-      "Solicite um diagnóstico e veja como automatizar o atendimento sem perder controle humano.",
+      "Fale com a RC2 sobre a sua operação e entenda o próximo passo para automatizar o atendimento sem perder controle humano.",
     keywords:
       "atendimento lento, demora no atendimento, automação de atendimento, IA para atendimento, WhatsApp automatizado",
   },
@@ -324,7 +324,7 @@ export const solutions: Solution[] = [
     ],
     ctaTitle: "Quer identificar quais tarefas podem ser automatizadas?",
     ctaDescription:
-      "Solicite um diagnóstico para mapear processos manuais e priorizar automações de maior impacto.",
+      "Fale com a RC2 sobre os processos manuais da sua operação e entenda o próximo passo para automatizá-los.",
     keywords:
       "processos manuais, tarefas repetitivas, automação de processos, n8n, integração de sistemas",
   },
@@ -525,7 +525,7 @@ export const solutions: Solution[] = [
     ctaTitle:
       "Quer transformar seu WhatsApp em um canal organizado de atendimento e vendas?",
     ctaDescription:
-      "Solicite um diagnóstico para estruturar triagem, automação e integração do WhatsApp com sua operação.",
+      "Fale com a RC2 sobre a sua operação e entenda o próximo passo para organizar o WhatsApp e integrá-lo aos seus sistemas.",
     keywords:
       "WhatsApp desorganizado, atendimento pelo WhatsApp, automação WhatsApp, WhatsApp vendas, qualificação de leads WhatsApp",
   },

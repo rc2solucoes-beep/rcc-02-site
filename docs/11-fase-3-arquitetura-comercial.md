@@ -257,6 +257,7 @@ Substituídas pelas quatro promessas da conversa inicial (seção 5).
 | ID | Pendência | Bloqueia | Origem |
 |---|---|---|---|
 | 2.1-a | Prazo mínimo de contrato e SLA da Operação Gerenciada | copy que os mencione | não formalizados (decisão 2.1) |
+| 2.1-b | Instrumentação de link externo para o Zapbox | medição de saída para o produto | não existe `kind` de tracking para link de produto; o link foi implementado como âncora simples, **sem inventar convenção** — ver `docs/10` |
 | 3.1 | Mapeamento 1:1 das URLs RC2 → páginas Zapbox | Fase 6 | `docs/09` §3 |
 | 3.2 | Histórico orgânico das URLs a migrar | Fase 6 | `docs/09` §3 |
 | — | Renomear `/avaliacoes` para "Avaliações e Projetos" | fase editorial futura | `docs/08` §19 #7 |

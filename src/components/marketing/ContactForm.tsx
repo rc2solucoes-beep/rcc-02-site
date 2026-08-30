@@ -264,11 +264,11 @@ export function ContactForm() {
         </div>
         <span className="rc2-label block mb-4 text-rc2-brand-text">Recebido</span>
         <h2 className="text-2xl font-semibold text-rc2-heading mb-3">
-          Diagnóstico solicitado com sucesso!
+          Recebemos o seu contato!
         </h2>
         <p className="text-rc2-text/70 max-w-md">
-          Diagnóstico solicitado com sucesso. Recebemos suas informações e retornaremos
-          pelo e-mail ou WhatsApp informado.
+Vamos analisar o que você enviou e retornar pelo e-mail ou WhatsApp
+          informado para marcar a conversa inicial.
         </p>
         <p className="text-rc2-text/70 max-w-md mt-2">
           Se preferir acelerar o contato, fale agora pelo WhatsApp.
@@ -579,7 +579,7 @@ export function ContactForm() {
           </div>
           {isSubmitting && (
             <p className="text-xs text-rc2-text/70" aria-live="polite">
-              Estamos registrando seu diagnóstico. Não feche esta página.
+              Estamos registrando o seu contato. Não feche esta página.
             </p>
           )}
         </>

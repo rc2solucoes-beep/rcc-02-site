@@ -4,7 +4,7 @@ export function ContactCtaBlock() {
   return (
     <CTABlockBase
       title="Já enviou sua demanda?"
-      description="Nos próximos dias, você receberá um diagnóstico detalhado com um mapa de oportunidades e próximos passos acionáveis."
+      description="Vamos analisar o que você enviou e retornar para marcar a conversa inicial."
       primaryLabel="Voltar para home"
       primaryHref="/"
       primaryTracking={{
@@ -14,7 +14,7 @@ export function ContactCtaBlock() {
         destination: "/",
       }}
       secondaryLabel="Falar direto com Robson"
-      secondaryHref="https://wa.me/5511988028550?text=Já enviei a demanda e estou aguardando o diagnóstico."
+      secondaryHref="https://wa.me/5511988028550?text=Já enviei a demanda pelo site e quero falar sobre a minha operação."
       secondaryTracking={{
         kind: "whatsapp",
         location: "contact_cta_block",
