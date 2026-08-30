@@ -91,3 +91,141 @@ describe("Home — artigos", () => {
     expect(HOME_BLOG_SLUGS.join(" ")).not.toContain("solucosolucoes");
   });
 });
+
+describe("Home — problemas operacionais", () => {
+  it("tem exatamente os 4 territórios aprovados", async () => {
+    const { HOME_PROBLEMS } = await import("@/lib/content/home");
+    expect(HOME_PROBLEMS).toHaveLength(4);
+    expect(HOME_PROBLEMS.map((p) => p.title)).toEqual([
+      "Trabalho manual",
+      "Sistemas desconectados",
+      "Informação espalhada",
+      "Operação digital fragmentada",
+    ]);
+  });
+
+  it("não usa WhatsApp, leads ou atendimento como título de território", async () => {
+    const { HOME_PROBLEMS } = await import("@/lib/content/home");
+    const titles = HOME_PROBLEMS.map((p) => p.title.toLowerCase()).join(" ");
+    for (const term of ["whatsapp", "lead", "atendimento"]) {
+      expect(titles).not.toContain(term);
+    }
+  });
+});
+
+describe("Home — competências", () => {
+  it("tem exatamente as 4 competências aprovadas", async () => {
+    const { HOME_COMPETENCIES } = await import("@/lib/content/home");
+    expect(HOME_COMPETENCIES.map((c) => c.title)).toEqual([
+      "Automação de Processos",
+      "Integração de Sistemas",
+      "IA para Operações",
+      "Operações Digitais & Commerce",
+    ]);
+  });
+
+  it("todas apontam para /solucoes e têm rótulo específico", async () => {
+    const { HOME_COMPETENCIES } = await import("@/lib/content/home");
+    const labels = new Set<string>();
+    for (const c of HOME_COMPETENCIES) {
+      expect(c.href).toBe("/solucoes");
+      labels.add(c.linkLabel);
+    }
+    expect(labels.size).toBe(4);
+  });
+});
+
+describe("Home — produtos", () => {
+  it("Zapbox aponta para o domínio externo do produto", async () => {
+    const { HOME_PRODUCTS } = await import("@/lib/content/home");
+    expect(HOME_PRODUCTS.zapbox.href).toBe("https://zapbox.cloud/");
+    expect(HOME_PRODUCTS.zapbox.external).toBe(true);
+  });
+
+  it("Agenda Confirmada usa CTA temporário para /contato", async () => {
+    const { HOME_PRODUCTS } = await import("@/lib/content/home");
+    expect(HOME_PRODUCTS.agendaConfirmada.ctaLabel).toBe(
+      "Falar sobre agenda e confirmações"
+    );
+    expect(HOME_PRODUCTS.agendaConfirmada.href).toBe("/contato");
+  });
+
+  it("nunca aponta para a rota inexistente de Agenda Confirmada", async () => {
+    const home = await import("@/lib/content/home");
+    expect(JSON.stringify(home)).not.toContain("/solucoes/agenda-confirmada");
+  });
+});
+
+describe("Home — método", () => {
+  it("tem as 5 etapas na ordem aprovada", async () => {
+    const { HOME_METHOD } = await import("@/lib/content/home");
+    expect(HOME_METHOD.steps.map((s) => s.name)).toEqual([
+      "Entender",
+      "Desenhar",
+      "Implantar",
+      "Medir",
+      "Evoluir",
+    ]);
+  });
+
+  it("não repete a faixa de preço do Discovery na Home", async () => {
+    const { HOME_METHOD } = await import("@/lib/content/home");
+    expect(JSON.stringify(HOME_METHOD)).not.toContain("R$");
+  });
+
+  it("delimita a conversa inicial contra o Discovery", async () => {
+    const { HOME_METHOD } = await import("@/lib/content/home");
+    const entender = HOME_METHOD.steps[0];
+    expect(entender.description).toContain("Discovery");
+  });
+
+  it("liga Operação Gerenciada à âncora de /solucoes", async () => {
+    const { HOME_METHOD } = await import("@/lib/content/home");
+    expect(HOME_METHOD.managedOpsHref).toBe("/solucoes#operacao-gerenciada");
+  });
+});
+
+describe("Home — autoridade", () => {
+  it("usa apenas fatos aprovados da proposta", async () => {
+    const { HOME_AUTHORITY } = await import("@/lib/content/home");
+    const flat = JSON.stringify(HOME_AUTHORITY);
+    for (const fact of ["Edenred", "Uno Healthcare", "Forta Tech"]) {
+      expect(flat).toContain(fact);
+    }
+  });
+
+  it("não usa a expressão vetada Cases de Sucesso", async () => {
+    const { HOME_AUTHORITY } = await import("@/lib/content/home");
+    expect(JSON.stringify(HOME_AUTHORITY).toLowerCase()).not.toContain(
+      "cases de sucesso"
+    );
+  });
+});
+
+describe("Home — demonstrações", () => {
+  it("tem apenas itens verificáveis e nenhum menciona Valéria", async () => {
+    const { HOME_DEMOS } = await import("@/lib/content/home");
+    expect(HOME_DEMOS).toHaveLength(2);
+    expect(JSON.stringify(HOME_DEMOS)).not.toContain("Val");
+  });
+
+  it("item sem ativo navegável não tem href", async () => {
+    const { HOME_DEMOS } = await import("@/lib/content/home");
+    const semLink = HOME_DEMOS.filter((d) => !d.href);
+    expect(semLink).toHaveLength(1);
+  });
+});
+
+describe("Home — filosofia", () => {
+  it("preserva a tese de marca", async () => {
+    const { HOME_PHILOSOPHY } = await import("@/lib/content/home");
+    expect(HOME_PHILOSOPHY.thesis).toBe(
+      "A IA não substitui uma operação mal estruturada."
+    );
+  });
+
+  it("é curta: no máximo 4 pontos", async () => {
+    const { HOME_PHILOSOPHY } = await import("@/lib/content/home");
+    expect(HOME_PHILOSOPHY.points.length).toBeLessThanOrEqual(4);
+  });
+});
