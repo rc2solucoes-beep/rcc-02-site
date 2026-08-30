@@ -118,7 +118,7 @@ export function Header() {
                 "ml-2 font-semibold tracking-wide uppercase text-xs px-5 h-9 bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90 shadow-sm ring-1 ring-rc2-brand/20"
               )}
             >
-              Solicitar diagnóstico
+              Falar com a RC2
             </Link>
           </nav>
 
@@ -171,7 +171,7 @@ export function Header() {
                 "mt-3 h-11 min-h-[44px] font-semibold tracking-wide uppercase text-xs w-full justify-center bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90"
               )}
             >
-              Solicitar diagnóstico
+              Falar com a RC2
             </Link>
           </nav>
         </div>

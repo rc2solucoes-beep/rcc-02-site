@@ -5,7 +5,7 @@ export function HomeCtaBlock() {
     <CTABlockBase
       title="Quer descobrir onde a IA pode gerar resultado na sua empresa?"
       description="Solicite um diagnóstico inicial e receba um mapa de oportunidades para automatizar atendimento, vendas e processos."
-      primaryLabel="Começar pelo diagnóstico"
+      primaryLabel="Falar sobre minha operação"
       primaryHref="/contato"
       primaryTracking={{
         kind: "cta",

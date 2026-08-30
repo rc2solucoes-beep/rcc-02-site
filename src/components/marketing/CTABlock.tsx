@@ -21,7 +21,7 @@ const WHATSAPP_URL = "https://wa.me/5511988028550";
 export function CTABlock({
   title,
   description,
-  primaryLabel = "Solicitar diagnóstico",
+  primaryLabel = "Falar sobre minha operação",
   primaryHref = "/contato",
   secondaryLabel = "Falar pelo WhatsApp",
   secondaryHref = WHATSAPP_URL,

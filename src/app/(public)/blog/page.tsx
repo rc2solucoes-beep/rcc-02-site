@@ -94,7 +94,7 @@ export default async function BlogPage() {
               <SectionLabel className="mb-3">Em breve</SectionLabel>
               <h2 className="text-2xl font-semibold text-rc2-heading mb-3">Ainda não há artigos publicados</h2>
               <p className="text-rc2-text-secondary text-lg mb-8 max-w-md mx-auto">
-                Enquanto isso, veja nossas soluções ou solicite um diagnóstico para sua operação.
+                Enquanto isso, veja nossas soluções ou fale com a RC2 sobre sua operação.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <TrackedLink
@@ -109,7 +109,7 @@ export default async function BlogPage() {
                   tracking={{ kind: "cta", location: "blog_empty_state", label: "solicitar_diagnostico", destination: "/contato" }}
                   className="inline-flex items-center gap-2 px-6 h-11 border border-border text-rc2-text font-medium text-sm rounded-md hover:bg-rc2-bg-alt transition-colors"
                 >
-                  Solicitar diagnóstico
+                  Falar sobre minha operação
                 </TrackedLink>
               </div>
             </ScrollReveal>

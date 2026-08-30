@@ -574,7 +574,7 @@ export function ContactForm() {
               disabled={isSubmitting}
               className="ui-focus-ring flex-1 px-10 h-12 bg-rc2-brand text-rc2-heading font-semibold tracking-wide uppercase text-xs hover:bg-rc2-brand/90 active:bg-rc2-brand active:ring-1 active:ring-rc2-brand/50 transition-[background-color,color,box-shadow,opacity] duration-150 disabled:opacity-60 disabled:cursor-not-allowed rounded-md"
             >
-              {isSubmitting ? "Enviando solicitação..." : "Solicitar diagnóstico"}
+              {isSubmitting ? "Enviando solicitação..." : "Agendar conversa de diagnóstico"}
             </button>
           </div>
           {isSubmitting && (

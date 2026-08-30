@@ -19,7 +19,7 @@ A RC2 Soluções ajuda empresas a transformar processos manuais, atendimento des
 - [Soluções com IA](https://www.rc2solucoes.com.br/solucoes-com-ia): exemplos de aplicação de IA em atendimento, vendas e operação.
 - [Sobre](https://www.rc2solucoes.com.br/sobre): posicionamento, experiência e forma de trabalho.
 - [Blog](https://www.rc2solucoes.com.br/blog): artigos sobre IA, automação, atendimento e produtividade.
-- [Contato](https://www.rc2solucoes.com.br/contato): canal para solicitar diagnóstico.
+- [Contato](https://www.rc2solucoes.com.br/contato): canal para falar sobre sua operação com a RC2.
 
 ## Temas principais
 

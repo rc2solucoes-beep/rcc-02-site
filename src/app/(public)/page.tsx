@@ -249,7 +249,7 @@ export default async function HomePage({ searchParams }: Props) {
                       }}
                       className="inline-flex items-center gap-1.5 text-sm font-semibold text-rc2-brand-text md:justify-self-end hover:underline transition-[color,text-decoration-color] duration-200 underline-offset-4"
                     >
-                      {item.href === "/contato" ? "Diagnosticar minha dor" : `Comece por ${item.label}`}
+                      {item.href === "/contato" ? "Falar sobre minha operação" : `Comece por ${item.label}`}
                       <ArrowRight size={14} />
                     </TrackedLink>
                   </article>
@@ -301,7 +301,7 @@ export default async function HomePage({ searchParams }: Props) {
                     Não sabe por onde começar?
                   </h3>
                   <p className="text-sm text-rc2-dark-text-secondary leading-relaxed max-w-[30ch]">
-                    Diagnóstico gratuito para mapear gargalos e oportunidades de automação na sua operação.
+                    Conversa de diagnóstico para mapear gargalos e oportunidades de automação na sua operação.
                   </p>
                 </div>
                 <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-rc2-dark-text group-hover:underline transition-[color,text-decoration-color] duration-200 underline-offset-4">
