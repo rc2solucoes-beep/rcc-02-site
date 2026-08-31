@@ -1,16 +1,27 @@
 # Guia de Interlinking Interno do Blog
 
+> **Atualizado após a migração SEO pós-Fase 5** (`docs/16`).
+> As URLs `/servicos/automacao-de-processos` e `/servicos/agentes-de-ia`
+> passaram a redirecionar para âncoras de `/solucoes`. Não crie links novos
+> para elas: use `/solucoes#automacao-de-processos` e
+> `/solucoes#ia-para-operacoes`.
+>
+> **Território Zapbox** — conteúdo de WhatsApp, atendimento, vendas e leads
+> **não** deve ser direcionado para `IA para Operações`. Esse território
+> pertence ao Zapbox e o destino definitivo depende da Fase 6. Até lá, mantenha
+> os links atuais desse cluster.
+
 ## Cluster: Atendimento com IA
 Página principal:
 - `/servicos/automacoes-com-ia`
 
 Páginas secundárias:
-- `/servicos/automacao-de-processos`
+- `/solucoes#automacao-de-processos`
 - `/solucoes-com-ia`
 - `/contato`
 
 CTA recomendado:
-- Diagnóstico de atendimento e qualificação de leads.
+- Falar sobre minha operação (`/contato`).
 
 Regra de links:
 - Incluir 1 link para a página principal até a metade do artigo.
@@ -24,7 +35,7 @@ Regra de links:
 
 ## Cluster: Automação com n8n
 Página principal:
-- `/servicos/automacao-de-processos`
+- `/solucoes#automacao-de-processos`
 
 Páginas secundárias:
 - `/servicos/automacoes-com-ia`
@@ -45,7 +56,7 @@ Regra de links:
 
 ## Cluster: Agentes de IA internos
 Página principal:
-- `/servicos/agentes-de-ia`
+- `/solucoes#ia-para-operacoes`
 
 Páginas secundárias:
 - `/servicos/automacoes-com-ia`
@@ -69,7 +80,7 @@ Página principal:
 - `/servicos/e-commerce`
 
 Páginas secundárias:
-- `/servicos/automacao-de-processos`
+- `/solucoes#automacao-de-processos`
 - `/servicos/sites-e-landing-pages`
 - `/contato`
 
