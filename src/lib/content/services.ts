@@ -134,7 +134,7 @@ export const services: Service[] = [
     ],
     relatedLinks: [
       { label: "Soluções com IA", href: "/solucoes-com-ia" },
-      { label: "Automação de processos com n8n", href: "/servicos/automacao-de-processos" },
+      { label: "Automação de processos com n8n", href: "/solucoes#automacao-de-processos" },
       { label: "Contato", href: "/contato" },
     ],
   },
@@ -473,7 +473,7 @@ export const services: Service[] = [
       },
     ],
     relatedLinks: [
-      { label: "Automação de processos", href: "/servicos/automacao-de-processos" },
+      { label: "Automação de processos", href: "/solucoes#automacao-de-processos" },
       { label: "Sites e landing pages", href: "/servicos/sites-e-landing-pages" },
       { label: "Contato", href: "/contato" },
     ],
