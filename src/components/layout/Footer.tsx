@@ -1,20 +1,11 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
-import { services } from "@/lib/content/services";
-
-const footerLinks = {
-  empresa: [
-    { href: "/sobre", label: "Sobre" },
-    { href: "/solucoes", label: "Soluções por Problema" },
-    { href: "/blog", label: "Blog" },
-    { href: "/contato", label: "Contato" },
-  ],
-  servicos: services.map(s => ({
-    href: `/servicos/${s.slug}`,
-    label: s.shortTitle,
-  })),
-};
+import {
+  FOOTER_COMPANY_LINKS,
+  FOOTER_PRODUCT_LINK,
+  FOOTER_SOLUTION_LINKS,
+} from "@/lib/content/navigation";
 
 const legalLinks = [
   { href: "/privacidade", label: "Política de Privacidade" },
@@ -32,8 +23,8 @@ export function Footer() {
           <div className="sm:col-span-2 md:col-span-1">
             <Logo variant="dark" />
             <p className="mt-4 text-sm text-rc2-dark-text-secondary leading-relaxed max-w-xs">
-              Consultoria especializada em IA, automações e operações digitais
-              para pequenas e médias empresas.
+              Consultoria e implementação de automação de processos, integração
+              de sistemas e IA para operações.
             </p>
           </div>
 
@@ -41,7 +32,7 @@ export function Footer() {
           <div>
             <h3 className="rc2-label mb-4 text-rc2-brand">Empresa</h3>
             <ul className="space-y-2">
-              {footerLinks.empresa.map((link) => (
+              {FOOTER_COMPANY_LINKS.map((link) => (
                 <li key={link.href}>
                   {link.href === "/contato" ? (
                     <TrackedLink
@@ -64,21 +55,43 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Serviços */}
+          {/* Soluções */}
           <div>
-            <h3 className="rc2-label mb-4 text-rc2-brand">Serviços</h3>
+            <h3 className="rc2-label mb-4 text-rc2-brand">Soluções</h3>
             <ul className="space-y-2">
-              {footerLinks.servicos.map((link) => (
+              {FOOTER_SOLUTION_LINKS.map((link) => (
                 <li key={link.href}>
-                  <Link
+                  <TrackedLink
                     href={link.href}
+                    tracking={{
+                      kind: "cta",
+                      location: "footer_solucoes",
+                      label: link.analyticsLabel,
+                      destination: link.href,
+                    }}
                     className="ui-focus-ring rounded-sm text-sm text-rc2-dark-text-secondary hover:text-rc2-dark-text hover:underline transition-colors"
                   >
                     {link.label}
-                  </Link>
+                  </TrackedLink>
                 </li>
               ))}
             </ul>
+
+            <h3 className="rc2-label mb-3 mt-6 text-rc2-brand">Produto</h3>
+            <TrackedLink
+              href={FOOTER_PRODUCT_LINK.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              tracking={{
+                kind: "cta",
+                location: "footer_produto",
+                label: FOOTER_PRODUCT_LINK.analyticsLabel,
+                destination: FOOTER_PRODUCT_LINK.href,
+              }}
+              className="ui-focus-ring rounded-sm text-sm text-rc2-dark-text-secondary hover:text-rc2-dark-text hover:underline transition-colors"
+            >
+              {FOOTER_PRODUCT_LINK.label} — {FOOTER_PRODUCT_LINK.description}
+            </TrackedLink>
           </div>
 
           {/* Contato */}

@@ -43,7 +43,7 @@ const PRESETS: Record<CtaType, Partial<CtaBlock>> = {
     title: "Quer melhorar os processos da sua empresa?",
     description:
       "A RC2 Soluções ajuda PMEs a automatizar operações e escalar resultados com IA e integrações.",
-    primaryButton: { text: "Conhecer soluções", url: "/servicos" },
+    primaryButton: { text: "Conhecer soluções", url: "/solucoes" },
     secondaryButton: { text: "Falar com especialista", url: "/contato" },
   },
   contact: {

@@ -8,14 +8,7 @@ import { Logo } from "./Logo";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { trackCtaClick } from "@/lib/tracking";
-
-const navLinks = [
-  { href: "/", label: "Início" },
-  { href: "/servicos", label: "Serviços" },
-  { href: "/solucoes-com-ia", label: "Soluções com IA" },
-  { href: "/sobre", label: "Sobre" },
-  { href: "/blog", label: "Blog" },
-];
+import { NAV_LINKS } from "@/lib/content/navigation";
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -89,7 +82,7 @@ export function Header() {
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-6">
-            {navLinks.map((link) => (
+            {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -140,7 +133,7 @@ export function Header() {
       {open && (
         <div ref={mobileMenuRef} id="mobile-main-menu" className="md:hidden bg-rc2-bg border-t border-border px-4 pb-4 pt-2">
           <nav className="flex flex-col gap-1">
-            {navLinks.map((link) => (
+            {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}

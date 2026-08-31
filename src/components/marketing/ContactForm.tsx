@@ -289,10 +289,10 @@ Vamos analisar o que você enviou e retornar pelo e-mail ou WhatsApp
           Abrir WhatsApp agora →
         </a>
         <Link
-          href="/servicos"
+          href="/solucoes"
           className="mt-3 text-sm text-rc2-text/75 underline underline-offset-4 hover:text-rc2-text"
         >
-          Ver serviços
+          Ver soluções
         </Link>
       </div>
     );
