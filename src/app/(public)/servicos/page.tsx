@@ -26,6 +26,16 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+/**
+ * Serviços cuja URL passou a redirecionar para uma âncora de /solucoes
+ * (docs/16 §10). O card aponta direto ao destino final: link controlado pela
+ * RC2 não cria salto voluntário.
+ */
+const MIGRATED_SERVICE_HREFS: Record<string, string> = {
+  "agentes-de-ia": "/solucoes#ia-para-operacoes",
+  "automacao-de-processos": "/solucoes#automacao-de-processos",
+};
+
 export default async function ServicosPage() {
   let schemaWebPage;
 
@@ -112,7 +122,10 @@ export default async function ServicosPage() {
                     {service.cta}
                   </p>
                   <Link
-                    href={`/servicos/${service.slug}`}
+                    href={
+                      MIGRATED_SERVICE_HREFS[service.slug] ??
+                      `/servicos/${service.slug}`
+                    }
                     className={`rc2-action-link mt-6 ${isDark ? "text-rc2-brand hover:text-rc2-brand" : ""}`}
                   >
                     Ver serviço
