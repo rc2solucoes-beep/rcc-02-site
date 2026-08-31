@@ -11,9 +11,9 @@ test.describe("Navegação pública", () => {
   test("links do header navegam corretamente", async ({ page }) => {
     await page.goto("/");
 
-    // Serviços
-    await page.getByRole("link", { name: /Serviços/i }).first().click();
-    await expect(page).toHaveURL(/\/servicos$/);
+    // Soluções — a Fase 5 substituiu "Serviços" e "Soluções com IA" por "Soluções".
+    await page.getByRole("link", { name: /^Soluções$/i }).first().click();
+    await expect(page).toHaveURL(/\/solucoes$/);
 
     // Blog
     await page.getByRole("link", { name: /Blog/i }).first().click();
@@ -30,10 +30,22 @@ test.describe("Navegação pública", () => {
     await expect(page).toHaveURL("/");
   });
 
-  test("link de diagnóstico no header vai para /contato", async ({ page }) => {
+  test("CTA do header vai para /contato", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("link", { name: /Diagnóstico Gratuito/i }).first().click();
+    await page
+      .getByRole("banner")
+      .getByRole("link", { name: /Falar com a RC2/i })
+      .first()
+      .click();
     await expect(page).toHaveURL(/\/contato/);
+  });
+
+  test("o header não promove mais a arquitetura legada", async ({ page }) => {
+    await page.goto("/");
+    const header = page.getByRole("banner");
+    await expect(header.locator('a[href="/servicos"]')).toHaveCount(0);
+    await expect(header.locator('a[href="/solucoes-com-ia"]')).toHaveCount(0);
+    await expect(header.locator('a[href="/solucoes"]')).toHaveCount(1);
   });
 
   test("skip link está presente e focável", async ({ page }) => {
@@ -63,7 +75,7 @@ test.describe("Menu mobile", () => {
     // Abre
     await hamburger.click();
     await expect(page.getByRole("button", { name: /Fechar menu/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: /Serviços/i }).last()).toBeVisible();
+    await expect(page.getByRole("link", { name: /^Soluções$/i }).last()).toBeVisible();
 
     // Fecha
     await page.getByRole("button", { name: /Fechar menu/i }).click();

@@ -32,15 +32,15 @@ test.describe("Formulário de contato", () => {
     await expect(page.getByLabel(/solução/i)).toBeVisible();
   });
 
-  test("mostra erros de validação para campos vazios", async ({ page }) => {
+  test("etapa 2 vazia bloqueia o envio e mostra erro", async ({ page }) => {
     await fillStepOneAndContinue(page);
-    await page.getByRole("button", { name: /Solicitar diagnóstico/i }).click();
+    await page.getByRole("button", { name: /Agendar conversa de diagnóstico/i }).click();
     await expect(page.getByRole("alert").first()).toBeVisible();
   });
 
   test("botão de submit está habilitado por padrão", async ({ page }) => {
     await fillStepOneAndContinue(page);
-    const button = page.getByRole("button", { name: /Solicitar diagnóstico/i });
+    const button = page.getByRole("button", { name: /Agendar conversa de diagnóstico/i });
     await expect(button).toBeEnabled();
   });
 
@@ -52,7 +52,7 @@ test.describe("Formulário de contato", () => {
     await page.getByLabel(/colaboradores/i).selectOption("1–10 colaboradores");
     await page.getByLabel(/solução/i).selectOption("Automatizar atendimento ou vendas");
 
-    const button = page.getByRole("button", { name: /Solicitar diagnóstico/i });
+    const button = page.getByRole("button", { name: /Agendar conversa de diagnóstico/i });
     await expect(button).toBeEnabled();
   });
 });
