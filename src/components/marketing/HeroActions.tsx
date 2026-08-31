@@ -3,26 +3,32 @@
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { trackCtaClick, trackWhatsappClick } from "@/lib/tracking";
+import { trackCtaClick } from "@/lib/tracking";
+import { HOME_CTAS } from "@/lib/content/home";
 
-const HOME_WHATSAPP_MESSAGE =
-  "Olá, quero entender onde a IA e automações podem ajudar minha empresa.";
-const WHATSAPP_URL = `https://wa.me/5511988028550?text=${encodeURIComponent(HOME_WHATSAPP_MESSAGE)}`;
+/**
+ * CTAs do hero da Home.
+ *
+ * O experimento A/B (`?hero=a` / `?hero=b`) foi encerrado na Fase 4: existe
+ * uma única versão oficial. As séries de analytics `hero_a` e `hero_b` estão
+ * encerradas e não são reutilizadas.
+ *
+ * O label do CTA primário permanece o identificador histórico
+ * `solicitar_diagnostico`, apesar da nova copy visível — ver docs/10.
+ */
+export function HeroActions() {
+  const primary = HOME_CTAS.heroPrimary;
+  const secondary = HOME_CTAS.heroSecondary;
 
-interface HeroActionsProps {
-  variant: "a" | "b";
-}
-
-export function HeroActions({ variant }: HeroActionsProps) {
   return (
     <div className="mt-8 flex flex-col sm:flex-row gap-4">
       <Link
-        href="/contato"
+        href={primary.href}
         onClick={() =>
           trackCtaClick({
-            location: `hero_${variant}`,
-            label: "solicitar_diagnostico",
-            destination: "/contato",
+            location: "home_hero",
+            label: primary.analyticsLabel,
+            destination: primary.href,
           })
         }
         className={cn(
@@ -30,17 +36,15 @@ export function HeroActions({ variant }: HeroActionsProps) {
           "font-semibold tracking-wide uppercase text-xs px-8 h-12 bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90"
         )}
       >
-        Ver onde minha operação trava
+        {primary.label}
       </Link>
       <Link
-        href={WHATSAPP_URL}
-        target="_blank"
-        rel="noopener noreferrer"
+        href={secondary.href}
         onClick={() =>
-          trackWhatsappClick({
-            location: `hero_${variant}`,
-            label: "falar_no_whatsapp",
-            destination: WHATSAPP_URL,
+          trackCtaClick({
+            location: "home_hero",
+            label: secondary.analyticsLabel,
+            destination: secondary.href,
           })
         }
         className={cn(
@@ -48,7 +52,7 @@ export function HeroActions({ variant }: HeroActionsProps) {
           "font-semibold tracking-wide uppercase text-xs px-8 h-12 border-rc2-text text-rc2-text hover:bg-rc2-text hover:text-rc2-dark-text"
         )}
       >
-        Falar pelo WhatsApp
+        {secondary.label}
       </Link>
     </div>
   );

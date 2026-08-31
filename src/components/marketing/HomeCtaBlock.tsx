@@ -3,8 +3,8 @@ import { CTABlockBase } from "./CTABlockBase";
 export function HomeCtaBlock() {
   return (
     <CTABlockBase
-      title="Quer descobrir onde a IA pode gerar resultado na sua empresa?"
-      description="Comece por uma conversa de 20 a 30 minutos, sem compromisso, para entender o cenário e definir o próximo passo."
+      title="Tem um processo que ainda depende demais de planilha, copiar e colar ou memória?"
+      description="Comece por uma conversa de 20 a 30 minutos, sem compromisso, para entender o cenário e definir qual é o próximo passo."
       primaryLabel="Falar sobre minha operação"
       primaryHref="/contato"
       primaryTracking={{
