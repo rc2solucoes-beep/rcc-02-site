@@ -217,14 +217,6 @@ export const SOLUCOES_ANCHORS = [
   "operacao-gerenciada",
 ] as const;
 
-/** Termos descontinuados que não podem reaparecer nesta página. */
-export const FORBIDDEN_SOLUCOES_TERMS = [
-  "Solicitar diagnóstico",
-  "Diagnóstico gratuito",
-  "Cases de Sucesso",
-  "chatbot",
-] as const;
-
 export const SOLUCOES_METADATA = {
   title: "Soluções — Automação, Integrações e IA para Operações",
   description:
