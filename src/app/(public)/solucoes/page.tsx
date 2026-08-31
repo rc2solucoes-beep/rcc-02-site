@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/marketing/PageHero";
+import { CTABlockBase } from "@/components/marketing/CTABlockBase";
 import { SolutionsCompetencies } from "@/components/marketing/solucoes/SolutionsCompetencies";
 import { SolutionsManagedOps } from "@/components/marketing/solucoes/SolutionsManagedOps";
 import { buttonVariants } from "@/components/ui/button";
@@ -164,6 +165,21 @@ export default function SolucoesPage() {
       {/* ── Operação Gerenciada — Fase 3, preservada ── */}
       <SolutionsManagedOps />
 
+      {/* ── CTA final ── */}
+      <CTABlockBase
+        title={SOLUCOES_CTAS.final.title}
+        description={SOLUCOES_CTAS.final.description}
+        primaryLabel={SOLUCOES_CTAS.final.label}
+        primaryHref={SOLUCOES_CTAS.final.href}
+        primaryTracking={{
+          kind: "cta",
+          location: "solutions_final_cta",
+          label: SOLUCOES_CTAS.final.analyticsLabel,
+          destination: SOLUCOES_CTAS.final.href,
+        }}
+        hideSecondary
+        variant="dark"
+      />
     </>
   );
 }
