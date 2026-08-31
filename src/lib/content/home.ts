@@ -123,7 +123,7 @@ export const HOME_COMPETENCIES = [
     problem: "O processo existe, mas roda no braço.",
     delivery:
       "Mapeamos o fluxo real e automatizamos as etapas repetitivas, com registro do que aconteceu.",
-    href: "/solucoes",
+    href: "/solucoes#automacao-de-processos",
     linkLabel: "Ver automação de processos",
     analyticsLabel: "automacao_de_processos",
   },
@@ -132,7 +132,7 @@ export const HOME_COMPETENCIES = [
     problem: "Os sistemas não conversam e alguém faz a ponte.",
     delivery:
       "Conectamos ERP, CRM, plataforma e ferramentas internas para o dado circular sem digitação dupla.",
-    href: "/solucoes",
+    href: "/solucoes#integracao-de-sistemas",
     linkLabel: "Ver integração de sistemas",
     analyticsLabel: "integracao_de_sistemas",
   },
@@ -141,7 +141,7 @@ export const HOME_COMPETENCIES = [
     problem: "Há interesse em IA, mas falta processo para sustentá-la.",
     delivery:
       "Aplicamos IA sobre processo estruturado, com contexto, dados e governança definidos.",
-    href: "/solucoes",
+    href: "/solucoes#ia-para-operacoes",
     linkLabel: "Ver IA para operações",
     analyticsLabel: "ia_para_operacoes",
   },
@@ -150,7 +150,7 @@ export const HOME_COMPETENCIES = [
     problem: "A operação digital cresceu em partes desconectadas.",
     delivery:
       "Integramos plataforma, ERP, logística, pagamentos e dados em uma operação única.",
-    href: "/solucoes",
+    href: "/solucoes#operacoes-digitais-commerce",
     linkLabel: "Ver operações digitais e commerce",
     analyticsLabel: "operacoes_digitais_commerce",
   },

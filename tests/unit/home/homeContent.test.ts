@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
+  HOME_COMPETENCIES,
+  HOME_METHOD,
   HOME_COPY,
   HOME_CTAS,
   HOME_BLOG_SLUGS,
@@ -128,7 +130,8 @@ describe("Home — competências", () => {
     const { HOME_COMPETENCIES } = await import("@/lib/content/home");
     const labels = new Set<string>();
     for (const c of HOME_COMPETENCIES) {
-      expect(c.href).toBe("/solucoes");
+      // Fase 5: o destino passou de /solucoes para a âncora da competência.
+      expect(c.href.startsWith("/solucoes#")).toBe(true);
       labels.add(c.linkLabel);
     }
     expect(labels.size).toBe(4);
@@ -261,5 +264,38 @@ describe("Home — tracking dos artigos", () => {
     const { HOME_CTAS } = await import("@/lib/content/home");
     expect(HOME_CTAS.content.analyticsLabel).toBe("ver_todos_artigos");
     expect(HOME_CTAS.content.href).toBe("/blog");
+  });
+});
+
+describe("Home — competências apontam para as âncoras de /solucoes", () => {
+  it("usa as quatro âncoras publicadas na Fase 5", () => {
+    expect(HOME_COMPETENCIES.map((c) => c.href)).toEqual([
+      "/solucoes#automacao-de-processos",
+      "/solucoes#integracao-de-sistemas",
+      "/solucoes#ia-para-operacoes",
+      "/solucoes#operacoes-digitais-commerce",
+    ]);
+  });
+
+  it("preserva os labels históricos de analytics — só o destination muda", () => {
+    expect(HOME_COMPETENCIES.map((c) => c.analyticsLabel)).toEqual([
+      "automacao_de_processos",
+      "integracao_de_sistemas",
+      "ia_para_operacoes",
+      "operacoes_digitais_commerce",
+    ]);
+  });
+
+  it("preserva os títulos das competências", () => {
+    expect(HOME_COMPETENCIES.map((c) => c.title)).toEqual([
+      "Automação de Processos",
+      "Integração de Sistemas",
+      "IA para Operações",
+      "Operações Digitais & Commerce",
+    ]);
+  });
+
+  it("mantém a âncora da Operação Gerenciada publicada desde a Fase 3", () => {
+    expect(HOME_METHOD.managedOpsHref).toBe("/solucoes#operacao-gerenciada");
   });
 });
