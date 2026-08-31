@@ -443,6 +443,52 @@ consolidar — ver §13.
 destino **equivalente em intenção**, nunca para a Home; **um salto só**;
 permanente apenas quando a decisão for permanente; sempre documentado.
 
+### 12.1 Sitemap — regra de migração
+
+`OBSERVED` — verificado em `src/app/sitemap.ts` e em
+`https://www.rc2solucoes.com.br/sitemap.xml` (31 URLs no total): as **12 URLs
+legadas estão hoje no sitemap**. `/servicos`, `/solucoes-com-ia` e `/solucoes`
+entram por `staticPages`; os cinco `/servicos/*` por `serviceRoutes` e os cinco
+`/solucoes/*` por `solutionRoutes`, ambos derivados de `services.ts` e
+`solutions.ts`. Nenhum alias aparece no sitemap.
+
+`APPROVED` — **regra:** quando uma URL indexável 200 passar a redirect
+permanente, na **mesma unidade de implementação**:
+
+1. remover a URL de `src/app/sitemap.ts` (ou da coleção de conteúdo que a
+   alimenta);
+2. garantir que o destino final esteja no sitemap, quando indexável;
+3. nunca publicar no sitemap uma URL que redireciona;
+4. nunca deixar o sitemap apontando para um redirect.
+
+Armadilha específica deste repositório: como `serviceRoutes` e `solutionRoutes`
+derivam de `services.ts` e `solutions.ts`, um redirect criado em
+`next.config.ts` **não** remove a origem do sitemap. Uma tarefa futura que
+mexa em redirect sem tocar nessas coleções publicará a origem antiga
+redirecionando. Isso é proibido.
+
+O inverso também vale, e é a regra que governa a Fase 5: **sair da navegação
+não implica sair do sitemap.** Enquanto uma URL for 200, indexável e
+self-canonical, ela permanece publicada — mesmo fora do Header e do Footer.
+
+| Classe | URLs | Situação no sitemap |
+|---|---|---|
+| `SAFE_NOW` ainda não executado | `/solucoes-com-ia` · `/servicos/agentes-de-ia` · `/servicos/automacao-de-processos` | **permanecem**; saem **junto** com o redirect, quando executado |
+| `SAFE_NOW` condicionado | `/servicos` | **permanece** enquanto o hub for 200; sai na mesma mudança que consolidar o hub (§11) |
+| `NEEDS_SEO_DATA` | `/servicos/e-commerce` · `/solucoes/processos-manuais` · `/solucoes/sistemas-desconectados` | **permanecem** enquanto não houver decisão |
+| `DEFER_PHASE_6` | `/servicos/automacoes-com-ia` · `/solucoes/atendimento-lento` · `/solucoes/leads-sem-resposta` · `/solucoes/whatsapp-desorganizado` | **permanecem**; não remover antecipadamente |
+| `KEEP` | `/servicos/sites-e-landing-pages` | **permanece** enquanto for 200, indexável e self-canonical |
+
+**Aliases não são entradas de sitemap** `OBSERVED` — confirmado ausente em
+produção. Continuam fora, e não devem ser adicionados: `/services`,
+`/services/`, `/servicos/automacao-de-atendimento`,
+`/servicos/integracao-de-sistemas`, `/servicos/operacoes-digitais`. O sitemap
+publica **URLs canônicas indexáveis**, não aliases históricos.
+
+Consequência para a Fase 5 como desenhada: como **nenhum redirect é executado**
+(unidade J fora do release), `sitemap.ts` **não muda** — e é justamente por
+isso que ele não muda. Não é uma omissão: é a regra acima aplicada.
+
 ---
 
 ## 13. RED-01 / RED-02
@@ -649,11 +695,12 @@ Obrigatório em **390×844 · 768×1024 · 1024×768 · 1440×900**:
 | Migrações para Zapbox | dependem de destino equivalente — **Fase 6** |
 | Renomear `/avaliacoes` | **fora do escopo** |
 | Slug corrompido do blog | **fora do escopo** |
-| `sitemap.ts` / `robots.ts` | **não alterados nesta fase** |
+| `sitemap.ts` / `robots.ts` | **não alterados nesta fase** — porque nenhum redirect é executado; regra em §12.1 |
 
 `APPROVED` — *"Nunca remover uma URL apenas porque ela não fará parte da nova
-navegação."* **Sair do menu ≠ sair do site.** As 12 URLs legadas continuam 200,
-indexáveis e no sitemap ao fim da Fase 5.
+navegação."* **Sair do menu ≠ sair do site**, e tampouco sair do sitemap. As 12
+URLs legadas continuam 200, indexáveis e no sitemap ao fim da Fase 5 — estado
+verificado em código e em produção (§12.1).
 
 `INFERRED` — **risco aceito:** ao tirar `/servicos` e `/solucoes-com-ia` do
 Header e os cinco serviços do Footer, essas páginas perdem links internos
@@ -693,7 +740,7 @@ separada.**
 | G | Footer | C (âncoras) |
 | H | Home → âncoras | C |
 | I | Links internos no código (blog vazio, ContactForm) | C |
-| J | **Redirects aprovados — somente com autorização posterior** | §12 + dados de SEO |
+| J | **Redirects aprovados — somente com autorização posterior.** Cada redirect autorizado é entregue como pacote único: **redirect + sitemap + links internos + canonical/destino**, na mesma unidade — ver §12.1 | §12 + §12.1 + dados de SEO |
 | K | Regressão SEO e runtime | tudo acima |
 
 **Release:** `/solucoes` coerente num único PR; **J fica fora** até haver
