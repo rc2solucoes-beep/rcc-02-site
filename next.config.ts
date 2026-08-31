@@ -69,7 +69,7 @@ const nextConfig: NextConfig = {
       { source: "/index.htm", destination: "/", permanent: true },
       { source: "/about", destination: "/sobre", permanent: true },
       { source: "/about/", destination: "/sobre", permanent: true },
-      { source: "/services", destination: "/servicos", permanent: true },
+      { source: "/services", destination: "/solucoes", permanent: true },
       { source: "/services/", destination: "/servicos", permanent: true },
       {
         source: "/servicos/automacao-de-atendimento",
@@ -78,12 +78,24 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/servicos/integracao-de-sistemas",
-        destination: "/servicos/automacao-de-processos",
+        destination: "/solucoes#integracao-de-sistemas",
+        permanent: true,
+      },
+      // Migração SEO pós-Fase 5 — docs/16 §13. A intenção destas duas páginas
+      // foi absorvida pelas competências da nova /solucoes.
+      {
+        source: "/servicos/agentes-de-ia",
+        destination: "/solucoes#ia-para-operacoes",
+        permanent: true,
+      },
+      {
+        source: "/servicos/automacao-de-processos",
+        destination: "/solucoes#automacao-de-processos",
         permanent: true,
       },
       {
         source: "/servicos/operacoes-digitais",
-        destination: "/servicos/automacao-de-processos",
+        destination: "/solucoes#operacoes-digitais-commerce",
         permanent: true,
       },
     ];
