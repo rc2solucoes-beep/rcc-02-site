@@ -96,7 +96,7 @@ export default function SolucoesPage() {
                 as="li"
                 delay={index * 70}
                 distance="20px"
-                className="rc2-card rc2-card-hover flex items-center justify-between gap-4 p-5"
+                className="rc2-card rc2-card-hover flex flex-col items-start justify-between gap-3 p-5 sm:flex-row sm:items-center sm:gap-4"
               >
                 <span className="text-rc2-text leading-relaxed">
                   &ldquo;{item.symptom}&rdquo;
@@ -109,7 +109,7 @@ export default function SolucoesPage() {
                     label: item.analyticsLabel,
                     destination: item.href,
                   }}
-                  className="rc2-action-link shrink-0"
+                  className="rc2-action-link sm:shrink-0"
                 >
                   {item.competency}
                   <ArrowRight size={14} />
