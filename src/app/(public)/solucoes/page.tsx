@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { PageHero } from "@/components/marketing/PageHero";
+import { SolutionsCompetencies } from "@/components/marketing/solucoes/SolutionsCompetencies";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { SectionLabel } from "@/components/ui/SectionLabel";
@@ -115,6 +116,9 @@ export default function SolucoesPage() {
           </ul>
         </div>
       </section>
+
+      {/* ── Competências ── */}
+      <SolutionsCompetencies />
 
       {/* ── Operação Gerenciada ── */}
       <section id="operacao-gerenciada" className="rc2-grain relative overflow-hidden bg-rc2-dark rc2-section">
