@@ -4,7 +4,11 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { createPublicClient } from "@/lib/supabase/server";
-import { HOME_BLOG_SLUGS, HOME_CTAS } from "@/lib/content/home";
+import {
+  HOME_BLOG_SLUGS,
+  HOME_CTAS,
+  homeArticleTracking,
+} from "@/lib/content/home";
 import type { Post } from "@/lib/types/post";
 
 async function getHomePosts(): Promise<Post[]> {
@@ -31,8 +35,6 @@ async function getHomePosts(): Promise<Post[]> {
 export async function HomeContent() {
   const posts = await getHomePosts();
 
-  if (posts.length === 0) return null;
-
   return (
     <section className="bg-rc2-bg-alt rc2-section">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -54,6 +56,7 @@ export async function HomeContent() {
               author={post.author_name}
               publishedAt={post.published_at}
               readingTimeMinutes={post.reading_time_minutes}
+              tracking={homeArticleTracking(post.slug)}
             />
           ))}
         </div>

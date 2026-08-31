@@ -273,3 +273,17 @@ export const HOME_PHILOSOPHY = {
   closing:
     "A RC2 não entrega só ferramenta. Entrega processo funcionando no dia a dia da empresa.",
 } as const;
+
+/**
+ * Tracking de um artigo da seção Conteúdo.
+ *
+ * Mantém a matriz aprovada em docs/13 num único lugar, para que o payload
+ * emitido pelos cards seja testável sem renderizar a seção.
+ */
+export function homeArticleTracking(slug: string) {
+  return {
+    location: "home_content",
+    label: slug,
+    destination: `/blog/${slug}`,
+  };
+}

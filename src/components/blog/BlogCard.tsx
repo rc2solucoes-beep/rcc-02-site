@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { trackCtaClick } from "@/lib/tracking";
 import { cn } from "@/lib/utils";
 
 interface BlogCardProps {
@@ -15,6 +16,15 @@ interface BlogCardProps {
   publishedAt?: string | Date | null;
   readingTimeMinutes?: number | null;
   category?: string;
+  /**
+   * Opcional. Quando presente, o clique no card emite `cta_click`.
+   * Ausente (padrão), o card mantém o comportamento anterior sem medição.
+   */
+  tracking?: {
+    location: string;
+    label: string;
+    destination: string;
+  };
 }
 
 function formatDate(date: string | Date | null | undefined): string {
@@ -36,12 +46,24 @@ export function BlogCard({
   publishedAt,
   readingTimeMinutes,
   category,
+  tracking,
 }: BlogCardProps) {
   const formattedDate = formatDate(publishedAt);
 
   return (
     <FadeIn className="group block">
-      <Link href={`/blog/${slug}`}>
+      <Link
+        href={`/blog/${slug}`}
+        onClick={
+          tracking
+            ? (event) => {
+                // Mesma semântica de TrackedLink: clique cancelado não conta.
+                if (event.defaultPrevented) return;
+                trackCtaClick(tracking);
+              }
+            : undefined
+        }
+      >
         <div className="border border-rc2-border rounded-lg overflow-hidden bg-rc2-surface hover:shadow-lift transition-shadow duration-200 hover:border-rc2-brand/50">
           {/* Grid: image left, content right on desktop; stack on mobile */}
           <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] lg:grid-cols-[300px_1fr] gap-0">

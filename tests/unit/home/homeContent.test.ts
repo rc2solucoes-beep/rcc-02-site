@@ -229,3 +229,37 @@ describe("Home — filosofia", () => {
     expect(HOME_PHILOSOPHY.points.length).toBeLessThanOrEqual(4);
   });
 });
+
+describe("Home — tracking dos artigos", () => {
+  it("produz a matriz de analytics aprovada para cada slug", async () => {
+    const { homeArticleTracking, HOME_BLOG_SLUGS } = await import(
+      "@/lib/content/home"
+    );
+
+    for (const slug of HOME_BLOG_SLUGS) {
+      expect(homeArticleTracking(slug)).toEqual({
+        location: "home_content",
+        label: slug,
+        destination: `/blog/${slug}`,
+      });
+    }
+  });
+
+  it("cobre exatamente os três artigos da Home", async () => {
+    const { homeArticleTracking, HOME_BLOG_SLUGS } = await import(
+      "@/lib/content/home"
+    );
+
+    expect(HOME_BLOG_SLUGS.map((s) => homeArticleTracking(s).label)).toEqual([
+      "processos-manuais-o-que-automatizar",
+      "custo-de-agente-de-ia",
+      "governanca-agentes-ia-pmes",
+    ]);
+  });
+
+  it("mantém o CTA da seção com o label próprio", async () => {
+    const { HOME_CTAS } = await import("@/lib/content/home");
+    expect(HOME_CTAS.content.analyticsLabel).toBe("ver_todos_artigos");
+    expect(HOME_CTAS.content.href).toBe("/blog");
+  });
+});
