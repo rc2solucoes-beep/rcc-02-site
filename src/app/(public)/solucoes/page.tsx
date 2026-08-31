@@ -5,20 +5,19 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { solutions } from "@/lib/content/solutions";
+import { SOLUCOES_METADATA } from "@/lib/content/solucoesPage";
 import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Soluções por Problema",
-    description:
-      "Encontre soluções para atendimento lento, leads sem resposta, processos manuais, sistemas desconectados e WhatsApp desorganizado.",
+    title: SOLUCOES_METADATA.title,
+    description: SOLUCOES_METADATA.description,
     alternates: {
       canonical: `${BASE_URL}/solucoes`,
     },
     openGraph: buildOg({
-      title: "Soluções por Problema",
-      description:
-        "Encontre soluções para atendimento lento, leads sem resposta, processos manuais, sistemas desconectados e WhatsApp desorganizado.",
+      title: SOLUCOES_METADATA.title,
+      description: SOLUCOES_METADATA.ogDescription,
       url: `${BASE_URL}/solucoes`,
     }),
   };
@@ -28,9 +27,8 @@ export default function SolucoesPage() {
   const schemaWebPage = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Soluções por Problema",
-    description:
-      "Encontre soluções para atendimento lento, leads sem resposta, processos manuais, sistemas desconectados e WhatsApp desorganizado.",
+    name: SOLUCOES_METADATA.title,
+    description: SOLUCOES_METADATA.description,
     url: `${BASE_URL}/solucoes`,
     isPartOf: {
       "@type": "WebSite",
@@ -39,32 +37,12 @@ export default function SolucoesPage() {
     },
   };
 
-  const schemaCollectionPage = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    name: "Soluções por Problema",
-    description:
-      "Hub comercial da RC2 com soluções orientadas às dores reais de atendimento, vendas e operação.",
-    url: `${BASE_URL}/solucoes`,
-    hasPart: solutions.map((solution) => ({
-      "@type": "WebPage",
-      name: solution.shortTitle,
-      url: `${BASE_URL}/solucoes/${solution.slug}`,
-      description: solution.summary,
-    })),
-  };
-
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaCollectionPage) }}
-      />
-
       <PageHero
         label="Soluções"
         title="Soluções por problema: da dor real à execução"
