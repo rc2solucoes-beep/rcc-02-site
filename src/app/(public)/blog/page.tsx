@@ -98,11 +98,11 @@ export default async function BlogPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <TrackedLink
-                  href="/servicos"
-                  tracking={{ kind: "cta", location: "blog_empty_state", label: "explorar_servicos", destination: "/servicos" }}
+                  href="/solucoes"
+                  tracking={{ kind: "cta", location: "blog_empty_state", label: "explorar_servicos", destination: "/solucoes" }}
                   className="inline-flex items-center gap-2 px-6 h-11 bg-rc2-brand text-rc2-heading font-semibold text-sm rounded-md hover:bg-rc2-brand/90 transition-colors"
                 >
-                  Explorar serviços
+                  Explorar soluções
                 </TrackedLink>
                 <TrackedLink
                   href="/contato"
