@@ -66,21 +66,25 @@ export const SOLUCOES_ORIENTATION = {
     {
       symptom: "A equipe repete a mesma tarefa todo dia",
       href: "#automacao-de-processos",
+      competency: "Automação de Processos",
       analyticsLabel: "automacao_de_processos",
     },
     {
       symptom: "Os sistemas não conversam e alguém faz a ponte",
       href: "#integracao-de-sistemas",
+      competency: "Integração de Sistemas",
       analyticsLabel: "integracao_de_sistemas",
     },
     {
       symptom: "Quero usar IA, mas o processo não está estruturado",
       href: "#ia-para-operacoes",
+      competency: "IA para Operações",
       analyticsLabel: "ia_para_operacoes",
     },
     {
       symptom: "A operação digital cresceu em partes desconectadas",
       href: "#operacoes-digitais-commerce",
+      competency: "Operações Digitais & Commerce",
       analyticsLabel: "operacoes_digitais_commerce",
     },
   ],

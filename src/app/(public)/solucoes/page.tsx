@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { PageHero } from "@/components/marketing/PageHero";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
-import { solutions } from "@/lib/content/solutions";
-import { SOLUCOES_METADATA } from "@/lib/content/solucoesPage";
+import {
+  SOLUCOES_COPY,
+  SOLUCOES_CTAS,
+  SOLUCOES_METADATA,
+  SOLUCOES_ORIENTATION,
+} from "@/lib/content/solucoesPage";
 import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -44,65 +50,69 @@ export default function SolucoesPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
       />
       <PageHero
-        label="Soluções"
-        title="Soluções por problema: da dor real à execução"
-        description="Identifique a dor mais urgente da sua operação e veja o caminho recomendado com serviços conectados à realidade da sua empresa."
+        label={SOLUCOES_COPY.eyebrow}
+        title={SOLUCOES_COPY.h1}
+        description={SOLUCOES_COPY.subheadline}
+        action={
+          <TrackedLink
+            href={SOLUCOES_CTAS.hero.href}
+            tracking={{
+              kind: "cta",
+              location: "solutions_hero",
+              label: SOLUCOES_CTAS.hero.analyticsLabel,
+              destination: SOLUCOES_CTAS.hero.href,
+            }}
+            className={cn(
+              buttonVariants({ variant: "default" }),
+              "font-semibold tracking-wide uppercase text-xs px-8 h-12 bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90"
+            )}
+          >
+            {SOLUCOES_CTAS.hero.label}
+          </TrackedLink>
+        }
       />
 
+      {/* ── Orientação — como escolher ── */}
       <section className="bg-rc2-bg rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ScrollReveal distance="18px">
-            <SectionLabel className="rc2-rule block mb-4">Mapeamento por dor</SectionLabel>
-            <p className="max-w-3xl text-rc2-text/75 leading-relaxed mb-10">
-              Estas páginas partem do problema percebido no dia a dia e conectam sintomas,
-              impacto e ações práticas para estruturar atendimento, vendas e operação.
+            <SectionLabel className="rc2-rule block mb-4">Por onde começar</SectionLabel>
+            <h2 className="rc2-h2 text-rc2-heading max-w-3xl mb-4">
+              {SOLUCOES_ORIENTATION.title}
+            </h2>
+            <p className="max-w-2xl text-rc2-text/75 leading-relaxed mb-10">
+              {SOLUCOES_ORIENTATION.lead}
             </p>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {solutions.map((solution, index) => (
+          <ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
+            {SOLUCOES_ORIENTATION.items.map((item, index) => (
               <ScrollReveal
-                key={solution.slug}
-                as="article"
-                delay={(index % 2) * 90 + Math.floor(index / 2) * 50}
-                distance="24px"
-                className="group rc2-card rc2-card-hover relative flex flex-col overflow-hidden p-6 pt-7 md:p-7 md:pt-8"
+                key={item.href}
+                as="li"
+                delay={index * 70}
+                distance="20px"
+                className="rc2-card rc2-card-hover flex items-center justify-between gap-4 p-5"
               >
-                {/* Acento estrutural — aba laranja no topo */}
-                <span
-                  className="absolute left-0 top-0 h-1 w-14 origin-left scale-x-[0.72] bg-rc2-brand transition-[opacity,transform] duration-200 group-hover:scale-x-100 group-hover:opacity-90"
-                  aria-hidden
-                />
-                <h2 className="rc2-h4 text-rc2-heading mb-3">{solution.shortTitle}</h2>
-                <p className="text-rc2-text/75 leading-relaxed mb-4">{solution.summary}</p>
-
-                <ul className="space-y-2 mb-6">
-                  {solution.symptoms.slice(0, 3).map((symptom) => (
-                    <li key={symptom} className="flex items-start gap-2.5 text-sm text-rc2-text/75">
-                      <CheckCircle2 size={15} className="mt-0.5 shrink-0 text-rc2-brand" aria-hidden="true" />
-                      <span>{symptom}</span>
-                    </li>
-                  ))}
-                </ul>
-
+                <span className="text-rc2-text leading-relaxed">
+                  &ldquo;{item.symptom}&rdquo;
+                </span>
                 <TrackedLink
-                  href={`/solucoes/${solution.slug}`}
+                  href={item.href}
                   tracking={{
-                    kind: "solution_link",
-                    location: "solution_hub_card",
-                    label: solution.shortTitle,
-                    destination: `/solucoes/${solution.slug}`,
-                    source_page: "/solucoes",
-                    source_type: "solutions_hub",
+                    kind: "cta",
+                    location: "solutions_orientation",
+                    label: item.analyticsLabel,
+                    destination: item.href,
                   }}
-                  className="rc2-action-link"
+                  className="rc2-action-link shrink-0"
                 >
-                  Ver solução completa
+                  {item.competency}
                   <ArrowRight size={14} />
                 </TrackedLink>
               </ScrollReveal>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 

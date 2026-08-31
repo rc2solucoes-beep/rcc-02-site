@@ -222,8 +222,10 @@ describe("/solucoes — território e vocabulário", () => {
       SOLUCOES_CTAS,
       SOLUCOES_ORIENTATION,
       SOLUCOES_METHOD,
-      competencias: SOLUCOES_COMPETENCIES.map(
-        ({ boundary: _boundary, ...resto }) => resto
+      competencias: SOLUCOES_COMPETENCIES.map((competency) =>
+        Object.fromEntries(
+          Object.entries(competency).filter(([chave]) => chave !== "boundary")
+        )
       ),
     })
       .join(" ")
