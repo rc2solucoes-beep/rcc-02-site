@@ -108,6 +108,7 @@ export const SOLUCOES_COMPETENCIES: readonly Competency[] = [
       "Automação das etapas repetitivas, com as regras de negócio explícitas.",
       "Tratamento de exceções: o que o fluxo faz quando o caso não é o padrão.",
       "Registro do que foi executado, para a operação ter rastreabilidade.",
+      "Construção dos fluxos em ferramentas de orquestração como o n8n, integradas aos sistemas que já rodam na operação.",
     ],
     limit:
       "O ganho depende do processo e é medido depois da implantação. A RC2 não trabalha com percentual prometido antes de conhecer o fluxo.",
