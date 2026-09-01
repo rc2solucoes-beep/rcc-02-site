@@ -1,4 +1,18 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Locator, type Page } from "@playwright/test";
+
+/**
+ * Clica e espera a navegação terminar.
+ *
+ * A espera precisa começar ANTES do clique: a navegação é client-side e pode
+ * ficar pendente enquanto o dev server compila a rota de destino. Sem isso, a
+ * janela de 5s do `toHaveURL` expira sob execução paralela.
+ */
+async function clickAndNavigate(page: Page, target: Locator, pathname: RegExp) {
+  await Promise.all([
+    page.waitForURL((url) => pathname.test(url.pathname)),
+    target.click(),
+  ]);
+}
 
 test.describe("Navegação pública", () => {
   test("home carrega e tem título correto", async ({ page }) => {
@@ -12,31 +26,52 @@ test.describe("Navegação pública", () => {
     await page.goto("/");
 
     // Soluções — a Fase 5 substituiu "Serviços" e "Soluções com IA" por "Soluções".
-    await page.getByRole("link", { name: /^Soluções$/i }).first().click();
+    await clickAndNavigate(
+      page,
+      page.getByRole("link", { name: /^Soluções$/i }).first(),
+      /^\/solucoes$/
+    );
     await expect(page).toHaveURL(/\/solucoes$/);
 
     // Blog
-    await page.getByRole("link", { name: /Blog/i }).first().click();
+    await clickAndNavigate(
+      page,
+      page.getByRole("link", { name: /Blog/i }).first(),
+      /^\/blog$/
+    );
     await expect(page).toHaveURL(/\/blog$/);
 
     // Sobre
-    await page.getByRole("link", { name: /Sobre/i }).first().click();
+    await clickAndNavigate(
+      page,
+      page.getByRole("link", { name: /Sobre/i }).first(),
+      /^\/sobre$/
+    );
     await expect(page).toHaveURL(/\/sobre$/);
   });
 
   test("logo navega para home", async ({ page }) => {
     await page.goto("/servicos");
-    await page.getByRole("link", { name: /RC2/i }).first().click();
+
+    // Escopo no header e nome completo: /RC2/i casava também com o CTA
+    // "Falar com a RC2" e com o logo do footer.
+    const logo = page.getByRole("banner").getByRole("link", { name: /RC2 Soluções/i });
+    await expect(logo).toHaveAttribute("href", "/");
+
+    // A espera precisa começar ANTES do clique: a navegação é client-side e
+    // pode ficar pendente enquanto o dev server compila a rota de destino.
+    await clickAndNavigate(page, logo, /^\/$/);
+
     await expect(page).toHaveURL("/");
   });
 
   test("CTA do header vai para /contato", async ({ page }) => {
     await page.goto("/");
-    await page
-      .getByRole("banner")
-      .getByRole("link", { name: /Falar com a RC2/i })
-      .first()
-      .click();
+    await clickAndNavigate(
+      page,
+      page.getByRole("banner").getByRole("link", { name: /Falar com a RC2/i }).first(),
+      /^\/contato$/
+    );
     await expect(page).toHaveURL(/\/contato/);
   });
 
@@ -85,7 +120,11 @@ test.describe("Menu mobile", () => {
   test("navega pelo menu mobile", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("button", { name: /Abrir menu/i }).click();
-    await page.getByRole("link", { name: /Blog/i }).last().click();
+    await clickAndNavigate(
+      page,
+      page.getByRole("link", { name: /Blog/i }).last(),
+      /^\/blog$/
+    );
     await expect(page).toHaveURL(/\/blog/);
   });
 });
