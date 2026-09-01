@@ -61,7 +61,7 @@ Código inspecionado sem edição: `next.config.ts`, `src/app/sitemap.ts`,
 
 | URL | HTTP | Classe |
 |---|---|---|
-| `/servicos` | 200, self-canonical, `index, follow`, **no sitemap** | hub legado — `RULING 1` |
+| `/servicos` | 200, self-canonical, `index, follow`, **presente no sitemap** | hub legado — `RULING 1` |
 | `/servicos/automacao-de-atendimento` | 308 → `/servicos/automacoes-com-ia` (1 salto) | território Zapbox |
 | `/servicos/automacoes-com-ia` · `/solucoes/atendimento-lento` · `/solucoes/leads-sem-resposta` · `/solucoes/whatsapp-desorganizado` | 200 | `DEFER_PHASE_6` |
 | `/servicos/e-commerce` · `/solucoes/processos-manuais` · `/solucoes/sistemas-desconectados` | 200 | `NEEDS_SEO_DATA` |
@@ -326,7 +326,9 @@ Registrar: **`CMS_INTERNAL_LINK_DEBT`**. Não bloqueia os redirects SAFE_NOW.
 ## 10. Hub `/servicos`
 
 `APPROVED` (`RULING 1`) — **não redireciona nesta unidade.** Permanece 200,
-self-canonical, `index, follow` e **no sitemap** (`OBSERVED`, §3.2).
+self-canonical, `index, follow` e **presente no sitemap** (`OBSERVED`, §3.2).
+Sair da navegação não é sair do sitemap: enquanto o hub não receber redirect,
+ele continua publicado.
 
 **Decisão** `INFERRED` — **ABORDAGEM A**: os cards de `agentes-de-ia` e
 `automacao-de-processos` no grid de `/servicos` passam a apontar **diretamente
@@ -653,7 +655,7 @@ completo verde.
 1. **Cinco redirects aprovados**, um deles condicionado à absorção do n8n.
 2. **`/solucoes-com-ia` fica de fora** — metade da intenção é território
    Zapbox, e o destino proposto declara não cobrir esse território.
-3. **`/servicos` não migra** — `RULING 1`; permanece 200 e no sitemap.
+3. **`/servicos` não migra** — `RULING 1`; permanece 200 e **presente no sitemap**.
 4. **Status `PERMANENT_308`**, medido, não presumido.
 5. **`/services/` aceita 2 saltos** — `ACCEPTED_TWO_HOP_FRAMEWORK_NORMALIZATION`;
    sem middleware.
