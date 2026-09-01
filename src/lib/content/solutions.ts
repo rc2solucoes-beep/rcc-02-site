@@ -88,7 +88,7 @@ export const solutions: Solution[] = [
       },
       {
         label: "Automação de processos",
-        href: "/servicos/automacao-de-processos",
+        href: "/solucoes#automacao-de-processos",
         description:
           "Para conectar canais, CRM, planilhas e sistemas usados na operação.",
       },
@@ -187,7 +187,7 @@ export const solutions: Solution[] = [
       },
       {
         label: "Automação de processos",
-        href: "/servicos/automacao-de-processos",
+        href: "/solucoes#automacao-de-processos",
         description:
           "Para integrar formulários, CRM, planilhas e canais de atendimento.",
       },
@@ -278,13 +278,13 @@ export const solutions: Solution[] = [
     relatedServices: [
       {
         label: "Automação de processos",
-        href: "/servicos/automacao-de-processos",
+        href: "/solucoes#automacao-de-processos",
         description:
           "Para criar workflows, integrações e automações entre sistemas.",
       },
       {
         label: "Agentes de IA",
-        href: "/servicos/agentes-de-ia",
+        href: "/solucoes#ia-para-operacoes",
         description:
           "Para apoiar a equipe com consultas, relatórios e tarefas internas.",
       },
@@ -317,9 +317,9 @@ export const solutions: Solution[] = [
     relatedLinks: [
       {
         label: "Automação de processos",
-        href: "/servicos/automacao-de-processos",
+        href: "/solucoes#automacao-de-processos",
       },
-      { label: "Agentes de IA", href: "/servicos/agentes-de-ia" },
+      { label: "Agentes de IA", href: "/solucoes#ia-para-operacoes" },
       { label: "Contato", href: "/contato" },
     ],
     ctaTitle: "Quer identificar quais tarefas podem ser automatizadas?",
@@ -374,7 +374,7 @@ export const solutions: Solution[] = [
     relatedServices: [
       {
         label: "Automação de processos",
-        href: "/servicos/automacao-de-processos",
+        href: "/solucoes#automacao-de-processos",
         description:
           "Para integrar sistemas, APIs, planilhas, CRM, ERP e canais digitais.",
       },
@@ -413,7 +413,7 @@ export const solutions: Solution[] = [
     relatedLinks: [
       {
         label: "Automação de processos",
-        href: "/servicos/automacao-de-processos",
+        href: "/solucoes#automacao-de-processos",
       },
       { label: "E-commerce", href: "/servicos/e-commerce" },
       { label: "Contato", href: "/contato" },
@@ -478,7 +478,7 @@ export const solutions: Solution[] = [
       },
       {
         label: "Automação de processos",
-        href: "/servicos/automacao-de-processos",
+        href: "/solucoes#automacao-de-processos",
         description:
           "Para integrar WhatsApp com CRM, planilhas e outros sistemas.",
       },
@@ -518,7 +518,7 @@ export const solutions: Solution[] = [
       { label: "Automações com IA", href: "/servicos/automacoes-com-ia" },
       {
         label: "Automação de processos",
-        href: "/servicos/automacao-de-processos",
+        href: "/solucoes#automacao-de-processos",
       },
       { label: "Contato", href: "/contato" },
     ],

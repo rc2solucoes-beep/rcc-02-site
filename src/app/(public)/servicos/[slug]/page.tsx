@@ -18,6 +18,9 @@ import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
 type Props = { params: Promise<{ slug: string }> };
 
+/** Slugs migrados para âncoras de /solucoes — ver docs/16 §10. */
+const MIGRATED_SERVICE_SLUGS = new Set(["agentes-de-ia", "automacao-de-processos"]);
+
 export async function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
 }
@@ -48,9 +51,14 @@ export default async function ServicePage({ params }: Props) {
 
   if (!service) notFound();
 
-  const currentIndex = services.findIndex((s) => s.slug === slug);
-  const next = services[currentIndex + 1];
-  const prev = services[currentIndex - 1];
+  // Serviços cuja URL passou a redirecionar saem da navegação sequencial:
+  // prev/next não pode oferecer um destino que redireciona (docs/16 §10).
+  const navigableServices = services.filter(
+    (s) => !MIGRATED_SERVICE_SLUGS.has(s.slug)
+  );
+  const currentIndex = navigableServices.findIndex((s) => s.slug === slug);
+  const next = currentIndex >= 0 ? navigableServices[currentIndex + 1] : undefined;
+  const prev = currentIndex >= 0 ? navigableServices[currentIndex - 1] : undefined;
   const relatedSolution = solutions.find((solution) =>
     solution.relatedServices.some((relatedService) => relatedService.href === `/servicos/${slug}`)
   );

@@ -65,6 +65,28 @@ describe("/solucoes — competências", () => {
     }
   });
 
+  it("absorve a referência factual ao n8n na competência de Automação", () => {
+    const automacao = SOLUCOES_COMPETENCIES[0];
+    expect(automacao.interventions.length).toBeGreaterThanOrEqual(5);
+    const comN8n = automacao.interventions.filter((item) =>
+      item.toLowerCase().includes("n8n")
+    );
+    expect(comN8n).toHaveLength(1);
+  });
+
+  it("não transforma a menção ao n8n em claim de parceria ou benchmark", () => {
+    const texto = allStrings(SOLUCOES_COMPETENCIES).join(" ").toLowerCase();
+    for (const proibido of [
+      "certificad",
+      "parceir",
+      "melhor que",
+      "oficial n8n",
+      "%",
+    ]) {
+      expect(texto).not.toContain(proibido);
+    }
+  });
+
   it("preserva os labels de analytics já usados na Home", () => {
     expect(SOLUCOES_COMPETENCIES.map((c) => c.analyticsLabel)).toEqual([
       "automacao_de_processos",

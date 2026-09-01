@@ -1,45 +1,109 @@
 import { test, expect } from "@playwright/test";
 
-const SERVICE_SLUGS = [
+/**
+ * Migração SEO pós-Fase 5 — docs/16.
+ *
+ * Dois serviços passaram a redirecionar para âncoras de `/solucoes`. Os três
+ * restantes continuam 200 e renderizando.
+ *
+ * Este arquivo também repara duas dívidas PREEXISTENTES, anteriores a esta
+ * migração (ver PR):
+ *  - exigia o CTA "Solicitar diagnóstico", descontinuado na Fase 2;
+ *  - exigia o texto "Ler artigo" no blog, que o BlogCard não usa mais.
+ */
+
+/** Serviços que continuam respondendo 200. */
+const RENDERED_SLUGS = [
   "automacoes-com-ia",
-  "agentes-de-ia",
-  "automacao-de-processos",
   "e-commerce",
   "sites-e-landing-pages",
-];
+] as const;
 
-test.describe("Páginas de serviço", () => {
-  test("listagem exibe todos os 5 serviços", async ({ page }) => {
+/** Serviços migrados: slug → âncora de destino. */
+const REDIRECTED_SLUGS = {
+  "agentes-de-ia": "/solucoes#ia-para-operacoes",
+  "automacao-de-processos": "/solucoes#automacao-de-processos",
+} as const;
+
+const ALL_SLUGS = [...RENDERED_SLUGS, ...Object.keys(REDIRECTED_SLUGS)];
+
+test.describe("Hub de serviços", () => {
+  test("listagem continua exibindo os 5 serviços", async ({ page }) => {
     await page.goto("/servicos");
     await expect(page).toHaveTitle(/Serviços/);
 
     const serviceLinks = page.getByRole("main").getByRole("link", { name: /Ver serviço/i });
-    await expect(serviceLinks).toHaveCount(SERVICE_SLUGS.length);
+    await expect(serviceLinks).toHaveCount(ALL_SLUGS.length);
+  });
 
-    for (const slug of SERVICE_SLUGS) {
+  test("serviços preservados continuam linkando para a própria URL", async ({ page }) => {
+    await page.goto("/servicos");
+    for (const slug of RENDERED_SLUGS) {
       await expect(
         page.getByRole("main").locator(`a[href="/servicos/${slug}"]`)
       ).toBeVisible();
     }
   });
 
-  for (const slug of SERVICE_SLUGS) {
+  test("serviços migrados linkam direto para a âncora final, sem salto", async ({ page }) => {
+    await page.goto("/servicos");
+    for (const [slug, anchor] of Object.entries(REDIRECTED_SLUGS)) {
+      await expect(page.getByRole("main").locator(`a[href="${anchor}"]`)).toBeVisible();
+      await expect(
+        page.getByRole("main").locator(`a[href="/servicos/${slug}"]`)
+      ).toHaveCount(0);
+    }
+  });
+});
+
+test.describe("Serviços preservados", () => {
+  for (const slug of RENDERED_SLUGS) {
     test(`/servicos/${slug} carrega sem erro`, async ({ page }) => {
       const response = await page.goto(`/servicos/${slug}`);
       expect(response?.status()).toBe(200);
+      await expect(page).toHaveURL(new RegExp(`/servicos/${slug}$`));
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-      await expect(page.getByRole("link", { name: /Solicitar diagnóstico/i })).toBeVisible();
+      // CTA vigente da página de serviço (a copy anterior foi descontinuada na Fase 2).
+      await expect(
+        page.getByRole("link", { name: /Aplicar isso na minha operação/i }).first()
+      ).toBeVisible();
     });
   }
 
-  test("navegação entre serviços funciona", async ({ page }) => {
-    await page.goto("/servicos/automacoes-com-ia");
-    // Próximo serviço
-    const nextLink = page.getByRole("link", { name: /Agentes/i });
-    if (await nextLink.isVisible()) {
-      await nextLink.click();
-      await expect(page).toHaveURL(/agentes-de-ia/);
+  test("navegação entre serviços nunca oferece uma URL migrada", async ({ page }) => {
+    for (const slug of RENDERED_SLUGS) {
+      await page.goto(`/servicos/${slug}`);
+      for (const migrado of Object.keys(REDIRECTED_SLUGS)) {
+        await expect(
+          page.getByRole("main").locator(`a[href="/servicos/${migrado}"]`)
+        ).toHaveCount(0);
+      }
     }
+  });
+
+  test("a solução relacionada continua sendo exibida", async ({ page }) => {
+    await page.goto("/servicos/e-commerce");
+    await expect(
+      page.getByRole("link", { name: /Ver solução por problema relacionada/i })
+    ).toBeVisible();
+  });
+});
+
+test.describe("Serviços migrados", () => {
+  for (const [slug, anchor] of Object.entries(REDIRECTED_SLUGS)) {
+    test(`/servicos/${slug} redireciona para ${anchor}`, async ({ page }) => {
+      const response = await page.goto(`/servicos/${slug}`);
+      expect(response?.status()).toBe(200);
+      await expect(page).toHaveURL(new RegExp(`${anchor.replace("#", "#")}$`));
+
+      const id = anchor.split("#")[1];
+      await expect(page.locator(`[id="${id}"]`)).toHaveCount(1);
+    });
+  }
+
+  test("o alias /services chega em /solucoes", async ({ page }) => {
+    await page.goto("/services");
+    await expect(page).toHaveURL(/\/solucoes$/);
   });
 });
 
@@ -47,12 +111,19 @@ test.describe("Blog público", () => {
   test("página de blog carrega", async ({ page }) => {
     const response = await page.goto("/blog");
     expect(response?.status()).toBe(200);
-    await expect(page).toHaveTitle(/Blog/);
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   });
 
-  test("estado vazio mostra mensagem", async ({ page }) => {
+  test("mostra artigos ou o estado vazio", async ({ page }) => {
     await page.goto("/blog");
-    // Either shows posts or the empty state
-    await expect(page.getByText(/Em breve|Ler artigo/i).first()).toBeVisible();
+    const artigos = page.getByRole("main").locator('a[href^="/blog/"]');
+    const estadoVazio = page.getByText(/Em breve/i);
+
+    const temArtigos = (await artigos.count()) > 0;
+    if (temArtigos) {
+      await expect(artigos.first()).toBeVisible();
+    } else {
+      await expect(estadoVazio.first()).toBeVisible();
+    }
   });
 });

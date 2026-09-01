@@ -2,35 +2,39 @@ export const dynamic = "force-static";
 
 const content = `# RC2 Soluções
 
-> Consultoria especializada em IA, automações, integrações, e-commerce e operações digitais para pequenas e médias empresas brasileiras.
+> Consultoria e implementação de automação de processos, integração de sistemas e IA para operações de pequenas e médias empresas brasileiras.
 
-A RC2 Soluções ajuda empresas a transformar processos manuais, atendimento desorganizado e sistemas desconectados em operações digitais mais eficientes, com uso prático de IA, automações, n8n, integrações, sites inteligentes e e-commerce.
+A RC2 Soluções atua em quatro frentes conectadas para que processos e sistemas acompanhem o tamanho da operação: automação de processos, integração de sistemas, IA para operações e operações digitais & commerce.
 
 ## Principais páginas
 
-- [Página inicial](https://www.rc2solucoes.com.br/): visão geral da empresa, proposta de valor e principais serviços.
-- [Serviços](https://www.rc2solucoes.com.br/servicos): soluções de IA, automação, e-commerce, integrações e sites.
-- [Soluções por Problema](https://www.rc2solucoes.com.br/solucoes): páginas organizadas por dores de negócio como atendimento lento, leads sem resposta, processos manuais, sistemas desconectados e WhatsApp desorganizado.
-- [Automações com IA](https://www.rc2solucoes.com.br/servicos/automacoes-com-ia): automação de atendimento, vendas, WhatsApp, CRM e operação.
-- [Agentes de IA](https://www.rc2solucoes.com.br/servicos/agentes-de-ia): implantação de assistentes internos para equipes.
-- [Automação de processos](https://www.rc2solucoes.com.br/servicos/automacao-de-processos): n8n, APIs, CRM, ERP, planilhas e WhatsApp.
-- [E-commerce](https://www.rc2solucoes.com.br/servicos/e-commerce): estruturação de lojas virtuais e operações digitais.
-- [Sites e landing pages](https://www.rc2solucoes.com.br/servicos/sites-e-landing-pages): páginas para geração de leads e conversão.
-- [Soluções com IA](https://www.rc2solucoes.com.br/solucoes-com-ia): exemplos de aplicação de IA em atendimento, vendas e operação.
-- [Sobre](https://www.rc2solucoes.com.br/sobre): posicionamento, experiência e forma de trabalho.
-- [Blog](https://www.rc2solucoes.com.br/blog): artigos sobre IA, automação, atendimento e produtividade.
+- [Página inicial](https://www.rc2solucoes.com.br/): posicionamento, competências, método e produtos próprios.
+- [Soluções](https://www.rc2solucoes.com.br/solucoes): página comercial central, com as quatro competências, o modelo de trabalho e a Operação Gerenciada.
+- [Sobre](https://www.rc2solucoes.com.br/sobre): posicionamento, trajetória e forma de trabalho.
+- [Blog](https://www.rc2solucoes.com.br/blog): artigos sobre automação, integração, IA aplicada à operação e processos.
+- [Avaliações e Projetos](https://www.rc2solucoes.com.br/avaliacoes): avaliações e projetos da RC2.
 - [Contato](https://www.rc2solucoes.com.br/contato): canal para falar sobre sua operação com a RC2.
+
+## Competências
+
+- [Automação de Processos](https://www.rc2solucoes.com.br/solucoes#automacao-de-processos): trabalho manual, tarefas repetitivas, regras de negócio, tratamento de exceções e rastreabilidade do que foi executado.
+- [Integração de Sistemas](https://www.rc2solucoes.com.br/solucoes#integracao-de-sistemas): ERP, CRM, plataformas e sistemas internos conectados por API ou webhook, com fonte da verdade definida por dado.
+- [IA para Operações](https://www.rc2solucoes.com.br/solucoes#ia-para-operacoes): agentes aplicados a processos definidos, classificação e triagem, leitura de documentos, governança e handoff humano.
+- [Operações Digitais & Commerce](https://www.rc2solucoes.com.br/solucoes#operacoes-digitais-commerce): plataforma, ERP, logística, pagamentos, estoque e pedidos em uma operação integrada.
+- [Operação Gerenciada](https://www.rc2solucoes.com.br/solucoes#operacao-gerenciada): acompanhamento técnico contínuo do que já está implantado.
+
+## Produto
+
+- [Zapbox](https://zapbox.cloud/): produto próprio da RC2 para atendimento e vendas pelo WhatsApp, com equipe, CRM comercial e Sales AI. Esse território pertence ao Zapbox, não às competências de consultoria da RC2.
 
 ## Temas principais
 
-- Automação de atendimento com IA
-- WhatsApp para vendas e suporte
-- Agentes de IA internos
-- n8n e automação de processos
-- Integração com CRM, ERP, APIs e planilhas
-- E-commerce para PMEs
-- Sites e landing pages de conversão
-- Operações digitais para pequenas e médias empresas
+- Automação de processos e workflows
+- Integração entre ERP, CRM, APIs, webhooks e planilhas
+- Agentes de IA aplicados a processos internos
+- Governança e handoff humano em IA operacional
+- Operações digitais e commerce integrados
+- Operação Gerenciada e continuidade técnica
 
 ## Contato
 
