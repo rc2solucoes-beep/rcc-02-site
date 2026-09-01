@@ -1,4 +1,18 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Locator, type Page } from "@playwright/test";
+
+/**
+ * Clica e espera a navegação terminar.
+ *
+ * A espera precisa começar ANTES do clique: a navegação é client-side e pode
+ * ficar pendente enquanto o dev server compila a rota de destino. Sem isso, a
+ * janela de 5s do `toHaveURL` expira sob execução paralela.
+ */
+async function clickAndNavigate(page: Page, target: Locator, pathname: RegExp) {
+  await Promise.all([
+    page.waitForURL((url) => pathname.test(url.pathname)),
+    target.click(),
+  ]);
+}
 
 test.describe("Navegação pública", () => {
   test("home carrega e tem título correto", async ({ page }) => {
@@ -11,29 +25,62 @@ test.describe("Navegação pública", () => {
   test("links do header navegam corretamente", async ({ page }) => {
     await page.goto("/");
 
-    // Serviços
-    await page.getByRole("link", { name: /Serviços/i }).first().click();
-    await expect(page).toHaveURL(/\/servicos$/);
+    // Soluções — a Fase 5 substituiu "Serviços" e "Soluções com IA" por "Soluções".
+    await clickAndNavigate(
+      page,
+      page.getByRole("link", { name: /^Soluções$/i }).first(),
+      /^\/solucoes$/
+    );
+    await expect(page).toHaveURL(/\/solucoes$/);
 
     // Blog
-    await page.getByRole("link", { name: /Blog/i }).first().click();
+    await clickAndNavigate(
+      page,
+      page.getByRole("link", { name: /Blog/i }).first(),
+      /^\/blog$/
+    );
     await expect(page).toHaveURL(/\/blog$/);
 
     // Sobre
-    await page.getByRole("link", { name: /Sobre/i }).first().click();
+    await clickAndNavigate(
+      page,
+      page.getByRole("link", { name: /Sobre/i }).first(),
+      /^\/sobre$/
+    );
     await expect(page).toHaveURL(/\/sobre$/);
   });
 
   test("logo navega para home", async ({ page }) => {
     await page.goto("/servicos");
-    await page.getByRole("link", { name: /RC2/i }).first().click();
+
+    // Escopo no header e nome completo: /RC2/i casava também com o CTA
+    // "Falar com a RC2" e com o logo do footer.
+    const logo = page.getByRole("banner").getByRole("link", { name: /RC2 Soluções/i });
+    await expect(logo).toHaveAttribute("href", "/");
+
+    // A espera precisa começar ANTES do clique: a navegação é client-side e
+    // pode ficar pendente enquanto o dev server compila a rota de destino.
+    await clickAndNavigate(page, logo, /^\/$/);
+
     await expect(page).toHaveURL("/");
   });
 
-  test("link de diagnóstico no header vai para /contato", async ({ page }) => {
+  test("CTA do header vai para /contato", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("link", { name: /Diagnóstico Gratuito/i }).first().click();
+    await clickAndNavigate(
+      page,
+      page.getByRole("banner").getByRole("link", { name: /Falar com a RC2/i }).first(),
+      /^\/contato$/
+    );
     await expect(page).toHaveURL(/\/contato/);
+  });
+
+  test("o header não promove mais a arquitetura legada", async ({ page }) => {
+    await page.goto("/");
+    const header = page.getByRole("banner");
+    await expect(header.locator('a[href="/servicos"]')).toHaveCount(0);
+    await expect(header.locator('a[href="/solucoes-com-ia"]')).toHaveCount(0);
+    await expect(header.locator('a[href="/solucoes"]')).toHaveCount(1);
   });
 
   test("skip link está presente e focável", async ({ page }) => {
@@ -63,7 +110,7 @@ test.describe("Menu mobile", () => {
     // Abre
     await hamburger.click();
     await expect(page.getByRole("button", { name: /Fechar menu/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: /Serviços/i }).last()).toBeVisible();
+    await expect(page.getByRole("link", { name: /^Soluções$/i }).last()).toBeVisible();
 
     // Fecha
     await page.getByRole("button", { name: /Fechar menu/i }).click();
@@ -73,7 +120,11 @@ test.describe("Menu mobile", () => {
   test("navega pelo menu mobile", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("button", { name: /Abrir menu/i }).click();
-    await page.getByRole("link", { name: /Blog/i }).last().click();
+    await clickAndNavigate(
+      page,
+      page.getByRole("link", { name: /Blog/i }).last(),
+      /^\/blog$/
+    );
     await expect(page).toHaveURL(/\/blog/);
   });
 });

@@ -3,39 +3,52 @@ import { expect, test } from "@playwright/test";
 test.describe("Copy de personalidade visual", () => {
   test("home apresenta posicionamento, prova do fundador e CTAs contextuais", async ({ page }) => {
     await page.goto("/");
+    const main = page.getByRole("main");
 
-    const positioningHeading = page.getByRole("heading", { name: /O que a RC2 não é/i });
-    const positioningSection = positioningHeading.locator("xpath=ancestor::section");
-
-    await expect(positioningHeading).toBeVisible();
-    await expect(
-      positioningSection.locator("p").filter({ hasText: /^Não é\s/i })
-    ).toHaveCount(3);
-    await expect(positioningSection.getByText(/agência de marketing/i)).toBeVisible();
-    await expect(positioningSection.getByText(/revenda de ferramenta/i)).toBeVisible();
-    await expect(positioningSection.getByText(/entusiasta de IA/i)).toBeVisible();
-    await expect(positioningSection.getByText(/diagnóstico ao processo/i)).toBeVisible();
-
-    await expect(page.getByText(/usa no próprio comercial/i)).toBeVisible();
-    await expect(page.getByText(/20\+ anos em TI/i)).toBeVisible();
-
-    await expect(
-      page.getByRole("link", { name: /operação trava/i })
-    ).toHaveAttribute("href", "/contato");
-    await expect(
-      page.getByRole("link", { name: /Diagnosticar minha dor/i })
-    ).toHaveAttribute("href", "/contato");
-    await expect(page.getByRole("link", { name: /meus gargalos/i })).toHaveAttribute(
-      "href",
-      "/contato"
+    // Posicionamento vigente (Fase 4): o problema é a operação, não a ferramenta.
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+      /não precisa de mais ferramentas/i
     );
     await expect(
-      page.getByRole("link", { name: /Começar pelo diagnóstico/i })
+      main.getByRole("heading", { name: /O processo não acompanhou/i })
+    ).toBeVisible();
+
+    // As quatro competências, cada uma apontando para a própria âncora.
+    for (const anchor of [
+      "automacao-de-processos",
+      "integracao-de-sistemas",
+      "ia-para-operacoes",
+      "operacoes-digitais-commerce",
+    ]) {
+      await expect(main.locator(`a[href="/solucoes#${anchor}"]`)).toHaveCount(1);
+    }
+
+    // Prova de autoridade aprovada (docs/12 §5.6) — trajetória do fundador.
+    await expect(main.getByText(/Robson Azevedo/i).first()).toBeVisible();
+    await expect(main.getByText(/20 anos/i).first()).toBeVisible();
+    await expect(main.getByText(/Edenred/i).first()).toBeVisible();
+
+    // Fronteira de território: o Zapbox é produto, com link externo próprio.
+    await expect(main.locator('a[href="https://zapbox.cloud/"]').first()).toBeVisible();
+
+    // CTA principal da marca leva ao contato.
+    await expect(
+      main.getByRole("link", { name: /Falar sobre minha operação/i }).first()
     ).toHaveAttribute("href", "/contato");
 
+    // CTA do header, na copy vigente.
     await expect(
-      page.getByRole("banner").getByRole("link", { name: /Solicitar diagnóstico/i })
+      page.getByRole("banner").getByRole("link", { name: /Falar com a RC2/i })
     ).toHaveAttribute("href", "/contato");
+
+    // CTAs descontinuados não podem reaparecer.
+    for (const descontinuado of [
+      /Solicitar diagnóstico/i,
+      /Diagnóstico gratuito/i,
+      /Diagnosticar minha dor/i,
+    ]) {
+      await expect(page.getByRole("link", { name: descontinuado })).toHaveCount(0);
+    }
   });
 
   test("página individual de serviço diferencia CTA intermediário e final", async ({ page }) => {

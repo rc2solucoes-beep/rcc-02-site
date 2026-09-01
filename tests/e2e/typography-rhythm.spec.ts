@@ -32,19 +32,19 @@ test.describe("Tipografia e ritmo RC2", () => {
     expect(hero.fontWeight).toBe("800");
     expect(hero.letterSpacing / hero.fontSize).toBeCloseTo(-0.02, 3);
 
-    const differential = await typographyOf(
-      page.getByRole("heading", { level: 2, name: "Tecnologia com visão de operação." })
-    );
+    // A Fase 4 reconstruiu a Home. Os headings são selecionados por posição
+    // estrutural, não por copy, para o teste proteger a intenção tipográfica
+    // sem quebrar a cada ajuste editorial.
+    const sectionHeadings = page.getByRole("main").getByRole("heading", { level: 2 });
+    await expect(sectionHeadings.first()).toBeVisible();
+
+    const differential = await typographyOf(sectionHeadings.first());
     expect(differential.fontFamily).not.toContain("Barlow Condensed");
     expect(differential.fontWeight).toBe("600");
     expect(differential.letterSpacing / differential.fontSize).toBeCloseTo(-0.01, 3);
 
-    const closingCta = await typographyOf(
-      page.getByRole("heading", {
-        level: 2,
-        name: "Quer descobrir onde a IA pode gerar resultado na sua empresa?",
-      })
-    );
+    // Último H2 do main: o bloco de CTA que fecha a página.
+    const closingCta = await typographyOf(sectionHeadings.last());
     expect(closingCta.fontFamily).not.toContain("Barlow Condensed");
     expect(closingCta.fontWeight).toBe("700");
   });
@@ -55,7 +55,6 @@ test.describe("Tipografia e ritmo RC2", () => {
 
     await expect(page.locator("main .rc2-section--opening")).toHaveCount(1);
     await expect(page.locator("main .rc2-section--argument")).toHaveCount(1);
-    await expect(page.locator("main .rc2-section--closing")).toHaveCount(1);
     expect(await paddingOf(page.locator("main .rc2-section--opening"))).toEqual({
       top: 128,
       bottom: 88,
@@ -64,10 +63,18 @@ test.describe("Tipografia e ritmo RC2", () => {
       top: 72,
       bottom: 72,
     });
-    expect(await paddingOf(page.locator("main .rc2-section--closing"))).toEqual({
-      top: 112,
-      bottom: 112,
-    });
+
+    // O encerramento reutiliza o bloco de CTA compartilhado, mas precisa manter
+    // o modificador de ritmo do design system (80px mobile / 112px desktop).
+    const closing = page.getByRole("main").locator("section").last();
+    await expect(closing).toHaveClass(/rc2-section--closing/);
+    await expect(closing).toHaveClass(/bg-rc2-dark/);
+    await expect(closing.getByRole("heading", { level: 2 })).toBeVisible();
+    expect(await paddingOf(closing)).toEqual({ top: 112, bottom: 112 });
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    expect(await paddingOf(closing)).toEqual({ top: 80, bottom: 80 });
+    await page.setViewportSize({ width: 1440, height: 1000 });
 
     const firstStepNumber = await typographyOf(page.locator("ol li span[aria-hidden]").first());
     expect(firstStepNumber.fontFamily).not.toContain("Barlow Condensed");
