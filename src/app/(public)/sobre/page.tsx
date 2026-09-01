@@ -137,7 +137,7 @@ export default async function SobrePage() {
         </div>
       </section>
 
-      <HomeCtaBlock />
+      <HomeCtaBlock className="rc2-section--closing" />
     </>
   );
 }

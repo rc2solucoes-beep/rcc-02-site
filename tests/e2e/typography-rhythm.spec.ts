@@ -64,14 +64,17 @@ test.describe("Tipografia e ritmo RC2", () => {
       bottom: 72,
     });
 
-    // O encerramento deixou de ser uma seção própria com `rc2-section--closing`
-    // e passou a ser o bloco de CTA compartilhado (refactor 68570f9). O
-    // modificador de ritmo ficou órfão no CSS — registrado como achado, sem
-    // ratificar aqui o padding atual. O contrato preservado é: a página termina
-    // num bloco de encerramento próprio, em superfície escura.
+    // O encerramento reutiliza o bloco de CTA compartilhado, mas precisa manter
+    // o modificador de ritmo do design system (80px mobile / 112px desktop).
     const closing = page.getByRole("main").locator("section").last();
+    await expect(closing).toHaveClass(/rc2-section--closing/);
     await expect(closing).toHaveClass(/bg-rc2-dark/);
     await expect(closing.getByRole("heading", { level: 2 })).toBeVisible();
+    expect(await paddingOf(closing)).toEqual({ top: 112, bottom: 112 });
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    expect(await paddingOf(closing)).toEqual({ top: 80, bottom: 80 });
+    await page.setViewportSize({ width: 1440, height: 1000 });
 
     const firstStepNumber = await typographyOf(page.locator("ol li span[aria-hidden]").first());
     expect(firstStepNumber.fontFamily).not.toContain("Barlow Condensed");

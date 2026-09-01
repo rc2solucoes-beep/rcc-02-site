@@ -1,6 +1,11 @@
 import { CTABlockBase } from "./CTABlockBase";
 
-export function HomeCtaBlock() {
+interface HomeCtaBlockProps {
+  /** Modificador de ritmo da página que consome o bloco (ex.: `rc2-section--closing`). */
+  className?: string;
+}
+
+export function HomeCtaBlock({ className }: HomeCtaBlockProps = {}) {
   return (
     <CTABlockBase
       title="Tem um processo que ainda depende demais de planilha, copiar e colar ou memória?"
@@ -21,6 +26,7 @@ export function HomeCtaBlock() {
         label: "whatsapp",
       }}
       variant="dark"
+      className={className}
     />
   );
 }
