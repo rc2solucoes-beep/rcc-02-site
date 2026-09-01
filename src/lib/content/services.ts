@@ -40,7 +40,7 @@ export const services: Service[] = [
       "Para empresas com atendimento sobrecarregado e leads sem resposta, implementamos IA com processo claro e controle humano. Conectamos WhatsApp, site, formulários e CRM para responder clientes mais rápido, qualificar contatos e organizar a operação comercial.",
     items: [
       "Atendimento automático com IA",
-      "Chatbot para WhatsApp e site",
+      "Agente de IA para WhatsApp e site",
       "Qualificação de leads",
       "Respostas automáticas para dúvidas frequentes",
       "Captação e organização de contatos",
@@ -59,7 +59,7 @@ export const services: Service[] = [
     ],
     cta: "Transforme seu atendimento em uma operação inteligente, automatizada e preparada para vender mais.",
     keywords:
-      "automação de atendimento, chatbot IA, WhatsApp automatizado, qualificação de leads, atendimento 24/7, automação de vendas, contato automático, inteligência artificial para atendimento",
+      "automação de atendimento, agente de IA para atendimento, WhatsApp automatizado, qualificação de leads, atendimento 24/7, automação de vendas, contato automático, inteligência artificial para atendimento",
     painPoints: [
       "Clientes ficam sem resposta fora do horário comercial.",
       "Leads chegam pelo WhatsApp, site ou formulário e se perdem no processo.",
