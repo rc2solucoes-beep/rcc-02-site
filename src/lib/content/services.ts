@@ -496,7 +496,7 @@ export const services: Service[] = [
       "Integração com WhatsApp",
       "Integração com CRM",
       "Formulários inteligentes",
-      "Chatbot ou agente de IA no site",
+      "Agente de IA integrado ao site",
       "Dashboards ou interfaces simples para operação",
     ],
     benefits: [
@@ -509,7 +509,7 @@ export const services: Service[] = [
     ],
     cta: "Transforme seu site em um canal ativo de vendas, atendimento e relacionamento.",
     keywords:
-      "desenvolvimento de sites, landing pages, captação de leads, site inteligente, chatbot website, formulários dinâmicos, integração WhatsApp site, conversão de visitantes",
+      "desenvolvimento de sites, landing pages, captação de leads, site inteligente, agente de IA para site, formulários dinâmicos, integração WhatsApp site, conversão de visitantes",
     painPoints: [
       "O site atual não explica claramente a oferta da empresa.",
       "Visitantes acessam a página, mas não entram em contato.",
