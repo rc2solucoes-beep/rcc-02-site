@@ -58,6 +58,11 @@ describe("Internal links — URLs migradas", () => {
       "/servicos/integracao-de-sistemas",
       "/servicos/operacoes-digitais",
       "/servicos/automacao-de-atendimento",
+      // Fase 6F — passam a redirecionar para a ponte (docs/22 §15).
+      "/servicos/automacoes-com-ia",
+      "/solucoes/atendimento-lento",
+      "/solucoes/leads-sem-resposta",
+      "/solucoes/whatsapp-desorganizado",
     ];
     for (const href of allHrefs()) {
       expect(aliases).not.toContain(href);

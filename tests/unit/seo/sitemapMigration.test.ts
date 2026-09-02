@@ -61,6 +61,11 @@ describe("Sitemap — higiene", () => {
     "/servicos/integracao-de-sistemas",
     "/servicos/operacoes-digitais",
     "/servicos/automacao-de-atendimento",
+    // Fase 6F — território Zapbox consolidado na ponte (docs/22 §9).
+    "/servicos/automacoes-com-ia",
+    "/solucoes/atendimento-lento",
+    "/solucoes/leads-sem-resposta",
+    "/solucoes/whatsapp-desorganizado",
   ])("o alias %s continua fora do sitemap", (path) => {
     expect(paths).not.toContain(path);
   });
