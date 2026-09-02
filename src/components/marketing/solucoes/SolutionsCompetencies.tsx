@@ -1,6 +1,7 @@
-import { ArrowUpRight, CheckCircle2, Circle } from "lucide-react";
+import { CheckCircle2, Circle } from "lucide-react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { SOLUCOES_COMPETENCIES } from "@/lib/content/solucoesPage";
 
 /**
@@ -156,15 +157,18 @@ export function SolutionsCompetencies() {
               <p className="text-sm text-rc2-dark-text-secondary leading-relaxed">
                 {ia.boundary}
               </p>
-              <a
-                href="https://zapbox.cloud/"
-                target="_blank"
-                rel="noopener noreferrer"
+              <TrackedLink
+                href="/zapbox"
+                tracking={{
+                  kind: "cta",
+                  location: "solutions_ia_boundary",
+                  label: "conhecer_zapbox",
+                  destination: "/zapbox",
+                }}
                 className="ui-focus-ring mt-4 inline-flex items-center gap-2 rounded-sm text-sm font-semibold text-rc2-dark-text underline underline-offset-4 hover:opacity-80 transition-opacity"
               >
                 Conhecer Zapbox
-                <ArrowUpRight size={14} />
-              </a>
+              </TrackedLink>
             </ScrollReveal>
           )}
         </div>

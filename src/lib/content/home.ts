@@ -164,8 +164,10 @@ export const HOME_PRODUCTS = {
     description:
       "Atendimento e vendas pelo WhatsApp com equipe, CRM comercial e Sales AI. É o produto da RC2 para esse território — e é onde essas necessidades devem ser resolvidas.",
     ctaLabel: "Conhecer Zapbox",
-    href: "https://zapbox.cloud/",
-    external: true,
+    // Fase 6E: BRIDGE_FIRST — a ponte `/zapbox` explica o território e
+    // encaminha ao produto. Nenhuma superfície institucional sai direto.
+    href: "/zapbox",
+    external: false,
     analyticsLabel: "conhecer_zapbox",
   },
   agendaConfirmada: {
@@ -251,7 +253,7 @@ export const HOME_DEMOS: readonly Demo[] = [
     description:
       "O produto está publicado e pode ser conhecido agora, com suas próprias páginas de automação, CRM, integrações e Sales AI.",
     ctaLabel: "Conhecer Zapbox",
-    href: "https://zapbox.cloud/",
+    href: "/zapbox",
     analyticsLabel: "conhecer_zapbox",
   },
   {

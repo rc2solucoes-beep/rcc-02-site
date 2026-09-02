@@ -92,9 +92,10 @@ describe("Footer — nenhum link para a arquitetura legada", () => {
   });
 });
 
-describe("Footer — Zapbox como produto externo", () => {
-  it("aponta para o produto, não para uma rota da RC2", () => {
-    expect(FOOTER_PRODUCT_LINK.href).toBe("https://zapbox.cloud/");
+describe("Footer — Zapbox roteado pela ponte", () => {
+  it("aponta para a ponte interna, não para o domínio do produto", () => {
+    // Fase 6E: BRIDGE_FIRST — o Footer entrega a ponte, que entrega o produto.
+    expect(FOOTER_PRODUCT_LINK.href).toBe("/zapbox");
     expect(FOOTER_PRODUCT_LINK.analyticsLabel).toBe("conhecer_zapbox");
   });
 });
