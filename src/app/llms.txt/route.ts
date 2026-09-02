@@ -25,7 +25,7 @@ A RC2 Soluções atua em quatro frentes conectadas para que processos e sistemas
 
 ## Produto
 
-- [Zapbox](https://zapbox.cloud/): produto próprio da RC2 para atendimento e vendas pelo WhatsApp, com equipe, CRM comercial e Sales AI. Esse território pertence ao Zapbox, não às competências de consultoria da RC2.
+- [Zapbox](https://www.rc2solucoes.com.br/zapbox): produto próprio da RC2 para atendimento e vendas pelo WhatsApp, com equipe, CRM comercial e Sales AI. A página explica a fronteira entre o produto e as competências de consultoria da RC2, e encaminha para https://www.zapbox.cloud/.
 
 ## Temas principais
 
