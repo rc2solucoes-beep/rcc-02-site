@@ -53,21 +53,19 @@ describe("Redirects — anti-chain", () => {
 });
 
 describe("Redirects — território preservado", () => {
-  it("o alias de automação de atendimento continua no território Zapbox", () => {
+  it("o alias de automação de atendimento aponta direto para a ponte", () => {
+    // Fase 6F (docs/22 §7): reapontado na mesma unidade em que a URL canônica
+    // migra, para não criar chain pelo slug antigo.
     const matches = bySource("/servicos/automacao-de-atendimento");
     expect(matches).toHaveLength(1);
-    expect(matches[0].destination).toBe("/servicos/automacoes-com-ia");
+    expect(matches[0].destination).toBe("/zapbox");
   });
 
   it.each([
     "/servicos",
     "/solucoes-com-ia",
-    "/servicos/automacoes-com-ia",
     "/servicos/e-commerce",
     "/servicos/sites-e-landing-pages",
-    "/solucoes/atendimento-lento",
-    "/solucoes/leads-sem-resposta",
-    "/solucoes/whatsapp-desorganizado",
     "/solucoes/processos-manuais",
     "/solucoes/sistemas-desconectados",
   ])("%s NÃO recebe redirect nesta migração", (source) => {

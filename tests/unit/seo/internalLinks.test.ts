@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { services } from "@/lib/content/services";
 import { solutions } from "@/lib/content/solutions";
+import {
+  MIGRATED_SERVICE_SLUGS,
+  MIGRATED_SOLUTION_SLUGS,
+} from "@/lib/content/migratedRoutes";
 
 /**
  * Migração SEO pós-Fase 5 — docs/16 §9.
@@ -21,18 +25,29 @@ const MIGRATED = [
 
 /** Slugs de serviço que continuam respondendo 200 após a migração. */
 const RENDERED_SERVICE_SLUGS = [
-  "automacoes-com-ia",
+  // Fase 6F: `automacoes-com-ia` passou a redirecionar (docs/22 §1) e saiu
+  // desta lista — os links dentro dela não são mais alcançáveis.
   "e-commerce",
   "sites-e-landing-pages",
 ] as const;
 
+/**
+ * Só os links efetivamente alcançáveis.
+ *
+ * Uma entidade cuja URL redireciona nunca renderiza os próprios links
+ * relacionados; contá-los produziria falso positivo. Por isso os dados dessas
+ * entidades são preservados (`PRESERVE_DATA`, docs/22 §11.1) sem que os hrefs
+ * internos contem como link publicado.
+ */
 function allHrefs(): string[] {
   const out: string[] = [];
   for (const solution of solutions) {
+    if (MIGRATED_SOLUTION_SLUGS.has(solution.slug)) continue;
     solution.relatedServices.forEach((item) => out.push(item.href));
     solution.relatedLinks.forEach((item) => out.push(item.href));
   }
   for (const service of services) {
+    if (MIGRATED_SERVICE_SLUGS.has(service.slug)) continue;
     service.relatedLinks.forEach((item) => out.push(item.href));
   }
   return out;
@@ -58,6 +73,11 @@ describe("Internal links — URLs migradas", () => {
       "/servicos/integracao-de-sistemas",
       "/servicos/operacoes-digitais",
       "/servicos/automacao-de-atendimento",
+      // Fase 6F — passam a redirecionar para a ponte (docs/22 §15).
+      "/servicos/automacoes-com-ia",
+      "/solucoes/atendimento-lento",
+      "/solucoes/leads-sem-resposta",
+      "/solucoes/whatsapp-desorganizado",
     ];
     for (const href of allHrefs()) {
       expect(aliases).not.toContain(href);
@@ -66,8 +86,20 @@ describe("Internal links — URLs migradas", () => {
 });
 
 describe("Internal links — URLs preservadas", () => {
-  it("mantém os links para /solucoes-com-ia, que não foi migrada", () => {
-    expect(allHrefs()).toContain("/solucoes-com-ia");
+  /**
+   * `SPLIT_INTENT_INTERNAL_LINK_ORPHANED` — achado da Fase 6F.
+   *
+   * `/solucoes-com-ia` continua 200, indexável e no sitemap, mas os três links
+   * internos que restavam viviam dentro de `automacoes-com-ia`, `agentes-de-ia`
+   * e `atendimento-lento` — todas migradas. A página saiu da navegação na
+   * Fase 5, então deixa de receber link interno.
+   *
+   * Não é regressão desta unidade nem autoriza inventar um link novo: onde
+   * ligá-la é decisão de arquitetura, junto com o destino do `SPLIT_INTENT`.
+   * O teste fixa o estado para que qualquer mudança seja deliberada.
+   */
+  it("registra /solucoes-com-ia como órfã de link interno", () => {
+    expect(allHrefs()).not.toContain("/solucoes-com-ia");
   });
 
   it("mantém os links para os serviços DEFER, NEEDS_SEO_DATA e KEEP", () => {

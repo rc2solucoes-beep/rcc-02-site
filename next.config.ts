@@ -71,9 +71,32 @@ const nextConfig: NextConfig = {
       { source: "/about/", destination: "/sobre", permanent: true },
       { source: "/services", destination: "/solucoes", permanent: true },
       { source: "/services/", destination: "/servicos", permanent: true },
+      // Fase 6F — território integralmente Zapbox consolidado na ponte
+      // (docs/22 §1). O alias vem primeiro e aponta direto para `/zapbox`:
+      // passar pelo slug antigo criaria uma chain de dois saltos.
       {
         source: "/servicos/automacao-de-atendimento",
-        destination: "/servicos/automacoes-com-ia",
+        destination: "/zapbox",
+        permanent: true,
+      },
+      {
+        source: "/servicos/automacoes-com-ia",
+        destination: "/zapbox",
+        permanent: true,
+      },
+      {
+        source: "/solucoes/atendimento-lento",
+        destination: "/zapbox",
+        permanent: true,
+      },
+      {
+        source: "/solucoes/leads-sem-resposta",
+        destination: "/zapbox",
+        permanent: true,
+      },
+      {
+        source: "/solucoes/whatsapp-desorganizado",
+        destination: "/zapbox",
         permanent: true,
       },
       {

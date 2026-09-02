@@ -53,7 +53,10 @@ test.describe("Copy de personalidade visual", () => {
   });
 
   test("página individual de serviço diferencia CTA intermediário e final", async ({ page }) => {
-    await page.goto("/servicos/automacoes-com-ia");
+    // Fase 6F: `automacoes-com-ia` passou a redirecionar. O CTA testado vive no
+    // template de `/servicos/[slug]`, então qualquer serviço que renderiza
+    // preserva o contrato original.
+    await page.goto("/servicos/e-commerce");
 
     await expect(
       page.getByRole("link", { name: /serve para o meu caso/i })
@@ -64,7 +67,9 @@ test.describe("Copy de personalidade visual", () => {
   });
 
   test("página individual de solução usa CTA contextual", async ({ page }) => {
-    await page.goto("/solucoes/atendimento-lento");
+    // Fase 6F: `atendimento-lento` passou a redirecionar. O contrato do teste é
+    // o CTA de uma página de solução que renderiza — não a URL em si.
+    await page.goto("/solucoes/processos-manuais");
 
     await expect(
       page.getByRole("link", { name: /minha operação/i })
