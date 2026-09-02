@@ -2,6 +2,10 @@ import type { MetadataRoute } from "next";
 import { BASE_URL } from "@/lib/siteMetadata";
 import { services } from "@/lib/content/services";
 import { solutions } from "@/lib/content/solutions";
+import {
+  MIGRATED_SERVICE_SLUGS,
+  MIGRATED_SOLUTION_SLUGS,
+} from "@/lib/content/migratedRoutes";
 import { createPublicClient } from "@/lib/supabase/server";
 
 export const revalidate = 60;
@@ -103,16 +107,6 @@ function mapStaticRoutes(routes: readonly StaticSitemapEntry[]): MetadataRoute.S
   }));
 }
 
-/**
- * Slugs cuja URL passou a redirecionar para uma âncora de /solucoes na
- * migração SEO pós-Fase 5 (docs/16 §11). Uma URL que redireciona não pode
- * continuar publicada no sitemap.
- *
- * O filtro vive aqui, e não em `services.ts`: a coleção continua alimentando
- * `/servicos`, `/servicos/[slug]` e o conteúdo relacionado.
- */
-const MIGRATED_SERVICE_SLUGS = new Set(["agentes-de-ia", "automacao-de-processos"]);
-
 const serviceRoutes: MetadataRoute.Sitemap = services
   .filter((service) => !MIGRATED_SERVICE_SLUGS.has(service.slug))
   .map((service) => ({
@@ -122,12 +116,14 @@ const serviceRoutes: MetadataRoute.Sitemap = services
     priority: 0.8,
   }));
 
-const solutionRoutes: MetadataRoute.Sitemap = solutions.map((solution) => ({
-  url: absoluteUrl(`/solucoes/${solution.slug}`),
-  lastModified: new Date("2026-05-20"),
-  changeFrequency: "monthly",
-  priority: 0.75,
-}));
+const solutionRoutes: MetadataRoute.Sitemap = solutions
+  .filter((solution) => !MIGRATED_SOLUTION_SLUGS.has(solution.slug))
+  .map((solution) => ({
+    url: absoluteUrl(`/solucoes/${solution.slug}`),
+    lastModified: new Date("2026-05-20"),
+    changeFrequency: "monthly",
+    priority: 0.75,
+  }));
 
 function dedupeRoutes(routes: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
   const seen = new Set<string>();

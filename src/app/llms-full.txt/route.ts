@@ -1,5 +1,9 @@
 import { services } from "@/lib/content/services";
 import { solutions } from "@/lib/content/solutions";
+import {
+  MIGRATED_SERVICE_SLUGS,
+  MIGRATED_SOLUTION_SLUGS,
+} from "@/lib/content/migratedRoutes";
 import { BASE_URL } from "@/lib/siteMetadata";
 import { createPublicClient } from "@/lib/supabase/server";
 import type { FaqItem, Post } from "@/lib/types/post";
@@ -83,7 +87,8 @@ Nosso foco é transformar operações manuais e fluxos desconectados em processo
 function buildServicesSection(): string {
   const lines: string[] = ["", "## Serviços"];
 
-  for (const service of services) {
+  // URL que redireciona não é publicada como destino (docs/22 §16).
+  for (const service of services.filter((s) => !MIGRATED_SERVICE_SLUGS.has(s.slug))) {
     lines.push("");
     lines.push(`### ${service.title}`);
     lines.push("");
@@ -179,7 +184,7 @@ function buildBlogSection(posts: LlmPost[]): string {
 function buildSolutionsSection(): string {
   const lines: string[] = ["", "## Soluções por Problema"];
 
-  for (const solution of solutions) {
+  for (const solution of solutions.filter((s) => !MIGRATED_SOLUTION_SLUGS.has(s.slug))) {
     lines.push("");
     lines.push(`### ${solution.title}`);
     lines.push("");

@@ -34,6 +34,8 @@ export async function generateMetadata(): Promise<Metadata> {
 const MIGRATED_SERVICE_HREFS: Record<string, string> = {
   "agentes-de-ia": "/solucoes#ia-para-operacoes",
   "automacao-de-processos": "/solucoes#automacao-de-processos",
+  // Fase 6F — território Zapbox: o card leva direto à ponte (docs/22 §14).
+  "automacoes-com-ia": "/zapbox",
 };
 
 export default async function ServicosPage() {

@@ -586,7 +586,8 @@ export const services: Service[] = [
       },
     ],
     relatedLinks: [
-      { label: "Automações com IA", href: "/servicos/automacoes-com-ia" },
+      // Fase 6F — o território Zapbox é entregue pela ponte (docs/22 §11.1).
+      { label: "Zapbox", href: "/zapbox" },
       { label: "E-commerce", href: "/servicos/e-commerce" },
       { label: "Contato", href: "/contato" },
     ],

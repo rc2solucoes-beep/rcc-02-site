@@ -5,6 +5,10 @@ import { Check, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { services, getServiceBySlug } from "@/lib/content/services";
 import { solutions } from "@/lib/content/solutions";
+import {
+  MIGRATED_SERVICE_SLUGS,
+  MIGRATED_SOLUTION_SLUGS,
+} from "@/lib/content/migratedRoutes";
 import { PageHero } from "@/components/marketing/PageHero";
 import { CTABlock } from "@/components/marketing/CTABlock";
 import { PageAnchorNav } from "@/components/marketing/PageAnchorNav";
@@ -19,7 +23,6 @@ import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 type Props = { params: Promise<{ slug: string }> };
 
 /** Slugs migrados para âncoras de /solucoes — ver docs/16 §10. */
-const MIGRATED_SERVICE_SLUGS = new Set(["agentes-de-ia", "automacao-de-processos"]);
 
 export async function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -59,8 +62,14 @@ export default async function ServicePage({ params }: Props) {
   const currentIndex = navigableServices.findIndex((s) => s.slug === slug);
   const next = currentIndex >= 0 ? navigableServices[currentIndex + 1] : undefined;
   const prev = currentIndex >= 0 ? navigableServices[currentIndex - 1] : undefined;
-  const relatedSolution = solutions.find((solution) =>
-    solution.relatedServices.some((relatedService) => relatedService.href === `/servicos/${slug}`)
+  // O lookup reverso usa `href` como chave. Uma solução que redireciona não
+  // pode ser oferecida como destino aqui (docs/22 §12).
+  const relatedSolution = solutions.find(
+    (solution) =>
+      !MIGRATED_SOLUTION_SLUGS.has(solution.slug) &&
+      solution.relatedServices.some(
+        (relatedService) => relatedService.href === `/servicos/${slug}`
+      )
   );
   const topPainPoints = service.painPoints.slice(0, 3);
   const topUseCases = service.useCases.slice(0, 5);
