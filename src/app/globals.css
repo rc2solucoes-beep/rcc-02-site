@@ -25,6 +25,10 @@
   --color-rc2-brand-text: var(--rc2-brand-text);
   --color-rc2-accent-soft: var(--rc2-accent-soft);
   --color-rc2-accent-soft-hover: var(--rc2-accent-soft-hover);
+  --color-rc2-brand-muted: var(--rc2-brand-muted);
+  --color-rc2-brand-border: var(--rc2-brand-border);
+  --color-rc2-card-border: var(--rc2-card-border);
+  --color-rc2-dark-border-soft: var(--rc2-dark-border-soft);
   --color-rc2-dark: var(--rc2-dark);
   --color-rc2-dark-2: var(--rc2-dark-2);
   --color-rc2-dark-elevated: var(--rc2-dark-elevated);
@@ -124,6 +128,26 @@
   --rc2-focus-ring: #C2410C;
   --rc2-focus-ring-dark: #FF5F1F;
   --rc2-whatsapp: #25D366;
+
+  /* Brand v2.2 — o orange também atua como borda e halo, nunca como massa. */
+  --rc2-brand-muted: rgba(255, 95, 31, 0.12);
+  --rc2-brand-border: rgba(255, 95, 31, 0.35);
+  --rc2-focus-shadow: 0 0 0 3px rgba(255, 95, 31, 0.18);
+  /* Borda de card: um passo mais clara que --rc2-border, que separa seções. */
+  --rc2-card-border: #E1E5E9;
+  /* Divisória interna em área navy. A separação ESTRUTURAL entre seções
+     escuras continua em --rc2-dark-border: #081827 e #0C2032 diferem 1.08:1 e
+     leriam como bloco único sem uma borda visível. */
+  --rc2-dark-border-soft: rgba(255, 255, 255, 0.08);
+
+  /* Tipografia v2.2 */
+  --rc2-tracking-h1: -0.015em;
+  --rc2-tracking-h2: -0.01em;
+  --rc2-tracking-label: 0.06em;
+  --rc2-leading-body: 1.75;
+
+  /* Grid quase invisível — teto de 0.03 na composição final. */
+  --rc2-grid-opacity: 0.03;
   --rc2-fixed-inline: 1rem;
   --rc2-fixed-bottom: calc(env(safe-area-inset-bottom) + 1rem);
   --rc2-fixed-stack-gap: 0.75rem;
@@ -161,12 +185,12 @@
   --radius: 0.5rem;
 
   /* Spacing scale (8pt rhythm) */
-  --space-section-y-mobile: 4rem;
-  --space-section-y-desktop: 6rem;
+  --space-section-y-mobile: 5rem;   /* 80px — v2.2 */
+  --space-section-y-desktop: 7.5rem; /* 120px — v2.2 */
 
   /* Shadow scale */
-  --shadow-soft: 0 4px 18px rgba(11, 23, 38, 0.06);
-  --shadow-lift: 0 10px 28px rgba(11, 23, 38, 0.12);
+  --shadow-soft: 0 4px 24px rgba(11, 23, 38, 0.05);
+  --shadow-lift: 0 8px 32px rgba(11, 23, 38, 0.08);
 
   /* Motion */
   --ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
@@ -229,20 +253,20 @@
     color: var(--rc2-text);
     font-family: var(--font-barlow), sans-serif;
     font-size: 16px;
-    line-height: 1.7;
+    line-height: var(--rc2-leading-body);
   }
 
   h1 {
     font-family: var(--font-barlow), sans-serif;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: var(--rc2-tracking-h1);
     color: var(--rc2-heading);
   }
 
   h2 {
     font-family: var(--font-barlow), sans-serif;
     font-weight: 600;
-    letter-spacing: -0.01em;
+    letter-spacing: var(--rc2-tracking-h2);
     color: var(--rc2-heading);
   }
 
@@ -279,7 +303,7 @@
     font-family: var(--font-barlow-condensed), sans-serif;
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.10em;
+    letter-spacing: var(--rc2-tracking-label);
     font-size: 0.75rem;
     color: var(--rc2-brand-text);
   }
@@ -367,13 +391,23 @@
   }
 
   .rc2-card {
-    @apply rounded-xl border border-border bg-rc2-bg-alt transition-[border-color,box-shadow,transform] duration-200;
+    @apply rounded-xl border bg-rc2-surface transition-[border-color,box-shadow,transform] duration-300 ease-out;
+    border-color: var(--rc2-card-border);
     box-shadow: var(--shadow-soft);
   }
 
-  .rc2-card-hover {
-    @apply hover:-translate-y-1 hover:border-rc2-brand/35;
+  /* Hover contido: 2px de deslocamento e sombra um pouco mais ampla. A borda
+     laranja é detalhe de estado, não contorno permanente. */
+  .rc2-card-hover:hover {
+    transform: translateY(-2px);
+    border-color: var(--rc2-brand-border);
     box-shadow: var(--shadow-lift);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rc2-card-hover:hover {
+      transform: none;
+    }
   }
 
   .rc2-action-link {
@@ -676,15 +710,15 @@
   /* Grid blueprint — textura de engenharia sutil (fundo claro) */
   .rc2-blueprint {
     background-image:
-      linear-gradient(to right, rgba(11, 23, 38, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(11, 23, 38, 0.05) 1px, transparent 1px);
+      linear-gradient(to right, rgba(11, 23, 38, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(11, 23, 38, 0.03) 1px, transparent 1px);
     background-size: 46px 46px;
   }
   /* Grid blueprint para seções escuras */
   .rc2-blueprint-dark {
     background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+      linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
     background-size: 46px 46px;
   }
 

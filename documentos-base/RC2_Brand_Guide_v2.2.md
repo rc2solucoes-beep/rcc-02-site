@@ -2,13 +2,14 @@
 
 ## BRAND STRATEGY & IDENTITY GUIDE
 
-**Versão 2.1 — Sistema Visual Navy + Safety Orange**
+**Versão 2.2 — Sistema Visual High-End Tool**  
+**Foco: Elegância · Fluidez · Sofisticação**
 
 ---
 
 ## Resumo Executivo
 
-A RC2 Soluções é uma consultoria especializada em automações com IA, agentes inteligentes, integrações com n8n e operações digitais. Fundada por Robson Azevedo, profissional com mais de 20 anos de experiência em TI, e-commerce e transformação digital, a marca se posiciona como parceira de implementação prática — não como fornecedora genérica de tecnologia. Seu diferencial central é a visão operacional: a RC2 não entrega apenas ferramentas, entrega processos funcionando. O público-alvo são pequenas e médias empresas que precisam de eficiência, querem usar IA, mas não sabem por onde começar. O arquétipo da marca é o Especialista Sábio com traços do Criador — autoridade técnica aliada à capacidade de construir soluções reais. A identidade visual comunica precisão industrial, energia e caráter — sem ser genérica nem fria. A promessa da marca: transformar tecnologia em operação funcionando.
+A RC2 Soluções é uma consultoria especializada em automações com IA, agentes inteligentes, integrações com n8n e operações digitais. Fundada por Robson Azevedo, profissional com mais de 20 anos de experiência em TI, e-commerce e transformação digital, a marca se posiciona como parceira de implementação prática, não como fornecedora genérica de tecnologia. Seu diferencial central é a visão operacional: a RC2 não entrega apenas ferramentas, entrega processos funcionando. O público-alvo são pequenas e médias empresas que precisam de eficiência, querem usar IA, mas não sabem por onde começar. O arquétipo da marca é o Especialista Sábio com traços do Criador, autoridade técnica aliada à capacidade de construir soluções reais. A identidade visual comunica precisão, energia contida e domínio técnico. A promessa da marca: transformar tecnologia em operação funcionando.
 
 ---
 
@@ -24,7 +25,7 @@ A RC2 Soluções é uma consultoria especializada em automações com IA, agente
 
 ## Descrição Curta da Marca
 
-A RC2 Soluções ajuda empresas a transformarem seus processos manuais em operações digitais inteligentes, implementando IA, automações, integrações, e-commerce e sites conectados — do diagnóstico à entrega real.
+A RC2 Soluções ajuda empresas a transformarem seus processos manuais em operações digitais inteligentes, implementando IA, automações, integrações, e-commerce e sites conectados, do diagnóstico à entrega real.
 
 ## Propósito
 
@@ -34,7 +35,7 @@ A RC2 existe para eliminar o abismo entre a promessa da tecnologia e sua aplica�
 
 ## Missão
 
-Implementar soluções práticas de inteligência artificial, automações e operações digitais para pequenas e médias empresas, gerando resultado mensurável em atendimento, vendas e produtividade — sem promessas vazias, sem tecnologia pela tecnologia.
+Implementar soluções práticas de inteligência artificial, automações e operações digitais para pequenas e médias empresas, gerando resultado mensurável em atendimento, vendas e produtividade, sem promessas vazias, sem tecnologia pela tecnologia.
 
 ## Visão
 
@@ -53,13 +54,13 @@ Ser a consultoria de referência em implementação de IA e automações para PM
 
 - IA não substitui uma operação mal estruturada. Primeiro organizamos o processo, depois automatizamos.
 - Tecnologia sem contexto operacional é desperdício de dinheiro.
-- A maioria das empresas já tem processos que podem ser automatizados — falta diagnóstico, não orçamento.
+- A maioria das empresas já tem processos que podem ser automatizados, falta diagnóstico, não orçamento.
 - PMEs merecem o mesmo nível de tecnologia que grandes empresas, adaptado à sua realidade.
 - Resultado prático e rápido é mais valioso do que a solução mais sofisticada.
 
 ## Promessa da Marca
 
-A RC2 Soluções não entrega apenas ferramentas — entrega processos funcionando. Do diagnóstico à implantação, você tem ao lado um parceiro com experiência real em TI, operações digitais e resultado de negócio.
+A RC2 Soluções não entrega apenas ferramentas, entrega processos funcionando. Do diagnóstico à implantação, você tem ao lado um parceiro com experiência real em TI, operações digitais e resultado de negócio.
 
 ## Personalidade da Marca
 
@@ -75,11 +76,11 @@ A RC2 Soluções não entrega apenas ferramentas — entrega processos funcionan
 
 **Arquétipo principal: O Especialista / Sábio**
 
-O Sábio é orientado por conhecimento profundo, honestidade e clareza. Não vende sonhos — mostra o caminho real. Esse arquétipo é ideal porque o maior diferencial da RC2 é a experiência de 20+ anos e a visão operacional que a maioria dos concorrentes não tem.
+O Sábio é orientado por conhecimento profundo, honestidade e clareza. Não vende sonhos, mostra o caminho real. Esse arquétipo é ideal porque o maior diferencial da RC2 é a experiência de 20+ anos e a visão operacional que a maioria dos concorrentes não tem.
 
 **Arquétipo secundário: O Criador**
 
-O Criador constrói soluções concretas, tangíveis. Reforça que a RC2 não apenas diagnostica — implementa, constrói e entrega o produto funcionando.
+O Criador constrói soluções concretas, tangíveis. Reforça que a RC2 não apenas diagnostica, implementa, constrói e entrega o produto funcionando.
 
 ---
 
@@ -92,8 +93,8 @@ O Criador constrói soluções concretas, tangíveis. Reforça que a RC2 não ap
 | **Perfil** | Gestores, diretores e donos de PMEs |
 | **Porte** | Empresas de 5 a 200 colaboradores |
 | **Segmentos** | Varejo, serviços, saúde, logística, farmácia, e-commerce, educação |
-| **Localização** | Brasil — atendimento prioritário em São Paulo e região, com capacidade remota nacional |
-| **Nível digital** | Empresas que usam WhatsApp, planilhas e ferramentas básicas — prontas para dar o próximo passo |
+| **Localização** | Brasil, atendimento prioritário em São Paulo e região, com capacidade remota nacional |
+| **Nível digital** | Empresas que usam WhatsApp, planilhas e ferramentas básicas, prontas para dar o próximo passo |
 
 ## Personas Recomendadas
 
@@ -151,8 +152,8 @@ A RC2 Soluções transforma processos manuais em operações digitais inteligent
 
 - Autoridade técnica séria, mas acessível e humana.
 - Parceiro confiável que entende o negócio do cliente.
-- Referência em implementação prática — não em teoria ou hype.
-- Empresa com histórico e credibilidade — não mais um que "faz chatbot".
+- Referência em implementação prática, não em teoria ou hype.
+- Empresa com histórico e credibilidade, não mais um que "faz chatbot".
 
 ## Como a Marca NÃO Deve Ser Percebida
 
@@ -169,11 +170,11 @@ A RC2 Soluções transforma processos manuais em operações digitais inteligent
 
 | Dimensão | Descrição |
 |----------|-----------|
-| **Diretriz geral** | Especialista que fala como parceiro — sem jargão excessivo, sem hype, sem didatismo condescendente. |
+| **Diretriz geral** | Especialista que fala como parceiro, sem jargão excessivo, sem hype, sem didatismo condescendente. |
 | **Registro** | Profissional, direto e confiante. Nunca frio ou corporativo demais. |
 | **Atitude** | Consultivo. Mostra o problema, apresenta o caminho, propõe a solução. |
 | **Energia** | Firme e segura. A RC2 sabe o que faz — e não precisa gritar para provar. |
-| **Relação com o cliente** | Parceiro que pensa junto. Não vende tecnologia — resolve problemas. |
+| **Relação com o cliente** | Parceiro que pensa junto. Não vende tecnologia, resolve problemas. |
 
 ## Palavras que a Marca Deve Usar
 
@@ -195,21 +196,20 @@ revolução · disruptivo · inovador (sem contexto) · mágico · solução com
 
 | Opção | Texto |
 |-------|-------|
-| **Opção A (recomendada)** | Tecnologia que funciona. Operação que entrega. |
+| **Opção A (recomendada)** | Pare de operar no manual. |
 | **Opção B** | IA e automação do diagnóstico ao resultado. |
-| **Opção C** | Mais de 20 anos transformando tecnologia em operação. |
-| **Opção D (impacto)** | Pare de operar no manual. |
+| **Opção C (impacto)** | Mais de 20 anos transformando tecnologia em operação. |
 
 ## Elevator Pitch da Marca
 
-A RC2 Soluções é uma consultoria especializada em IA, automações e operações digitais para pequenas e médias empresas. Ajudamos empresas a automatizar atendimentos, criar agentes inteligentes, integrar sistemas, estruturar e-commerce e modernizar sua presença digital — com experiência de quem já fez isso em operações reais. Não vendemos ferramentas. Entregamos processos funcionando. O ponto de entrada é um diagnóstico gratuito onde mapeamos oportunidades de automação e IA para o seu negócio.
+A RC2 Soluções é uma consultoria especializada em IA, automações e operações digitais para pequenas e médias empresas. Ajudamos empresas a automatizar atendimentos, criar agentes inteligentes, integrar sistemas, estruturar e-commerce e modernizar sua presença digital, com experiência de quem já fez isso em operações reais. Não vendemos ferramentas. Entregamos processos funcionando. O ponto de entrada é um diagnóstico gratuito onde mapeamos oportunidades de automação e IA para o seu negócio.
 
 ## Pilares de Conteúdo
 
 | Pilar | Descrição |
 |-------|-----------|
 | **Pilar 1 — Educação Prática** | "Como fazer" com IA e automação: tutoriais, explicações de ferramentas, desmistificação de conceitos. |
-| **Pilar 2 — Casos de Uso Reais** | Situações reais de empresas que se beneficiaram de automação — antes e depois. |
+| **Pilar 2 — Casos de Uso Reais** | Situações reais de empresas que se beneficiaram de automação, antes e depois. |
 | **Pilar 3 — Autoridade e Experiência** | Reflexões do fundador, bastidores de projetos, decisões estratégicas. |
 | **Pilar 4 — Diagnóstico e Provocação** | Posts que identificam dores do público e geram consciência do problema. |
 | **Pilar 5 — Processo e Método** | Como a RC2 trabalha: diagnóstico, desenho, implantação, treinamento, evolução. |
@@ -218,59 +218,65 @@ A RC2 Soluções é uma consultoria especializada em IA, automações e operaç�
 
 # 4. Identidade Visual
 
-> ⚠️ Esta seção foi integralmente atualizada na Versão 2.1 do Brand Guide.
+> Esta seção foi refinada na Versão 2.2 com foco em elegância, fluidez e sofisticação.
 
 ## Direção Criativa Geral
 
-A identidade visual da RC2 continua orientada pelo conceito **"The High-End Tool"** — a estética de instrumentos de elite, painéis de controle e ferramentas de alta performance. O visual deve comunicar precisão, energia, confiança e competência técnica. A evolução da Versão 2.1 substitui o antigo verde estrutural por uma família **Navy / Slate**, mais coerente com tecnologia B2B e com a percepção de sofisticação desejada para a marca.
+A identidade visual da RC2 se fundamenta no conceito **"The High-End Tool"** — a estética de instrumentos de elite, sistemas de controle de alta precisão e ferramentas profissionais de performance extrema.
 
-Referências visuais: Braun/Dieter Rams, sinalização industrial de alta performance, interfaces de instrumentos profissionais, arquitetura técnica e design de ferramentas de precisão. A linguagem deve ser limpa, funcional e deliberada. Nenhum clichê visual de IA.
+O visual transmite precisão, energia contida, confiança e domínio técnico. A família cromática **Navy / Slate** substitui a antiga base verde estrutural, alinhada ao universo B2B tecnológico e à percepção de sofisticação e autoridade.
+
+Referências: design de sistemas avançados (interfaces de controle aeroespacial, ferramentas de precisão em ambientes de alta complexidade, instrumentos profissionais de próxima geração). A linguagem é limpa, funcional, deliberada e sem excessos — com a frieza elegante de sistemas que operam no limite da performance.
+
+Nada de clichês de IA. Nada de decoração. Apenas precisão, contenção e elegância operacional.
 
 ## Conceito Visual da Marca
 
-**O conceito central permanece: Precisão em Estado Ativo.**
+**O conceito central é: Precisão em Estado Ativo.**
 
-A identidade usa a tensão entre **profundidade** (Navy Core, Graphite Navy e Slate) e **energia** (Safety Orange). O Safety Orange funciona como assinatura operacional da RC2: indica ação, prioridade, estado ativo e direção. Ele aparece em pontos estratégicos, nunca como massa visual dominante.
+A identidade se constrói na tensão controlada entre **profundidade** (Navy Core, Graphite Navy e Slate) e **energia** (Safety Orange). O Safety Orange atua como assinatura operacional da RC2 — sinaliza ação, prioridade e estado ativo. Aparece com precisão, em pontos estratégicos, nunca como massa visual.
 
-A base clara usa neutros levemente aquecidos para evitar uma estética clínica ou genérica. As áreas escuras usam navy profundo em vez de preto absoluto ou verde estrutural, criando uma linguagem mais tecnológica sem recorrer ao azul saturado típico de empresas SaaS.
+A base clara adota neutros levemente aquecidos, evitando a frieza clínica ou a estética genérica. Nas áreas escuras, o navy profundo substitui o preto absoluto e o antigo verde estrutural, criando uma linguagem tecnológica mais sofisticada.
 
-## Paleta de Cores — The High-End Tool 2.1
+---
+
+# Paleta de Cores — The High-End Tool 3
 
 ### Cores Principais
 
-| Cor | Hex | Função | Uso recomendado |
-|-----|-----|--------|-----------------|
-| **Safety Orange** | `#FF5F1F` | Assinatura visual / Accent | CTA primário, ícones de ação, marcadores, linhas, indicadores, focus, selected states e detalhes estratégicos. |
-| **Orange Text** | `#C2410C` | Accent acessível para texto | Links, eyebrows, labels e microtextos sobre fundos claros quando `#FF5F1F` não atingir contraste suficiente. |
-| **Warm Base** | `#F7F5F1` | Background principal | Fundo predominante do site, documentos e apresentações. |
-| **Warm Alt** | `#FBFAF8` | Background alternativo | Hero sections, seções de respiro e alternância sutil de superfície. |
-| **Surface White** | `#FFFFFF` | Superfície elevada | Cards, inputs, modais e componentes que precisam se separar do background. |
-| **Navy Core** | `#081827` | Background escuro principal | Footer, CTA bands, seções de alto contraste e componentes dark. |
-| **Navy Secondary** | `#0C2032` | Background escuro secundário | Variações tonais, seção Diferencial, superfícies dark e transições discretas. |
-| **Navy Elevated** | `#11283A` | Superfície dark elevada | Cards escuros, hover em áreas dark e elementos destacados sobre Navy Core. |
-| **Graphite Navy** | `#0B1726` | Títulos e texto de maior contraste | Headlines, títulos, wordmark em fundo claro e texto sobre Safety Orange. |
-| **Body Slate** | `#24313D` | Texto principal | Corpo de texto sobre fundos claros. |
-| **Muted Slate** | `#66717D` | Texto secundário | Descrições, legendas e informações de menor hierarquia. |
-| **Border Light** | `#DDE2E7` | Bordas e divisórias | Cards, inputs, separators e componentes discretos. |
-| **Accent Soft** | `#FFF0E9` | Superfície de apoio ao orange | Ícones, badges e highlights suaves sem ampliar demais o uso do Safety Orange. |
+| Cor                | Hex       | Função                             | Uso recomendado                                                                                                |
+| ------------------ | --------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| **Safety Orange**  | `#FF5F1F` | Assinatura visual / Accent         | CTA primário, ícones de ação, marcadores, linhas, indicadores, focus, selected states e detalhes estratégicos. |
+| **Orange Text**    | `#C2410C` | Accent acessível para texto        | Links, eyebrows, labels e microtextos sobre fundos claros quando `#FF5F1F` não atingir contraste suficiente.   |
+| **Warm Base**      | `#F7F5F1` | Background principal               | Fundo predominante do site, documentos e apresentações.                                                        |
+| **Warm Alt**       | `#FBFAF8` | Background alternativo             | Hero sections, seções de respiro e alternância sutil de superfície.                                            |
+| **Surface White**  | `#FFFFFF` | Superfície elevada                 | Cards, inputs, modais e componentes que precisam se separar do background.                                     |
+| **Navy Core**      | `#081827` | Background escuro principal        | Footer, CTA bands, seções de alto contraste e componentes dark.                                                |
+| **Navy Secondary** | `#0C2032` | Background escuro secundário       | Variações tonais, seção Diferencial, superfícies dark e transições discretas.                                  |
+| **Navy Elevated**  | `#11283A` | Superfície dark elevada            | Cards escuros, hover em áreas dark e elementos destacados sobre Navy Core.                                     |
+| **Graphite Navy**  | `#0B1726` | Títulos e texto de maior contraste | Headlines, títulos, wordmark em fundo claro e texto sobre Safety Orange.                                       |
+| **Body Slate**     | `#24313D` | Texto principal                    | Corpo de texto sobre fundos claros.                                                                            |
+| **Muted Slate**    | `#66717D` | Texto secundário                   | Descrições, legendas e informações de menor hierarquia.                                                        |
+| **Border Light**   | `#DDE2E7` | Bordas e divisórias                | Cards, inputs, separators e componentes discretos.                                                             |
+| **Accent Soft**    | `#FFF0E9` | Superfície de apoio ao orange      | Ícones, badges e highlights suaves sem ampliar demais o uso do Safety Orange.                                  |
 
 ### Cores Semânticas
 
-| Estado | Hex | Diretriz |
-|--------|-----|----------|
-| **Success** | `#17835C` | Usar somente para estados positivos, confirmações e feedback de sucesso. |
-| **Warning** | `#A96000` | Alertas e atenção contextual. |
-| **Error** | `#C43D3D` | Erros, validações e ações destrutivas. |
-| **Disabled Background** | `#E7EAED` | Controles desabilitados em tema claro. |
-| **Disabled Text** | `#949DA6` | Texto de controles desabilitados. |
+| Estado                  | Hex       | Diretriz                                                                 |
+| ----------------------- | --------- | ------------------------------------------------------------------------ |
+| **Success**             | `#17835C` | Usar somente para estados positivos, confirmações e feedback de sucesso. |
+| **Warning**             | `#A96000` | Alertas e atenção contextual.                                            |
+| **Error**               | `#C43D3D` | Erros, validações e ações destrutivas.                                   |
+| **Disabled Background** | `#E7EAED` | Controles desabilitados em tema claro.                                   |
+| **Disabled Text**       | `#949DA6` | Texto de controles desabilitados.                                        |
 
-> **Regra:** verde não faz mais parte da estrutura visual da RC2. Ele permanece apenas quando houver significado semântico — por exemplo, sucesso — ou associação direta a uma marca externa, como o WhatsApp.
+> **Regra:** O verde não faz mais parte da estrutura visual da RC2. Permanece apenas quando carrega significado semântico — como sucesso — ou associação direta a uma marca externa, como o WhatsApp.
 
 ## Regra de Proporção
 
-**60–70% neutros claros · 20–30% Navy / Slate · até 10% Safety Orange e derivados**
+**60–70% neutros claros · 20–30% Navy / Slate · até 8% Safety Orange e derivados**
 
-O Safety Orange perde força quando ocupa grandes áreas. Seu papel é conduzir o olhar, indicar ação e criar reconhecimento. A marca deve parecer predominantemente neutra e navy, com orange surgindo nos pontos de decisão.
+O Safety Orange perde força quando ocupa grandes áreas. Seu papel é conduzir o olhar, indicar ação e criar reconhecimento. A marca deve parecer predominantemente neutra e navy, com o orange surgindo nos pontos de decisão.
 
 **PROIBIDO:**
 - Usar Safety Orange como background dominante de páginas ou grandes seções.
@@ -279,38 +285,39 @@ O Safety Orange perde força quando ocupa grandes áreas. Seu papel é conduzir 
 - Usar azul saturado, ciano, roxo ou neon como cores de identidade.
 - Usar gradientes decorativos ou multicoloridos típicos de interfaces genéricas de IA.
 - Aplicar Safety Orange em textos pequenos sobre branco quando o contraste não for suficiente.
+- Usar glows, manchas de cor ou efeitos decorativos sem função.
 
 ## Tema Claro
 
-| Elemento | Cor |
-|----------|-----|
-| Background principal | `#F7F5F1` |
+| Elemento               | Cor       |
+| ---------------------- | --------- |
+| Background principal   | `#F7F5F1` |
 | Background alternativo | `#FBFAF8` |
-| Surface / Card | `#FFFFFF` |
-| Surface secundária | `#F2F3F4` |
-| Títulos | `#0B1726` |
-| Texto | `#24313D` |
-| Texto secundário | `#66717D` |
-| Texto muted | `#89939D` |
-| Bordas | `#DDE2E7` |
-| Bordas suaves | `#E8EAED` |
-| Accent | `#FF5F1F` |
-| Accent para texto | `#C2410C` |
-| Accent soft | `#FFF0E9` |
+| Surface / Card         | `#FFFFFF` |
+| Surface secundária     | `#F2F3F4` |
+| Títulos                | `#0B1726` |
+| Texto                  | `#24313D` |
+| Texto secundário       | `#66717D` |
+| Texto muted            | `#89939D` |
+| Bordas                 | `#DDE2E7` |
+| Bordas suaves          | `#E8EAED` |
+| Accent                 | `#FF5F1F` |
+| Accent para texto      | `#C2410C` |
+| Accent soft            | `#FFF0E9` |
 
 ## Tema Escuro
 
-| Elemento | Cor |
-|----------|-----|
-| Background principal | `#081827` |
+| Elemento              | Cor       |
+| --------------------- | --------- |
+| Background principal  | `#081827` |
 | Background secundário | `#0C2032` |
-| Surface elevada | `#11283A` |
-| Card dark | `#132C40` |
-| Texto principal | `#FFFFFF` |
-| Texto secundário | `#C6CED6` |
-| Texto muted | `#8F9CAA` |
-| Bordas | `#294054` |
-| Accent | `#FF5F1F` |
+| Surface elevada       | `#11283A` |
+| Card dark             | `#132C40` |
+| Texto principal       | `#FFFFFF` |
+| Texto secundário      | `#C6CED6` |
+| Texto muted           | `#8F9CAA` |
+| Bordas                | `rgba(255,255,255,0.08)` |
+| Accent                | `#FF5F1F` |
 
 ## Acessibilidade e Contraste
 
@@ -326,21 +333,24 @@ A identidade deve cumprir **WCAG 2.2 AA** em interfaces digitais.
 
 ### Navbar
 
-- Background: `#FBFAF8` ou `#FFFFFF` quando for necessária maior separação.
+- Background: `#FBFAF8` ou `#FFFFFF` com backdrop-filter blur sutil quando necessário.
 - Texto: `#0B1726`.
-- Active state: Safety Orange `#FF5F1F` em linha, marcador ou detalhe visual.
+- Active state: Safety Orange `#FF5F1F` em linha fina ou marcador discreto.
 - Hover de texto: Orange Text `#C2410C`.
 - CTA principal: Safety Orange `#FF5F1F`.
-- Borda inferior: `#E8EAED`.
+- Borda inferior: `#E8EAED` ou transparente.
 
 ### Hero
 
 - Base predominantemente clara: `#FBFAF8` ou `#F7F5F1`.
-- Headline: `#0B1726`.
-- Texto: `#24313D` ou `#42505C`.
-- Eyebrows pequenos: `#C2410C` em fundo claro.
-- Linhas, pequenos ícones, indicators e acentos: `#FF5F1F`.
+- **Sem glow decorativo.**
+- Grid: opacidade máxima 0.03 (quase invisível) ou removido.
+- Headline: `#0B1726`, tracking −0.015em.
+- Texto: `#24313D`, line-height 1.75.
+- Eyebrows: `#C2410C` em fundo claro.
+- Acentos e indicadores: `#FF5F1F` com extrema parcimônia.
 - O hero nunca deve virar uma grande superfície laranja.
+- Espaçamento generoso entre elementos (mínimo 40px entre blocos principais).
 
 ### Botões
 
@@ -349,7 +359,7 @@ A identidade deve cumprir **WCAG 2.2 AA** em interfaces digitais.
 - Texto: `#0B1726`.
 - Hover: `#F04F14`.
 - Active: `#DC4510`.
-- Focus ring: `0 0 0 4px rgba(255, 95, 31, 0.20)`.
+- Focus ring: `0 0 0 3px rgba(255, 95, 31, 0.18)`.
 
 **Secundário**
 - Background: transparente ou `#FFFFFF`.
@@ -360,14 +370,15 @@ A identidade deve cumprir **WCAG 2.2 AA** em interfaces digitais.
 **Links / Tertiary**
 - Em fundo claro: `#C2410C`.
 - Hover: `#A93608`.
-- Em fundo escuro: Safety Orange `#FF5F1F` pode ser usado quando o contraste for adequado.
+- Em fundo escuro: Safety Orange `#FF5F1F` quando o contraste for adequado.
 
 ### Cards
 
 - Background claro: `#FFFFFF`.
 - Border: `1px solid #E1E5E9`.
-- Shadow padrão: `0 4px 16px rgba(11, 23, 38, 0.06)`.
-- Hover interativo: deslocamento máximo de `-2px`, border com `rgba(255, 95, 31, 0.35)` e sombra discreta.
+- Shadow padrão: `0 4px 24px rgba(11, 23, 38, 0.05)`.
+- Hover interativo: deslocamento máximo de −2px, border com `rgba(255, 95, 31, 0.35)` e sombra `0 8px 32px rgba(11, 23, 38, 0.08)`.
+- Padding interno recomendado: 40px.
 - Não usar borda laranja completa como padrão. O orange deve atuar como detalhe, indicador ou estado.
 
 ### Formulários
@@ -390,15 +401,15 @@ A identidade deve cumprir **WCAG 2.2 AA** em interfaces digitais.
 
 ## Footer — Regra de Consistência
 
-Todos os footers da RC2 devem ter **a mesma linguagem visual**, independentemente da página.
+Todos os footers da RC2 devem manter a mesma linguagem visual, independentemente da página.
 
 **Base recomendada:**
 - Background: `#081827`.
 - Variação tonal permitida: `#0C2032`.
 - Texto principal: `#FFFFFF`.
 - Texto secundário: `#C6CED6`.
-- Headings e pequenos detalhes: Safety Orange `#FF5F1F` ou Orange Text conforme contraste.
-- Borders: `rgba(255,255,255,0.10)` ou `#294054`.
+- Headings e pequenos detalhes: Safety Orange `#FF5F1F` ou Orange Text, conforme contraste.
+- Borders: `rgba(255,255,255,0.08)`.
 
 É permitido um gradiente tonal praticamente imperceptível entre Navy Core e Navy Secondary:
 
@@ -406,7 +417,7 @@ Todos os footers da RC2 devem ter **a mesma linguagem visual**, independentement
 background: linear-gradient(135deg, #081827 0%, #0C2032 100%);
 ```
 
-Esse gradiente é funcional e tonal; não deve parecer um efeito decorativo.
+Esse gradiente é funcional e tonal — não deve parecer um efeito decorativo.
 
 ## Seção "Diferencial"
 
@@ -416,8 +427,8 @@ A seção **"Tecnologia com visão de operação"** deve pertencer à mesma fam�
 - Heading: `#FFFFFF`.
 - Body: `#C6CED6`.
 - Ícones e highlights: `#FF5F1F`.
-- Divisórias: `rgba(255,255,255,0.10)`.
-- Grid, dots ou textura técnica podem existir apenas de forma muito discreta.
+- Divisórias: `rgba(255,255,255,0.08)`.
+- Grid, dots ou textura técnica podem existir apenas de forma muito discreta (opacidade ≤ 0.04).
 
 A seção deve se diferenciar do footer por composição e conteúdo, não por introduzir uma nova cor estrutural.
 
@@ -431,33 +442,34 @@ O verde oficial do WhatsApp deve ser preservado nos elementos diretamente associ
 
 Barlow foi desenhada a partir da sinalização de rodovias e indústrias da Califórnia. Geométrica nos ossos, humanista nos detalhes — exatamente o que a RC2 precisa: precisão sem frieza.
 
-| Uso | Especificação |
-|-----|---------------|
-| **Display / Capas** | Barlow Condensed ExtraBold (800) · uppercase · tracking +0.04em · Graphite Navy em fundo claro ou branco em fundo escuro |
-| **H1 — Headline principal** | Barlow Bold (700) · tracking −0.02em · Graphite Navy `#0B1726` |
-| **H2 — Subtítulo de seção** | Barlow SemiBold (600) · tracking −0.01em · Graphite Navy `#0B1726` |
-| **H3 — Título de card** | Barlow Medium (500) · Graphite Navy `#0B1726` |
-| **Body — Corpo de texto** | Barlow Regular (400) · 14–16px mínimo · line-height 1.7 · Body Slate `#24313D` |
-| **Label / Eyebrow / Tags** | Barlow Condensed Medium · uppercase · letter-spacing +0.10em · Orange Text em fundo claro ou Safety Orange em fundo escuro |
-| **Caption / Rodapé** | Barlow Light (300) · máximo para textos auxiliares · Muted Slate ou Dark Text Secondary conforme tema |
+| Uso                         | Especificação                                                                                                              |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **Display / Capas**         | Barlow Condensed ExtraBold (800) · uppercase · tracking +0.04em · Graphite Navy em fundo claro ou branco em fundo escuro   |
+| **H1 — Headline principal** | Barlow Bold (700) · tracking −0.015em · Graphite Navy `#0B1726`                                                             |
+| **H2 — Subtítulo de seção** | Barlow SemiBold (600) · tracking −0.01em · Graphite Navy `#0B1726`                                                         |
+| **H3 — Título de card**     | Barlow Medium (500) · Graphite Navy `#0B1726`                                                                              |
+| **Body — Corpo de texto**   | Barlow Regular (400) · 14–16px mínimo · line-height 1.75 · Body Slate `#24313D`                                             |
+| **Label / Eyebrow / Tags**  | Barlow Condensed Medium · uppercase · letter-spacing +0.06em · Orange Text em fundo claro ou Safety Orange em fundo escuro |
+| **Caption / Rodapé**        | Barlow Light (300) · máximo para textos auxiliares · Muted Slate ou Dark Text Secondary conforme tema                      |
 
 ### Regras Tipográficas
 
 - Barlow Condensed ExtraBold **apenas** em display e capas — o impacto vem da raridade.
-- Labels sempre em maiúsculas com letter-spacing generoso — a "voz técnica" da marca.
-- Headlines com tracking negativo (−0.02em) — aperta como tipo de instrumento de precisão.
+- Labels sempre em maiúsculas com letter-spacing controlado (+0.06em) — a "voz técnica" da marca, mais contemporânea.
+- Headlines com tracking negativo moderado (−0.015em) — precisão sem compressão excessiva.
 - Nunca misture pesos adjacentes sem salto claro: Bold → Regular, não Bold → SemiBold.
 - Corpo de texto nunca abaixo de 14px em digital, 10pt em impresso.
+- Line-height do body: 1.75 (textos longos podem chegar a 1.8).
 - Itálico reservado para citações e referências técnicas — nunca decorativo.
 
 ## Estilo de Fotografia e Ícones
 
-| Elemento | Diretriz |
-|----------|----------|
-| **Fotografia** | Ambientes de trabalho reais, telas de ferramentas em uso, pessoas em contexto operacional. Temperatura de cor neutra a levemente quente. Evitar stock genérico de homens de terno apontando para telas. |
-| **Tratamento de foto** | Sem overlay colorido. Contraste controlado. Compatível com a base Warm Neutral e com áreas Navy. |
-| **Ícones** | Phosphor Icons ou Lucide — traço fino, geométrico. Peso outline ou filled consistente. Cor: Graphite Navy em contexto neutro ou Safety Orange em ação/destaque. |
-| **Ilustração** | Diagramas de fluxo, mapas de processo e elementos técnicos. Estilo plano ou isométrico discreto com a paleta da marca. Gradientes apenas tonais e sutis dentro da família Navy/Neutral. |
+| Elemento               | Diretriz                                                                                                                                                                                                |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Fotografia**         | Ambientes de trabalho reais, telas de ferramentas em uso, pessoas em contexto operacional. Temperatura de cor neutra a levemente quente. Evitar stock genérico de homens de terno apontando para telas. |
+| **Tratamento de foto** | Sem overlay colorido. Contraste controlado. Compatível com a base Warm Neutral e com áreas Navy.                                                                                                        |
+| **Ícones**             | Phosphor Icons ou Lucide — traço fino, geométrico. Peso outline ou filled consistente. Cor: Graphite Navy em contexto neutro ou Safety Orange em ação/destaque.                                         |
+| **Ilustração**         | Diagramas de fluxo, mapas de processo e elementos técnicos. Estilo plano ou isométrico discreto com a paleta da marca. Gradientes apenas tonais e sutis dentro da família Navy/Neutral.                 |
 
 ## Design Tokens — Referência Digital
 
@@ -465,56 +477,96 @@ Os nomes finais devem respeitar a arquitetura do projeto, mas a semântica recom
 
 ```css
 :root {
+  /* Brand */
   --color-brand: #FF5F1F;
   --color-brand-text: #C2410C;
   --color-brand-hover: #F04F14;
+  --color-brand-active: #DC4510;
   --color-brand-soft: #FFF0E9;
+  --color-brand-muted: rgba(255, 95, 31, 0.12);
+  --color-brand-border: rgba(255, 95, 31, 0.35);
 
+  /* Backgrounds */
   --color-background: #F7F5F1;
   --color-background-alt: #FBFAF8;
-
   --color-surface: #FFFFFF;
   --color-surface-secondary: #F2F3F4;
 
+  /* Text */
   --color-foreground: #0B1726;
   --color-text: #24313D;
   --color-text-secondary: #66717D;
   --color-text-muted: #89939D;
 
+  /* Borders */
   --color-border: #DDE2E7;
   --color-border-subtle: #E8EAED;
 
+  /* Dark */
   --color-dark: #081827;
   --color-dark-secondary: #0C2032;
   --color-dark-elevated: #11283A;
-  --color-dark-border: #294054;
+  --color-dark-card: #132C40;
+  --color-dark-border: rgba(255, 255, 255, 0.08);
   --color-dark-text: #FFFFFF;
   --color-dark-text-secondary: #C6CED6;
 
+  /* Semantic */
   --color-success: #17835C;
   --color-warning: #A96000;
   --color-error: #C43D3D;
+
+  /* Spacing */
+  --space-section-y: 120px;
+  --space-section-y-mobile: 80px;
+  --space-block: 64px;
+  --space-card-padding: 40px;
+  --space-element-gap: 24px;
+
+  /* Typography */
+  --tracking-label: 0.06em;
+  --tracking-h1: -0.015em;
+  --tracking-h2: -0.01em;
+  --line-height-body: 1.75;
+
+  /* Shadows & Focus */
+  --shadow-card: 0 4px 24px rgba(11, 23, 38, 0.05);
+  --shadow-card-hover: 0 8px 32px rgba(11, 23, 38, 0.08);
+  --focus-ring: 0 0 0 3px rgba(255, 95, 31, 0.18);
+
+  /* Grid */
+  --grid-opacity: 0.03;
 }
 ```
+
+## Princípios de Composição Visual
+
+1. **Respiração primeiro** — Prefira espaço vazio a mais um elemento.
+2. **Orange é sinal, não decoração** — Aparece só onde há ação, estado ou prioridade.
+3. **Profundidade controlada** — Alternar seções claras e dark cria ritmo e autoridade.
+4. **Menos competição visual** — Em cada viewport, um elemento deve dominar. Os outros apoiam.
+5. **Transições longas e suaves** — 250–350ms com ease-out. Nada de resposta instantânea.
+6. **Grid quase invisível** — Opacidade máxima 0.03. Nunca como elemento protagonista.
 
 ## O que Evitar na Identidade Visual
 
 - Verde escuro como cor estrutural, institucional ou background de grandes áreas.
 - Azul saturado, ciano, roxo ou neon como cores concorrentes ao Safety Orange.
-- Safety Orange em mais de 10% da composição sem justificativa funcional.
+- Safety Orange em mais de 8% da composição sem justificativa funcional.
 - `#FF5F1F` em texto pequeno sobre branco quando não atingir WCAG AA.
 - Gradientes coloridos chamativos — especialmente roxo+rosa ou azul+ciano de "startup de IA".
-- Excesso de glow, glassmorphism, sombras, neon ou efeitos sem função.
+- Excesso de glow, glassmorphism, sombras pesadas, neon ou efeitos sem função.
 - Ícones de robôs, cérebros digitais ou chips como clichê visual dominante.
 - Tipografias serifadas ou com excesso de personalidade.
 - Layouts sobrecarregados — o que a RC2 vende é clareza.
 - Inconsistência entre footers ou áreas dark de páginas diferentes.
+- Grid visível ou glows decorativos no hero.
 
 ---
 
 # 5. Logo — The Signal Interrupt
 
-> ⚠️ Esta seção foi alinhada à nova paleta na Versão 2.1 do Brand Guide.
+> Esta seção permanece alinhada à paleta Navy + Safety Orange.
 
 ## Conceito
 
@@ -574,6 +626,7 @@ As três barras formam um "gatilho de processo" — o momento exato em que uma t
 - Prova social antes da venda: experiência do fundador, setores atendidos, stack utilizada.
 - CTA único e consistente em todas as páginas: "Solicitar Diagnóstico".
 - Velocidade de carregamento como elemento de marca — site lento contradiz o discurso de eficiência.
+- Espaçamento generoso e hierarquia visual clara.
 
 ## Como Deve se Comunicar nas Redes Sociais
 
@@ -636,7 +689,8 @@ IA · Automações · Operações Digitais
 | Falar de resultado operacional | Falar de "revolução" ou "disrupção" |
 | Mostrar o fundador e sua experiência | Esconder quem está por trás da empresa |
 | Oferecer o diagnóstico como ponto de entrada | Tentar vender o projeto maior de cara |
-| Manter visual limpo e consistente | Misturar estilos, fontes e tons diferentes |
+| Manter visual limpo, respirado e consistente | Misturar estilos, fontes e tons diferentes |
+| Usar orange com parcimônia | Transformar orange em decoração |
 
 ---
 
@@ -663,8 +717,8 @@ IA · Automações · Operações Digitais
 
 | Prioridade | Ação | Prazo |
 |------------|------|-------|
-| 1 | **Contratar designer para o logo** — Briefar o Signal Interrupt com as instruções desta seção. Entregar em SVG + PNG em todas as versões. | Semana 1 |
-| 2 | **Aplicar identidade no site MVP** — Paleta High-End Tool 2.1 (Warm Neutral + Navy + Safety Orange) + Barlow + logo aprovado. Centralizar tokens e garantir consistência entre temas claro/escuro. | Semana 2 |
+| 1 | **Aplicar identidade refinada no site** — Tokens de espaçamento, tipografia e orange contido. Remover glow e reduzir grid. | Imediato |
+| 2 | **Contratar designer para o logo** — Briefar o Signal Interrupt com as instruções desta seção. Entregar em SVG + PNG em todas as versões. | Semana 1 |
 | 3 | **Criar perfis profissionais** — LinkedIn da empresa + pessoal do Robson com bio e histórico completos. | Semana 1 |
 | 4 | **Gerar 1 mini case** — Documentar o primeiro projeto com resultado mensurável — mesmo que anônimo. | Mês 1 |
 | 5 | **Publicar conteúdo de autoridade** — 3x/semana no LinkedIn: insights de implementação, dores de PMEs. | Semana 2+ |
@@ -674,8 +728,9 @@ IA · Automações · Operações Digitais
 
 ## Resumo Executivo — Essência da Marca RC2 Soluções
 
-A RC2 Soluções é uma consultoria de IA, automações e operações digitais para pequenas e médias empresas, fundada por Robson Azevedo, profissional com mais de 20 anos de experiência em TI, e-commerce e transformação digital. Seu posicionamento central é único: não vende tecnologia — entrega processos funcionando. O arquétipo da marca é o Especialista Sábio com traços do Criador: autoridade que constrói soluções reais. A identidade visual usa a paleta "High-End Tool 2.1" — neutros claros como base, Navy profundo como âncora e Safety Orange `#FF5F1F` como assinatura de ação e precisão — com tipografia Barlow, de origem industrial californiana, geométrica e sem frieza. O verde deixa de ser estrutural e permanece apenas em contextos semânticos ou de marcas externas, como WhatsApp. O logo Signal Interrupt comunica em forma geométrica o que a RC2 faz: um padrão que é interrompido no ponto exato de transformação. A tagline recomendada: "Tecnologia que funciona. Operação que entrega." A maior vantagem competitiva da RC2 é intangível mas poderosa: a credibilidade de quem já fez isso em operações reais — e pode provar.
+A RC2 Soluções é uma consultoria de IA, automações e operações digitais para pequenas e médias empresas, fundada por Robson Azevedo, profissional com mais de 20 anos de experiência em TI, e-commerce e transformação digital. Seu posicionamento central é único: não vende tecnologia — entrega processos funcionando. O arquétipo da marca é o Especialista Sábio com traços do Criador: autoridade que constrói soluções reais. A identidade visual usa a paleta "High-End Tool" — neutros claros como base, Navy profundo como âncora e Safety Orange `#FF5F1F` como assinatura de ação e precisão — com tipografia Barlow, de origem industrial californiana, geométrica e sem frieza. O verde deixa de ser estrutural e permanece apenas em contextos semânticos ou de marcas externas, como WhatsApp. O logo Signal Interrupt comunica em forma geométrica o que a RC2 faz: um padrão que é interrompido no ponto exato de transformação. A maior vantagem competitiva da RC2 é intangível mas poderosa: a credibilidade de quem já fez isso em operações reais — e pode provar.
 
 ---
 
-*RC2 Soluções · Brand Strategy & Identity Guide v2.1 · 2026*
+*RC2 Soluções · Brand Strategy & Identity Guide v2.2 · 2026*  
+*Refinado para elegância, fluidez e sofisticação*
