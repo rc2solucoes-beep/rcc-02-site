@@ -13,16 +13,14 @@ import { test, expect } from "@playwright/test";
  */
 
 /** Serviços que continuam respondendo 200. */
-const RENDERED_SLUGS = [
-  "automacoes-com-ia",
-  "e-commerce",
-  "sites-e-landing-pages",
-] as const;
+const RENDERED_SLUGS = ["e-commerce", "sites-e-landing-pages"] as const;
 
-/** Serviços migrados: slug → âncora de destino. */
+/** Serviços migrados: slug → destino. */
 const REDIRECTED_SLUGS = {
   "agentes-de-ia": "/solucoes#ia-para-operacoes",
   "automacao-de-processos": "/solucoes#automacao-de-processos",
+  // Fase 6F — território integralmente Zapbox, consolidado na ponte.
+  "automacoes-com-ia": "/zapbox",
 } as const;
 
 const ALL_SLUGS = [...RENDERED_SLUGS, ...Object.keys(REDIRECTED_SLUGS)];
@@ -90,14 +88,15 @@ test.describe("Serviços preservados", () => {
 });
 
 test.describe("Serviços migrados", () => {
-  for (const [slug, anchor] of Object.entries(REDIRECTED_SLUGS)) {
-    test(`/servicos/${slug} redireciona para ${anchor}`, async ({ page }) => {
+  for (const [slug, destino] of Object.entries(REDIRECTED_SLUGS)) {
+    test(`/servicos/${slug} redireciona para ${destino}`, async ({ page }) => {
       const response = await page.goto(`/servicos/${slug}`);
       expect(response?.status()).toBe(200);
-      await expect(page).toHaveURL(new RegExp(`${anchor.replace("#", "#")}$`));
+      await expect(page).toHaveURL(new RegExp(`${destino}$`));
 
-      const id = anchor.split("#")[1];
-      await expect(page.locator(`[id="${id}"]`)).toHaveCount(1);
+      // Nem todo destino é âncora: a Fase 6F migra para a rota `/zapbox`.
+      const id = destino.split("#")[1];
+      if (id) await expect(page.locator(`[id="${id}"]`)).toHaveCount(1);
     });
   }
 
