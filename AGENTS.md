@@ -112,7 +112,8 @@ página**. A proposta aprova CTA contextual quando a página pede:
 | Zapbox | Conhecer Zapbox |
 | Agenda Confirmada | Ver Agenda Confirmada |
 
-Todos levam a `/contato`, exceto Zapbox (link externo).
+Todos levam a `/contato`, exceto Zapbox, que leva à ponte institucional
+`/zapbox` — ver **Handoff RC2 → Zapbox**.
 
 Expressões **descontinuadas**, proibidas como CTA vigente em qualquer página:
 
@@ -157,10 +158,52 @@ Quando a necessidade for predominantemente:
 - vendas pelo WhatsApp
 - Sales AI
 
-o produto correto é o **Zapbox**, link externo para <https://zapbox.cloud/>.
+o produto correto é o **Zapbox**, e o destino é a ponte institucional
+**`/zapbox`** — não o domínio do produto diretamente.
 
 **A RC2 não deve competir com seu próprio produto.** Não crie na RC2 oferta que
 duplique o território do Zapbox.
+
+### Fronteira RC2 × Zapbox
+
+`CD-3 = CHANNEL_AND_OBJECT` (`docs/19`). Quatro donos:
+
+**ZAPBOX** — WhatsApp · conversa · atendimento · equipe de atendimento · lead ·
+CRM comercial · pipeline · vendas · Sales AI · automações dentro desse fluxo.
+
+**RC2** — processo · workflow · sistemas · APIs · ERP · dados · integração ·
+observabilidade · IA operacional · arquitetura · sustentação técnica.
+
+**Fronteira compartilhada** — a integração entre o Zapbox e os demais sistemas
+pode ser implantada e sustentada pela RC2 **quando contratada**. A RC2 cuida do
+fluxo **entre** as plataformas; não assume a operação que roda **dentro** do
+Zapbox.
+
+**Cliente** — a operação cotidiana: atender, vender, aprovar, faturar, decidir.
+
+**Critério de desempate:** classifique pelo **objeto principal do trabalho**,
+nunca pelo vocabulário — as duas marcas usam palavras parecidas para automação e
+integração. Conversa, lead ou venda → Zapbox. Processo, sistema ou dado → RC2.
+
+## Handoff RC2 → Zapbox
+
+`CD-1 = BRIDGE_FIRST` (`docs/19`). O caminho padrão é:
+
+```
+superfície RC2  →  /zapbox  →  https://www.zapbox.cloud/
+```
+
+`/zapbox` é a ponte institucional: explica que o Zapbox é produto da RC2,
+delimita os territórios e encaminha ao produto. **Somente o CTA da ponte sai do
+domínio.**
+
+Não usar como padrão `superfície RC2 → zapbox.cloud` direto. Um contexto pode
+linkar diretamente ao produto, mas exige decisão registrada — não é o default.
+
+Use sempre **`https://www.zapbox.cloud/`**, com `www`: o apex responde 308 e
+custaria um salto extra.
+
+Mencionar o produto em texto não obriga a criar link.
 
 ## Agenda Confirmada
 
@@ -173,7 +216,11 @@ Quando o problema for predominantemente:
 - faltas
 - horários vagos
 
-a solução correta é **Agenda Confirmada**, em `/solucoes/agenda-confirmada`.
+a solução correta é **Agenda Confirmada**.
+
+`DEFER_ROUTE` — a rota `/solucoes/agenda-confirmada` **ainda não existe**
+(`docs/18` §13). Enquanto `CD-2` não for decidida, o CTA é contextual e leva a
+`/contato`; **nunca criar `href` para essa rota**.
 
 ## Serviços despriorizados
 
@@ -197,7 +244,8 @@ automações.
 ```
 /
 ├── /solucoes
-│   └── /solucoes/agenda-confirmada
+│   └── /solucoes/agenda-confirmada   (DEFERRED — não criada; ver CD-2)
+├── /zapbox                            (ponte institucional do produto)
 ├── /sobre
 ├── /blog
 ├── /contato
@@ -205,7 +253,8 @@ automações.
 └── /termos
 ```
 
-Zapbox é link externo: <https://zapbox.cloud/>
+`/zapbox` é rota da RC2. O destino do produto é
+<https://www.zapbox.cloud/>, alcançado pelo CTA da ponte.
 
 A existência atual de URLs antigas **não autoriza removê-las ou redirecioná-las**
 sem análise de SEO e plano de migração.
@@ -224,8 +273,15 @@ Antes de alterar qualquer URL:
 6. preservar intenção de busca
 7. documentar o redirect
 
-URLs relacionadas a WhatsApp só devem ser migradas para o Zapbox quando houver
-página equivalente no produto.
+URLs de território Zapbox migram para a ponte **`/zapbox`** — redirect interno,
+reversível, sem transferir sinal para fora do domínio.
+
+**Redirect externo permanente para o Zapbox não é requisito da Fase 6.** Só
+pode ser considerado depois de: equivalência comprovada · ponte publicada ·
+links internos migrados · analytics do handoff funcionando · Search Console
+revisado · backlinks conhecidos · destino externo estável · período de
+observação cumprido. A duração desse período é decisão de negócio, não fixada
+aqui.
 
 ## Claims
 

@@ -1,10 +1,13 @@
 # RC2 Soluções — Product Context
 
-> **Estado deste documento.** Descreve o **posicionamento desejado** e a
-> **arquitetura-alvo** do site. A migração **ainda não foi implementada** — o
-> site em produção continua com a arquitetura e a copy antigas. Onde este
-> documento descreve algo que ainda não existe, o texto marca explicitamente
-> *desired positioning*, *target architecture* ou *planned migration*.
+> **Estado deste documento.** Descreve o **posicionamento** e a
+> **arquitetura-alvo** do site. A migração está **parcialmente implementada**:
+> as Fases 0 a 6D já publicaram o posicionamento na Home, a consolidação de
+> `/solucoes` com as quatro competências, a primeira migração de URLs e a ponte
+> institucional `/zapbox`. Continuam pendentes as migrações residuais de
+> território Zapbox e a rota da Agenda Confirmada. Onde este documento descreve
+> algo que ainda não existe, o texto marca explicitamente *desired
+> positioning*, *target architecture* ou *planned migration*.
 >
 > Fontes oficiais, nesta ordem de autoridade:
 > `documentos-base/RC2_PROPOSTA_ATUALIZACAO.txt` ·
@@ -32,17 +35,41 @@ empresa de chatbot.
 
 Território: **WhatsApp · atendimento · vendas · CRM · Sales AI.**
 
-Zapbox é produto próprio da RC2 e link externo: <https://zapbox.cloud/>.
-Quando a necessidade do cliente for predominantemente desse território, a oferta
-correta é Zapbox. **A RC2 não compete com o próprio produto.**
+Zapbox é **produto próprio da RC2**. No domínio institucional ele tem uma
+**ponte**, `/zapbox`, que explica a relação entre as marcas, delimita os
+territórios e encaminha ao produto em <https://www.zapbox.cloud/>.
+
+`CD-1 = BRIDGE_FIRST` — as superfícies da RC2 usam **`/zapbox`** como destino
+padrão; só o CTA da ponte sai do domínio. Quando a necessidade do cliente for
+predominantemente desse território, a oferta correta é Zapbox.
+**A RC2 não compete com o próprio produto.**
+
+### Fronteira RC2 × Zapbox — *CD-3*
+
+**Zapbox** é o canal e o funil: conversa, WhatsApp, atendimento, equipe, lead,
+CRM comercial, pipeline, vendas e Sales AI.
+
+**RC2** é o processo e os sistemas: workflows, integrações, APIs, ERP, dados,
+observabilidade, IA operacional, arquitetura e sustentação técnica.
+
+**Fronteira compartilhada:** a integração entre o Zapbox e os demais sistemas é
+da RC2 quando contratada — o fluxo **entre** as plataformas, nunca a operação
+que roda **dentro** delas.
+
+**Cliente:** a operação cotidiana — atender, vender, aprovar, faturar, decidir.
+
+Na dúvida, classifique pelo **objeto do trabalho**, não pelo vocabulário.
 
 ### Solução vertical — Agenda Confirmada
 
 Território: **clínicas · confirmações · lembretes · agenda.**
 
-Solução vertical da RC2, dentro da marca, em `/solucoes/agenda-confirmada`.
-É a primeira prova de um modelo importante: a RC2 identifica um problema
-repetível e o transforma em solução vertical.
+Solução vertical da RC2, dentro da marca. É a primeira prova de um modelo
+importante: a RC2 identifica um problema repetível e o transforma em solução
+vertical.
+
+A rota `/solucoes/agenda-confirmada` é *planned migration* — **`DEFER_ROUTE`**,
+ainda não criada. O posicionamento está aprovado; a página aguarda `CD-2`.
 
 ## Problema central
 
@@ -130,7 +157,8 @@ apenas implanta; acompanha depois.
 ```
 /
 ├── /solucoes
-│   └── /solucoes/agenda-confirmada
+│   └── /solucoes/agenda-confirmada   (DEFERRED — planned, ver CD-2)
+├── /zapbox                            (rota RC2 — ponte do produto)
 ├── /sobre
 ├── /blog
 ├── /contato
@@ -138,7 +166,9 @@ apenas implanta; acompanha depois.
 └── /termos
 ```
 
-Zapbox: <https://zapbox.cloud/> (link externo, não rota interna).
+**Rota RC2:** `/zapbox` — publicada.
+**Destino do produto:** <https://www.zapbox.cloud/> — fora do domínio,
+alcançado pelo CTA da ponte.
 
 **Esta é a arquitetura-alvo — *planned migration*, não estado atual.** O site
 hoje ainda tem `/servicos` e suas subpáginas, `/solucoes-com-ia`, as páginas de
