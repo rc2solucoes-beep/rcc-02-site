@@ -139,10 +139,11 @@ describe("Home — competências", () => {
 });
 
 describe("Home — produtos", () => {
-  it("Zapbox aponta para o domínio externo do produto", async () => {
+  it("Zapbox aponta para a ponte interna, não para o domínio do produto", async () => {
+    // Fase 6E: BRIDGE_FIRST — a saída para o produto acontece em `/zapbox`.
     const { HOME_PRODUCTS } = await import("@/lib/content/home");
-    expect(HOME_PRODUCTS.zapbox.href).toBe("https://zapbox.cloud/");
-    expect(HOME_PRODUCTS.zapbox.external).toBe(true);
+    expect(HOME_PRODUCTS.zapbox.href).toBe("/zapbox");
+    expect(HOME_PRODUCTS.zapbox.external).toBe(false);
   });
 
   it("Agenda Confirmada usa CTA temporário para /contato", async () => {

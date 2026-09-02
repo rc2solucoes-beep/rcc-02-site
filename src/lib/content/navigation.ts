@@ -48,9 +48,14 @@ export const FOOTER_SOLUTION_LINKS: readonly TrackedNavLink[] =
     analyticsLabel: anchor.replaceAll("-", "_"),
   }));
 
-/** Zapbox é produto próprio da RC2, em domínio externo — nunca competência. */
+/**
+ * Zapbox é produto próprio da RC2 — nunca competência.
+ *
+ * Fase 6E: o destino é a ponte `/zapbox`, não o domínio do produto. A ponte
+ * delimita o território e faz a única saída autorizada (`CD-1 = BRIDGE_FIRST`).
+ */
 export const FOOTER_PRODUCT_LINK = {
-  href: "https://zapbox.cloud/",
+  href: "/zapbox",
   label: "Zapbox",
   description: "atendimento e vendas pelo WhatsApp",
   analyticsLabel: "conhecer_zapbox",
