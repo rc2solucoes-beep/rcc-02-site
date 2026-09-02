@@ -86,14 +86,18 @@ export function SolutionsManagedOps() {
               A Operação Gerenciada não é terceirização nem BPO, e não cobre a
               gestão cotidiana de conversas de WhatsApp, a operação comercial
               dentro do CRM nem equipe de atendimento — esse território é do{" "}
-              <a
-                href="https://zapbox.cloud/"
-                target="_blank"
-                rel="noopener noreferrer"
+              <TrackedLink
+                href="/zapbox"
+                tracking={{
+                  kind: "cta",
+                  location: "solutions_managed_ops",
+                  label: "conhecer_zapbox",
+                  destination: "/zapbox",
+                }}
                 className="font-semibold text-rc2-brand underline underline-offset-4 hover:opacity-80 transition-opacity"
               >
                 Zapbox
-              </a>
+              </TrackedLink>
               , produto da própria RC2.
             </p>
             <p className="text-sm text-rc2-dark-text-secondary leading-relaxed mb-4">

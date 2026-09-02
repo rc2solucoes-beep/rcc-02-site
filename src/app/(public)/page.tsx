@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { ArrowUpRight } from "lucide-react";
 import { buildOg, BASE_URL } from "@/lib/siteMetadata";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { HomeCtaBlock } from "@/components/marketing/HomeCtaBlock";
@@ -140,11 +139,14 @@ export default async function HomePage() {
                 <p className="text-sm text-rc2-dark-text-secondary leading-relaxed">
                   {demo.description}
                 </p>
+                {/*
+                  Fase 6E: o único demo com link é o Zapbox, agora interno
+                  (`/zapbox`). Um demo externo futuro precisa reintroduzir
+                  `target`, `rel` e ícone de saída explicitamente.
+                */}
                 {demo.href && demo.ctaLabel && demo.analyticsLabel && (
                   <TrackedLink
                     href={demo.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     tracking={{
                       kind: "cta",
                       location: "home_demos",
@@ -154,7 +156,6 @@ export default async function HomePage() {
                     className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-rc2-dark-text hover:underline transition-[color,text-decoration-color] duration-200 underline-offset-4"
                   >
                     {demo.ctaLabel}
-                    <ArrowUpRight size={14} />
                   </TrackedLink>
                 )}
               </ScrollReveal>

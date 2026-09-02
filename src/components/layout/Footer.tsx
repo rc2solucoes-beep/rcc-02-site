@@ -78,10 +78,9 @@ export function Footer() {
             </ul>
 
             <h3 className="rc2-label mb-3 mt-6 text-rc2-brand">Produto</h3>
+            {/* Fase 6E: destino interno (`/zapbox`) — sem semântica de saída. */}
             <TrackedLink
               href={FOOTER_PRODUCT_LINK.href}
-              target="_blank"
-              rel="noopener noreferrer"
               tracking={{
                 kind: "cta",
                 location: "footer_produto",
