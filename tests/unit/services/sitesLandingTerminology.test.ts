@@ -50,7 +50,8 @@ describe("sites-e-landing-pages — terminologia vigente", () => {
   it("preserva CTA e links relacionados", () => {
     expect(service?.cta).toContain("Transforme seu site em um canal ativo");
     expect(service?.relatedLinks.map((link) => link.href)).toEqual([
-      "/servicos/automacoes-com-ia",
+      // Fase 6F: o território Zapbox é entregue pela ponte (docs/22 §11.1).
+      "/zapbox",
       "/servicos/e-commerce",
       "/contato",
     ]);

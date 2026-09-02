@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { services } from "@/lib/content/services";
 import { solutions } from "@/lib/content/solutions";
+import { MIGRATED_SOLUTION_SLUGS } from "@/lib/content/migratedRoutes";
 
 /**
  * Fase 6D — descoberta da ponte (docs/20 §9).
@@ -36,15 +37,17 @@ describe("Sitemap — nada é removido na 6D", () => {
     "/solucoes",
     "/servicos",
     "/solucoes-com-ia",
-    "/servicos/automacoes-com-ia",
     "/servicos/e-commerce",
     "/servicos/sites-e-landing-pages",
   ])("%s continua publicada", (path) => {
     expect(paths).toContain(path);
   });
 
-  it("as cinco subpáginas de /solucoes continuam publicadas", () => {
-    for (const solution of solutions) {
+  it("as subpáginas de /solucoes fora do território Zapbox continuam publicadas", () => {
+    // A 6D não removeu nada; a 6F removeu as três de território Zapbox.
+    for (const solution of solutions.filter(
+      (s) => !MIGRATED_SOLUTION_SLUGS.has(s.slug)
+    )) {
       expect(paths).toContain(`/solucoes/${solution.slug}`);
     }
   });

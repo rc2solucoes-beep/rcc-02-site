@@ -113,9 +113,16 @@ describe("Migração Zapbox — sitemap", () => {
     expect(await paths()).toContain(path);
   });
 
-  it("o sitemap fica com 26 URLs", async () => {
-    // 30 no baseline (docs/22 §9) menos as quatro canônicas migradas.
-    expect(await paths()).toHaveLength(26);
+  it("publica exatamente as coleções menos os slugs migrados", async () => {
+    // A contagem absoluta de Production (30 → 26) depende dos posts do blog,
+    // mockados aqui como vazio. O contrato verificável no unit é a exclusão.
+    const p = await paths();
+    expect(p.filter((x) => x.startsWith("/servicos/"))).toHaveLength(
+      services.length - 3
+    );
+    expect(p.filter((x) => x.startsWith("/solucoes/"))).toHaveLength(
+      solutions.length - 3
+    );
   });
 
   it("nenhuma entrada usa fragmento nem duplica", async () => {

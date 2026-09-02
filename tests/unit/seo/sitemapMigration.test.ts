@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { services } from "@/lib/content/services";
 import { solutions } from "@/lib/content/solutions";
+import { MIGRATED_SOLUTION_SLUGS } from "@/lib/content/migratedRoutes";
 
 /**
  * Sitemap após a migração SEO pós-Fase 5 — docs/16 §11.
@@ -40,15 +41,17 @@ describe("Sitemap — URLs preservadas permanecem", () => {
     "/solucoes",
     "/servicos",
     "/solucoes-com-ia",
-    "/servicos/automacoes-com-ia",
     "/servicos/e-commerce",
     "/servicos/sites-e-landing-pages",
   ])("%s continua publicada", (path) => {
     expect(paths).toContain(path);
   });
 
-  it("as cinco subpáginas de /solucoes continuam publicadas", () => {
-    for (const solution of solutions) {
+  it("as subpáginas de /solucoes que não migraram continuam publicadas", () => {
+    // Fase 6F: as três de território Zapbox saíram (docs/22 §9).
+    for (const solution of solutions.filter(
+      (s) => !MIGRATED_SOLUTION_SLUGS.has(s.slug)
+    )) {
       expect(paths).toContain(`/solucoes/${solution.slug}`);
     }
   });
