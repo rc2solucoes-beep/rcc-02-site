@@ -28,8 +28,9 @@ test.describe("Copy de personalidade visual", () => {
     await expect(main.getByText(/20 anos/i).first()).toBeVisible();
     await expect(main.getByText(/Edenred/i).first()).toBeVisible();
 
-    // Fronteira de território: o Zapbox é produto, com link externo próprio.
-    await expect(main.locator('a[href="https://zapbox.cloud/"]').first()).toBeVisible();
+    // Fronteira de território: o Zapbox é produto, alcançado pela ponte.
+    // Fase 6E (BRIDGE_FIRST): o destino é `/zapbox`, não o domínio do produto.
+    await expect(main.locator('a[href="/zapbox"]').first()).toBeVisible();
 
     // CTA principal da marca leva ao contato.
     await expect(
