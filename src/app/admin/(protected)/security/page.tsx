@@ -146,7 +146,7 @@ export default async function SecurityPage({
             <input type="date" name="from" defaultValue={from ?? ""} className="h-9 rounded border border-border px-2 text-sm" />
             <input type="date" name="to" defaultValue={to ?? ""} className="h-9 rounded border border-border px-2 text-sm" />
             <div className="flex items-center gap-2">
-              <button type="submit" className="h-9 px-3 rounded bg-rc2-orange text-white text-sm font-medium">Filtrar</button>
+              <button type="submit" className="h-9 px-3 rounded bg-rc2-orange text-rc2-heading text-sm font-medium">Filtrar</button>
               <a href="/admin/security" className="text-sm text-rc2-ebony/70 hover:text-rc2-ebony">Limpar filtros</a>
             </div>
           </form>

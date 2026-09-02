@@ -67,10 +67,6 @@ export default async function HomePage() {
       {/* ── 1. Hero ── */}
       <section className="rc2-grain rc2-hero-stage relative overflow-hidden bg-rc2-bg rc2-section md:py-28 lg:py-32">
         <div className="rc2-blueprint pointer-events-none absolute inset-0 opacity-50" aria-hidden />
-        <div
-          className="pointer-events-none absolute -right-32 -top-32 h-[520px] w-[520px] rounded-full bg-rc2-brand/15 blur-3xl"
-          aria-hidden
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="rc2-hero-enter rc2-hero-enter--1">
             <SectionLabel className="rc2-rule block mb-5">

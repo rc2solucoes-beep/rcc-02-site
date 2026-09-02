@@ -38,7 +38,7 @@ function ToolbarButton({
       className={cn(
         "p-1.5 rounded text-sm transition-colors",
         active
-          ? "bg-rc2-orange text-white"
+          ? "bg-rc2-orange text-rc2-heading"
           : "text-rc2-ebony/70 hover:text-rc2-ebony hover:bg-zinc-100"
       )}
     >

@@ -21,7 +21,7 @@ export default function NotFound() {
           href="/"
           className={cn(
             buttonVariants({ variant: "default" }),
-            "font-semibold px-8 bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90"
+            "font-semibold px-8 bg-rc2-orange text-rc2-heading hover:bg-rc2-orange/90"
           )}
         >
           Voltar ao início

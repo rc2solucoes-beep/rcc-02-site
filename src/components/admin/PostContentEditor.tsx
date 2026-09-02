@@ -42,7 +42,7 @@ export function PostContentEditor({
           aria-pressed={mode === "visual"}
           className={`rounded px-3 py-1.5 text-sm transition-colors ${
             mode === "visual"
-              ? "bg-rc2-orange text-white"
+              ? "bg-rc2-orange text-rc2-heading"
               : "text-rc2-ebony/70 hover:text-rc2-ebony hover:bg-zinc-100"
           }`}
           onClick={() => setMode("visual")}
@@ -54,7 +54,7 @@ export function PostContentEditor({
           aria-pressed={mode === "html"}
           className={`rounded px-3 py-1.5 text-sm transition-colors ${
             mode === "html"
-              ? "bg-rc2-orange text-white"
+              ? "bg-rc2-orange text-rc2-heading"
               : "text-rc2-ebony/70 hover:text-rc2-ebony hover:bg-zinc-100"
           }`}
           onClick={() => setMode("html")}

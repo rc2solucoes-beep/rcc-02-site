@@ -40,8 +40,8 @@ describe("PostContentEditor", () => {
     expect(screen.getByRole("button", { name: "Visual" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByRole("button", { name: "HTML" })).toHaveAttribute("aria-pressed", "false");
     expect(screen.getByTestId("rich-editor")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Visual" })).toHaveClass("bg-rc2-orange", "text-white");
-    expect(screen.getByRole("button", { name: "HTML" })).not.toHaveClass("bg-rc2-orange", "text-white");
+    expect(screen.getByRole("button", { name: "Visual" })).toHaveClass("bg-rc2-orange", "text-rc2-heading");
+    expect(screen.getByRole("button", { name: "HTML" })).not.toHaveClass("bg-rc2-orange", "text-rc2-heading");
     expect(screen.getByTestId("rich-editor-content")).toHaveTextContent("<p>Conteudo inicial</p>");
     expect(screen.queryByDisplayValue("<p>Conteudo inicial</p>")).not.toBeInTheDocument();
 
@@ -62,8 +62,8 @@ describe("PostContentEditor", () => {
     const warning = screen.getByText(htmlModeWarning);
 
     expect(screen.getByRole("button", { name: "HTML" })).toHaveAttribute("aria-pressed", "true");
-    expect(screen.getByRole("button", { name: "HTML" })).toHaveClass("bg-rc2-orange", "text-white");
-    expect(screen.getByRole("button", { name: "Visual" })).not.toHaveClass("bg-rc2-orange", "text-white");
+    expect(screen.getByRole("button", { name: "HTML" })).toHaveClass("bg-rc2-orange", "text-rc2-heading");
+    expect(screen.getByRole("button", { name: "Visual" })).not.toHaveClass("bg-rc2-orange", "text-rc2-heading");
     expect(textarea).toHaveValue(content);
     expect(textarea).toHaveAccessibleName(contentLabel);
     expect(textarea).toHaveAttribute("aria-describedby", warning.id);

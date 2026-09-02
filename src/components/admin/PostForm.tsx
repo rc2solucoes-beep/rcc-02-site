@@ -126,7 +126,7 @@ export function PostForm({ post, action }: PostFormProps) {
         <button
           type="submit"
           disabled={pending}
-          className="px-8 h-11 bg-rc2-orange text-white font-semibold text-sm uppercase tracking-wide hover:bg-rc2-orange/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          className="px-8 h-11 bg-rc2-orange text-rc2-heading font-semibold text-sm uppercase tracking-wide hover:bg-rc2-orange/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {pending ? "Salvando..." : "Salvar post"}
         </button>

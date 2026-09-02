@@ -38,10 +38,6 @@ export function PageHero({
         )}
         aria-hidden
       />
-      <div
-        className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full bg-rc2-brand/10 blur-3xl"
-        aria-hidden
-      />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {label && (
           <ScrollReveal distance="16px" duration={500}>

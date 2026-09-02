@@ -150,7 +150,7 @@ export default async function SettingsPage({ searchParams }: Props) {
         <div className="pt-2">
           <button
             type="submit"
-            className="px-8 h-11 bg-rc2-orange text-white font-semibold text-sm uppercase tracking-wide hover:bg-rc2-orange/90 transition-colors rounded"
+            className="px-8 h-11 bg-rc2-orange text-rc2-heading font-semibold text-sm uppercase tracking-wide hover:bg-rc2-orange/90 transition-colors rounded"
           >
             Salvar configurações
           </button>

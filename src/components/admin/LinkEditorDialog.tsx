@@ -218,7 +218,7 @@ export function LinkEditorDialog({
               }}
               className={`flex-1 px-3 py-2 rounded text-sm font-medium transition-colors ${
                 linkType === "external"
-                  ? "bg-rc2-orange text-white"
+                  ? "bg-rc2-orange text-rc2-heading"
                   : "bg-gray-100 text-rc2-ebony/70 hover:bg-gray-200"
               }`}
             >
@@ -231,7 +231,7 @@ export function LinkEditorDialog({
               }}
               className={`flex-1 px-3 py-2 rounded text-sm font-medium transition-colors ${
                 linkType === "internal"
-                  ? "bg-rc2-orange text-white"
+                  ? "bg-rc2-orange text-rc2-heading"
                   : "bg-gray-100 text-rc2-ebony/70 hover:bg-gray-200"
               }`}
             >
