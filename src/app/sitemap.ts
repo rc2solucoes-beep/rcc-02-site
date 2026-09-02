@@ -51,6 +51,12 @@ const staticPages = [
     priority: 0.8,
   },
   {
+    path: "/zapbox",
+    lastModified: "2026-09-02",
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+  {
     path: "/sobre",
     lastModified: "2026-05-18",
     changeFrequency: "monthly",
