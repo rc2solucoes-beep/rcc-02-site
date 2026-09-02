@@ -28,8 +28,10 @@ proponha o fatiamento antes de escrever código.
 | **Zapbox** | WhatsApp + Atendimento + Vendas + CRM + Sales AI |
 | **Agenda Confirmada** | Agenda e confirmações para clínicas |
 
-**Zapbox** é produto próprio da RC2, link externo: <https://zapbox.cloud/>.
-**Agenda Confirmada** é solução vertical RC2, em `/solucoes/agenda-confirmada`.
+**Zapbox** é produto próprio da RC2. Destino padrão: a ponte **`/zapbox`**,
+que encaminha ao produto em <https://www.zapbox.cloud/>.
+**Agenda Confirmada** é solução vertical RC2 — rota `DEFER_ROUTE`, ainda não
+criada; CTA contextual para `/contato`.
 
 Antes de escrever qualquer oferta, pergunte a qual território ela pertence.
 
@@ -42,6 +44,29 @@ Antes de escrever qualquer oferta, pergunte a qual território ela pertence.
 
 **A RC2 não compete com o próprio produto.** Não crie página, serviço ou copy
 RC2 que duplique o território do Zapbox.
+
+### Fronteira — `CHANNEL_AND_OBJECT`
+
+Classifique pelo **objeto principal do trabalho**, não pelo vocabulário: as duas
+marcas usam palavras parecidas para automação e integração.
+
+| Dono | Objeto |
+|---|---|
+| **Zapbox** | conversa · WhatsApp · atendimento · equipe · lead · CRM comercial · pipeline · venda · Sales AI |
+| **RC2** | processo · workflow · sistema · API · ERP · dado · integração · observabilidade · IA operacional |
+| **Fronteira** | integração Zapbox ↔ demais sistemas — da RC2 **quando contratada**; o fluxo *entre* plataformas, nunca a operação *dentro* delas |
+| **Cliente** | a operação cotidiana: atender, vender, aprovar, faturar, decidir |
+
+Conversa, lead ou venda → Zapbox. Processo, sistema ou dado → RC2.
+
+### Handoff — `BRIDGE_FIRST`
+
+```
+superfície RC2  →  /zapbox  →  https://www.zapbox.cloud/
+```
+
+Nunca linke uma superfície RC2 direto ao domínio do produto por padrão. Use
+`https://www.zapbox.cloud/` com **`www`** — o apex responde 308.
 
 ## Posicionamento e mensagem
 
@@ -111,7 +136,8 @@ automações. Não como "fazemos sua loja".
 ```
 /
 ├── /solucoes
-│   └── /solucoes/agenda-confirmada
+│   └── /solucoes/agenda-confirmada   (DEFERRED — não criada)
+├── /zapbox                            (ponte do produto — publicada)
 ├── /sobre
 ├── /blog
 ├── /contato
@@ -119,7 +145,8 @@ automações. Não como "fazemos sua loja".
 └── /termos
 ```
 
-Zapbox entra como link externo, não como rota interna.
+`/zapbox` é rota da RC2. O domínio do produto fica fora da árvore e é alcançado
+pelo CTA da ponte.
 
 Esta é a arquitetura **pretendida**, não uma autorização para apagar o que
 existe. A existência de URLs antigas fora dessa árvore **não autoriza removê-las
@@ -170,8 +197,7 @@ executar em lote — cada linha ainda passa pelo checklist de migração abaixo.
 | `/solucoes/processos-manuais` | incorporar em `/solucoes` ou virar artigo |
 | `/solucoes/sistemas-desconectados` | mesmo tratamento |
 
-**Migrar para Zapbox — só depois de existir página equivalente no produto,
-então 301:**
+**Migrar para a ponte `/zapbox` — redirect interno, reversível:**
 
 - `/servicos/automacoes-com-ia`
 - `/solucoes/atendimento-lento`
@@ -213,9 +239,14 @@ Regras de redirect:
 - Redirect permanente só quando a decisão for permanente.
 - Todo redirect fica documentado.
 
-**URLs relacionadas a WhatsApp só migram para o Zapbox quando houver página
-equivalente no produto.** Sem equivalente, a URL permanece e o conteúdo é
-reposicionado — não redirecione para a home do Zapbox por falta de destino.
+**URLs de território Zapbox migram para `/zapbox`**, não para o domínio
+externo. O redirect é interno: mantém o sinal no domínio, cria ponto de medição
+e continua reversível.
+
+**Redirect externo permanente é `OPTIONAL_FUTURE_OPTIMIZATION`, não requisito.**
+Só depois de equivalência comprovada, ponte publicada, links internos migrados,
+analytics funcionando, Search Console revisado, backlinks conhecidos, destino
+externo estável e período de observação cumprido.
 
 Considere também: sitemap, canonical, títulos e descriptions, dados
 estruturados e links internos que apontam para a URL alterada.
