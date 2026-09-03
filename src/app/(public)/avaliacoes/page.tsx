@@ -41,7 +41,6 @@ export default async function AvaliacoesPage() {
       <main id="main-content">
         <section className="rc2-grain relative overflow-hidden bg-rc2-bg py-16 md:py-24">
           <div className="rc2-blueprint pointer-events-none absolute inset-0 opacity-50" aria-hidden />
-          <div className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full bg-rc2-brand/10 blur-3xl" aria-hidden />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <ScrollReveal className="mb-12" distance="18px">
               <SectionLabel className="block mb-5">Avaliações & Cases</SectionLabel>

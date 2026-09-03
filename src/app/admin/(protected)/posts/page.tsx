@@ -48,7 +48,7 @@ export default async function PostsPage() {
         action={
           <Link
             href="/admin/posts/novo"
-            className="flex items-center gap-2 px-4 py-2 bg-rc2-orange text-white text-sm font-medium hover:bg-rc2-orange/90 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-rc2-orange text-rc2-heading text-sm font-medium hover:bg-rc2-orange/90 transition-colors"
           >
             <Plus size={15} />
             Novo post

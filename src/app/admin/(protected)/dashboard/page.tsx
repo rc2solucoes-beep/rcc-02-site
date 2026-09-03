@@ -55,7 +55,7 @@ export default async function DashboardPage() {
           <div className="flex flex-wrap gap-3">
             <Link
               href="/admin/posts/novo"
-              className={cn(buttonVariants({ variant: "default" }), "bg-rc2-orange text-rc2-sand hover:bg-rc2-orange/90 px-4 h-9")}
+              className={cn(buttonVariants({ variant: "default" }), "bg-rc2-orange text-rc2-heading hover:bg-rc2-orange/90 px-4 h-9")}
             >
               + Novo post
             </Link>

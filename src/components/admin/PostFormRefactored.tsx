@@ -514,7 +514,7 @@ export function PostFormRefactored({ authors, post, action }: PostFormProps) {
         <button
           type="submit"
           disabled={pending}
-          className="px-6 py-2.5 bg-rc2-orange text-white text-sm font-medium rounded hover:bg-rc2-orange/90 disabled:opacity-50 transition-colors"
+          className="px-6 py-2.5 bg-rc2-orange text-rc2-heading text-sm font-medium rounded hover:bg-rc2-orange/90 disabled:opacity-50 transition-colors"
         >
           {pending ? "Salvando..." : post ? "Atualizar Post" : "Criar Post"}
         </button>

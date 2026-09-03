@@ -51,7 +51,7 @@ export default async function LeadsPage() {
             </p>
             <a
               href="/contato"
-              className="inline-block mt-4 px-6 h-10 bg-rc2-orange text-rc2-sand text-sm font-semibold rounded hover:bg-rc2-orange/90 transition-colors"
+              className="inline-block mt-4 px-6 h-10 bg-rc2-orange text-rc2-heading text-sm font-semibold rounded hover:bg-rc2-orange/90 transition-colors"
             >
               Acessar formulário de contato
             </a>
