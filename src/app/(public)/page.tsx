@@ -65,30 +65,36 @@ export default async function HomePage() {
       />
 
       {/* ── 1. Hero ── */}
-      <section className="rc2-grain rc2-hero-stage relative overflow-hidden bg-rc2-bg rc2-section md:py-28 lg:py-32">
-        <div className="rc2-blueprint pointer-events-none absolute inset-0 opacity-50" aria-hidden />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="rc2-hero-enter rc2-hero-enter--1">
-            <SectionLabel className="rc2-rule block mb-5">
-              {HOME_COPY.eyebrow}
-            </SectionLabel>
+      {/* Hero sem grid: a v2.2 pede base clara e silenciosa — a textura
+          competia com a headline em vez de sustentá-la. */}
+      <section className="rc2-grain rc2-hero-stage relative overflow-hidden bg-rc2-bg rc2-section md:py-32 lg:py-40">
+        {/* Composição assimétrica: o argumento ocupa a coluna principal e o
+            diagrama entra como evidência lateral, em vez de empilhar abaixo e
+            deixar metade da viewport vazia. */}
+        <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-16 px-4 sm:px-6 lg:grid-cols-12 lg:gap-12 lg:px-8">
+          <div className="lg:col-span-7">
+            <div className="rc2-hero-enter rc2-hero-enter--1">
+              <SectionLabel className="rc2-rule block mb-5">
+                {HOME_COPY.eyebrow}
+              </SectionLabel>
+            </div>
+            <h1 className="rc2-h1 rc2-hero-shift rc2-hero-enter--2 text-rc2-heading text-balance">
+              {HOME_COPY.h1}
+            </h1>
+            <p className="rc2-body-lg rc2-hero-shift rc2-hero-enter--3 mt-8 text-rc2-text/75 max-w-xl">
+              {HOME_COPY.subheadline}
+            </p>
+
+            <div className="rc2-hero-enter rc2-hero-enter--4 mt-10">
+              <HeroActions />
+            </div>
+
+            <p className="rc2-hero-enter rc2-hero-enter--6 mt-8 text-xs italic text-rc2-text/60">
+              &ldquo;{HOME_COPY.signature}&rdquo;
+            </p>
           </div>
-          <h1 className="rc2-h1 rc2-hero-shift rc2-hero-enter--2 text-rc2-heading max-w-4xl text-balance">
-            {HOME_COPY.h1}
-          </h1>
-          <p className="rc2-body-lg rc2-hero-shift rc2-hero-enter--3 mt-6 text-rc2-text/75 max-w-2xl">
-            {HOME_COPY.subheadline}
-          </p>
 
-          <div className="rc2-hero-enter rc2-hero-enter--4">
-            <HeroActions />
-          </div>
-
-          <p className="rc2-hero-enter rc2-hero-enter--6 mt-6 text-xs italic text-rc2-text/75">
-            &ldquo;{HOME_COPY.signature}&rdquo;
-          </p>
-
-          <div className="rc2-hero-enter rc2-hero-enter--6">
+          <div className="rc2-hero-enter rc2-hero-enter--6 lg:col-span-5 lg:self-center">
             <HomeHeroDiagram />
           </div>
         </div>
@@ -161,7 +167,9 @@ export default async function HomePage() {
       </section>
 
       {/* ── 8. Filosofia ── */}
-      <section className="bg-rc2-bg-alt rc2-section">
+      {/* Base, não alt: a seção seguinte já é alt e as duas juntas criavam
+          1700px de tom idêntico. O passo tonal recria o ritmo antes do CTA. */}
+      <section className="bg-rc2-bg rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
             <SectionLabel className="rc2-rule block mb-5">Como pensamos</SectionLabel>
