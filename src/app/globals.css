@@ -678,14 +678,24 @@
   }
 
   /* Régua estrutural laranja — precede eyebrows e títulos-chave */
+  /*
+   * Régua de label. A interrupção é a gramática do Signal Interrupt aplicada à
+   * composição — segmento, corte, segmento — sem desenhar o logo e sem virar
+   * textura repetida. Usa `currentColor`, então funciona em área clara e navy.
+   */
   .rc2-rule::before {
     content: "";
     display: inline-block;
-    width: 1.75rem;
+    width: 2.25rem;
     height: 2px;
-    background: var(--rc2-brand-text);
+    background: linear-gradient(
+      to right,
+      color-mix(in srgb, currentColor 40%, transparent) 0 38%,
+      transparent 38% 54%,
+      currentColor 54% 100%
+    );
     vertical-align: middle;
-    margin-right: 0.65rem;
+    margin-right: 0.75rem;
     translate: 0 -0.12em;
   }
 
