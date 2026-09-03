@@ -144,6 +144,8 @@
   --rc2-tracking-h1: -0.015em;
   --rc2-tracking-h2: -0.01em;
   --rc2-tracking-label: 0.06em;
+  /* Display / Capas — Barlow Condensed ExtraBold uppercase (v2.2 §Tipografia). */
+  --rc2-tracking-display: 0.04em;
   --rc2-leading-body: 1.75;
 
   /* Grid quase invisível — teto de 0.03 na composição final. */
@@ -313,19 +315,19 @@
     font-family: var(--font-barlow-condensed), sans-serif;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: -0.02em;
+    letter-spacing: var(--rc2-tracking-display);
   }
 
   .rc2-h1 {
     font-family: var(--font-barlow-condensed), sans-serif;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: -0.02em;
+    letter-spacing: var(--rc2-tracking-h1);
     @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95];
   }
 
   .rc2-h2 {
-    letter-spacing: -0.01em;
+    letter-spacing: var(--rc2-tracking-h2);
     @apply text-3xl md:text-4xl font-semibold leading-tight;
   }
 
