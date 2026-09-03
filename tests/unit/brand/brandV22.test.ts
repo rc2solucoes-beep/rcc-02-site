@@ -65,6 +65,10 @@ describe("Brand v2.2 — paleta", () => {
   });
 });
 
+/** Bloco de regras de um seletor de classe, do `{` ao primeiro `}`. */
+const blocoDe = (selector: string) =>
+  new RegExp("\\" + selector + " \{[^}]*\}");
+
 describe("Brand v2.2 — tipografia", () => {
   it.each([
     ["--rc2-tracking-h1", "-0.015em"],
@@ -73,6 +77,34 @@ describe("Brand v2.2 — tipografia", () => {
     ["--rc2-leading-body", "1.75"],
   ])("%s = %s", (token, value) => {
     expect(css).toContain(`${token}: ${value};`);
+  });
+
+  it("--rc2-tracking-display = 0.04em", () => {
+    expect(css).toContain("--rc2-tracking-display: 0.04em;");
+  });
+
+  /**
+   * As classes utilitárias são o que as páginas realmente usam. Enquanto
+   * `.rc2-h1` carregava `-0.02em` literal, o token do elemento `h1` não
+   * chegava ao título renderizado — o contrato passava, a página não.
+   */
+  it.each([
+    [".rc2-h1", "--rc2-tracking-h1"],
+    [".rc2-h2", "--rc2-tracking-h2"],
+    [".rc2-display", "--rc2-tracking-display"],
+  ])("%s consome %s em vez de literal", (selector, token) => {
+    const bloco = css.match(blocoDe(selector));
+    expect(bloco).not.toBeNull();
+    expect(bloco![0]).toContain(`letter-spacing: var(${token})`);
+    // Nenhum `letter-spacing` literal pode voltar a estes seletores.
+    expect(bloco![0]).not.toMatch(/letter-spacing:\s*-?[\d.]+em/);
+  });
+
+  it("nenhum seletor de título volta a -0.02em hardcoded", () => {
+    for (const selector of [".rc2-h1", ".rc2-h2", ".rc2-display"]) {
+      const bloco = css.match(blocoDe(selector));
+      expect(bloco![0]).not.toContain("-0.02em");
+    }
   });
 
   it("H1, H2, body e label consomem os tokens, não valores soltos", () => {
