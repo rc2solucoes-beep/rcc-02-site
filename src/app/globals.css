@@ -650,17 +650,18 @@
   ──────────────────────────────────────────────── */
 
   /* Grid blueprint — textura de engenharia sutil (fundo claro) */
+  /* Ambos os grids leem --rc2-grid-opacity: o teto da v2.2 vive num lugar só. */
   .rc2-blueprint {
     background-image:
-      linear-gradient(to right, rgba(11, 23, 38, 0.03) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(11, 23, 38, 0.03) 1px, transparent 1px);
+      linear-gradient(to right, rgba(11, 23, 38, var(--rc2-grid-opacity)) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(11, 23, 38, var(--rc2-grid-opacity)) 1px, transparent 1px);
     background-size: 46px 46px;
   }
   /* Grid blueprint para seções escuras */
   .rc2-blueprint-dark {
     background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      linear-gradient(to right, rgba(255, 255, 255, var(--rc2-grid-opacity)) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, var(--rc2-grid-opacity)) 1px, transparent 1px);
     background-size: 46px 46px;
   }
 

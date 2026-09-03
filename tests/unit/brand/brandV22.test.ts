@@ -143,11 +143,16 @@ describe("Brand v2.2 — o que a identidade proíbe", () => {
     expect(ofensores).toEqual([]);
   });
 
-  it("mantém o grid abaixo do teto de opacidade da v2.2", () => {
-    const grids = [...css.matchAll(/rgba\((?:11, 23, 38|255, 255, 255), (0\.\d+)\) 1px/g)];
+  it("mantém o grid no teto de opacidade da v2.2 (0.03)", () => {
+    const token = css.match(/--rc2-grid-opacity:\s*([\d.]+);/);
+    expect(token).not.toBeNull();
+    expect(Number(token![1])).toBeLessThanOrEqual(0.03);
+
+    // Claro e escuro leem o mesmo token — nenhum grid escapa pelo valor literal.
+    const grids = [...css.matchAll(/linear-gradient\((?:to right|to bottom), (.+?) 1px,/g)];
     expect(grids.length).toBeGreaterThan(0);
-    for (const [, opacidade] of grids) {
-      expect(Number(opacidade)).toBeLessThanOrEqual(0.05);
+    for (const [, cor] of grids) {
+      expect(cor).toContain("var(--rc2-grid-opacity)");
     }
   });
 

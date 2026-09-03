@@ -31,7 +31,7 @@ Ambas prevalecem sobre skills genéricas de design ou de copy.
 Em caso de conflito, siga nesta ordem:
 
 1. `RC2_PROPOSTA_ATUALIZACAO.txt`
-2. `RC2_Brand_Guide_v2.2.md`
+2. `RC2_Brand_Guide_v2.2.md` — **somente identidade visual** (ver abaixo)
 3. `RC2_PROMPT_MESTRE_REFORMULACAO.txt`
 4. Objetivos de negócio, SEO, UX e acessibilidade
 5. Este `AGENTS.md`
@@ -41,6 +41,30 @@ Em caso de conflito, siga nesta ordem:
 
 A documentação em `docs/` foi escrita antes desta atualização de posicionamento.
 Onde ela divergir deste arquivo, este arquivo vence.
+
+### Escopo da autoridade do Brand Guide v2.2
+
+A posição do `RC2_Brand_Guide_v2.2.md` nesta hierarquia vale para **identidade
+visual** — em especial as **seções 4 (Identidade Visual) e 5 (Logo)**: paleta,
+tokens, tipografia, contraste, composição, cards, botões, superfícies escuras,
+grid, foco e uso do Safety Orange.
+
+**As seções comerciais e estratégicas do v2.2 não reabrem decisões já
+aprovadas.** Em conflito sobre oferta, copy, CTA, Discovery, Zapbox, território
+ou arquitetura de produto, prevalecem este `AGENTS.md`, o `PRODUCT.md` e a
+governança aprovada das Fases 2–6.
+
+O documento contém material anterior a essa governança. Nada nele autoriza
+reintroduzir:
+
+- "Solicitar Diagnóstico" ou "diagnóstico gratuito" como CTA;
+- WhatsApp, CRM, atendimento ou vendas como serviço da RC2;
+- Sales AI como oferta genérica da RC2;
+- link direto de superfície RC2 para `zapbox.cloud` — o caminho é `/zapbox`;
+- a arquitetura comercial ou de serviços anterior às Fases 5 e 6.
+
+Encontrando esse material no guia, trate-o como legado: aplique a identidade
+visual e preserve a governança vigente.
 
 ## Projeto
 
