@@ -19,7 +19,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 Fontes oficiais do projeto:
 
 - `documentos-base/RC2_PROPOSTA_ATUALIZACAO.txt` — estratégia e posicionamento
-- `documentos-base/RC2_Brand_Guide_v2.1.md` — identidade visual (seções 4 e 5)
+- `documentos-base/RC2_Brand_Guide_v2.2.md` — identidade visual (seções 4 e 5)
 - `documentos-base/RC2_PROMPT_MESTRE_REFORMULACAO.txt` — método de execução
 
 Skills do projeto: `rc2-brand-system` (identidade visual como regra operacional)
@@ -31,7 +31,7 @@ Ambas prevalecem sobre skills genéricas de design ou de copy.
 Em caso de conflito, siga nesta ordem:
 
 1. `RC2_PROPOSTA_ATUALIZACAO.txt`
-2. `RC2_Brand_Guide_v2.1.md`
+2. `RC2_Brand_Guide_v2.2.md`
 3. `RC2_PROMPT_MESTRE_REFORMULACAO.txt`
 4. Objetivos de negócio, SEO, UX e acessibilidade
 5. Este `AGENTS.md`
@@ -310,7 +310,7 @@ número é fictício.
 Enquanto não houver cases documentados, a página de provas chama-se
 **"Avaliações e Projetos"**, nunca "Cases de Sucesso".
 
-## Identidade visual v2.1
+## Identidade visual v2.2
 
 Warm Base + Navy / Slate + Safety Orange. A paleta anterior com Areia
 Industrial `#F5F0E8`, Ink Black `#121212`, Deep Forest `#163020` e Ébano Quente
@@ -359,11 +359,11 @@ O mecanismo de carregamento depende desta versão do Next — verifique em
 `node_modules/next/dist/docs/` antes de implementar. Não presuma
 `next/font/google`.
 
-- H1 `700`, `tracking-[-0.02em]`, `--rc2-heading`
+- H1 `700`, `tracking-[-0.015em]`, `--rc2-heading`
 - H2 `600`, `tracking-[-0.01em]`, `--rc2-heading`
 - H3 `500`, `--rc2-heading`
-- Body `400`, mínimo `16px`, `leading-[1.7]`, `--rc2-text`
-- Eyebrow / label: `uppercase`, `tracking-[0.10em]`, `--rc2-brand-text` em área
+- Body `400`, mínimo `16px`, `leading-[1.75]`, `--rc2-text`
+- Eyebrow / label: `uppercase`, `tracking-[0.06em]`, `--rc2-brand-text` em área
   clara e `--rc2-brand` em área navy
 
 ## Regras invioláveis
