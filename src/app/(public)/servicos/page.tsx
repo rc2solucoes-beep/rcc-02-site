@@ -102,7 +102,10 @@ export default async function ServicosPage() {
                 as="article"
                 id={service.slug}
                 delay={(index % 3) * 80}
-                direction={index % 2 === 1 ? "right" : "left"}
+                // Estes cards sangram até a borda do container. Um reveal
+                // horizontal os empurra para fora da viewport antes de animar,
+                // criando scroll lateral; o vertical não tem esse efeito.
+                direction="up"
                 distance="28px"
                 className={`relative overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 p-8 md:p-10 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 last:border-b-0 last:pb-0 rounded-xl border ${isDark ? "rc2-grain bg-rc2-dark-2 border-y border-rc2-dark-border" : "bg-rc2-bg-alt border-rc2-surface-2"}`}
               >

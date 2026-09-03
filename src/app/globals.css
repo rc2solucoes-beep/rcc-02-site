@@ -424,47 +424,6 @@
     isolation: isolate;
   }
 
-  .rc2-hero-stage::before {
-    content: "";
-    position: absolute;
-    inset: -18% -12% auto auto;
-    width: min(58vw, 42rem);
-    aspect-ratio: 1;
-    border-radius: 9999px;
-    background: color-mix(in srgb, var(--rc2-brand) 16%, transparent);
-    filter: blur(44px);
-    opacity: 0.9;
-    pointer-events: none;
-    animation: rc2-hero-field 18s var(--ease-fluid) infinite alternate;
-  }
-
-  .rc2-hero-orbit {
-    position: absolute;
-    right: max(-10rem, -8vw);
-    top: 7rem;
-    width: min(42vw, 32rem);
-    aspect-ratio: 1;
-    border: 1px solid color-mix(in srgb, var(--rc2-brand) 20%, transparent);
-    border-radius: 9999px;
-    opacity: 0.55;
-    pointer-events: none;
-    animation: rc2-orbit-turn 60s linear infinite;
-  }
-
-  .rc2-hero-orbit::before,
-  .rc2-hero-orbit::after {
-    content: "";
-    position: absolute;
-    inset: 14%;
-    border-radius: inherit;
-    border: 1px solid color-mix(in srgb, var(--rc2-heading) 12%, transparent);
-  }
-
-  .rc2-hero-orbit::after {
-    inset: 31%;
-    border-color: color-mix(in srgb, var(--rc2-brand) 28%, transparent);
-  }
-
   .rc2-hero-kicker {
     display: inline-block;
     position: relative;
@@ -599,21 +558,6 @@
     }
   }
 
-  @keyframes rc2-hero-field {
-    from {
-      transform: translate3d(0, 0, 0) scale(1);
-    }
-    to {
-      transform: translate3d(-4%, 5%, 0) scale(1.08);
-    }
-  }
-
-  @keyframes rc2-orbit-turn {
-    to {
-      rotate: 360deg;
-    }
-  }
-
   /* Scroll reveal — visible by default, JS opts into hidden state */
   .scroll-reveal {
     opacity: 1;
@@ -639,8 +583,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-     .rc2-hero-stage::before,
-     .rc2-hero-orbit,
      .rc2-hero-enter,
      .rc2-hero-shift,
      .scroll-reveal {

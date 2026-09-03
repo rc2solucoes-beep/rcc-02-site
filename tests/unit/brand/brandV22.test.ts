@@ -1,15 +1,27 @@
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
-import { globSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
+import { join, relative } from "node:path";
 
 const root = process.cwd();
 const css = readFileSync(join(root, "src/app/globals.css"), "utf-8");
 
-const tsx = globSync("src/**/*.tsx", { cwd: root }).map((f) => ({
-  file: f,
-  body: readFileSync(join(root, f), "utf-8"),
-}));
+type Source = { file: string; body: string };
+
+function collectTsx(dir: string, acc: Source[] = []): Source[] {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) collectTsx(full, acc);
+    else if (entry.name.endsWith(".tsx")) {
+      acc.push({
+        file: relative(root, full).replaceAll("\\", "/"),
+        body: readFileSync(full, "utf-8"),
+      });
+    }
+  }
+  return acc;
+}
+
+const tsx = collectTsx(join(root, "src"));
 
 /**
  * RC2 Brand Guide v2.2 — "The High-End Tool".
