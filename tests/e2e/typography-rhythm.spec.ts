@@ -30,7 +30,9 @@ test.describe("Tipografia e ritmo RC2", () => {
     const hero = await typographyOf(page.getByRole("heading", { level: 1 }));
     expect(hero.fontFamily).toContain("Barlow Condensed");
     expect(hero.fontWeight).toBe("800");
-    expect(hero.letterSpacing / hero.fontSize).toBeCloseTo(-0.02, 3);
+    // Brand v2.2: o H1 usa `--rc2-tracking-h1` (-0.015em). O valor anterior
+    // (-0.02em) era o literal que `.rc2-h1` carregava antes do PR #26.
+    expect(hero.letterSpacing / hero.fontSize).toBeCloseTo(-0.015, 3);
 
     // A Fase 4 reconstruiu a Home. Os headings são selecionados por posição
     // estrutural, não por copy, para o teste proteger a intenção tipográfica
