@@ -59,8 +59,8 @@ export function HomeReviews() {
             {review.text}
           </blockquote>
           <figcaption className="mt-4 flex items-center justify-between border-t border-border pt-3">
-            <span className="text-sm font-semibold text-rc2-heading">{review.name}</span>
-            <time className="text-xs text-rc2-text-secondary">{review.date}</time>
+            <span className="rc2-caption font-medium text-rc2-heading">{review.name}</span>
+            <time className="rc2-caption text-rc2-text-secondary">{review.date}</time>
           </figcaption>
         </figure>
       ))}

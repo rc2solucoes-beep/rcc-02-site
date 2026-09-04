@@ -22,7 +22,9 @@ export function HomeMethod() {
         <ol className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-rc2-dark-border bg-rc2-dark-border md:grid-cols-2 lg:grid-cols-5">
           {HOME_METHOD.steps.map((step, index) => (
             <li key={step.name} className="bg-rc2-dark-2 px-5 py-7">
-              <span className="rc2-label text-rc2-brand mb-3 block">
+              {/* Numeral é dispositivo de ritmo, não estado mudando: navy
+                  muted, nunca Safety Orange (§11 Do/Don't). */}
+              <span className="rc2-label text-rc2-dark-text-muted mb-3 block">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <h3 className="text-base font-semibold text-rc2-dark-text mb-2">

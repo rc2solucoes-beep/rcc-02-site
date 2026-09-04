@@ -3,11 +3,14 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { HomeReviews } from "@/components/marketing/HomeReviews";
-import { HOME_AUTHORITY, HOME_CTAS } from "@/lib/content/home";
+import { StatCounter } from "@/components/ui/StatCounter";
+import { HOME_AUTHORITY, HOME_AUTHORITY_STATS, HOME_CTAS } from "@/lib/content/home";
 
 export function HomeAuthority() {
   return (
-    <section className="bg-rc2-bg rc2-section">
+    // Segundo momento de assinatura da página (§9 Home): prova quantificada
+    // recebe o respiro reservado a acontecimentos, não o ritmo de rotina.
+    <section className="bg-rc2-bg rc2-section--signature">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <ScrollReveal>
           <SectionLabel className="rc2-rule block mb-5">
@@ -21,7 +24,16 @@ export function HomeAuthority() {
           </p>
         </ScrollReveal>
 
-        <dl className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        {/* Os números do case Uno Healthcare saem da prosa e viram o
+            componente Stat/Counter (§8, §9). São os mesmos valores. */}
+        <ScrollReveal delay={60} className="mb-14">
+          <StatCounter stats={HOME_AUTHORITY_STATS} />
+        </ScrollReveal>
+
+        {/* §8 Card Case: "espaçamento maior entre cards (seção de
+            assinatura)". O gap de rotina achatava a prova social contra as
+            demais grades da página. */}
+        <dl className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-10">
           {HOME_AUTHORITY.facts.map((item, index) => (
             <ScrollReveal
               key={item.org}

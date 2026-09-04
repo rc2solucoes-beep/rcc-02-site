@@ -1,8 +1,26 @@
-import { ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  Workflow,
+  Share2,
+  Gauge,
+  ShoppingCart,
+  type LucideIcon,
+} from "lucide-react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
+import { IconBadge } from "@/components/ui/IconBadge";
 import { HOME_COMPETENCIES, HOME_CTAS } from "@/lib/content/home";
+
+/** Ícone fino por competência (§8 Composites). Mapeado por título. */
+const COMPETENCY_ICONS: Record<string, LucideIcon> = {
+  "Automação de Processos": Workflow,
+  "Integração de Sistemas": Share2,
+  // Nada de cérebro, robô ou chip (AGENTS.md §11): IA aqui é
+  // instrumentação de operação, não iconografia de "inteligência".
+  "IA para Operações": Gauge,
+  "Operações Digitais & Commerce": ShoppingCart,
+};
 
 /**
  * As quatro competências como especificação, não como grade de cards.
@@ -34,7 +52,8 @@ export function HomeCompetencies() {
             >
               {/* Índice — a anotação técnica que ordena a leitura. */}
               <div className="flex items-center gap-3 md:col-span-2 md:block">
-                <span className="rc2-label text-rc2-brand-text">
+                {/* Numeral navy/muted (§11 Do/Don't). */}
+                <span className="rc2-label text-rc2-text-muted">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span
@@ -44,7 +63,11 @@ export function HomeCompetencies() {
               </div>
 
               <div className="md:col-span-5">
-                <h3 className="text-xl font-semibold leading-snug text-rc2-heading md:text-2xl">
+                <h3 className="flex items-center gap-3 text-xl font-semibold leading-snug text-rc2-heading md:text-2xl">
+                  {(() => {
+                    const Icon = COMPETENCY_ICONS[competency.title];
+                    return Icon ? <IconBadge icon={Icon} /> : null;
+                  })()}
                   {competency.title}
                 </h3>
                 <p className="mt-3 text-sm font-medium text-rc2-text">
