@@ -4,6 +4,7 @@ import { createPublicClient } from "@/lib/supabase/server";
 import { PageHero } from "@/components/marketing/PageHero";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { buttonVariants } from "@/components/ui/button";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { BlogCard } from "@/components/blog/BlogCard";
 import type { Post } from "@/lib/types/post";
@@ -49,6 +50,7 @@ function formatDate(iso: string | null) {
 
 export default async function BlogPage() {
   const posts = await getPosts();
+  const [destaque, ...demais] = posts;
   let schemaWebPage;
 
   try {
@@ -87,7 +89,7 @@ export default async function BlogPage() {
           {posts.length === 0 ? (
             <ScrollReveal className="text-center py-16" direction="none">
               <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full border border-rc2-border bg-rc2-bg-alt text-rc2-heading">
-                <span className="font-condensed text-xl font-bold tracking-widest" aria-hidden>
+                <span className="rc2-bold text-xl tracking-widest" aria-hidden>
                   RC2
                 </span>
               </div>
@@ -100,7 +102,7 @@ export default async function BlogPage() {
                 <TrackedLink
                   href="/solucoes"
                   tracking={{ kind: "cta", location: "blog_empty_state", label: "explorar_servicos", destination: "/solucoes" }}
-                  className="inline-flex items-center gap-2 px-6 h-11 bg-rc2-brand text-rc2-heading font-semibold text-sm rounded-md hover:bg-rc2-brand/90 transition-colors"
+                  className={buttonVariants({ variant: "brand", size: "brand-md" })}
                 >
                   Explorar soluções
                 </TrackedLink>
@@ -114,19 +116,42 @@ export default async function BlogPage() {
               </div>
             </ScrollReveal>
           ) : (
-            <div className="space-y-6">
-              {posts.map((post) => (
-                <BlogCard
-                  key={post.id}
-                  image={post.cover_url}
-                  title={post.title}
-                  summary={post.summary}
-                  slug={post.slug}
-                  author={post.author_name}
-                  publishedAt={post.published_at}
-                  readingTimeMinutes={post.reading_time_minutes}
-                />
-              ))}
+            <div className="space-y-10">
+              {/*
+                Último post em destaque, demais em grid.
+
+                `getPosts` já ordena por `published_at` descendente, então o
+                primeiro item é o mais recente — o destaque acompanha a ordem
+                da consulta em vez de reordenar aqui.
+              */}
+              <BlogCard
+                variant="feature"
+                image={destaque.cover_url}
+                title={destaque.title}
+                summary={destaque.summary}
+                slug={destaque.slug}
+                author={destaque.author_name}
+                publishedAt={destaque.published_at}
+                readingTimeMinutes={destaque.reading_time_minutes}
+              />
+
+              {demais.length > 0 && (
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                  {demais.map((post) => (
+                    <BlogCard
+                      key={post.id}
+                      variant="grid"
+                      image={post.cover_url}
+                      title={post.title}
+                      summary={post.summary}
+                      slug={post.slug}
+                      author={post.author_name}
+                      publishedAt={post.published_at}
+                      readingTimeMinutes={post.reading_time_minutes}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>

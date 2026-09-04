@@ -20,7 +20,7 @@ export function ContactCtaBlock() {
         location: "contact_cta_block",
         label: "whatsapp_robson",
       }}
-      variant="orange"
+      variant="quiet"
     />
   );
 }

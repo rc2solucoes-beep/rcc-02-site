@@ -1,5 +1,5 @@
-import { CheckCircle2, Circle } from "lucide-react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { SignalList } from "@/components/ui/SignalList";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { SOLUCOES_COMPETENCIES } from "@/lib/content/solucoesPage";
@@ -12,32 +12,6 @@ import { SOLUCOES_COMPETENCIES } from "@/lib/content/solucoesPage";
  * O `<h2>` fica dentro da `<section id=…>` para que o leitor de tela anuncie o
  * título ao chegar pela âncora.
  */
-
-function Signals({ items }: { items: readonly string[] }) {
-  return (
-    <ul className="space-y-2.5">
-      {items.map((item) => (
-        <li key={item} className="flex items-start gap-2.5 text-rc2-text/75 leading-relaxed">
-          <Circle size={7} className="mt-2 shrink-0 text-rc2-brand" aria-hidden="true" />
-          <span>{item}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function Interventions({ items }: { items: readonly string[] }) {
-  return (
-    <ul className="space-y-3">
-      {items.map((item) => (
-        <li key={item} className="flex items-start gap-2.5 text-rc2-text leading-relaxed">
-          <CheckCircle2 size={16} className="mt-1 shrink-0 text-rc2-heading" aria-hidden="true" />
-          <span>{item}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
 
 function Limit({ children }: { children: string }) {
   return (
@@ -64,11 +38,11 @@ export function SolutionsCompetencies() {
           <div className="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
             <ScrollReveal delay={80}>
               <h3 className="rc2-label text-rc2-brand-text mb-5">Sinais na operação</h3>
-              <Signals items={automacao.signals} />
+              <SignalList items={automacao.signals} tone="signal" />
             </ScrollReveal>
             <ScrollReveal delay={140} className="rc2-card p-6 md:p-8">
               <h3 className="rc2-label text-rc2-heading mb-5">O que a RC2 faz</h3>
-              <Interventions items={automacao.interventions} />
+              <SignalList items={automacao.interventions} tone="intervention" />
             </ScrollReveal>
           </div>
 
@@ -88,11 +62,11 @@ export function SolutionsCompetencies() {
           <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
             <ScrollReveal delay={80} className="rc2-card p-6 md:p-7">
               <h3 className="rc2-label text-rc2-brand-text mb-5">Onde a ponte é humana hoje</h3>
-              <Signals items={integracao.signals} />
+              <SignalList items={integracao.signals} tone="signal" />
             </ScrollReveal>
             <ScrollReveal delay={140} className="rc2-card p-6 md:p-7">
               <h3 className="rc2-label text-rc2-heading mb-5">O que passa a ser automático</h3>
-              <Interventions items={integracao.interventions} />
+              <SignalList items={integracao.interventions} tone="intervention" />
             </ScrollReveal>
           </div>
 
@@ -117,17 +91,7 @@ export function SolutionsCompetencies() {
 
           <ScrollReveal delay={80} className="mt-10">
             <h3 className="rc2-label text-rc2-brand mb-4">Quando esse é o problema</h3>
-            <ul className="grid grid-cols-1 gap-2.5 md:grid-cols-2">
-              {ia.signals.map((signal) => (
-                <li
-                  key={signal}
-                  className="flex items-start gap-2.5 text-rc2-dark-text-secondary leading-relaxed"
-                >
-                  <Circle size={7} className="mt-2 shrink-0 text-rc2-brand" aria-hidden="true" />
-                  <span>{signal}</span>
-                </li>
-              ))}
-            </ul>
+            <SignalList items={ia.signals} tone="signal" variant="dark" columns={2} />
           </ScrollReveal>
 
           <ScrollReveal
@@ -135,17 +99,12 @@ export function SolutionsCompetencies() {
             className="mt-10 rounded-xl border border-rc2-dark-border bg-rc2-dark-elevated p-6 md:p-8"
           >
             <h3 className="rc2-label text-rc2-dark-text mb-5">Como a IA entra no processo</h3>
-            <ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
-              {ia.interventions.map((item) => (
-                <li
-                  key={item}
-                  className="flex items-start gap-2.5 text-sm text-rc2-dark-text-secondary leading-relaxed"
-                >
-                  <CheckCircle2 size={15} className="mt-0.5 shrink-0 text-rc2-brand" aria-hidden="true" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+            <SignalList
+              items={ia.interventions}
+              tone="intervention"
+              variant="dark"
+              columns={2}
+            />
           </ScrollReveal>
 
           {ia.boundary && (
@@ -185,7 +144,7 @@ export function SolutionsCompetencies() {
 
           <ScrollReveal delay={80} className="mt-10 max-w-3xl">
             <h3 className="rc2-label text-rc2-brand-text mb-4">O que aparece na operação</h3>
-            <Signals items={commerce.signals} />
+            <SignalList items={commerce.signals} tone="signal" />
           </ScrollReveal>
 
           <ScrollReveal delay={140} className="mt-12">
@@ -193,7 +152,8 @@ export function SolutionsCompetencies() {
             <ol className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
               {commerce.interventions.map((item, index) => (
                 <li key={item} className="rc2-card p-5">
-                  <span className="rc2-label text-rc2-brand-text">
+                  {/* Numeral navy/muted (§11 Do/Don't). */}
+                  <span className="rc2-label text-rc2-text-muted">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <p className="mt-3 text-sm text-rc2-text leading-relaxed">{item}</p>

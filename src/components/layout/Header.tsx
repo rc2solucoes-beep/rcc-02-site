@@ -81,7 +81,10 @@ export function Header() {
           <Logo />
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-6">
+          {/* `lg`, não `md`: com seis itens mais o CTA, a nav desktop passava
+              de 768px e criava overflow horizontal em toda página. Em tablet o
+              menu recolhido é o comportamento correto. */}
+          <nav className="hidden lg:flex items-center gap-6">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -107,8 +110,8 @@ export function Header() {
                 })
               }
               className={cn(
-                buttonVariants({ variant: "default" }),
-                "ml-2 font-semibold tracking-wide uppercase text-xs px-5 h-9 bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90 shadow-sm ring-1 ring-rc2-brand/20"
+                buttonVariants({ variant: "brand", size: "brand-sm" }),
+                "ml-2 shadow-sm ring-1 ring-rc2-brand/20"
               )}
             >
               Falar com a RC2
@@ -118,7 +121,7 @@ export function Header() {
           {/* Mobile hamburger */}
           <button
             ref={mobileMenuButtonRef}
-            className="ui-focus-ring rounded md:hidden p-2 -mr-2 text-rc2-text hover:text-rc2-brand-text transition-colors"
+            className="ui-focus-ring rounded lg:hidden p-2 -mr-2 text-rc2-text hover:text-rc2-brand-text transition-colors"
             onClick={() => setOpen(!open)}
             aria-label={open ? "Fechar menu" : "Abrir menu"}
             aria-expanded={open}
@@ -131,7 +134,7 @@ export function Header() {
 
       {/* Mobile menu */}
       {open && (
-        <div ref={mobileMenuRef} id="mobile-main-menu" className="md:hidden bg-rc2-bg border-t border-border px-4 pb-4 pt-2">
+        <div ref={mobileMenuRef} id="mobile-main-menu" className="lg:hidden bg-rc2-bg border-t border-border px-4 pb-4 pt-2">
           <nav className="flex flex-col gap-1">
             {NAV_LINKS.map((link) => (
               <Link
@@ -160,8 +163,8 @@ export function Header() {
                 setOpen(false);
               }}
               className={cn(
-                buttonVariants({ variant: "default" }),
-                "mt-3 h-11 min-h-[44px] font-semibold tracking-wide uppercase text-xs w-full justify-center bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90"
+                buttonVariants({ variant: "brand", size: "brand-md" }),
+                "mt-3 min-h-[44px] w-full justify-center"
               )}
             >
               Falar com a RC2
