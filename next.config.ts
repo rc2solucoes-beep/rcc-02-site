@@ -56,71 +56,69 @@ const nextConfig: NextConfig = {
   // Remove the `X-Powered-By: Next.js` header (avoids disclosing the framework).
   poweredByHeader: false,
 
+  /**
+   * Normalização de barra final desligada (§21: "evitar cadeia de redirects").
+   *
+   * Por padrão o Next redireciona `/about/` → `/about` ANTES de avaliar
+   * `redirects()`, e só então a regra leva a `/sobre` — dois saltos para toda
+   * URL legada com barra. Com a normalização desligada, cada variante com
+   * barra é gerada abaixo junto da sua e chega ao destino final em um salto.
+   *
+   * O preço é ter de normalizar à mão o resto do site; é o que faz a última
+   * regra de `redirects()`, o catch-all `/:path+/`.
+   */
+  skipTrailingSlashRedirect: true,
+
   async redirects() {
+    /**
+     * Consolidações de URL. Cada entrada gera duas regras: a própria e a
+     * variante com barra final, apontando ambas para o destino final.
+     */
+    const MIGRACOES = [
+      // Legado encontrado pelo Search Console.
+      { source: "/index.htm", destination: "/" },
+      { source: "/about", destination: "/sobre" },
+      { source: "/services", destination: "/solucoes" },
+      // Fase 6F — território integralmente Zapbox consolidado na ponte
+      // (docs/22 §1). O alias aponta direto para `/zapbox`: passar pelo slug
+      // antigo criaria uma chain.
+      { source: "/servicos/automacao-de-atendimento", destination: "/zapbox" },
+      { source: "/servicos/automacoes-com-ia", destination: "/zapbox" },
+      { source: "/solucoes/atendimento-lento", destination: "/zapbox" },
+      { source: "/solucoes/leads-sem-resposta", destination: "/zapbox" },
+      { source: "/solucoes/whatsapp-desorganizado", destination: "/zapbox" },
+      // Migração SEO pós-Fase 5 — docs/16 §13.
+      { source: "/servicos/integracao-de-sistemas", destination: "/solucoes#integracao-de-sistemas" },
+      { source: "/servicos/agentes-de-ia", destination: "/solucoes#ia-para-operacoes" },
+      { source: "/servicos/automacao-de-processos", destination: "/solucoes#automacao-de-processos" },
+      { source: "/servicos/operacoes-digitais", destination: "/solucoes#operacoes-digitais-commerce" },
+      // Fase 3 — consolidação de `/servicos` em `/solucoes` (§12).
+      { source: "/servicos", destination: "/solucoes" },
+      { source: "/servicos/e-commerce", destination: "/solucoes#operacoes-digitais-commerce" },
+      { source: "/servicos/sites-e-landing-pages", destination: "/solucoes" },
+      // Fase 3B — fecha o §20.
+      { source: "/solucoes/processos-manuais", destination: "/solucoes" },
+      { source: "/solucoes/sistemas-desconectados", destination: "/solucoes" },
+    ];
+
     return [
-      // Force apex domain to canonical www domain.
+      // Apex para o domínio canônico com www.
       {
         source: "/:path*",
         has: [{ type: "host", value: "rc2solucoes.com.br" }],
         destination: "https://www.rc2solucoes.com.br/:path*",
         permanent: true,
       },
-      // Legacy/invalid URLs found by Search Console.
-      { source: "/index.htm", destination: "/", permanent: true },
-      { source: "/about", destination: "/sobre", permanent: true },
-      { source: "/about/", destination: "/sobre", permanent: true },
-      { source: "/services", destination: "/solucoes", permanent: true },
-      { source: "/services/", destination: "/servicos", permanent: true },
-      // Fase 6F — território integralmente Zapbox consolidado na ponte
-      // (docs/22 §1). O alias vem primeiro e aponta direto para `/zapbox`:
-      // passar pelo slug antigo criaria uma chain de dois saltos.
-      {
-        source: "/servicos/automacao-de-atendimento",
-        destination: "/zapbox",
-        permanent: true,
-      },
-      {
-        source: "/servicos/automacoes-com-ia",
-        destination: "/zapbox",
-        permanent: true,
-      },
-      {
-        source: "/solucoes/atendimento-lento",
-        destination: "/zapbox",
-        permanent: true,
-      },
-      {
-        source: "/solucoes/leads-sem-resposta",
-        destination: "/zapbox",
-        permanent: true,
-      },
-      {
-        source: "/solucoes/whatsapp-desorganizado",
-        destination: "/zapbox",
-        permanent: true,
-      },
-      {
-        source: "/servicos/integracao-de-sistemas",
-        destination: "/solucoes#integracao-de-sistemas",
-        permanent: true,
-      },
-      // Migração SEO pós-Fase 5 — docs/16 §13. A intenção destas duas páginas
-      // foi absorvida pelas competências da nova /solucoes.
-      {
-        source: "/servicos/agentes-de-ia",
-        destination: "/solucoes#ia-para-operacoes",
-        permanent: true,
-      },
-      {
-        source: "/servicos/automacao-de-processos",
-        destination: "/solucoes#automacao-de-processos",
-        permanent: true,
-      },
-      {
-        source: "/servicos/operacoes-digitais",
-        destination: "/solucoes#operacoes-digitais-commerce",
-        permanent: true,
-      },
+
+      // Cada consolidação, com e sem barra final, direto ao destino.
+      ...MIGRACOES.flatMap(({ source, destination }) => [
+        { source, destination, permanent: true },
+        { source: `${source}/`, destination, permanent: true },
+      ]),
+
+      // Catch-all de barra final. Vem por último: as regras acima já cobrem as
+      // URLs consolidadas, então aqui só chega o que continua respondendo 200.
+      { source: "/:path+/", destination: "/:path+", permanent: true },
     ];
   },
 

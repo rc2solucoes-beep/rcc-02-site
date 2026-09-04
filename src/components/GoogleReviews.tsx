@@ -34,9 +34,9 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
 
   if (loading) {
     return (
-      <div className="w-full rounded-lg border border-border bg-white p-6" role="status" aria-live="polite">
-        <p className="text-sm text-rc2-text/70 mb-4">Carregando avaliações do Google...</p>
-        <div className="w-full h-40 bg-gray-200 animate-pulse rounded-lg" />
+      <div className="w-full rounded-lg border border-rc2-card-border bg-rc2-surface p-6" role="status" aria-live="polite">
+        <p className="mb-4 text-sm text-rc2-text-secondary">Carregando avaliações do Google...</p>
+        <div className="h-40 w-full animate-pulse rounded-lg bg-rc2-surface-2" />
       </div>
     );
   }
@@ -44,10 +44,10 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
   if (error || !place) {
     return (
       <div className="w-full text-center py-12">
-        <p className="text-gray-600" role="alert">
+        <p className="text-rc2-text" role="alert">
           Não conseguimos carregar as avaliações no momento.
         </p>
-        <p className="text-sm text-gray-500 mt-2">
+        <p className="mt-2 text-sm text-rc2-text-secondary">
           Tente novamente em instantes ou abra as avaliações diretamente no Google.
         </p>
         <a
@@ -67,8 +67,8 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
   if (reviews.length === 0) {
     return (
       <div className="w-full text-center py-12">
-        <p className="text-gray-600">Ainda não há avaliações visíveis neste momento.</p>
-        <p className="text-sm text-gray-500 mt-2">
+        <p className="text-rc2-text">Ainda não há avaliações visíveis neste momento.</p>
+        <p className="mt-2 text-sm text-rc2-text-secondary">
           Você pode conferir nosso perfil completo no Google Maps.
         </p>
         <a
@@ -138,14 +138,14 @@ export function GoogleReviews({ maxReviews = 5, showGoogleLink = true, columns =
                     />
                   ))}
                 </div>
-                <time className="whitespace-nowrap text-xs text-rc2-text-secondary">
+                <time className="rc2-caption whitespace-nowrap text-rc2-text-secondary">
                   {new Date(review.publishTime).toLocaleDateString("pt-BR")}
                 </time>
               </div>
               <blockquote className="flex-1 text-sm leading-relaxed text-rc2-text/80">
                 {review.text}
               </blockquote>
-              <figcaption className="mt-4 border-t border-border pt-3 text-sm font-semibold text-rc2-heading">
+              <figcaption className="rc2-caption mt-4 border-t border-rc2-border pt-3 font-medium text-rc2-heading">
                 {review.authorAttribution.displayName}
               </figcaption>
             </figure>
