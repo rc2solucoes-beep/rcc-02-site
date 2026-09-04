@@ -161,8 +161,12 @@ export const HOME_PRODUCTS = {
   zapbox: {
     name: "Zapbox",
     category: "Produto próprio da RC2",
+    // §4: a frase "é o produto da RC2 para esse território — e é onde essas
+    // necessidades devem ser resolvidas" era arquitetura de marca falando com
+    // ela mesma. O leitor quer saber o que o produto faz.
+    tagline: "Atendimento e vendas pelo WhatsApp",
     description:
-      "Atendimento e vendas pelo WhatsApp com equipe, CRM comercial e Sales AI. É o produto da RC2 para esse território — e é onde essas necessidades devem ser resolvidas.",
+      "Organize sua equipe, centralize conversas e histórico e evolua sua operação com CRM, automações e Sales AI.",
     ctaLabel: "Conhecer Zapbox",
     // Fase 6E: BRIDGE_FIRST — a ponte `/zapbox` explica o território e
     // encaminha ao produto. Nenhuma superfície institucional sai direto.
@@ -173,10 +177,15 @@ export const HOME_PRODUCTS = {
   agendaConfirmada: {
     name: "Agenda Confirmada",
     category: "Solução vertical RC2 para clínicas",
+    tagline: "Automação de agenda para clínicas",
+    // §5: a redução de faltas saiu da promessa. Reduzir esquecimento é efeito
+    // esperado, não resultado garantido — e não há métrica documentada.
     description:
-      "Confirmações e lembretes de consulta sem depender da recepção ligar uma a uma, reduzindo faltas e horários vagos.",
-    ctaLabel: "Falar sobre agenda e confirmações",
-    href: "/contato",
+      "Automatize lembretes e confirmações pelo WhatsApp, reduza o trabalho manual da recepção e ganhe mais previsibilidade sobre sua agenda.",
+    // CTA aprovado no AGENTS.md. `docs/18` §13.2 previa que ele "só volta a
+    // ser aplicável quando houver o que ver" — a página existe desde a Fase 6.
+    ctaLabel: "Ver Agenda Confirmada",
+    href: "/solucoes/agenda-confirmada",
     external: false,
     analyticsLabel: "agenda_confirmada",
   },
@@ -216,6 +225,47 @@ export const HOME_METHOD = {
   managedOpsAnalyticsLabel: "operacao_gerenciada",
 } as const;
 
+/**
+ * Números do case Uno Healthcare para o componente Stat/Counter (§8, §9).
+ *
+ * São os mesmos já publicados em `HOME_AUTHORITY.facts` — nenhum número novo,
+ * nenhum arredondamento. A fonte é a seção 16 da `RC2_PROPOSTA_ATUALIZACAO`.
+ */
+export const HOME_AUTHORITY_STATS = [
+  {
+    value: 384,
+    prefix: "US$ ",
+    suffix: " mil",
+    label: "Receita gerada pelo canal D2C nos Estados Unidos, em cerca de 11 meses",
+  },
+  {
+    value: 636,
+    label: "Pedidos processados no mesmo período",
+  },
+  {
+    value: 20,
+    suffix: "+",
+    label: "Anos em tecnologia e operações digitais",
+  },
+] as const;
+
+/**
+ * Gesto cinético do hero (direção de arte §12).
+ *
+ * `word` é a palavra da copy aprovada (`HOME_COPY.h1`) e é onde a sequência
+ * começa e termina. `alternates` são as palavras que passam antes disso —
+ * **aprovadas em 03/09/2026**, fechando a decisão de copy que a §12 deixava em
+ * aberto.
+ *
+ * `prefix` e `suffix` são derivados do H1 aprovado em tempo de execução, para
+ * que a frase renderizada não possa divergir dele.
+ */
+export const HOME_HERO_KINETIC = {
+  word: "ferramentas",
+  alternates: ["sistemas", "planilhas"],
+  copyApproved: true,
+} as const;
+
 /** Seção 6 — autoridade (proposta §16, fatos aprovados). */
 export const HOME_AUTHORITY = {
   intro:
@@ -237,12 +287,22 @@ export const HOME_AUTHORITY = {
   proofLabel: "Avaliações e Projetos",
 } as const;
 
+/**
+ * Canal próprio da Valéria — não é o WhatsApp comercial geral do site
+ * (`5511988028550`), que atende outro fluxo. Confirmado em 03/09/2026.
+ */
+const VALERIA_WHATSAPP_URL =
+  "https://wa.me/5511966958192?text=" +
+  encodeURIComponent("Olá, Valéria. Quero conhecer o que a RC2 faz.");
+
 type Demo = {
   title: string;
   description: string;
   /** Só presente quando existe ativo navegável verificável. */
   ctaLabel?: string;
   href?: string;
+  /** Sai do domínio: exige `target`, `rel` e ícone de saída no render. */
+  external?: boolean;
   analyticsLabel?: string;
 };
 
@@ -257,9 +317,16 @@ export const HOME_DEMOS: readonly Demo[] = [
     analyticsLabel: "conhecer_zapbox",
   },
   {
-    title: "O agente de IA do nosso comercial",
+    // §11: a demonstração deixa de ser descrita por dentro ("o agente do nosso
+    // comercial") e passa a ser apresentada pelo nome, como qualquer coisa que
+    // se pode experimentar.
+    title: "Converse com a Valéria",
     description:
-      "A RC2 usa no próprio comercial o que implementa nos clientes: um agente de IA filtra, e quem conversa com você é o Robson.",
+      "A Valéria é a assistente comercial com IA que faz o primeiro atendimento da RC2 e do Zapbox pelo WhatsApp. Ela responde dúvidas, apresenta planos, qualifica interesse e transfere para uma pessoa quando necessário. Você não precisa imaginar como funciona: é só chamar e conversar com ela.",
+    ctaLabel: "Conversar com a Valéria",
+    href: VALERIA_WHATSAPP_URL,
+    external: true,
+    analyticsLabel: "conversar_valeria",
   },
 ];
 

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 import { PageHero } from "@/components/marketing/PageHero";
+import { SignalList } from "@/components/ui/SignalList";
 import { HomeCtaBlock } from "@/components/marketing/HomeCtaBlock";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { StepList, type Step } from "@/components/marketing/StepList";
+import { NumberedList, type NumberedItem } from "@/components/ui/NumberedList";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -23,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const steps: Step[] = [
+const steps: NumberedItem[] = [
   {
     title: "Diagnóstico",
     description:
@@ -82,7 +83,7 @@ export default async function SobrePage() {
       <PageHero
         label="Sobre a RC2"
         title="Tecnologia que funciona. Operação que entrega."
-        description="Consultoria especializada em IA, automações e operações digitais — com foco em resultado real para PMEs."
+        description="A RC2 é especializada em automação de processos, integração de sistemas e inteligência artificial aplicada à operação."
         className="rc2-section--opening"
       />
 
@@ -94,34 +95,45 @@ export default async function SobrePage() {
               <SectionLabel className="block mb-5">A empresa</SectionLabel>
               <div className="prose prose-neutral max-w-none text-rc2-text/80 leading-relaxed space-y-4">
                 <p>
-                  A RC2 Soluções é uma consultoria especializada em tecnologia,
-                  automações, inteligência artificial, e-commerce e operações
-                  digitais.
+                  Entramos em empresas onde ainda existe muito trabalho manual,
+                  sistemas desconectados ou processos que cresceram sem uma
+                  arquitetura clara.
                 </p>
                 <p>
-                  Fundada por <strong className="text-rc2-text">Robson Azevedo</strong>, profissional com mais
-                  de 20 anos de experiência em TI, gestão de equipes e
-                  transformação digital, a RC2 nasceu para ajudar empresas a
-                  usarem tecnologia de forma prática, estratégica e orientada a
-                  resultado.
-                </p>
-                <p>
-                  Ao longo da carreira, Robson liderou projetos de e-commerce,
-                  implantação de canais D2C, automações com IA, atendimento
-                  omnichannel, infraestrutura, marketing digital, integração de
-                  sistemas e gestão de operações em empresas dos setores
-                  farmacêutico, varejo, logística e serviços.
-                </p>
-                <p>
-                  A proposta da RC2 é simples:{" "}
-                  <em>transformar tecnologia em operação funcionando.</em>
+                  Nosso trabalho começa entendendo como a operação funciona
+                  hoje. Depois desenhamos, implantamos, medimos e evoluímos a
+                  solução.
                 </p>
               </div>
 
+              {/* §9 — a experiência de operação que antecede a automação. */}
+              <SectionLabel className="mt-10 block mb-5">
+                Experiência de operação antes da automação
+              </SectionLabel>
+              <p className="text-rc2-text/80 leading-relaxed">
+                A RC2 é liderada por{" "}
+                <strong className="text-rc2-text">Robson Azevedo</strong>,
+                profissional com mais de 20 anos de experiência em tecnologia,
+                operações digitais, e-commerce, integração de sistemas e
+                liderança de equipes. Sua trajetória inclui:
+              </p>
+              <SignalList
+                className="mt-5"
+                tone="signal"
+                items={[
+                  "Operação 24×7 em ambiente corporativo",
+                  "Liderança de equipes",
+                  "Atuação em operações internacionais",
+                  "Criação e escala de canal D2C nos Estados Unidos",
+                  "Integração de ERP, CRM, e-commerce e logística",
+                  "Implantação de atendimento omnichannel",
+                  "Automação e IA aplicada a operações reais",
+                ]}
+              />
+
               <blockquote className="rc2-quote-card mt-8 text-sm">
-                &ldquo;A IA não substitui uma operação mal estruturada. Primeiro
-                organizamos o processo. Depois automatizamos o que faz
-                sentido.&rdquo;
+                &ldquo;Tecnologia só faz sentido quando melhora um processo real
+                e continua funcionando depois da implantação.&rdquo;
                 <cite className="block mt-2 not-italic font-medium text-rc2-text/70 text-xs">
                   — Robson Azevedo, fundador
                 </cite>
@@ -131,13 +143,17 @@ export default async function SobrePage() {
             {/* Método */}
             <ScrollReveal delay={120} direction="right" distance="24px">
               <SectionLabel className="block mb-5">Nossa forma de trabalhar</SectionLabel>
-              <StepList steps={steps} />
+              <NumberedList items={steps} />
             </ScrollReveal>
           </div>
         </div>
       </section>
 
-      <HomeCtaBlock className="rc2-section--closing" />
+      {/* CTA contextual de /sobre na tabela aprovada do AGENTS.md. */}
+      <HomeCtaBlock
+        className="rc2-section--closing"
+        primaryLabel="Conversar com a RC2"
+      />
     </>
   );
 }

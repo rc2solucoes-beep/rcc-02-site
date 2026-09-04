@@ -146,17 +146,31 @@ describe("Home — produtos", () => {
     expect(HOME_PRODUCTS.zapbox.external).toBe(false);
   });
 
-  it("Agenda Confirmada usa CTA temporário para /contato", async () => {
+  it("Agenda Confirmada leva à própria página", async () => {
+    // Fase 6: a rota existe. `docs/18` §13.2 previa que o CTA "Ver Agenda
+    // Confirmada" só voltaria a ser aplicável quando houvesse o que ver.
     const { HOME_PRODUCTS } = await import("@/lib/content/home");
     expect(HOME_PRODUCTS.agendaConfirmada.ctaLabel).toBe(
-      "Falar sobre agenda e confirmações"
+      "Ver Agenda Confirmada"
     );
-    expect(HOME_PRODUCTS.agendaConfirmada.href).toBe("/contato");
+    expect(HOME_PRODUCTS.agendaConfirmada.href).toBe(
+      "/solucoes/agenda-confirmada"
+    );
+    expect(HOME_PRODUCTS.agendaConfirmada.external).toBe(false);
   });
 
-  it("nunca aponta para a rota inexistente de Agenda Confirmada", async () => {
+  it("nenhum produto promete redução de faltas como resultado garantido", async () => {
+    // §5 das Correções: efeito esperado não é resultado garantido, e não há
+    // métrica documentada que sustente a promessa.
+    const { HOME_PRODUCTS } = await import("@/lib/content/home");
+    const copy = JSON.stringify(HOME_PRODUCTS).toLowerCase();
+    expect(copy).not.toContain("reduzindo faltas");
+    expect(copy).not.toContain("reduz faltas");
+  });
+
+  it("aponta para a rota da Agenda Confirmada, que agora existe", async () => {
     const home = await import("@/lib/content/home");
-    expect(JSON.stringify(home)).not.toContain("/solucoes/agenda-confirmada");
+    expect(JSON.stringify(home)).toContain("/solucoes/agenda-confirmada");
   });
 });
 
@@ -207,16 +221,51 @@ describe("Home — autoridade", () => {
 });
 
 describe("Home — demonstrações", () => {
-  it("tem apenas itens verificáveis e nenhum menciona Valéria", async () => {
+  /**
+   * `DE-1` (`docs/12` §19) barrava a Valéria por falta de descrição aprovada e
+   * de destino verificável — na época, "zero ocorrências" nas fontes.
+   *
+   * A dependência caiu na Fase 4: ela aparece na `RC2_PROPOSTA_ATUALIZACAO`
+   * (autoridade nº 1) e o §11 das Correções define copy e CTA aprovados. O
+   * destino é o WhatsApp comercial que já estava publicado — a demonstração
+   * nomeia quem responde, não cria canal novo.
+   */
+  it("tem apenas itens verificáveis", async () => {
     const { HOME_DEMOS } = await import("@/lib/content/home");
     expect(HOME_DEMOS).toHaveLength(2);
-    expect(JSON.stringify(HOME_DEMOS)).not.toContain("Val");
   });
 
-  it("item sem ativo navegável não tem href", async () => {
+  it("todo item com CTA tem destino e rótulo de analytics", async () => {
     const { HOME_DEMOS } = await import("@/lib/content/home");
-    const semLink = HOME_DEMOS.filter((d) => !d.href);
-    expect(semLink).toHaveLength(1);
+    for (const demo of HOME_DEMOS) {
+      if (!demo.ctaLabel) continue;
+      expect(demo.href).toBeTruthy();
+      expect(demo.analyticsLabel).toBeTruthy();
+    }
+  });
+
+  it("a Valéria é apresentada pelo nome, não pela arquitetura interna", async () => {
+    const { HOME_DEMOS } = await import("@/lib/content/home");
+    const valeria = HOME_DEMOS.find((d) => d.title.includes("Valéria"));
+    expect(valeria).toBeDefined();
+    expect(valeria!.ctaLabel).toBe("Conversar com a Valéria");
+    // Canal próprio dela, confirmado em 03/09/2026. NÃO é o WhatsApp comercial
+    // geral do site — apontar para lá prometeria uma conversa que não acontece.
+    expect(valeria!.href).toContain("wa.me/5511966958192");
+    expect(valeria!.href).not.toContain("5511988028550");
+    expect(valeria!.external).toBe(true);
+    expect(valeria!.analyticsLabel).toBe("conversar_valeria");
+    // §11: a formulação antiga descrevia o mecanismo, não a experiência.
+    expect(JSON.stringify(HOME_DEMOS)).not.toContain(
+      "agente de IA do nosso comercial"
+    );
+  });
+
+  it("todo destino que sai do domínio é marcado como externo", async () => {
+    const { HOME_DEMOS } = await import("@/lib/content/home");
+    for (const demo of HOME_DEMOS) {
+      if (demo.href?.startsWith("http")) expect(demo.external).toBe(true);
+    }
   });
 });
 

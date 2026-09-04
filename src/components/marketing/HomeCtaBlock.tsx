@@ -3,14 +3,25 @@ import { CTABlockBase } from "./CTABlockBase";
 interface HomeCtaBlockProps {
   /** Modificador de ritmo da página que consome o bloco (ex.: `rc2-section--closing`). */
   className?: string;
+  /**
+   * CTA contextual da página que consome o bloco.
+   *
+   * O CTA principal da marca é o padrão, não um texto obrigatório em toda
+   * página — a tabela aprovada no AGENTS.md dá "Conversar com a RC2" para
+   * `/sobre`, por exemplo. O destino é sempre `/contato`.
+   */
+  primaryLabel?: string;
 }
 
-export function HomeCtaBlock({ className }: HomeCtaBlockProps = {}) {
+export function HomeCtaBlock({
+  className,
+  primaryLabel = "Falar sobre minha operação",
+}: HomeCtaBlockProps = {}) {
   return (
     <CTABlockBase
       title="Tem um processo que ainda depende demais de planilha, copiar e colar ou memória?"
       description="Comece por uma conversa de 20 a 30 minutos, sem compromisso, para entender o cenário e definir qual é o próximo passo."
-      primaryLabel="Falar sobre minha operação"
+      primaryLabel={primaryLabel}
       primaryHref="/contato"
       primaryTracking={{
         kind: "cta",
