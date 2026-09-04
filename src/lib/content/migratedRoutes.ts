@@ -17,16 +17,26 @@
  *   (`docs/16` §13), absorvidas pelas âncoras de `/solucoes`.
  * - `automacoes-com-ia` e as três soluções — Fase 6F (`docs/22` §1),
  *   território integralmente Zapbox, consolidado na ponte `/zapbox`.
+ * - `e-commerce`, `sites-e-landing-pages` — Fase 3 (`docs/24` §2), últimos
+ *   slugs de `/servicos` a migrar. Com eles, nenhuma URL sob `/servicos`
+ *   responde 200: o hub inteiro passou a redirecionar para `/solucoes`.
+ * - `processos-manuais`, `sistemas-desconectados` — Fase 3B (`docs/24` §9),
+ *   fecha o §20 das Correções. Nenhum slug de `/solucoes/[slug]` continua
+ *   alcançável; os dados seguem preservados aqui como fonte de conteúdo.
  */
 
 export const MIGRATED_SERVICE_SLUGS = new Set([
   "agentes-de-ia",
   "automacao-de-processos",
   "automacoes-com-ia",
+  "e-commerce",
+  "sites-e-landing-pages",
 ]);
 
 export const MIGRATED_SOLUTION_SLUGS = new Set([
   "atendimento-lento",
   "leads-sem-resposta",
   "whatsapp-desorganizado",
+  "processos-manuais",
+  "sistemas-desconectados",
 ]);

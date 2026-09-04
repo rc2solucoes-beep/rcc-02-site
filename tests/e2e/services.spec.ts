@@ -12,8 +12,13 @@ import { test, expect } from "@playwright/test";
  *  - exigia o texto "Ler artigo" no blog, que o BlogCard não usa mais.
  */
 
-/** Serviços que continuam respondendo 200. */
-const RENDERED_SLUGS = ["e-commerce", "sites-e-landing-pages"] as const;
+/**
+ * Serviços que continuam respondendo 200 — nenhum.
+ *
+ * Fase 3 (`docs/24`) consolidou `/servicos` em `/solucoes`: o hub e os dois
+ * últimos slugs passaram a redirecionar.
+ */
+const RENDERED_SLUGS = [] as const;
 
 /** Serviços migrados: slug → destino. */
 const REDIRECTED_SLUGS = {
@@ -21,39 +26,32 @@ const REDIRECTED_SLUGS = {
   "automacao-de-processos": "/solucoes#automacao-de-processos",
   // Fase 6F — território integralmente Zapbox, consolidado na ponte.
   "automacoes-com-ia": "/zapbox",
+  // Fase 3 — consolidação de /servicos (docs/24 §2).
+  "e-commerce": "/solucoes#operacoes-digitais-commerce",
+  "sites-e-landing-pages": "/solucoes",
 } as const;
 
 const ALL_SLUGS = [...RENDERED_SLUGS, ...Object.keys(REDIRECTED_SLUGS)];
 
 test.describe("Hub de serviços", () => {
-  test("listagem continua exibindo os 5 serviços", async ({ page }) => {
-    await page.goto("/servicos");
-    await expect(page).toHaveTitle(/Serviços/);
+  test("o hub redireciona para /solucoes em um salto", async ({ request }) => {
+    const response = await request.get("/servicos", { maxRedirects: 0 });
 
-    const serviceLinks = page.getByRole("main").getByRole("link", { name: /Ver serviço/i });
-    await expect(serviceLinks).toHaveCount(ALL_SLUGS.length);
+    expect([301, 308]).toContain(response.status());
+    expect(response.headers()["location"]).toContain("/solucoes");
   });
 
-  test("serviços preservados continuam linkando para a própria URL", async ({ page }) => {
-    await page.goto("/servicos");
-    for (const slug of RENDERED_SLUGS) {
-      await expect(
-        page.getByRole("main").locator(`a[href="/servicos/${slug}"]`)
-      ).toBeVisible();
-    }
-  });
-
-  test("serviços migrados linkam direto para a âncora final, sem salto", async ({ page }) => {
-    await page.goto("/servicos");
-    for (const [slug, anchor] of Object.entries(REDIRECTED_SLUGS)) {
-      await expect(page.getByRole("main").locator(`a[href="${anchor}"]`)).toBeVisible();
-      await expect(
-        page.getByRole("main").locator(`a[href="/servicos/${slug}"]`)
-      ).toHaveCount(0);
+  test("nenhuma URL de /servicos responde 200", async ({ request }) => {
+    for (const slug of ALL_SLUGS) {
+      const response = await request.get(`/servicos/${slug}`, { maxRedirects: 0 });
+      expect([301, 308]).toContain(response.status());
     }
   });
 });
 
+// Vazio desde a Fase 3: o bloco permanece para o dia em que algum serviço
+// voltar a renderizar, e falha alto se `RENDERED_SLUGS` for repovoado sem
+// remover o redirect correspondente.
 test.describe("Serviços preservados", () => {
   for (const slug of RENDERED_SLUGS) {
     test(`/servicos/${slug} carrega sem erro`, async ({ page }) => {
@@ -79,12 +77,9 @@ test.describe("Serviços preservados", () => {
     }
   });
 
-  test("a solução relacionada continua sendo exibida", async ({ page }) => {
-    await page.goto("/servicos/e-commerce");
-    await expect(
-      page.getByRole("link", { name: /Ver solução por problema relacionada/i })
-    ).toBeVisible();
-  });
+  // A verificação de que nenhum link interno alcançável aponta para /servicos
+  // passou a ser estática, em `tests/unit/seo/internalLinks.test.ts`: na Fase
+  // 3B a última página que renderizava esses links também migrou.
 });
 
 test.describe("Serviços migrados", () => {

@@ -62,14 +62,72 @@ describe("Redirects — território preservado", () => {
   });
 
   it.each([
-    "/servicos",
+    // `/solucoes-com-ia` é a última URL legada sem destino decidido. As duas
+    // soluções por problema saíram desta lista na Fase 3B (§20 das Correções).
     "/solucoes-com-ia",
-    "/servicos/e-commerce",
-    "/servicos/sites-e-landing-pages",
-    "/solucoes/processos-manuais",
-    "/solucoes/sistemas-desconectados",
   ])("%s NÃO recebe redirect nesta migração", (source) => {
     expect(bySource(source)).toHaveLength(0);
+  });
+});
+
+/**
+ * Fase 3 — consolidação de `/servicos` em `/solucoes`
+ * (`RC2_Correcoes_Recomendadas_Site.md` §12, `docs/24`).
+ */
+describe("Redirects — consolidação de /servicos", () => {
+  const CONSOLIDACAO = [
+    ["/servicos", "/solucoes"],
+    ["/servicos/e-commerce", "/solucoes#operacoes-digitais-commerce"],
+    ["/servicos/sites-e-landing-pages", "/solucoes"],
+    // Fase 3B — §20 das Correções.
+    ["/solucoes/processos-manuais", "/solucoes"],
+    ["/solucoes/sistemas-desconectados", "/solucoes"],
+  ] as const;
+
+  it.each(CONSOLIDACAO)("%s redireciona permanentemente para %s", (source, destination) => {
+    const matches = bySource(source);
+    expect(matches).toHaveLength(1);
+    expect(matches[0].destination).toBe(destination);
+    expect(matches[0].permanent).toBe(true);
+  });
+
+  it("nenhuma URL sob /servicos continua respondendo como destino", () => {
+    const destinos = rules.map((rule) => rule.destination);
+    for (const destino of destinos) {
+      expect(destino.startsWith("/servicos")).toBe(false);
+    }
+  });
+
+  it("o alias /services/ vai direto ao destino final, em um salto", () => {
+    // Fase 7 (§21): com `skipTrailingSlashRedirect`, a variante com barra é
+    // avaliada por `redirects()` em vez de ser normalizada antes — antes
+    // custava dois saltos (`/services/` → `/services` → `/solucoes`).
+    expect(bySource("/services/")[0].destination).toBe("/solucoes");
+  });
+
+  it("toda consolidação tem a variante com barra, apontando ao mesmo destino", () => {
+    const semBarra = rules.filter(
+      (r) => !r.source.endsWith("/") && !r.source.includes(":path")
+    );
+    for (const regra of semBarra) {
+      const comBarra = bySource(`${regra.source}/`);
+      expect(comBarra).toHaveLength(1);
+      expect(comBarra[0].destination).toBe(regra.destination);
+    }
+  });
+
+  it("o catch-all de barra final vem por último", () => {
+    // Se viesse antes, capturaria `/servicos/` e criaria a chain que a Fase 7
+    // acabou de eliminar.
+    const i = rules.findIndex((r) => r.source === "/:path+/");
+    expect(i).toBe(rules.length - 1);
+  });
+
+  it("nenhum destino da consolidação é source de outra regra", () => {
+    const sources = new Set(rules.map((rule) => rule.source));
+    for (const [, destination] of CONSOLIDACAO) {
+      expect(sources.has(destination.split("#")[0])).toBe(false);
+    }
   });
 });
 

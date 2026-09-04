@@ -33,12 +33,12 @@ describe("Sitemap — a ponte entra", () => {
 });
 
 describe("Sitemap — nada é removido na 6D", () => {
+  // A 6D não removeu nada. As URLs de `/servicos` saíram depois, na Fase 3
+  // (`docs/24`), ao passarem a redirecionar — decisão de outra unidade, com
+  // contrato próprio em `tests/unit/seo/sitemapMigration.test.ts`.
   it.each([
     "/solucoes",
-    "/servicos",
     "/solucoes-com-ia",
-    "/servicos/e-commerce",
-    "/servicos/sites-e-landing-pages",
   ])("%s continua publicada", (path) => {
     expect(paths).toContain(path);
   });

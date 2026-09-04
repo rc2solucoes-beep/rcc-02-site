@@ -29,18 +29,17 @@ function absoluteUrl(path = "") {
   return `${BASE_URL}${normalizedPath}`;
 }
 
+/**
+ * Fase 3 (`docs/24` §3): `/servicos` saiu daqui ao passar a redirecionar para
+ * `/solucoes`. URL que redireciona não pode continuar publicada como destino.
+ * Os slugs sob `/servicos` saem sozinhos, via `MIGRATED_SERVICE_SLUGS`.
+ */
 const staticPages = [
   {
     path: "",
     lastModified: "2026-05-18",
     changeFrequency: "weekly",
     priority: 1.0,
-  },
-  {
-    path: "/servicos",
-    lastModified: "2026-05-18",
-    changeFrequency: "monthly",
-    priority: 0.9,
   },
   {
     path: "/solucoes-com-ia",
@@ -51,6 +50,13 @@ const staticPages = [
   {
     path: "/solucoes",
     lastModified: "2026-05-20",
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+  {
+    // Fase 6: rota criada; deixou de ser DEFER_ROUTE.
+    path: "/solucoes/agenda-confirmada",
+    lastModified: "2026-09-03",
     changeFrequency: "monthly",
     priority: 0.8,
   },

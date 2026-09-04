@@ -23,13 +23,13 @@ const MIGRATED = [
 ] as const;
 
 /** SPLIT_INTENT, hub, KEEP e NEEDS_SEO_DATA — nenhuma migra nesta unidade. */
+/**
+ * As três URLs de `/servicos` saíram desta lista na Fase 3 (`docs/24`), que as
+ * consolidou em `/solucoes`. O contrato delas vive em `services.spec.ts`.
+ * O que resta aqui é o que nenhuma fase decidiu ainda.
+ */
 const PRESERVED = [
   "/solucoes-com-ia",
-  "/servicos",
-  "/servicos/sites-e-landing-pages",
-  "/servicos/e-commerce",
-  "/solucoes/processos-manuais",
-  "/solucoes/sistemas-desconectados",
 ] as const;
 
 test.describe("Migração Zapbox — contrato de redirect", () => {

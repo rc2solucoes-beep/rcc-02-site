@@ -67,21 +67,28 @@ describe("Handoff interno — nenhum dado de superfície sai do domínio", () =>
 });
 
 describe("Handoff interno — o que não muda", () => {
-  it("Agenda Confirmada segue intacta — CD-2 permanece DEFER", () => {
-    expect(HOME_PRODUCTS.agendaConfirmada.href).toBe("/contato");
+  it("Agenda Confirmada continua fora do território Zapbox", () => {
+    // Fase 6 criou a rota; o que este arquivo protege é o handoff, não a
+    // existência da página: a solução vertical nunca sai para o produto.
+    expect(HOME_PRODUCTS.agendaConfirmada.href).toBe(
+      "/solucoes/agenda-confirmada"
+    );
     expect(HOME_PRODUCTS.agendaConfirmada.external).toBe(false);
     expect(HOME_PRODUCTS.agendaConfirmada.analyticsLabel).toBe(
       "agenda_confirmada"
     );
   });
 
-  it("a rota adiada da Agenda Confirmada continua sem href", () => {
+  it("a rota da Agenda Confirmada é interna, nunca o domínio do produto", () => {
     const dados = JSON.stringify({ HOME_PRODUCTS, HOME_DEMOS });
-    expect(dados).not.toContain("/solucoes/agenda-confirmada");
+    expect(dados).not.toContain("zapbox.cloud");
   });
 
-  it("a segunda demonstração continua sem link", () => {
+  it("a segunda demonstração ganhou destino sem sair pela ponte errada", () => {
+    // Fase 4: a demonstração da Valéria passou a ter CTA (§11 das Correções).
+    // O que este arquivo protege é o handoff: nenhum destino de demo pode ir
+    // direto ao domínio do Zapbox — isso é papel exclusivo da ponte.
     expect(HOME_DEMOS).toHaveLength(2);
-    expect(HOME_DEMOS[1].href).toBeUndefined();
+    expect(JSON.stringify(HOME_DEMOS)).not.toContain("zapbox.cloud");
   });
 });

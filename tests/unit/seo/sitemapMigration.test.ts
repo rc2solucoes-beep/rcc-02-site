@@ -38,13 +38,16 @@ describe("Sitemap — URLs migradas saem", () => {
 
 describe("Sitemap — URLs preservadas permanecem", () => {
   it.each([
+    // Fase 3 (`docs/24`) removeu `/servicos` e seus dois últimos slugs: eles
+    // passaram a redirecionar e não podem seguir publicados como destino.
     "/solucoes",
-    "/servicos",
     "/solucoes-com-ia",
-    "/servicos/e-commerce",
-    "/servicos/sites-e-landing-pages",
   ])("%s continua publicada", (path) => {
     expect(paths).toContain(path);
+  });
+
+  it("nenhuma URL de /servicos permanece no sitemap", () => {
+    expect(paths.filter((path) => path.startsWith("/servicos"))).toEqual([]);
   });
 
   it("as subpáginas de /solucoes que não migraram continuam publicadas", () => {

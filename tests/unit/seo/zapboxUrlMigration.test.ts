@@ -2,6 +2,10 @@ import { describe, expect, it, vi } from "vitest";
 import nextConfig from "../../../next.config";
 import { services } from "@/lib/content/services";
 import { solutions } from "@/lib/content/solutions";
+import {
+  MIGRATED_SERVICE_SLUGS,
+  MIGRATED_SOLUTION_SLUGS as MIGRATED_SOLUTIONS,
+} from "@/lib/content/migratedRoutes";
 
 /**
  * Fase 6F — migração das URLs de território Zapbox para a ponte (docs/22).
@@ -27,15 +31,15 @@ const MIGRATED_SOURCES = [
   "/servicos/automacao-de-atendimento",
 ] as const;
 
-/** Continuam renderizando: SPLIT_INTENT, KEEP e NEEDS_SEO_DATA. */
-const PRESERVED = [
-  "/solucoes-com-ia",
-  "/servicos",
-  "/servicos/sites-e-landing-pages",
-  "/servicos/e-commerce",
-  "/solucoes/processos-manuais",
-  "/solucoes/sistemas-desconectados",
-] as const;
+/**
+ * Continuam renderizando: SPLIT_INTENT, KEEP e NEEDS_SEO_DATA.
+ *
+ * `/servicos`, `/servicos/e-commerce` e `/servicos/sites-e-landing-pages`
+ * saíram desta lista na Fase 3 (`docs/24`), que consolidou `/servicos` em
+ * `/solucoes`. O contrato delas passou para `redirects.test.ts`. O que
+ * permanece aqui é o que a Fase 3 deliberadamente NÃO decidiu.
+ */
+const PRESERVED = ["/solucoes-com-ia"] as const;
 
 describe("Migração Zapbox — regras de redirect", () => {
   it.each(MIGRATED_SOURCES)("%s redireciona para a ponte", (source) => {
@@ -60,8 +64,17 @@ describe("Migração Zapbox — regras de redirect", () => {
     }
   });
 
-  it("existem exatamente cinco regras com destino /zapbox", () => {
-    expect(rules.filter((r) => r.destination === "/zapbox")).toHaveLength(5);
+  it("existem cinco sources para /zapbox, cada uma com variante de barra", () => {
+    // Fase 7 (§21): cada consolidação gera o par `/x` e `/x/`, ambos direto ao
+    // destino final — antes a variante com barra custava dois saltos.
+    const paraPonte = rules.filter((r) => r.destination === "/zapbox");
+    expect(paraPonte).toHaveLength(10);
+
+    const semBarra = paraPonte.filter((r) => !r.source.endsWith("/"));
+    expect(semBarra).toHaveLength(5);
+    for (const regra of semBarra) {
+      expect(paraPonte.some((r) => r.source === `${regra.source}/`)).toBe(true);
+    }
   });
 });
 
@@ -117,12 +130,21 @@ describe("Migração Zapbox — sitemap", () => {
     // A contagem absoluta de Production (30 → 26) depende dos posts do blog,
     // mockados aqui como vazio. O contrato verificável no unit é a exclusão.
     const p = await paths();
+    // Fase 3: com `e-commerce` e `sites-e-landing-pages` migrados, nenhum
+    // slug de serviço permanece publicado.
     expect(p.filter((x) => x.startsWith("/servicos/"))).toHaveLength(
-      services.length - 3
+      services.length - MIGRATED_SERVICE_SLUGS.size
     );
-    expect(p.filter((x) => x.startsWith("/solucoes/"))).toHaveLength(
-      solutions.length - 3
+    // Fase 3B: as duas últimas soluções por problema migraram; nenhum slug de
+    // `/solucoes/[slug]` permanece publicado.
+    //
+    // `/solucoes/agenda-confirmada` (Fase 6) é rota estática própria, não um
+    // item da coleção `solutions` — por isso sai da contagem.
+    const daColecao = p.filter(
+      (x) => x.startsWith("/solucoes/") && x !== "/solucoes/agenda-confirmada"
     );
+    expect(daColecao).toHaveLength(solutions.length - MIGRATED_SOLUTIONS.size);
+    expect(p).toContain("/solucoes/agenda-confirmada");
   });
 
   it("nenhuma entrada usa fragmento nem duplica", async () => {
@@ -151,14 +173,20 @@ describe("Migração Zapbox — lookup reverso preservado", () => {
         solution.relatedServices.some((rs) => rs.href === `/servicos/${slug}`)
     );
 
-  it("/servicos/e-commerce mantém o bloco relacionado", () => {
-    expect(relatedSolutionFor("e-commerce")?.slug).toBe("sistemas-desconectados");
-  });
-
-  it("/servicos/sites-e-landing-pages não oferece destino que redireciona", () => {
-    const related = relatedSolutionFor("sites-e-landing-pages");
-    if (related) expect(MIGRATED_SOLUTION_SLUGS.has(related.slug)).toBe(false);
-  });
+  /**
+   * Fase 3 (`docs/24`) tornou este lookup inalcançável: `/servicos/e-commerce`
+   * e `/servicos/sites-e-landing-pages` passaram a redirecionar, e uma página
+   * que redireciona nunca renderiza o próprio bloco relacionado.
+   *
+   * A armadilha inverte de sinal: o risco agora não é o bloco sumir, é uma
+   * página viva continuar OFERECENDO um destino que redireciona.
+   */
+  it.each(["e-commerce", "sites-e-landing-pages"])(
+    "nenhuma página viva oferece /servicos/%s como destino",
+    (slug) => {
+      expect(relatedSolutionFor(slug)).toBeUndefined();
+    }
+  );
 
   it("nenhuma página que permanece 200 linka para uma source migrada", () => {
     const migradas = new Set<string>(MIGRATED_SOURCES);
