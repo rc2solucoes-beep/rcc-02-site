@@ -1,58 +1,103 @@
-import { ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  Workflow,
+  Share2,
+  Gauge,
+  ShoppingCart,
+  type LucideIcon,
+} from "lucide-react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
+import { IconBadge } from "@/components/ui/IconBadge";
 import { HOME_COMPETENCIES, HOME_CTAS } from "@/lib/content/home";
 
+/** Ícone fino por competência (§8 Composites). Mapeado por título. */
+const COMPETENCY_ICONS: Record<string, LucideIcon> = {
+  "Automação de Processos": Workflow,
+  "Integração de Sistemas": Share2,
+  // Nada de cérebro, robô ou chip (AGENTS.md §11): IA aqui é
+  // instrumentação de operação, não iconografia de "inteligência".
+  "IA para Operações": Gauge,
+  "Operações Digitais & Commerce": ShoppingCart,
+};
+
+/**
+ * As quatro competências como especificação, não como grade de cards.
+ *
+ * Quatro caixas iguais em 2×2 achatam a hierarquia: tudo pesa o mesmo e a
+ * seção lê como catálogo. Aqui cada competência é uma linha indexada, com
+ * divisória hairline, título na coluna principal e entrega na lateral — a
+ * leitura passa a ser sequencial e a composição fica assimétrica de propósito.
+ *
+ * Copy, destinos e identificadores de analytics são os mesmos.
+ */
 export function HomeCompetencies() {
   return (
     <section id="competencias" className="bg-rc2-bg rc2-section">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <ScrollReveal>
           <SectionLabel className="rc2-rule block mb-5">O que a RC2 faz</SectionLabel>
-          <h2 className="rc2-h2 text-rc2-heading mb-12 max-w-2xl">
+          <h2 className="rc2-h2 text-rc2-heading mb-16 max-w-2xl">
             Quatro competências para a operação voltar a funcionar.
           </h2>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="border-t border-rc2-border">
           {HOME_COMPETENCIES.map((competency, index) => (
             <ScrollReveal
               key={competency.title}
               delay={index * 70}
-              className="rc2-card rc2-card-hover relative flex flex-col overflow-hidden p-6 pt-7"
+              className="group grid grid-cols-1 gap-x-12 gap-y-5 border-b border-rc2-border py-10 md:grid-cols-12 md:py-12"
             >
-              <span
-                className="absolute left-0 top-0 h-1 w-14 bg-rc2-brand"
-                aria-hidden
-              />
-              <h3 className="text-lg font-semibold text-rc2-heading mb-3 leading-snug">
-                {competency.title}
-              </h3>
-              <p className="text-sm font-medium text-rc2-text mb-2">
-                {competency.problem}
-              </p>
-              <p className="text-sm text-rc2-text/70 leading-relaxed flex-1">
-                {competency.delivery}
-              </p>
-              <TrackedLink
-                href={competency.href}
-                tracking={{
-                  kind: "cta",
-                  location: "home_solutions",
-                  label: competency.analyticsLabel,
-                  destination: competency.href,
-                }}
-                className="rc2-action-link mt-6"
-              >
-                {competency.linkLabel}
-                <ArrowRight size={14} />
-              </TrackedLink>
+              {/* Índice — a anotação técnica que ordena a leitura. */}
+              <div className="flex items-center gap-3 md:col-span-2 md:block">
+                {/* Numeral navy/muted (§11 Do/Don't). */}
+                <span className="rc2-label text-rc2-text-muted">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span
+                  className="h-px w-8 bg-rc2-border md:mt-4 md:block md:w-10"
+                  aria-hidden
+                />
+              </div>
+
+              <div className="md:col-span-5">
+                <h3 className="flex items-center gap-3 text-xl font-semibold leading-snug text-rc2-heading md:text-2xl">
+                  {(() => {
+                    const Icon = COMPETENCY_ICONS[competency.title];
+                    return Icon ? <IconBadge icon={Icon} /> : null;
+                  })()}
+                  {competency.title}
+                </h3>
+                <p className="mt-3 text-sm font-medium text-rc2-text">
+                  {competency.problem}
+                </p>
+              </div>
+
+              <div className="md:col-span-5">
+                <p className="text-sm leading-relaxed text-rc2-text/70">
+                  {competency.delivery}
+                </p>
+                <TrackedLink
+                  href={competency.href}
+                  tracking={{
+                    kind: "cta",
+                    location: "home_solutions",
+                    label: competency.analyticsLabel,
+                    destination: competency.href,
+                  }}
+                  className="rc2-action-link mt-5"
+                >
+                  {competency.linkLabel}
+                  <ArrowRight size={14} />
+                </TrackedLink>
+              </div>
             </ScrollReveal>
           ))}
         </div>
 
-        <ScrollReveal delay={300} className="mt-10">
+        <ScrollReveal delay={300} className="mt-12">
           <TrackedLink
             href={HOME_CTAS.competencies.href}
             tracking={{

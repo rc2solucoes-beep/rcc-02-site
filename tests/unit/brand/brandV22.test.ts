@@ -41,8 +41,10 @@ describe("Brand v2.2 — paleta", () => {
     ["--rc2-brand-hover", "#F04F14"],
     ["--rc2-brand-active", "#DC4510"],
     ["--rc2-accent-soft", "#FFF0E9"],
-    ["--rc2-bg", "#F7F5F1"],
-    ["--rc2-bg-alt", "#FBFAF8"],
+    // Papéis invertidos em 03/09/2026: o fundo padrão é o quase-branco e o
+    // creme passou a marcar seções de alternância (direção de arte §6).
+    ["--rc2-bg", "#FBFAF8"],
+    ["--rc2-bg-alt", "#F7F5F1"],
     ["--rc2-surface", "#FFFFFF"],
     ["--rc2-heading", "#0B1726"],
     ["--rc2-text", "#24313D"],
@@ -91,7 +93,7 @@ describe("Brand v2.2 — tipografia", () => {
   it.each([
     [".rc2-h1", "--rc2-tracking-h1"],
     [".rc2-h2", "--rc2-tracking-h2"],
-    [".rc2-display", "--rc2-tracking-display"],
+    [".rc2-hero-signature", "--rc2-tracking-display"],
   ])("%s consome %s em vez de literal", (selector, token) => {
     const bloco = css.match(blocoDe(selector));
     expect(bloco).not.toBeNull();
@@ -101,7 +103,7 @@ describe("Brand v2.2 — tipografia", () => {
   });
 
   it("nenhum seletor de título volta a -0.02em hardcoded", () => {
-    for (const selector of [".rc2-h1", ".rc2-h2", ".rc2-display"]) {
+    for (const selector of [".rc2-h1", ".rc2-h2", ".rc2-hero-signature"]) {
       const bloco = css.match(blocoDe(selector));
       expect(bloco![0]).not.toContain("-0.02em");
     }
@@ -128,6 +130,54 @@ describe("Brand v2.2 — tipografia", () => {
       expect(stack.startsWith("var(--font-barlow")).toBe(true);
     }
     expect(css).toContain("var(--font-barlow-condensed)");
+  });
+});
+
+/**
+ * A exceção do Condensed ExtraBold (AGENTS.md § Tipografia).
+ *
+ * O peso 800 condensado é o gesto de assinatura do topo da Home e mais nada.
+ * Ele já havia escapado uma vez — via `.rc2-display`, que acabou em /contato,
+ * error e not-found. Estes contratos existem para que não escape de novo.
+ */
+describe("Exceção do Barlow Condensed ExtraBold", () => {
+  it("o h1 padrão é Barlow Bold, não o display condensado", () => {
+    const h1 = css.match(blocoDe(".rc2-h1"));
+    expect(h1).not.toBeNull();
+    expect(h1![0]).toContain("var(--font-barlow)");
+    expect(h1![0]).not.toContain("condensed");
+    expect(h1![0]).toContain("font-weight: 700;");
+    expect(h1![0]).not.toContain("text-transform: uppercase;");
+  });
+
+  it("o gesto de assinatura mantém Condensed ExtraBold uppercase", () => {
+    const hero = css.match(blocoDe(".rc2-hero-signature"));
+    expect(hero).not.toBeNull();
+    expect(hero![0]).toContain("var(--font-barlow-condensed)");
+    expect(hero![0]).toContain("font-weight: 800;");
+    expect(hero![0]).toContain("text-transform: uppercase;");
+  });
+
+  it("a antiga .rc2-display não volta a existir", () => {
+    expect(css).not.toMatch(/\.rc2-display\s*\{/);
+    const ofensores = tsx
+      .filter(({ body }) => /rc2-display|font-condensed/.test(body))
+      .map(({ file }) => file);
+    expect(ofensores).toEqual([]);
+  });
+
+  it("o gesto de assinatura aparece em um único lugar: o h1 da Home", () => {
+    const ofensores = tsx
+      .filter(({ body }) => /className=[^>]*rc2-hero-signature/.test(body))
+      .map(({ file }) => file);
+    expect(ofensores).toEqual(["src/app/(public)/page.tsx"]);
+  });
+
+  it("carrega os pesos que a interface realmente usa, sem sintetizar negrito", () => {
+    const layout = readFileSync(join(root, "src/app/layout.tsx"), "utf-8");
+    for (const peso of ["300", "400", "500", "600", "700"]) {
+      expect(layout).toContain(`"${peso}"`);
+    }
   });
 });
 

@@ -24,7 +24,14 @@ export interface CTABlockBaseProps {
     destination?: string;
   };
   hideSecondary?: boolean;
-  variant?: "dark" | "orange";
+  /**
+   * `dark` é a banda de fechamento com peso total.
+   * `quiet` é a bifurcação de conveniência: mesma anatomia, peso secundário.
+   * Substitui a antiga `orange` — uma banda full-bleed em Safety Orange violava
+   * a regra inviolável nº 9 (laranja abaixo de 10% da área) e competia com o
+   * formulário do Contato, que é a ação real da página.
+   */
+  variant?: "dark" | "quiet";
   className?: string;
 }
 
@@ -47,7 +54,9 @@ export function CTABlockBase({
     <section
       className={cn(
         "rc2-grain relative overflow-hidden rc2-section",
-        isDark ? "bg-rc2-dark" : "bg-rc2-brand",
+        isDark
+          ? "bg-rc2-dark"
+          : "border-y border-rc2-border bg-rc2-bg-alt",
         className
       )}
     >
@@ -55,7 +64,7 @@ export function CTABlockBase({
       <div
         className={cn(
           "pointer-events-none absolute inset-0",
-          isDark ? "rc2-blueprint-dark opacity-60" : "rc2-blueprint-dark opacity-25"
+          isDark ? "rc2-blueprint-dark opacity-60" : "rc2-blueprint opacity-40"
         )}
         aria-hidden
       />
@@ -74,7 +83,7 @@ export function CTABlockBase({
           <FadeIn
             className={cn(
               "rc2-body mt-4 max-w-2xl mx-auto",
-              isDark ? "text-rc2-dark-text-secondary" : "text-rc2-heading"
+              isDark ? "text-rc2-dark-text-secondary" : "text-rc2-text"
             )}
           >
             {description}
@@ -86,9 +95,7 @@ export function CTABlockBase({
               href={primaryHref}
               tracking={primaryTracking || { kind: "cta", location: "cta_block", label: "primary" }}
               className={cn(
-                buttonVariants({ variant: "default" }),
-                "ui-focus-ring font-semibold tracking-wide uppercase text-xs px-8 h-11 bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90 active:bg-rc2-brand active:ring-1 active:ring-rc2-brand/50 transition-[background-color,color,box-shadow] duration-150",
-                !isDark && "bg-rc2-bg text-rc2-brand-text hover:bg-rc2-bg/90 active:bg-rc2-bg active:ring-rc2-brand/50"
+                buttonVariants({ variant: "brand", size: "brand-md" })
               )}
             >
               {primaryLabel}

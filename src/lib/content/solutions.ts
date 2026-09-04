@@ -379,8 +379,8 @@ export const solutions: Solution[] = [
           "Para integrar sistemas, APIs, planilhas, CRM, ERP e canais digitais.",
       },
       {
-        label: "E-commerce",
-        href: "/servicos/e-commerce",
+        label: "Operações Digitais & Commerce",
+        href: "/solucoes#operacoes-digitais-commerce",
         description:
           "Para conectar loja virtual, ERP, pagamento, logística e atendimento.",
       },
@@ -415,7 +415,10 @@ export const solutions: Solution[] = [
         label: "Automação de processos",
         href: "/solucoes#automacao-de-processos",
       },
-      { label: "E-commerce", href: "/servicos/e-commerce" },
+      {
+        label: "Operações Digitais & Commerce",
+        href: "/solucoes#operacoes-digitais-commerce",
+      },
       { label: "Contato", href: "/contato" },
     ],
     ctaTitle: "Quer conectar seus sistemas e reduzir retrabalho?",

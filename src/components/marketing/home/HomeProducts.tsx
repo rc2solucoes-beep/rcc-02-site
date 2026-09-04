@@ -25,9 +25,12 @@ export function HomeProducts() {
               className="rc2-card flex flex-col p-6 md:p-7"
             >
               <SectionLabel className="block mb-3">{product.category}</SectionLabel>
-              <h3 className="text-xl font-semibold text-rc2-heading mb-3">
+              <h3 className="text-xl font-semibold text-rc2-heading mb-1">
                 {product.name}
               </h3>
+              <p className="mb-3 text-sm font-medium text-rc2-text">
+                {product.tagline}
+              </p>
               <p className="text-sm text-rc2-text/70 leading-relaxed flex-1">
                 {product.description}
               </p>

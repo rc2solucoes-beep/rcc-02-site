@@ -32,8 +32,8 @@ export function HeroActions() {
           })
         }
         className={cn(
-          buttonVariants({ variant: "default" }),
-          "font-semibold tracking-wide uppercase text-xs px-8 h-12 bg-rc2-brand text-rc2-heading hover:bg-rc2-brand/90"
+          buttonVariants({ variant: "brand", size: "brand-lg" }),
+          "px-8"
         )}
       >
         {primary.label}

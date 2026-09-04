@@ -61,7 +61,7 @@ export default async function ContatoPage() {
           {/* Sidebar */}
           <ScrollReveal direction="left" distance="24px">
             <SectionLabel className="block mb-4">Conversa inicial</SectionLabel>
-            <h1 className="rc2-display text-4xl md:text-5xl text-rc2-heading mb-6 leading-tight">
+            <h1 className="rc2-h1 text-rc2-heading mb-6">
               Vamos falar sobre a sua operação
             </h1>
             <p className="text-rc2-text/70 leading-relaxed mb-8">

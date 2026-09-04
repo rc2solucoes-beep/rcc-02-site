@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import { ArrowUpRight } from "lucide-react";
 import { buildOg, BASE_URL } from "@/lib/siteMetadata";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { HomeCtaBlock } from "@/components/marketing/HomeCtaBlock";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { HeroActions } from "@/components/marketing/HeroActions";
-import { HomeHeroDiagram } from "@/components/marketing/home/HomeHeroDiagram";
+import { KineticHeadline } from "@/components/marketing/home/KineticHeadline";
 import { HomeProblems } from "@/components/marketing/home/HomeProblems";
 import { HomeCompetencies } from "@/components/marketing/home/HomeCompetencies";
 import { HomeProducts } from "@/components/marketing/home/HomeProducts";
@@ -12,7 +13,12 @@ import { HomeMethod } from "@/components/marketing/home/HomeMethod";
 import { HomeAuthority } from "@/components/marketing/home/HomeAuthority";
 import { HomeContent } from "@/components/marketing/home/HomeContent";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { HOME_COPY, HOME_DEMOS, HOME_PHILOSOPHY } from "@/lib/content/home";
+import {
+  HOME_COPY,
+  HOME_DEMOS,
+  HOME_PHILOSOPHY,
+  HOME_HERO_KINETIC,
+} from "@/lib/content/home";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
 const HOME_TITLE = "RC2 Soluções — Automação, Integrações e IA para Operações";
@@ -34,6 +40,15 @@ export async function generateMetadata(): Promise<Metadata> {
     }),
   };
 }
+
+/**
+ * O H1 aprovado é a fonte: o prefixo e o sufixo são fatiados dele em torno da
+ * palavra cinética, de modo que mudar `HOME_COPY.h1` mude a frase renderizada e
+ * nunca exista uma segunda cópia da copy para divergir.
+ */
+const kineticAt = HOME_COPY.h1.indexOf(HOME_HERO_KINETIC.word);
+const heroPrefix = HOME_COPY.h1.slice(0, kineticAt);
+const heroSuffix = HOME_COPY.h1.slice(kineticAt + HOME_HERO_KINETIC.word.length);
 
 export default async function HomePage() {
   let schemaWebPage;
@@ -65,31 +80,41 @@ export default async function HomePage() {
       />
 
       {/* ── 1. Hero ── */}
-      <section className="rc2-grain rc2-hero-stage relative overflow-hidden bg-rc2-bg rc2-section md:py-28 lg:py-32">
-        <div className="rc2-blueprint pointer-events-none absolute inset-0 opacity-50" aria-hidden />
+      {/* Hero sem grid: a v2.2 pede base clara e silenciosa — a textura
+          competia com a headline em vez de sustentá-la. */}
+      {/* Momento de assinatura: o hero é o primeiro pico de peso visual da
+          página, com o respiro que a §6 reserva para acontecimentos. */}
+      <section className="rc2-grain rc2-hero-stage relative overflow-hidden bg-rc2-bg rc2-section--signature">
+        {/* O módulo diagramático saiu (§8 Sections): fluxograma e nó-e-seta no
+            hero estão na lista de "evitar" da §11. O hero passa a ser um gesto
+            único — headline, subtexto e CTAs — e a evidência técnica desce para
+            as seções que a sustentam. */}
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="rc2-hero-enter rc2-hero-enter--1">
-            <SectionLabel className="rc2-rule block mb-5">
-              {HOME_COPY.eyebrow}
-            </SectionLabel>
-          </div>
-          <h1 className="rc2-h1 rc2-hero-shift rc2-hero-enter--2 text-rc2-heading max-w-4xl text-balance">
-            {HOME_COPY.h1}
-          </h1>
-          <p className="rc2-body-lg rc2-hero-shift rc2-hero-enter--3 mt-6 text-rc2-text/75 max-w-2xl">
-            {HOME_COPY.subheadline}
-          </p>
+          <div className="max-w-4xl">
+            <div className="rc2-hero-enter rc2-hero-enter--1">
+              <SectionLabel className="rc2-rule block mb-5">
+                {HOME_COPY.eyebrow}
+              </SectionLabel>
+            </div>
+            <KineticHeadline
+              className="rc2-hero-signature rc2-hero-shift rc2-hero-enter--2 text-rc2-heading text-balance"
+              prefix={heroPrefix}
+              word={HOME_HERO_KINETIC.word}
+              suffix={heroSuffix}
+              alternates={HOME_HERO_KINETIC.alternates}
+              fullText={HOME_COPY.h1}
+            />
+            <p className="rc2-body-lg rc2-hero-shift rc2-hero-enter--3 mt-8 text-rc2-text/75 max-w-2xl">
+              {HOME_COPY.subheadline}
+            </p>
 
-          <div className="rc2-hero-enter rc2-hero-enter--4">
-            <HeroActions />
-          </div>
+            <div className="rc2-hero-enter rc2-hero-enter--4 mt-10">
+              <HeroActions />
+            </div>
 
-          <p className="rc2-hero-enter rc2-hero-enter--6 mt-6 text-xs italic text-rc2-text/75">
-            &ldquo;{HOME_COPY.signature}&rdquo;
-          </p>
-
-          <div className="rc2-hero-enter rc2-hero-enter--6">
-            <HomeHeroDiagram />
+            <p className="rc2-hero-enter rc2-hero-enter--6 mt-8 text-xs italic text-rc2-text/60">
+              &ldquo;{HOME_COPY.signature}&rdquo;
+            </p>
           </div>
         </div>
       </section>
@@ -136,15 +161,18 @@ export default async function HomePage() {
                   {demo.description}
                 </p>
                 {/*
-                  Fase 6E: o único demo com link é o Zapbox, agora interno
-                  (`/zapbox`). Um demo externo futuro precisa reintroduzir
-                  `target`, `rel` e ícone de saída explicitamente.
+                  Dois demos com link: o Zapbox, interno (`/zapbox`), e a
+                  Valéria, que atende no WhatsApp e portanto sai do domínio —
+                  o caso que o comentário anterior deixou previsto.
                 */}
                 {demo.href && demo.ctaLabel && demo.analyticsLabel && (
                   <TrackedLink
                     href={demo.href}
+                    {...(demo.external
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
                     tracking={{
-                      kind: "cta",
+                      kind: demo.external ? "whatsapp" : "cta",
                       location: "home_demos",
                       label: demo.analyticsLabel,
                       destination: demo.href,
@@ -152,6 +180,7 @@ export default async function HomePage() {
                     className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-rc2-dark-text hover:underline transition-[color,text-decoration-color] duration-200 underline-offset-4"
                   >
                     {demo.ctaLabel}
+                    {demo.external && <ArrowUpRight size={14} aria-hidden />}
                   </TrackedLink>
                 )}
               </ScrollReveal>
@@ -161,7 +190,9 @@ export default async function HomePage() {
       </section>
 
       {/* ── 8. Filosofia ── */}
-      <section className="bg-rc2-bg-alt rc2-section">
+      {/* Base, não alt: a seção seguinte já é alt e as duas juntas criavam
+          1700px de tom idêntico. O passo tonal recria o ritmo antes do CTA. */}
+      <section className="bg-rc2-bg rc2-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
             <SectionLabel className="rc2-rule block mb-5">Como pensamos</SectionLabel>

@@ -1,6 +1,30 @@
+import {
+  ClipboardList,
+  Unplug,
+  FolderSearch,
+  Network,
+  type LucideIcon,
+} from "lucide-react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { SignalList } from "@/components/ui/SignalList";
+import { IconBadge } from "@/components/ui/IconBadge";
 import { HOME_PROBLEMS } from "@/lib/content/home";
+
+/**
+ * Ícone fino por sintoma (§8 Composites: "Card Sintoma adiciona ícone fino ao
+ * lado do título").
+ *
+ * Mapeado por título e não embutido no conteúdo: ícone é decisão visual, e
+ * `HOME_PROBLEMS` é copy aprovada que não deve carregar nome de componente.
+ * Nenhum ícone de robô, cérebro ou chip — proibidos pelo AGENTS.md.
+ */
+const PROBLEM_ICONS: Record<string, LucideIcon> = {
+  "Trabalho manual": ClipboardList,
+  "Sistemas desconectados": Unplug,
+  "Informação espalhada": FolderSearch,
+  "Operação digital fragmentada": Network,
+};
 
 export function HomeProblems() {
   return (
@@ -23,23 +47,24 @@ export function HomeProblems() {
         <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-rc2-dark-border bg-rc2-dark-border md:grid-cols-2">
           {HOME_PROBLEMS.map((problem) => (
             <li key={problem.title} className="bg-rc2-dark px-6 py-7">
-              <h3 className="text-base font-semibold text-rc2-dark-text mb-2">
-                {problem.title}
-              </h3>
+              <div className="mb-2 flex items-center gap-3">
+                {(() => {
+                  const Icon = PROBLEM_ICONS[problem.title];
+                  return Icon ? <IconBadge icon={Icon} variant="dark" /> : null;
+                })()}
+                <h3 className="text-base font-semibold text-rc2-dark-text">
+                  {problem.title}
+                </h3>
+              </div>
               <p className="text-sm text-rc2-dark-text-secondary leading-relaxed mb-4">
                 {problem.description}
               </p>
-              <ul className="space-y-1.5">
-                {problem.examples.map((example) => (
-                  <li
-                    key={example}
-                    className="flex items-start gap-2.5 text-sm text-rc2-dark-text-secondary"
-                  >
-                    <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-rc2-brand" aria-hidden />
-                    <span>{example}</span>
-                  </li>
-                ))}
-              </ul>
+              <SignalList
+                items={problem.examples}
+                tone="signal"
+                variant="dark"
+                className="text-sm"
+              />
             </li>
           ))}
         </ul>

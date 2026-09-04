@@ -52,27 +52,18 @@ test.describe("Copy de personalidade visual", () => {
     }
   });
 
-  test("página individual de serviço diferencia CTA intermediário e final", async ({ page }) => {
-    // Fase 6F: `automacoes-com-ia` passou a redirecionar. O CTA testado vive no
-    // template de `/servicos/[slug]`, então qualquer serviço que renderiza
-    // preserva o contrato original.
-    await page.goto("/servicos/e-commerce");
+  // REMOVIDOS na Fase 3/3B (`docs/24` §7 e §9): os templates `/servicos/[slug]`
+  // e `/solucoes/[slug]` deixaram de ter qualquer slug alcançável, então nenhum
+  // dos dois renderiza em lugar nenhum. O contrato de CTA contextual migra para
+  // a página comercial única, que é onde o usuário chega depois dos redirects.
+
+  test("a página comercial usa o CTA principal apontando para /contato", async ({
+    page,
+  }) => {
+    await page.goto("/solucoes");
 
     await expect(
-      page.getByRole("link", { name: /serve para o meu caso/i })
-    ).toHaveAttribute("href", "/contato");
-    await expect(
-      page.getByRole("link", { name: /minha operação/i })
-    ).toHaveAttribute("href", "/contato");
-  });
-
-  test("página individual de solução usa CTA contextual", async ({ page }) => {
-    // Fase 6F: `atendimento-lento` passou a redirecionar. O contrato do teste é
-    // o CTA de uma página de solução que renderiza — não a URL em si.
-    await page.goto("/solucoes/processos-manuais");
-
-    await expect(
-      page.getByRole("link", { name: /minha operação/i })
+      page.getByRole("link", { name: /minha operação/i }).first()
     ).toHaveAttribute("href", "/contato");
   });
 

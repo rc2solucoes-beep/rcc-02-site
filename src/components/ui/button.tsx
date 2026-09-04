@@ -18,6 +18,12 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
+        // CTA da marca. Antes desta variante, a mesma cadeia de classes estava
+        // copiada à mão em sete lugares (Header, HeroActions, CTABlockBase,
+        // CTABlock, ContactForm ×2, índice do blog) e já havia divergido entre
+        // eles. Texto em --rc2-heading, nunca branco: regra inviolável nº 1.
+        brand:
+          "ui-focus-ring bg-rc2-brand text-rc2-heading font-semibold tracking-wide uppercase hover:bg-rc2-brand/90 active:bg-rc2-brand active:ring-1 active:ring-rc2-brand/50 transition-[background-color,color,box-shadow] duration-150",
       },
       size: {
         default:
@@ -31,6 +37,11 @@ const buttonVariants = cva(
         "icon-sm":
           "size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg",
         "icon-lg": "size-9",
+        // Alturas do CTA da marca. Acompanham a variante `brand` e cobrem os
+        // três contextos reais: header, banda de CTA e formulário.
+        "brand-sm": "h-9 gap-2 px-5 text-xs",
+        "brand-md": "h-11 gap-2 px-8 text-xs",
+        "brand-lg": "h-12 gap-2 px-10 text-xs",
       },
     },
     defaultVariants: {

@@ -7,17 +7,23 @@ import { getOrgSettings, getOrganizationSchema, getLocalBusinessSchema } from "@
 import { SITE_NAME, BASE_URL as SITE_BASE_URL } from "@/lib/siteMetadata";
 import "./globals.css";
 
+// Escala completa do brand guide. Carregar só o 400 fazia o navegador sintetizar
+// os pesos 500/600/700 usados em h2/h3, cards e botões — negrito falso, com
+// espessura e métrica diferentes do desenho real da Barlow.
 const barlow = Barlow({
   subsets: ["latin"],
-  weight: "400",
+  weight: ["300", "400", "500", "600", "700"],
   style: "normal",
   variable: "--font-barlow",
   display: "swap",
 });
 
+// Condensed tem exatamente dois papéis: 500 no eyebrow/label (.rc2-label) e 800
+// no gesto de assinatura do topo da Home (.rc2-hero-signature). Ver a exceção
+// documentada em AGENTS.md § Tipografia.
 const barlowCondensed = Barlow_Condensed({
   subsets: ["latin"],
-  weight: "800",
+  weight: ["500", "800"],
   variable: "--font-barlow-condensed",
   display: "swap",
 });

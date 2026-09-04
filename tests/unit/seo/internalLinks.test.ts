@@ -21,15 +21,21 @@ import {
 const MIGRATED = [
   "/servicos/agentes-de-ia",
   "/servicos/automacao-de-processos",
+  // Fase 3 (`docs/24`) — consolidação de `/servicos` em `/solucoes`.
+  "/servicos",
+  "/servicos/e-commerce",
+  "/servicos/sites-e-landing-pages",
 ] as const;
 
-/** Slugs de serviço que continuam respondendo 200 após a migração. */
-const RENDERED_SERVICE_SLUGS = [
-  // Fase 6F: `automacoes-com-ia` passou a redirecionar (docs/22 §1) e saiu
-  // desta lista — os links dentro dela não são mais alcançáveis.
-  "e-commerce",
-  "sites-e-landing-pages",
-] as const;
+/**
+ * Slugs de serviço que continuam respondendo 200 após a migração.
+ *
+ * Fase 3 esvaziou esta lista: com `e-commerce` e `sites-e-landing-pages`
+ * migrados, nenhuma URL sob `/servicos` responde 200. O array vazio é o
+ * estado correto, não um esquecimento — e o contrato abaixo passou a afirmar
+ * a ausência.
+ */
+const RENDERED_SERVICE_SLUGS = [] as const;
 
 /**
  * Só os links efetivamente alcançáveis.
@@ -61,10 +67,18 @@ describe("Internal links — URLs migradas", () => {
     expect(ofensores).toEqual([]);
   });
 
-  it("usa as âncoras finais como destino", () => {
-    const hrefs = allHrefs();
-    expect(hrefs).toContain("/solucoes#automacao-de-processos");
-    expect(hrefs).toContain("/solucoes#ia-para-operacoes");
+  /**
+   * Fase 3B esvaziou `allHrefs()`: todo serviço e toda solução por problema
+   * passaram a redirecionar, então nenhuma entidade renderiza os próprios
+   * links relacionados.
+   *
+   * Isso torna VACUOS os contratos "nenhum link aponta para X" deste arquivo —
+   * eles passam sobre uma lista vazia. O teste abaixo existe para que essa
+   * condição seja explícita: se algum slug voltar a renderizar, `allHrefs()`
+   * deixa de ser vazio e os outros contratos voltam a ter efeito.
+   */
+  it("nenhuma entidade de serviço ou solução continua alcançável", () => {
+    expect(allHrefs()).toEqual([]);
   });
 
   it("nunca usa um alias de redirect como destino de link", () => {
@@ -78,6 +92,10 @@ describe("Internal links — URLs migradas", () => {
       "/solucoes/atendimento-lento",
       "/solucoes/leads-sem-resposta",
       "/solucoes/whatsapp-desorganizado",
+      // Fase 3 — consolidação de /servicos (docs/24).
+      "/servicos",
+      "/servicos/e-commerce",
+      "/servicos/sites-e-landing-pages",
     ];
     for (const href of allHrefs()) {
       expect(aliases).not.toContain(href);
@@ -102,11 +120,14 @@ describe("Internal links — URLs preservadas", () => {
     expect(allHrefs()).not.toContain("/solucoes-com-ia");
   });
 
-  it("mantém os links para os serviços DEFER, NEEDS_SEO_DATA e KEEP", () => {
-    const hrefs = allHrefs();
-    for (const slug of RENDERED_SERVICE_SLUGS) {
-      expect(hrefs).toContain(`/servicos/${slug}`);
-    }
+  it("nenhum slug de serviço continua renderizando após a consolidação", () => {
+    expect(RENDERED_SERVICE_SLUGS).toEqual([]);
+  });
+
+  it("nenhum link interno alcançável aponta para /servicos", () => {
+    // Um link interno para URL que redireciona faz o usuário — e o crawler —
+    // pagar um 301 evitável.
+    expect(allHrefs().filter((href) => href.startsWith("/servicos"))).toEqual([]);
   });
 });
 

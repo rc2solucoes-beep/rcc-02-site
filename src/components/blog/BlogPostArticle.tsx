@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLink, ChevronDown } from "lucide-react";
 import type { Post, FaqItem, CtaBlock } from "@/lib/types/post";
 import { TableOfContents } from "@/components/blog/TableOfContents";
 import { BackToTopButton } from "@/components/blog/BackToTopButton";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
+import { FaqList } from "@/components/ui/FaqList";
+import { ShareRow } from "@/components/ui/ShareRow";
+import { AuthorByline } from "@/components/ui/AuthorByline";
 import { BASE_URL } from "@/lib/siteMetadata";
 import { sanitizeAndAddIds, extractHeadings } from "@/lib/blog/sanitize";
 
@@ -65,8 +67,6 @@ export function BlogPostArticle({ post, relatedPosts }: BlogPostArticleProps) {
   };
 
   const shareUrl = `${BASE_URL}/blog/${slug}`;
-  const encodedTitle = encodeURIComponent(post.title);
-  const whatsappShareUrl = `https://wa.me/?text=${encodedTitle}%20${encodeURIComponent(shareUrl)}`;
 
   // Parse cta_block (pode vir como string após sanitização)
   let ctaBlock: CtaBlock | null = null;
@@ -168,108 +168,52 @@ export function BlogPostArticle({ post, relatedPosts }: BlogPostArticleProps) {
         </header>
 
         {/* Conteúdo + Autor na Sidebar */}
-        <div className="container mx-auto max-w-6xl px-4 py-12">
-          <div className={`grid gap-8 ${showNavigation ? "grid-cols-1 lg:grid-cols-4" : "grid-cols-1 lg:grid-cols-3"}`}>
+        {/* §9: a coluna de leitura precisa chegar a ~680px. Com TOC e autor
+            ocupando duas das quatro colunas de um container de 1152px, a
+            coluna de texto caía para 544px — mais estreita que o recomendado,
+            não mais larga. O container sobe para 7xl e o texto ganha espaço. */}
+        <div className="container mx-auto max-w-7xl px-4 py-12">
+          {/* Colunas explícitas em vez de frações iguais: com 4 colunas de
+              mesma largura, a coluna de texto ficava em ~600px. O texto passa
+              a ser a coluna elástica e chega aos ~680px da §9; TOC e autor têm
+              largura fixa, que é o que realmente precisam. */}
+          <div
+            className={`grid gap-8 ${
+              showNavigation
+                ? "grid-cols-1 lg:grid-cols-[200px_minmax(0,1fr)_280px]"
+                : "grid-cols-1 lg:grid-cols-[minmax(0,1fr)_280px]"
+            }`}
+          >
             {/* Table of Contents — instância única, gerencia mobile/desktop internamente */}
             {showNavigation && <TableOfContents headings={tocHeadings} />}
 
             {/* Conteúdo principal */}
-            <div className={showNavigation ? "lg:col-span-2" : "lg:col-span-2"}>
+            <div className="min-w-0">
               <div
-                className="prose prose-rc2 max-w-none"
+                // §9: o objetivo do artigo é ser lido confortavelmente, não
+                // impressionar. Coluna de leitura ~680px, menor que o
+                // container padrão.
+                className="prose prose-rc2 max-w-[680px]"
                 dangerouslySetInnerHTML={{ __html: sanitizedContent }}
               />
 
               {/* FAQ */}
               {faqItems.length > 0 && (
-                <div className="mt-12 pt-8 border-t border-border">
-                  <h2 className="text-2xl font-bold text-rc2-heading mb-6">
-                    Perguntas Frequentes
+                <div className="mt-12 pt-8 border-t border-rc2-border">
+                  <h2 className="rc2-h3 text-rc2-heading mb-6">
+                    Perguntas frequentes
                   </h2>
-                  <div className="space-y-2">
-                    {faqItems.map((item, index) => (
-                      <details
-                        key={index}
-                        className="group border border-border rounded-lg overflow-hidden"
-                      >
-                        <summary className="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer list-none hover:bg-rc2-text/[0.02] transition-colors">
-                          <span className="font-medium text-rc2-heading text-base leading-snug">
-                            {item.question}
-                          </span>
-                          <ChevronDown
-                            size={18}
-                            className="flex-shrink-0 text-rc2-text/40 transition-transform duration-200 group-open:rotate-180"
-                          />
-                        </summary>
-                        <div className="px-5 pb-5 pt-1 text-rc2-text/75 text-sm leading-relaxed border-t border-border bg-white">
-                          {item.answer}
-                        </div>
-                      </details>
-                    ))}
-                  </div>
+                  <FaqList items={faqItems} />
                 </div>
               )}
 
               {/* Compartilhamento */}
-              <div className="mt-12 pt-8 border-t border-border">
-                <p className="text-sm font-medium text-rc2-text mb-4">Compartilhe este artigo:</p>
-                <div className="flex gap-3">
-                  <TrackedLink
-                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    tracking={{
-                      kind: "blog_share",
-                      location: "blog_post_share",
-                      label: "share_linkedin",
-                      destination: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
-                      source_page: `/blog/${slug}`,
-                      source_type: "blog_post",
-                      post_slug: slug,
-                      network: "linkedin",
-                    }}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-rc2-dark text-rc2-dark-text text-sm font-medium rounded hover:bg-rc2-dark/90 transition-colors"
-                  >
-                    <ExternalLink size={16} /> LinkedIn
-                  </TrackedLink>
-                  <TrackedLink
-                    href={whatsappShareUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    tracking={{
-                      kind: "blog_share",
-                      location: "blog_post_share",
-                      label: "share_whatsapp",
-                      destination: whatsappShareUrl,
-                      source_page: `/blog/${slug}`,
-                      source_type: "blog_post",
-                      post_slug: slug,
-                      network: "whatsapp",
-                    }}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--rc2-whatsapp)] text-rc2-heading text-sm font-medium rounded hover:opacity-90 transition-opacity"
-                  >
-                    WhatsApp
-                  </TrackedLink>
-                  <TrackedLink
-                    href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodeURIComponent(shareUrl)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    tracking={{
-                      kind: "blog_share",
-                      location: "blog_post_share",
-                      label: "share_x",
-                      destination: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodeURIComponent(shareUrl)}`,
-                      source_page: `/blog/${slug}`,
-                      source_type: "blog_post",
-                      post_slug: slug,
-                      network: "x",
-                    }}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-rc2-dark text-rc2-dark-text text-sm font-medium rounded hover:bg-rc2-dark/90 transition-colors"
-                  >
-                    X (Twitter)
-                  </TrackedLink>
-                </div>
-              </div>
+              <ShareRow
+                url={shareUrl}
+                title={post.title}
+                slug={slug}
+                className="mt-12 pt-8 border-t border-rc2-border"
+              />
 
               {/* CTA */}
               {ctaBlock ? (
@@ -398,52 +342,17 @@ export function BlogPostArticle({ post, relatedPosts }: BlogPostArticleProps) {
 
             {/* Sidebar: Autor (1/3) */}
             {post.author_name && (
-              <aside className="lg:col-span-1">
-                <div className="sticky top-20 border border-border rounded bg-white overflow-hidden">
-                  <div className="px-5 py-4 border-b border-border">
-                    <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
-                      Sobre o Autor
-                    </h3>
-                  </div>
-
-                  <div className="p-5">
-                    {post.author_photo && (
-                      <Image
-                        src={post.author_photo}
-                        alt={post.author_name}
-                        width={200}
-                        height={200}
-                        className="w-full aspect-square object-cover rounded-lg mb-4"
-                      />
-                    )}
-
-                    <h4 className="font-bold text-lg text-rc2-heading mb-0.5">
-                      {post.author_name}
-                    </h4>
-                    {post.author_title && (
-                      <p className="text-sm text-rc2-brand-text font-medium mb-3">
-                        {post.author_title}
-                      </p>
-                    )}
-
-                    {post.author_bio && (
-                      <p className="text-sm text-rc2-text/70 mb-4 leading-relaxed">
-                        {post.author_bio}
-                      </p>
-                    )}
-
-                    {post.author_linkedin && (
-                      <a
-                        href={post.author_linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-sm text-rc2-brand-text hover:underline font-medium"
-                      >
-                        <ExternalLink size={16} /> LinkedIn
-                      </a>
-                    )}
-                  </div>
-                </div>
+              <aside>
+                <AuthorByline
+                  className="sticky top-20"
+                  author={{
+                    name: post.author_name,
+                    title: post.author_title,
+                    bio: post.author_bio,
+                    photo: post.author_photo,
+                    linkedin: post.author_linkedin,
+                  }}
+                />
               </aside>
             )}
           </div>

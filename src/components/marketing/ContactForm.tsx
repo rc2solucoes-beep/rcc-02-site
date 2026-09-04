@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactSchema, type ContactFormData } from "@/lib/validations/contact";
 import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import {
   trackFormError,
@@ -104,16 +105,54 @@ function categorizeCompanySegment(segment: string): CompanySegmentCategory {
   );
 }
 
+/**
+ * Barra de progresso do formulário (§9 Contato).
+ *
+ * O trilho antes era um único `<div>` com `step >= 1` decidindo a cor — e
+ * `step` é `1 | 2`, então a condição era **sempre verdadeira**: a barra ficava
+ * cheia e laranja já na etapa 1 e nunca comunicava onde a pessoa estava.
+ * Parecia funcionar; só não significava nada.
+ *
+ * Agora o trilho é neutro e o preenchimento é um elemento próprio, com largura
+ * proporcional à etapa e transição suave ao avançar — o Safety Orange marca o
+ * segmento ativo, que é uma mudança de estado real (Princípio 1).
+ */
+const TOTAL_STEPS = 2;
+
 function ProgressBar({ step }: { step: 1 | 2 }) {
+  const percent = (step / TOTAL_STEPS) * 100;
+
   return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <div className={cn("text-sm font-semibold", step === 1 ? "text-rc2-brand-text" : "text-rc2-text-secondary")}>
+        <div className="flex items-center gap-3">
+          <div
+            className={cn(
+              "text-sm font-semibold transition-colors duration-200",
+              step === 1 ? "text-rc2-brand-text" : "text-rc2-text-secondary"
+            )}
+          >
             Etapa 1 de 2
           </div>
-          <div className={cn("w-24 h-1 rounded-full", step >= 1 ? "bg-rc2-brand" : "bg-rc2-border")} />
-          <div className={cn("text-sm font-semibold", step === 2 ? "text-rc2-brand-text" : "text-rc2-text-secondary")}>
+          <div
+            className="h-1 w-24 overflow-hidden rounded-full bg-rc2-border"
+            role="progressbar"
+            aria-valuenow={step}
+            aria-valuemin={1}
+            aria-valuemax={TOTAL_STEPS}
+            aria-label={`Etapa ${step} de ${TOTAL_STEPS}`}
+          >
+            <div
+              className="h-full rounded-full bg-rc2-brand transition-[width] duration-300 ease-out motion-reduce:transition-none"
+              style={{ width: `${percent}%` }}
+            />
+          </div>
+          <div
+            className={cn(
+              "text-sm font-semibold transition-colors duration-200",
+              step === 2 ? "text-rc2-brand-text" : "text-rc2-text-secondary"
+            )}
+          >
             Etapa 2 de 2
           </div>
         </div>
@@ -410,7 +449,7 @@ Vamos analisar o que você enviou e retornar pelo e-mail ou WhatsApp
             <button
               type="button"
               onClick={handleStep1Next}
-              className="ui-focus-ring flex-1 px-10 h-12 bg-rc2-brand text-rc2-heading font-semibold tracking-wide uppercase text-xs hover:bg-rc2-brand/90 active:bg-rc2-brand active:ring-1 active:ring-rc2-brand/50 transition-[background-color,color,box-shadow] duration-150 rounded-md flex items-center justify-center gap-2"
+              className={cn(buttonVariants({ variant: "brand", size: "brand-lg" }), "flex-1")}
             >
               Continuar para dados da empresa
               <ChevronRight size={16} />
@@ -572,7 +611,7 @@ Vamos analisar o que você enviou e retornar pelo e-mail ou WhatsApp
             <button
               type="submit"
               disabled={isSubmitting}
-              className="ui-focus-ring flex-1 px-10 h-12 bg-rc2-brand text-rc2-heading font-semibold tracking-wide uppercase text-xs hover:bg-rc2-brand/90 active:bg-rc2-brand active:ring-1 active:ring-rc2-brand/50 transition-[background-color,color,box-shadow,opacity] duration-150 disabled:opacity-60 disabled:cursor-not-allowed rounded-md"
+              className={cn(buttonVariants({ variant: "brand", size: "brand-lg" }), "flex-1 disabled:opacity-60 disabled:cursor-not-allowed")}
             >
               {isSubmitting ? "Enviando solicitação..." : "Agendar conversa de diagnóstico"}
             </button>

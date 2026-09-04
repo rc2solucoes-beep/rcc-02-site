@@ -97,8 +97,10 @@
 ──────────────────────────────────────────────── */
 :root {
   /* Fonte de verdade — identidade RC2 v3 */
-  --rc2-bg: #F7F5F1;
-  --rc2-bg-alt: #FBFAF8;
+  /* Direção de arte §6: os papéis se invertem. O fundo padrão sai do creme para
+     o quase-branco; o creme passa a marcar seções de alternância e respiro. */
+  --rc2-bg: #FBFAF8;
+  --rc2-bg-alt: #F7F5F1;
   --rc2-surface: #FFFFFF;
   --rc2-surface-2: #F2F3F4;
   --rc2-heading: #0B1726;
@@ -127,6 +129,8 @@
   --rc2-on-brand: #0B1726;
   --rc2-focus-ring: #C2410C;
   --rc2-focus-ring-dark: #FF5F1F;
+  /* Cor de anel do contexto atual. Herda; as superfícies navy trocam abaixo. */
+  --rc2-focus-current: var(--rc2-focus-ring);
   --rc2-whatsapp: #25D366;
 
   /* Brand v2.2 — o orange também atua como borda e halo, nunca como massa. */
@@ -190,6 +194,12 @@
   --space-section-y-mobile: 5rem;   /* 80px — v2.2 */
   --space-section-y-desktop: 7.5rem; /* 120px — v2.2 */
 
+  /* Seção de assinatura (direção de arte §6 Espaçamento). Escala ADICIONAL, que
+     convive com a padrão acima: reservada aos momentos que a página trata como
+     acontecimento — hero e prova quantificada —, nunca à seção de rotina. */
+  --space-section-signature-mobile: 4.5rem;  /* 72px */
+  --space-section-signature-desktop: 10rem;  /* 160px */
+
   /* Shadow scale */
   --shadow-soft: 0 4px 24px rgba(11, 23, 38, 0.05);
   --shadow-lift: 0 8px 32px rgba(11, 23, 38, 0.08);
@@ -207,11 +217,6 @@
 @layer base {
   * {
     @apply border-border;
-  }
-
-  :focus-visible {
-    outline: 2px solid var(--rc2-focus-ring);
-    outline-offset: 2px;
   }
 
   :is(
@@ -310,20 +315,26 @@
     color: var(--rc2-brand-text);
   }
 
-  /* Display — impacto máximo */
-  .rc2-display {
+  /* Gesto de assinatura — Barlow Condensed ExtraBold uppercase.
+     ÚNICO ponto autorizado do site: o h1 do topo da Home. A exceção está
+     documentada em AGENTS.md § Tipografia; não estender a mais nenhum lugar.
+     Substitui a antiga .rc2-display, que havia se espalhado para /contato,
+     error e not-found. */
+  .rc2-hero-signature {
     font-family: var(--font-barlow-condensed), sans-serif;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: var(--rc2-tracking-display);
+    @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95];
   }
 
+  /* H1 padrão — Barlow Bold, caixa normal, na escala da direção de arte §6
+     (28–32px mobile / 40–52px desktop). Não é mais o display condensado. */
   .rc2-h1 {
-    font-family: var(--font-barlow-condensed), sans-serif;
-    font-weight: 800;
-    text-transform: uppercase;
+    font-family: var(--font-barlow), sans-serif;
+    font-weight: 700;
     letter-spacing: var(--rc2-tracking-h1);
-    @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95];
+    @apply text-[1.75rem] sm:text-4xl md:text-5xl lg:text-[3.25rem] leading-[1.1];
   }
 
   .rc2-h2 {
@@ -369,6 +380,13 @@
     padding-block: 5rem;
   }
 
+  /* Momento de assinatura — não é a seção de rotina com mais ar, é a exceção
+     que declara "isto é um acontecimento". Aplicação é decisão de composição,
+     fora do escopo desta fase de tokens. */
+  .rc2-section--signature {
+    padding-block: var(--space-section-signature-mobile);
+  }
+
   @media (min-width: 768px) {
     .rc2-section {
       padding-block: var(--space-section-y-desktop);
@@ -389,6 +407,10 @@
 
     .rc2-section--closing {
       padding-block: 7rem;
+    }
+
+    .rc2-section--signature {
+      padding-block: var(--space-section-signature-desktop);
     }
   }
 
@@ -415,10 +437,30 @@
   .rc2-action-link {
     @apply inline-flex items-center gap-1.5 text-sm font-semibold
            text-rc2-brand-text
-           transition-[color,text-decoration-color] duration-200 hover:underline
-           focus-visible:outline-none focus-visible:ring-2
-           focus-visible:ring-rc2-focus-ring focus-visible:ring-offset-2;
+           transition-[color,text-decoration-color] duration-200 hover:underline;
     text-underline-offset: 4px;
+  }
+
+  /* §8 Primitives — "Seta ganha micro-deslocamento de 2–3px no hover (150ms)".
+     Só a seta se move; o rótulo fica parado, senão o link inteiro escorrega. */
+  .rc2-action-link svg {
+    transition: transform 150ms ease-out;
+  }
+
+  .rc2-action-link:hover svg,
+  .rc2-action-link:focus-visible svg {
+    transform: translateX(2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rc2-action-link svg {
+      transition: none;
+    }
+
+    .rc2-action-link:hover svg,
+    .rc2-action-link:focus-visible svg {
+      transform: none;
+    }
   }
 
   /* Hero entrance — authored first impression only */
@@ -624,9 +666,7 @@
   }
 
   /* Focus ring — aplicado a links e botões fora do shadcn */
-  .ui-focus-ring {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rc2-focus-ring focus-visible:ring-offset-2;
-  }
+
 
   /* Active state — para botões e links em estado pressionado/ativo */
   .state-active {
@@ -639,10 +679,14 @@
   }
 
   /* Caption / rodapé */
+  /* Caption (§6 Tipografia): Light 300, 13–14px. Estava definida em 12px e
+     sem nenhum uso no site; ao entrar nos cards de testemunho, foi alinhada à
+     escala do documento. */
   .rc2-caption {
     font-family: var(--font-barlow), sans-serif;
     font-weight: 300;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
     color: var(--rc2-text-secondary);
   }
 
@@ -678,14 +722,24 @@
   }
 
   /* Régua estrutural laranja — precede eyebrows e títulos-chave */
+  /*
+   * Régua de label. A interrupção é a gramática do Signal Interrupt aplicada à
+   * composição — segmento, corte, segmento — sem desenhar o logo e sem virar
+   * textura repetida. Usa `currentColor`, então funciona em área clara e navy.
+   */
   .rc2-rule::before {
     content: "";
     display: inline-block;
-    width: 1.75rem;
+    width: 2.25rem;
     height: 2px;
-    background: var(--rc2-brand-text);
+    background: linear-gradient(
+      to right,
+      color-mix(in srgb, currentColor 40%, transparent) 0 38%,
+      transparent 38% 54%,
+      currentColor 54% 100%
+    );
     vertical-align: middle;
-    margin-right: 0.65rem;
+    margin-right: 0.75rem;
     translate: 0 -0.12em;
   }
 
@@ -780,5 +834,52 @@
     max-width: 100%;
     height: auto;
     margin: 1.5rem 0;
+  }
+}
+
+/* ────────────────────────────────────────────────
+   Anel de foco — regra inviolável nº 3
+
+   Fora de `@layer` de propósito. Estilo sem camada vence qualquer camada, e
+   isto precisa vencer: `focus-visible:outline-none` e os `ring-*` do Tailwind
+   e do shadcn são utilities, e utilities ganham de `@layer components`.
+
+   O que estava acontecendo antes: o anel existia no DOM, mas saía como
+   `color-mix(in oklab, #c2410c 20%, transparent)` a ~1.5px de espessura —
+   contraste ~1.2:1 contra o fundo, invisível na prática. Nenhum teste de
+   código pega isso; só medindo o estilo computado com foco por teclado.
+
+   `outline` real em vez de `box-shadow`: não some sob `overflow: hidden`,
+   acompanha o `border-radius` e não depende das variáveis de ring.
+
+   A cor vem de `--rc2-focus-current`, que herda — as superfícies navy a
+   trocam para Safety Orange e todo componente dentro delas acompanha sem
+   precisar saber onde está.
+──────────────────────────────────────────────── */
+:where(footer, .bg-rc2-dark, .bg-rc2-dark-2, .bg-rc2-dark-elevated, .bg-rc2-dark-card) {
+  --rc2-focus-current: var(--rc2-focus-ring-dark);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible,
+.ui-focus-ring:focus-visible {
+  /* Longhands, não o shorthand: com `outline: 2px solid var(--x)` a cor caía
+     para `currentColor` mesmo com a variável resolvendo — o anel do footer
+     saía cinza-claro em vez de Safety Orange. */
+  outline-style: solid;
+  outline-width: 2px;
+  outline-offset: 2px;
+  outline-color: var(--rc2-focus-current);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:focus-visible,
+  button:focus-visible {
+    transition: outline-color 150ms ease-out;
   }
 }
