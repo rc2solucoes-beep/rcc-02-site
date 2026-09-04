@@ -8,7 +8,7 @@ export default function NotFound() {
     <div className="flex-1 flex items-center justify-center min-h-[70vh] px-4">
       <div className="text-center max-w-lg">
         <SectionLabel className="block mb-4">Erro 404</SectionLabel>
-        <p className="rc2-display text-8xl md:text-[10rem] text-rc2-ebony leading-none mb-4">
+        <p className="rc2-bold text-8xl md:text-[10rem] text-rc2-heading leading-none mb-4">
           404
         </p>
         <p className="text-xl font-semibold text-rc2-ebony mb-2">

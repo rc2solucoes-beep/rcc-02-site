@@ -242,9 +242,14 @@ Quando o problema for predominantemente:
 
 a solução correta é **Agenda Confirmada**.
 
-`DEFER_ROUTE` — a rota `/solucoes/agenda-confirmada` **ainda não existe**
-(`docs/18` §13). Enquanto `CD-2` não for decidida, o CTA é contextual e leva a
-`/contato`; **nunca criar `href` para essa rota**.
+A rota `/solucoes/agenda-confirmada` **existe desde 03/09/2026** (Fase 6,
+`docs/27`). O `DEFER_ROUTE` de `docs/18` §13 foi encerrado: o CTA aprovado
+"Ver Agenda Confirmada" leva à página, e os CTAs de dentro dela levam a
+`/contato`.
+
+**Lacuna ainda aberta:** U-4 de `docs/18` §12.2 — a base técnica da solução
+(Zapbox, automação própria, ou ambos) não foi definida por nenhuma fonte. A
+página não afirma stack por isso. Não preencher por inferência.
 
 ## Serviços despriorizados
 
@@ -268,7 +273,7 @@ automações.
 ```
 /
 ├── /solucoes
-│   └── /solucoes/agenda-confirmada   (DEFERRED — não criada; ver CD-2)
+│   └── /solucoes/agenda-confirmada   (publicada na Fase 6)
 ├── /zapbox                            (ponte institucional do produto)
 ├── /sobre
 ├── /blog
@@ -348,8 +353,8 @@ como token, pare e pergunte — não invente um valor.
 
 | Papel | Token | Valor |
 |---|---|---|
-| Fundo de página | `--rc2-bg` | `#F7F5F1` |
-| Fundo alternativo | `--rc2-bg-alt` | `#FBFAF8` |
+| Fundo de página | `--rc2-bg` | `#FBFAF8` |
+| Fundo alternativo | `--rc2-bg-alt` | `#F7F5F1` |
 | Card / superfície | `--rc2-surface` | `#FFFFFF` |
 | Superfície secundária | `--rc2-surface-2` | `#F2F3F4` |
 | Títulos | `--rc2-heading` | `#0B1726` |
@@ -379,6 +384,24 @@ como token, pare e pergunte — não invente um valor.
 Barlow, pesos 300/400/500/600/700/800, com `display: swap`. Nunca adicionar uma
 segunda família.
 
+#### Exceção documentada — Barlow Condensed ExtraBold
+
+Decisão aprovada em 03/09/2026, a partir de
+`documentos-base/RC2_Direcao_de_Arte_e_Sistema_Visual.md` §6.
+
+**Barlow Condensed ExtraBold (800) é permitido em um único lugar: o gesto de
+destaque no topo da Home.** Em nenhum outro ponto do site.
+
+- Único ponto de uso: a classe `.rc2-hero-signature`, aplicada ao `h1` da Home.
+- Nenhuma outra página, seção, componente, título, numeral ou rótulo pode
+  usá-la — inclusive `/contato`, `error.tsx`, `not-found.tsx` e capas de blog,
+  que já usaram Condensed e foram corrigidos.
+- O `h1` padrão (`.rc2-h1`) é **Barlow Bold 700, sem uppercase**.
+- Eyebrow/label (`.rc2-label`) continua em Barlow Condensed **Medium**, que não
+  é o peso coberto por esta exceção.
+
+Fora dessa exceção, a regra da família única permanece integral.
+
 O mecanismo de carregamento depende desta versão do Next — verifique em
 `node_modules/next/dist/docs/` antes de implementar. Não presuma
 `next/font/google`.
@@ -402,7 +425,10 @@ executar.
    `#FF5F1F` sobre `#F7F5F1` dá 2.79:1.
 3. **Anel de foco:** `#C2410C` em área clara, `#FF5F1F` em área navy. 2px de
    espessura, 2px de offset. Nunca `outline: none` sem substituto visível.
-4. **`#FFFFFF` é cor de card, não de página.** Fundo de página é `#F7F5F1`.
+4. **`#FFFFFF` é cor de card, não de página.** Fundo de página é `#FBFAF8`;
+   `#F7F5F1` é o fundo alternativo, para seções de alternância e respiro. Os
+   dois papéis foram invertidos em 03/09/2026 por decisão da direção de arte
+   (`RC2_Direcao_de_Arte_e_Sistema_Visual.md` §6).
 5. **`#000000` não existe neste projeto.** O preto da marca é `#0B1726`.
 6. **`--rc2-text-muted` não carrega informação.** Só placeholder e metadado
    descartável. Se o texto importa, use `--rc2-text-secondary`.
