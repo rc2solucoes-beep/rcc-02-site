@@ -30,6 +30,9 @@ function absoluteUrl(path = "") {
 }
 
 /**
+ * `/solucoes-com-ia` saiu junto ao encerrar o `SPLIT_INTENT`: passou a
+ * redirecionar para `/solucoes`.
+ *
  * Fase 3 (`docs/24` §3): `/servicos` saiu daqui ao passar a redirecionar para
  * `/solucoes`. URL que redireciona não pode continuar publicada como destino.
  * Os slugs sob `/servicos` saem sozinhos, via `MIGRATED_SERVICE_SLUGS`.
@@ -40,12 +43,6 @@ const staticPages = [
     lastModified: "2026-05-18",
     changeFrequency: "weekly",
     priority: 1.0,
-  },
-  {
-    path: "/solucoes-com-ia",
-    lastModified: "2026-05-18",
-    changeFrequency: "monthly",
-    priority: 0.8,
   },
   {
     path: "/solucoes",

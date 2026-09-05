@@ -116,7 +116,9 @@ describe("Internal links — URLs preservadas", () => {
    * ligá-la é decisão de arquitetura, junto com o destino do `SPLIT_INTENT`.
    * O teste fixa o estado para que qualquer mudança seja deliberada.
    */
-  it("registra /solucoes-com-ia como órfã de link interno", () => {
+  // Deixou de ser dívida: a página passou a redirecionar para `/solucoes` ao
+  // encerrar o `SPLIT_INTENT`. Nenhum link para ela é o estado correto agora.
+  it("nenhum link aponta para a URL do SPLIT_INTENT encerrado", () => {
     expect(allHrefs()).not.toContain("/solucoes-com-ia");
   });
 

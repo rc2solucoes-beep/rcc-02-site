@@ -73,7 +73,9 @@ describe("Numerado — o numeral nunca é Safety Orange", () => {
 });
 
 describe("Stat/Counter — motion que representa mudança real", () => {
-  const body = read(`${UI}/StatCounter.tsx`);
+  // `readCode`: as asserções de ausência abaixo bateriam nos comentários que
+  // explicam justamente o padrão removido.
+  const body = readCode(`${UI}/StatCounter.tsx`);
 
   it("conta uma vez ao entrar na viewport, sem loop", () => {
     expect(body).toContain("IntersectionObserver");
@@ -92,6 +94,39 @@ describe("Stat/Counter — motion que representa mudança real", () => {
 
   it("expõe o valor final a leitor de tela durante a contagem", () => {
     expect(body).toContain("aria-label");
+  });
+
+  /**
+   * O `useState(0)` vazava para o HTML servido: sem JS, os três números
+   * apareciam como zero. Mesma garantia do KineticHeadline — o valor final
+   * está na marcação e a contagem é camada visual por cima.
+   */
+  it("renderiza o valor final no SSR, não zero", () => {
+    expect(body).not.toContain("useState(0)");
+    expect(body).toContain("useState<number | null>(null)");
+    expect(body).toContain("contagem ?? target");
+  });
+});
+
+describe("Método — fonte única entre Home e /sobre", () => {
+  it("/sobre deriva os passos de HOME_METHOD, sem segunda lista", async () => {
+    const sobre = readCode("src/app/(public)/sobre/page.tsx");
+    expect(sobre).toContain("HOME_METHOD.steps.map");
+    // A lista antiga divergia: `Treinamento` não existe no método vigente.
+    for (const antigo of ["Desenho da solução", "Treinamento"]) {
+      expect(sobre).not.toContain(antigo);
+    }
+  });
+
+  it("os cinco passos são os do método vigente", async () => {
+    const { HOME_METHOD } = await import("@/lib/content/home");
+    expect(HOME_METHOD.steps.map((s) => s.name)).toEqual([
+      "Entender",
+      "Desenhar",
+      "Implantar",
+      "Medir",
+      "Evoluir",
+    ]);
   });
 });
 

@@ -36,10 +36,9 @@ describe("Sitemap — nada é removido na 6D", () => {
   // A 6D não removeu nada. As URLs de `/servicos` saíram depois, na Fase 3
   // (`docs/24`), ao passarem a redirecionar — decisão de outra unidade, com
   // contrato próprio em `tests/unit/seo/sitemapMigration.test.ts`.
-  it.each([
-    "/solucoes",
-    "/solucoes-com-ia",
-  ])("%s continua publicada", (path) => {
+  // `/solucoes-com-ia` saiu depois, ao encerrar o `SPLIT_INTENT` — decisão de
+  // outra unidade, com contrato em `sitemapMigration.test.ts`.
+  it.each(["/solucoes"])("%s continua publicada", (path) => {
     expect(paths).toContain(path);
   });
 

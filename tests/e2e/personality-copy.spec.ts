@@ -67,12 +67,31 @@ test.describe("Copy de personalidade visual", () => {
     ).toHaveAttribute("href", "/contato");
   });
 
-  test("CTA padrão de post convida a falar sobre o caso", async ({ page }) => {
+  /**
+   * O CTA do post segue a categoria do conteúdo, não um texto único.
+   *
+   * `automacao-whatsapp-ia` é categoria A — território Zapbox — e o teste
+   * antes exigia "meu caso" → `/contato`, que era o bloco padrão do código.
+   * Desde a categorização A/B/C, o post tem `cta_block` próprio apontando
+   * para a ponte. Mandar território Zapbox para `/contato` é justamente o
+   * erro que a categorização veio corrigir.
+   */
+  test("post de território Zapbox leva à ponte, não a /contato", async ({
+    page,
+  }) => {
     await page.goto("/blog/automacao-whatsapp-ia");
 
-    await expect(page.getByRole("link", { name: /meu caso/i })).toHaveAttribute(
-      "href",
-      "/contato"
-    );
+    await expect(
+      page.getByRole("link", { name: /Conhecer Zapbox/i }).first()
+    ).toHaveAttribute("href", "/zapbox");
+  });
+
+  test("post de território RC2 leva a /contato", async ({ page }) => {
+    // `processos-manuais-o-que-automatizar` é categoria B.
+    await page.goto("/blog/processos-manuais-o-que-automatizar");
+
+    await expect(
+      page.getByRole("link", { name: /minha operação/i }).first()
+    ).toHaveAttribute("href", "/contato");
   });
 });

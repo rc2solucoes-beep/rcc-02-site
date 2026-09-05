@@ -39,7 +39,12 @@ const MIGRATED_SOURCES = [
  * `/solucoes`. O contrato delas passou para `redirects.test.ts`. O que
  * permanece aqui é o que a Fase 3 deliberadamente NÃO decidiu.
  */
-const PRESERVED = ["/solucoes-com-ia"] as const;
+/**
+ * Vazio: `/solucoes-com-ia` era a última URL que a 6F preservava sem destino
+ * decidido, e o `SPLIT_INTENT` foi encerrado. O contrato dela passou para
+ * `redirects.test.ts` e `sitemapMigration.test.ts`.
+ */
+const PRESERVED: readonly string[] = [];
 
 describe("Migração Zapbox — regras de redirect", () => {
   it.each(MIGRATED_SOURCES)("%s redireciona para a ponte", (source) => {

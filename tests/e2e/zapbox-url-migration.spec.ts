@@ -28,9 +28,12 @@ const MIGRATED = [
  * consolidou em `/solucoes`. O contrato delas vive em `services.spec.ts`.
  * O que resta aqui é o que nenhuma fase decidiu ainda.
  */
-const PRESERVED = [
-  "/solucoes-com-ia",
-] as const;
+/**
+ * Vazio: `/solucoes-com-ia` era a última URL que a 6F preservava sem destino
+ * decidido. O `SPLIT_INTENT` foi encerrado — ela passou a redirecionar para
+ * `/solucoes` e saiu do sitemap.
+ */
+const PRESERVED: readonly string[] = [];
 
 test.describe("Migração Zapbox — contrato de redirect", () => {
   for (const source of MIGRATED) {
