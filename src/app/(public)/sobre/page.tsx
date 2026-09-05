@@ -6,6 +6,7 @@ import { HomeCtaBlock } from "@/components/marketing/HomeCtaBlock";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { NumberedList, type NumberedItem } from "@/components/ui/NumberedList";
+import { HOME_METHOD } from "@/lib/content/home";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -24,33 +25,21 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const steps: NumberedItem[] = [
-  {
-    title: "Diagnóstico",
-    description:
-      "Entendemos o momento da empresa, os gargalos, os processos e as oportunidades de melhoria.",
-  },
-  {
-    title: "Desenho da solução",
-    description:
-      "Definimos quais ferramentas, automações, integrações ou agentes fazem sentido para o negócio.",
-  },
-  {
-    title: "Implantação",
-    description:
-      "Construímos e configuramos a solução com foco em funcionamento real, não apenas demonstração.",
-  },
-  {
-    title: "Treinamento",
-    description:
-      "Orientamos a equipe para usar, acompanhar e evoluir a solução implantada.",
-  },
-  {
-    title: "Evolução",
-    description:
-      "Medimos resultados, ajustamos fluxos e identificamos novas oportunidades de automação.",
-  },
-];
+/**
+ * O método vem de `HOME_METHOD`, a mesma fonte que a Home usa.
+ *
+ * `/sobre` mantinha uma segunda lista — "Diagnóstico, Desenho da solução,
+ * Implantação, Treinamento, Evolução" — que divergia do método vigente:
+ * `Treinamento` não existe mais como etapa e `Medir` não estava lá. Eram dois
+ * métodos diferentes descritos como se fossem o mesmo.
+ *
+ * Ler da fonte única impede a divergência de voltar: mudar o método passa a
+ * mudar as duas páginas de uma vez.
+ */
+const steps: NumberedItem[] = HOME_METHOD.steps.map((step) => ({
+  title: step.name,
+  description: step.description,
+}));
 
 export default async function SobrePage() {
   let schemaWebPage;
