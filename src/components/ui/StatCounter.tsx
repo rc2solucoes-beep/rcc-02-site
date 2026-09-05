@@ -20,8 +20,14 @@ export type Stat = {
  * O Safety Orange entra **ao completar a contagem**: a chegada no número é uma
  * mudança de estado real, que é exatamente o que autoriza a cor (Princípio 1).
  *
- * `prefers-reduced-motion` e ausência de `IntersectionObserver` caem no valor
- * final imediatamente — o número é a informação, a contagem é o enfeite.
+ * **O SSR renderiza o valor final**, mesma garantia do `KineticHeadline`. Antes
+ * o `useState(0)` vazava para o HTML servido e, sem JS, os três números
+ * apareciam como `US$ 0 mil`, `0` e `0+` — o `aria-label` cobria leitor de
+ * tela, o olho humano não. A contagem é camada visual por cima de um número
+ * que já está correto na marcação.
+ *
+ * `prefers-reduced-motion` e ausência de `IntersectionObserver` simplesmente
+ * não animam — o número é a informação, a contagem é o enfeite.
  */
 const DURATION_MS = 1200;
 
@@ -31,22 +37,25 @@ function easeOut(t: number) {
 
 function useCountUp(target: number) {
   const ref = useRef<HTMLDivElement>(null);
-  const [display, setDisplay] = useState(0);
+  /**
+   * `null` significa "ainda não animou" e renderiza o valor final. É o que o
+   * servidor emite e o que o cliente hidrata — sem divergência de hidratação e
+   * sem piscar o número antes da contagem começar.
+   */
+  const [contagem, setContagem] = useState<number | null>(null);
   const [done, setDone] = useState(false);
 
   useEffect(() => {
     const node = ref.current;
-    const settle = () => {
-      setDisplay(target);
-      setDone(true);
-    };
 
     const reduced = window.matchMedia?.(
       "(prefers-reduced-motion: reduce)"
     )?.matches;
 
+    // Sem animação: o valor final já está renderizado, só falta marcar a
+    // chegada para o Safety Orange entrar.
     if (!node || reduced || typeof IntersectionObserver === "undefined") {
-      settle();
+      setDone(true);
       return;
     }
 
@@ -59,7 +68,7 @@ function useCountUp(target: number) {
         const start = performance.now();
         const tick = (now: number) => {
           const progress = Math.min((now - start) / DURATION_MS, 1);
-          setDisplay(Math.round(target * easeOut(progress)));
+          setContagem(Math.round(target * easeOut(progress)));
           if (progress < 1) frame = requestAnimationFrame(tick);
           else setDone(true);
         };
@@ -75,7 +84,7 @@ function useCountUp(target: number) {
     };
   }, [target]);
 
-  return { ref, display, done };
+  return { ref, display: contagem ?? target, done };
 }
 
 function StatItem({ stat, variant }: { stat: Stat; variant: "light" | "dark" }) {
