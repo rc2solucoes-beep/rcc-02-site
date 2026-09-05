@@ -99,6 +99,21 @@ const nextConfig: NextConfig = {
       // Fase 3B — fecha o §20.
       { source: "/solucoes/processos-manuais", destination: "/solucoes" },
       { source: "/solucoes/sistemas-desconectados", destination: "/solucoes" },
+      // Encerra o `SPLIT_INTENT`. A página era metade RC2, metade Zapbox, e
+      // por isso ficou fora de todas as migrações anteriores — sem destino
+      // decidido, continuava 200 e órfã de link interno. Decisão tomada: a
+      // metade RC2 vive em `/solucoes`, direto, sem página intermediária.
+      { source: "/solucoes-com-ia", destination: "/solucoes" },
+      // Slug corrompido de um post do blog: duas slugificações foram fundidas
+      // e a URL de 103 caracteres chegou a ser publicada e indexada. O slug
+      // no banco é corrigido à parte (`docs/sql/30-...`); este redirect
+      // preserva quem já tenha a URL quebrada salva ou indexada.
+      {
+        source:
+          "/blog/solucosolucoes-automatizadas-avaliar-fornecedoreses-automatizadas-7-criterios-para-avaliar-fornecedores",
+        destination:
+          "/blog/solucoes-automatizadas-7-criterios-para-avaliar-fornecedores",
+      },
     ];
 
     return [
