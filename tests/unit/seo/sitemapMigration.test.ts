@@ -38,12 +38,16 @@ describe("Sitemap — URLs migradas saem", () => {
 
 describe("Sitemap — URLs preservadas permanecem", () => {
   it.each([
-    // Fase 3 (`docs/24`) removeu `/servicos` e seus dois últimos slugs: eles
-    // passaram a redirecionar e não podem seguir publicados como destino.
+    // Fase 3 (`docs/24`) removeu `/servicos` e seus dois últimos slugs, e o
+    // encerramento do `SPLIT_INTENT` levou `/solucoes-com-ia` junto: URL que
+    // redireciona não pode seguir publicada como destino.
     "/solucoes",
-    "/solucoes-com-ia",
   ])("%s continua publicada", (path) => {
     expect(paths).toContain(path);
+  });
+
+  it("a URL do SPLIT_INTENT encerrado saiu do sitemap", () => {
+    expect(paths).not.toContain("/solucoes-com-ia");
   });
 
   it("nenhuma URL de /servicos permanece no sitemap", () => {

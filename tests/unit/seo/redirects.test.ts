@@ -61,12 +61,11 @@ describe("Redirects — território preservado", () => {
     expect(matches[0].destination).toBe("/zapbox");
   });
 
-  it.each([
-    // `/solucoes-com-ia` é a última URL legada sem destino decidido. As duas
-    // soluções por problema saíram desta lista na Fase 3B (§20 das Correções).
-    "/solucoes-com-ia",
-  ])("%s NÃO recebe redirect nesta migração", (source) => {
-    expect(bySource(source)).toHaveLength(0);
+  it("nenhuma URL legada continua sem destino decidido", () => {
+    // `/solucoes-com-ia` era a última. O `SPLIT_INTENT` foi encerrado: a
+    // metade RC2 da página vive em `/solucoes`.
+    expect(bySource("/solucoes-com-ia")[0].destination).toBe("/solucoes");
+    expect(bySource("/solucoes-com-ia")[0].permanent).toBe(true);
   });
 });
 
