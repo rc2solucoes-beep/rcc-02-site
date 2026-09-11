@@ -10,15 +10,13 @@ const { generateMetadata } = await import("@/app/(public)/page");
 describe("Home — metadata", () => {
   it("usa o title aprovado", async () => {
     const meta = await generateMetadata();
-    expect(meta.title).toBe(
-      "RC2 Soluções — Automação, Integrações e IA para Operações"
-    );
+    expect(meta.title).toBe("Automação, Integração e IA para PMEs");
   });
 
   it("posiciona a description em operação", async () => {
     const meta = await generateMetadata();
     expect(meta.description).toBe(
-      "Consultoria e implementação de automação de processos, integração de sistemas e IA para operações de PMEs que cresceram e precisam funcionar melhor."
+      "Sua operação cresceu, mas o processo não acompanhou? A RC2 automatiza tarefas, conecta sistemas e aplica IA pra reduzir retrabalho. Fale 20 min, grátis."
     );
   });
 

@@ -21,9 +21,9 @@ import {
 } from "@/lib/content/home";
 import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
 
-const HOME_TITLE = "RC2 Soluções — Automação, Integrações e IA para Operações";
+const HOME_TITLE = "Automação, Integração e IA para PMEs";
 const HOME_DESCRIPTION =
-  "Consultoria e implementação de automação de processos, integração de sistemas e IA para operações de PMEs que cresceram e precisam funcionar melhor.";
+  "Sua operação cresceu, mas o processo não acompanhou? A RC2 automatiza tarefas, conecta sistemas e aplica IA pra reduzir retrabalho. Fale 20 min, grátis.";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getOrgSettings();
@@ -33,9 +33,8 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: { canonical: `${BASE_URL}/` },
     openGraph: buildOg({
       url: BASE_URL,
-      title: HOME_TITLE,
-      description:
-        "Automação de processos, integração de sistemas e IA para operações. Para PMEs cuja operação cresceu e precisa funcionar melhor.",
+      title: `${HOME_TITLE} — RC2 Soluções`,
+      description: HOME_DESCRIPTION,
       imageUrl: settings.og_image_url,
     }),
   };
