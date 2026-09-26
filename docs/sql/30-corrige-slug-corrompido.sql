@@ -19,6 +19,15 @@
 -- Verificado antes: nenhuma referência à URL corrompida em `content` de
 -- outros posts, em `related_post_ids` ou em `settings` (0 ocorrências).
 -- Portanto não há link interno para atualizar junto.
+--
+-- ORDEM OPERACIONAL (docs/31 §1): este UPDATE roda ANTES do deploy do
+-- redirect correspondente em `next.config.ts` (MIGRACOES). Com o deploy
+-- primeiro, a URL antiga redireciona para um slug que ainda não existe e o
+-- post fica 404 pelas duas URLs. Sequência: UPDATE → validar (URL nova 200)
+-- → deploy → validar (antiga 308 → nova, nova 200, sitemap só com a nova).
+--
+-- ESTADO: aplicado e publicado — verificado em produção em 2026-09-26
+-- (URL nova 200, URL antiga 308 → nova). Ver docs/31 §1.3.
 -- =====================================================================
 
 BEGIN;
