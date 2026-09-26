@@ -99,11 +99,14 @@ const nextConfig: NextConfig = {
       // Fase 3B — fecha o §20.
       { source: "/solucoes/processos-manuais", destination: "/solucoes" },
       { source: "/solucoes/sistemas-desconectados", destination: "/solucoes" },
-      // Encerra o `SPLIT_INTENT`. A página era metade RC2, metade Zapbox, e
-      // por isso ficou fora de todas as migrações anteriores — sem destino
-      // decidido, continuava 200 e órfã de link interno. Decisão tomada: a
-      // metade RC2 vive em `/solucoes`, direto, sem página intermediária.
+      // `SPLIT_INTENT`: a página era metade RC2, metade Zapbox, e continuava
+      // 200 e órfã de link interno. Este redirect (commit 8de50f6) manda tudo
+      // para `/solucoes`, mas CONTRADIZ a última decisão aprovada — `docs/19`
+      // §9 e §20 item 9: triagem 200, nenhum 308 global. Sem aprovação
+      // registrada: DECISION_REQUIRED em `docs/31` §2 (ratificar ou reverter).
       { source: "/solucoes-com-ia", destination: "/solucoes" },
+      // Depende do UPDATE de `docs/sql/30`, que roda ANTES do deploy desta
+      // regra (ordem e validação em `docs/31` §1).
       // Slug corrompido de um post do blog: duas slugificações foram fundidas
       // e a URL de 103 caracteres chegou a ser publicada e indexada. O slug
       // no banco é corrigido à parte (`docs/sql/30-...`); este redirect
