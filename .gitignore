@@ -57,8 +57,26 @@ Thumbs.db
 # MCP and secrets
 # .mcp.json é a configuração MCP compartilhada do projeto e pode ser versionada.
 # Credenciais nunca devem ser armazenadas nela — use variáveis de ambiente.
-.claude/
 .env*.local
+
+# Claude Code — só a governança compartilhada do projeto é versionada, por
+# allowlist explícita. Continua ignorado: settings.local.json (preferências
+# pessoais), junctions de .claude/skills/ (apontam para caminhos absolutos da
+# máquina; o conteúdo real é versionado em .agents/skills/), locks e o resto.
+.claude/*
+!.claude/settings.json
+!.claude/hooks/
+.claude/hooks/*
+!.claude/hooks/post-edit-validate.mjs
+!.claude/agents/
+.claude/agents/*
+!.claude/agents/governance-reviewer.md
+!.claude/agents/seo-migration-checker.md
+!.claude/skills/
+.claude/skills/*
+!.claude/skills/pre-pr/
+.claude/skills/pre-pr/*
+!.claude/skills/pre-pr/SKILL.md
 
 # Playwright MCP artefacts
 .playwright-mcp/
