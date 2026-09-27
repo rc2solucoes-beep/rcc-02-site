@@ -1,7 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+// O layout raiz declara `index, follow` (inclusive para o Googlebot), canonical
+// e og:url da Home para as páginas reais. Sem sobrescrever aqui, todo 404 herda
+// isso ao lado do `noindex` que o Next injeta. O merge é raso: `robots` e
+// `openGraph` daqui substituem os do layout inteiros, `googleBot` incluído.
+export const metadata: Metadata = {
+  title: "Página não encontrada",
+  robots: { index: false, follow: false },
+  alternates: { canonical: null },
+  openGraph: null,
+};
 
 export default function NotFound() {
   return (

@@ -243,6 +243,9 @@ IDX-01 e IDX-03 não dependem de decisão de negócio: podem seguir para SPEC.
 | Data | ID | Status | Evidência |
 |---|---|---|---|
 | 2026-09-27 | IDX-01 | **corrigido** (branch `fix/seo-blog-404`, aguardando PR/deploy) | ver abaixo |
+| 2026-09-27 | IDX-01 | **confirmado em produção** (PR #32, merge `6a736828ad042bcc8229350e4544660e59f01997`) | ver abaixo |
+| 2026-09-27 | IDX-08 | **aberto** (achado da validação do IDX-01) | ver abaixo |
+| 2026-09-27 | IDX-08 | **corrigido localmente** (branch `fix/seo-global-404-metadata`, aguardando PR/deploy) | ver abaixo |
 
 **IDX-01 — corrigido.** Causa confirmada por experimento: os `loading.tsx` de
 `/blog` e de `/blog/[slug]` envolviam a página em Suspense e a resposta
@@ -276,3 +279,61 @@ Testes: `tests/unit/blog/postNotFound.test.ts` e
 
 Pendente: confirmar em produção após o deploy e, com DG-1, acompanhar no
 Search Console a saída dessas URLs de "Soft 404".
+
+**IDX-01 — confirmado em produção (2026-09-27).** PR #32 mesclada por merge
+commit `6a736828ad042bcc8229350e4544660e59f01997` (pais `f0204ee` e `56dddf1`);
+deployment de Production do Vercel concluído para esse commit. Em
+`https://www.rc2solucoes.com.br`:
+
+| URL | Status | robots | canonical |
+|---|---:|---|---|
+| `/blog/slug-inexistente-idx01` | 404 | `noindex` + `noindex, nofollow` | nenhum |
+| `/blog/post-que-nao-existe-rc2` | 404 | `noindex` + `noindex, nofollow` | nenhum |
+| `/blog/slug-inexistente-idx01/preview` | 404 | idem | nenhum |
+| `/blog/solucoes-automatizadas-7-criterios-para-avaliar-fornecedores/preview` (sem admin) | 404 | idem | nenhum |
+| `/blog/solucoes-automatizadas-7-criterios-para-avaliar-fornecedores` | 200 | `index, follow` | próprio |
+| `/blog` | 200 | `index, follow` | próprio |
+
+Nas 23 URLs do sitemap, metadata, canonical, JSON-LD e H1 idênticos ao
+pré-deploy; o texto do artigo passou a vir inline em `<main>`, igual ao build
+validado. Preview autenticado não validado manualmente em produção (cobertura
+unitária).
+
+### IDX-08 — Metadata do 404 global · **MÉDIA**
+
+**Evidência (produção, `main` @ `6a73682`).** Toda URL inexistente fora de
+`/blog/[slug]` — `/pagina-inexistente-idx08`, `/nao-existe-rc2-idx08`,
+`/foo/bar/inexistente-idx08`, e também `/Sobre` e `/SOLUCOES` — responde 404
+com:
+
+- `<meta name="robots" content="noindex">` **e** `content="index, follow"`;
+- `<meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1">`;
+- canonical `https://www.rc2solucoes.com.br` (Home);
+- `og:url` da Home, `og:type=website` e título padrão do site.
+
+O status já era correto; o problema é só a metadata.
+
+**Causa.** `src/app/layout.tsx` (`generateMetadata`) define para todo o site
+`robots` (`index`, `follow` e `googleBot`), `alternates.canonical` e
+`openGraph.url` da Home. `src/app/not-found.tsx` não declarava metadata, então
+o 404 herdava tudo. O `noindex` vem do próprio Next, que o injeta em respostas
+404. O 404 global renderiza direto sob o layout raiz (sem o layout
+`(public)`), por isso não tem Header/Footer — comportamento preexistente,
+mantido.
+
+**Correção.** `src/app/not-found.tsx` passa a exportar `metadata` com
+`robots: { index: false, follow: false }`, `alternates: { canonical: null }`,
+`openGraph: null` e `title: "Página não encontrada"`. Como o merge de metadata
+é raso, cada chave substitui a do layout inteira — o `googleBot` some junto.
+Sem `global-not-found.js` e sem flag experimental; layout raiz inalterado.
+
+**Validação (build local).** 3 URLs globais + `/Sobre` + `/SOLUCOES`: 404,
+robots só `noindex` + `noindex, nofollow`, 0 canonical, sem Open Graph; mesmo
+resultado com User-Agent do Googlebot. Home: 200, `index, follow` +
+`googlebot`, canonical próprio. 23 URLs do sitemap sem nenhuma diferença contra
+a produção. 404 visualmente idêntico (screenshots com o mesmo hash). 0 consulta
+ao banco no 404. Testes: `tests/unit/seo/globalNotFoundMetadata.test.ts` e
+`tests/e2e/global-not-found.spec.ts` (contra a produção atual, os 4 testes de
+404 global falham com `robots "index, follow"` — controle negativo).
+
+Pendente: confirmar em produção após o deploy.
