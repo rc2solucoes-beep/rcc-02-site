@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 import { createPublicClient } from "@/lib/supabase/server";
 import { PageHero } from "@/components/marketing/PageHero";
@@ -8,7 +9,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { BlogCard } from "@/components/blog/BlogCard";
 import type { Post } from "@/lib/types/post";
-import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
+import { getOrgSettings, getOrgSettingsOrNull, getWebPageSchema } from "@/lib/schema";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getOrgSettings();
@@ -51,31 +52,23 @@ function formatDate(iso: string | null) {
 export default async function BlogPage() {
   const posts = await getPosts();
   const [destaque, ...demais] = posts;
-  let schemaWebPage;
-
-  try {
-    const settings = await getOrgSettings();
-    schemaWebPage = getWebPageSchema(
-      settings,
-      {
-        title: "Blog",
-        description: "Conteúdo sobre automação, IA e operações digitais para pequenas e médias empresas.",
-        url: `${BASE_URL}/blog`,
-        keywords: "blog, artigos, IA, automação, tendências, operações digitais, tecnologia, PME",
-        image: `${BASE_URL}/og-image.png`,
-      },
-      BASE_URL
-    );
-  } catch (error) {
-    console.error("Error loading schema:", error);
-    schemaWebPage = { "@context": "https://schema.org", "@type": "WebPage" };
-  }
+  const schemaWebPage = getWebPageSchema(
+    await getOrgSettingsOrNull(),
+    {
+      title: "Blog",
+      description: "Conteúdo sobre automação, IA e operações digitais para pequenas e médias empresas.",
+      url: `${BASE_URL}/blog`,
+      keywords: "blog, artigos, IA, automação, tendências, operações digitais, tecnologia, PME",
+      image: `${BASE_URL}/og-image.png`,
+    },
+    BASE_URL
+  );
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemaWebPage) }}
       />
       <PageHero
         label="Blog"

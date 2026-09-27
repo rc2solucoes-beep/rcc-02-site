@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { createPublicClient } from "@/lib/supabase/server";
 import type { Post } from "@/lib/types/post";
-import { BASE_URL } from "@/lib/siteMetadata";
+import { blogPostUrl } from "@/lib/blog/url";
 import { BlogPostArticle } from "@/components/blog/BlogPostArticle";
 
 export const revalidate = 60;
@@ -69,7 +69,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: metaTitle,
     description: metaDescription,
     alternates: {
-      canonical: `${BASE_URL}/blog/${slug}`,
+      canonical: blogPostUrl(slug),
     },
     robots: {
       index: post.seo_index_status !== "noindex",
@@ -79,7 +79,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: post.og_title || post.title,
       description: post.og_description || metaDescription,
       type: "article",
-      url: `${BASE_URL}/blog/${slug}`,
+      url: blogPostUrl(slug),
       publishedTime: post.published_at ?? undefined,
       modifiedTime: post.updated_at,
       authors: post.author_name ? [post.author_name] : ["RC2 Soluções"],

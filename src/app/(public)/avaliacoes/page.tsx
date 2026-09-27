@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { GoogleReviews } from "@/components/GoogleReviews";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { HOME_PRODUCTS, HOME_DEMOS } from "@/lib/content/home";
-import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
+import { getOrgSettings, getOrgSettingsOrNull, getWebPageSchema } from "@/lib/schema";
 import { buildOg, BASE_URL } from "@/lib/siteMetadata";
 import type { WebPageInfo } from "@/lib/types/schema";
 
@@ -47,14 +48,13 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AvaliacoesPage() {
-  const settings = await getOrgSettings();
-  const schemaWebPage = getWebPageSchema(settings, pageInfo, BASE_URL);
+  const schemaWebPage = getWebPageSchema(await getOrgSettingsOrNull(), pageInfo, BASE_URL);
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemaWebPage) }}
       />
       <main id="main-content">
         {/* ── Avaliações de clientes ── */}

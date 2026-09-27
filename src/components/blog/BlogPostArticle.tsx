@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import Link from "next/link";
 import type { Post, FaqItem, CtaBlock } from "@/lib/types/post";
 import { TableOfContents } from "@/components/blog/TableOfContents";
@@ -7,8 +8,14 @@ import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { FaqList } from "@/components/ui/FaqList";
 import { ShareRow } from "@/components/ui/ShareRow";
 import { AuthorByline } from "@/components/ui/AuthorByline";
-import { BASE_URL } from "@/lib/siteMetadata";
 import { sanitizeAndAddIds, extractHeadings } from "@/lib/blog/sanitize";
+import { blogPostUrl } from "@/lib/blog/url";
+import {
+  getBlogAuthorSchema,
+  getBlogBreadcrumbSchema,
+  getBlogPostWebPageSchema,
+  getBlogPostingSchema,
+} from "@/lib/blogSchema";
 
 function formatDate(iso: string | null) {
   if (!iso) return "";
@@ -37,36 +44,15 @@ export function BlogPostArticle({ post, relatedPosts }: BlogPostArticleProps) {
   const tocHeadings = extractHeadings(sanitizedContent);
   const showNavigation = tocHeadings.length > 0;
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: post.title,
-    description: post.summary,
-    image: post.cover_url ?? undefined,
-    datePublished: post.published_at ?? post.created_at,
-    dateModified: post.updated_at,
-    author: post.author_name ? {
-      "@type": "Person",
-      name: post.author_name,
-      jobTitle: post.author_title,
-      image: post.author_photo,
-    } : {
-      "@type": "Organization",
-      name: "RC2 Soluções",
-      url: BASE_URL,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "RC2 Soluções",
-      url: BASE_URL,
-      logo: {
-        "@type": "ImageObject",
-        url: `${BASE_URL}/images/logo-base-transparente-preto.png`,
-      },
-    },
-  };
+  const shareUrl = blogPostUrl(slug);
 
-  const shareUrl = `${BASE_URL}/blog/${slug}`;
+  // WebPage da URL + BlogPosting, ligados por @id (mainEntity ↔ mainEntityOfPage).
+  const webPageJsonLd = getBlogPostWebPageSchema(post, shareUrl);
+  // Estruturado do breadcrumb visível abaixo (sem a categoria) — WebPage.breadcrumb.
+  const breadcrumbJsonLd = getBlogBreadcrumbSchema(post, shareUrl);
+  const jsonLd = getBlogPostingSchema(post, shareUrl);
+  // Person só existe para autor individual; o BlogPosting o referencia por @id.
+  const personJsonLd = getBlogAuthorSchema(post).person;
 
   // Parse cta_block (pode vir como string após sanitização)
   let ctaBlock: CtaBlock | null = null;
@@ -107,12 +93,26 @@ export function BlogPostArticle({ post, relatedPosts }: BlogPostArticleProps) {
       {showNavigation && <BackToTopButton />}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(webPageJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
+      />
+      {personJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(personJsonLd) }}
+        />
+      )}
       {faqJsonLd && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqJsonLd) }}
         />
       )}
 

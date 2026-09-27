@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 import { ContactForm } from "@/components/marketing/ContactForm";
 import { ContactCtaBlock } from "@/components/marketing/ContactCtaBlock";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
+import { getOrgSettings, getOrgSettingsOrNull, getWebPageSchema } from "@/lib/schema";
 
 const CONTACT_WHATSAPP_MESSAGE = "Olá, quero falar sobre a operação da minha empresa.";
 const CONTACT_WHATSAPP_URL = `https://wa.me/5511988028550?text=${encodeURIComponent(CONTACT_WHATSAPP_MESSAGE)}`;
@@ -27,32 +28,24 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ContatoPage() {
-  let schemaWebPage;
-
-  try {
-    const settings = await getOrgSettings();
-    schemaWebPage = getWebPageSchema(
-      settings,
-      {
-        title: "Contato — Falar sobre a sua operação",
-        description:
-          "Converse com a RC2 sobre automação de processos, integração de sistemas e IA para operações. Conversa inicial de 20 a 30 minutos, sem compromisso.",
-        url: `${BASE_URL}/contato`,
-        keywords: "contato, conversa inicial, discovery operacional, consultoria, automação de processos, integração de sistemas, IA para operações",
-        image: `${BASE_URL}/og-image.png`,
-      },
-      BASE_URL
-    );
-  } catch (error) {
-    console.error("Error loading schema:", error);
-    schemaWebPage = { "@context": "https://schema.org", "@type": "WebPage" };
-  }
+  const schemaWebPage = getWebPageSchema(
+    await getOrgSettingsOrNull(),
+    {
+      title: "Contato — Falar sobre a sua operação",
+      description:
+        "Converse com a RC2 sobre automação de processos, integração de sistemas e IA para operações. Conversa inicial de 20 a 30 minutos, sem compromisso.",
+      url: `${BASE_URL}/contato`,
+      keywords: "contato, conversa inicial, discovery operacional, consultoria, automação de processos, integração de sistemas, IA para operações",
+      image: `${BASE_URL}/og-image.png`,
+    },
+    BASE_URL
+  );
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemaWebPage) }}
       />
     <section className="rc2-grain relative overflow-hidden bg-rc2-bg py-16 md:py-20">
       <div className="rc2-blueprint pointer-events-none absolute inset-0 opacity-50" aria-hidden />

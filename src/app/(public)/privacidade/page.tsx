@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { PageHero } from "@/components/marketing/PageHero";
-import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
+import { getOrgSettingsOrNull, getWebPageSchema } from "@/lib/schema";
 import { BASE_URL } from "@/lib/siteMetadata";
 
 export const metadata: Metadata = {
@@ -12,32 +13,24 @@ export const metadata: Metadata = {
 };
 
 export default async function PrivacidadePage() {
-  let schemaWebPage;
-
-  try {
-    const settings = await getOrgSettings();
-    schemaWebPage = getWebPageSchema(
-      settings,
-      {
-        title: "Política de Privacidade",
-        description:
-          "Política de Privacidade da RC2 Soluções — como coletamos, usamos e protegemos seus dados pessoais, em conformidade com a LGPD.",
-        url: `${BASE_URL}/privacidade`,
-        keywords: "privacidade, LGPD, dados pessoais, proteção de dados",
-        image: `${BASE_URL}/og-image.png`,
-      },
-      BASE_URL
-    );
-  } catch (error) {
-    console.error("Error loading schema:", error);
-    schemaWebPage = { "@context": "https://schema.org", "@type": "WebPage" };
-  }
+  const schemaWebPage = getWebPageSchema(
+    await getOrgSettingsOrNull(),
+    {
+      title: "Política de Privacidade",
+      description:
+        "Política de Privacidade da RC2 Soluções — como coletamos, usamos e protegemos seus dados pessoais, em conformidade com a LGPD.",
+      url: `${BASE_URL}/privacidade`,
+      keywords: "privacidade, LGPD, dados pessoais, proteção de dados",
+      image: `${BASE_URL}/og-image.png`,
+    },
+    BASE_URL
+  );
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemaWebPage) }}
       />
       <PageHero
         label="Legal"

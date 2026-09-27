@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { notFound } from "next/navigation";
 import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 import { Check, ArrowLeft } from "lucide-react";
@@ -142,16 +143,16 @@ export default async function ServicePage({ params }: Props) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemaWebPage) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaService) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemaService) }}
       />
       {schemaFaq && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaFaq) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemaFaq) }}
         />
       )}
       <Breadcrumb
