@@ -92,7 +92,7 @@ describe("WebPage sem settings — páginas publicadas", () => {
   // barra (inalterada desde o baseline) e o @id resolve como …/#webpage.
   const PAGINAS = [
     ["/", "@/app/(public)/page", `${BASE_URL}/#webpage`, BASE_URL],
-    ["/blog", "@/app/(public)/blog/page", `${BASE_URL}/blog#webpage`, `${BASE_URL}/blog`],
+    ["/blog", "@/app/(public)/blog/(index)/page", `${BASE_URL}/blog#webpage`, `${BASE_URL}/blog`],
     ["/sobre", "@/app/(public)/sobre/page", `${BASE_URL}/sobre#webpage`, `${BASE_URL}/sobre`],
     ["/contato", "@/app/(public)/contato/page", `${BASE_URL}/contato#webpage`, `${BASE_URL}/contato`],
     ["/privacidade", "@/app/(public)/privacidade/page", `${BASE_URL}/privacidade#webpage`, `${BASE_URL}/privacidade`],

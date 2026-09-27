@@ -331,7 +331,7 @@ describe("Container de ícone — §6 Iconografia", () => {
 });
 
 describe("Índice do blog — último post em destaque", () => {
-  const pagina = readCode("src/app/(public)/blog/page.tsx");
+  const pagina = readCode("src/app/(public)/blog/(index)/page.tsx");
   const card = readCode("src/components/blog/BlogCard.tsx");
 
   it("o destaque é o primeiro da consulta, que já vem por data desc", () => {
