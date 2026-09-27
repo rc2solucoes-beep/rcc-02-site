@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cache } from "react";
 import { notFound } from "next/navigation";
 import { createPublicClient } from "@/lib/supabase/server";
 import type { Post } from "@/lib/types/post";
@@ -7,20 +8,25 @@ import { BlogPostArticle } from "@/components/blog/BlogPostArticle";
 
 export const revalidate = 60;
 
-async function getPost(slug: string): Promise<Post | null> {
-  try {
-    const supabase = createPublicClient();
-    const { data } = await supabase
-      .from("posts")
-      .select("*")
-      .eq("slug", slug)
-      .eq("status", "published")
-      .single();
-    return (data as Post) ?? null;
-  } catch {
-    return null;
-  }
-}
+/**
+ * Post publicado pelo slug, ou `null` quando ele não existe.
+ *
+ * Só "não existe" vira `null` — e daí 404. Falha de banco lança: a página cai
+ * no `error.tsx` e o ISR mantém a última versão válida, em vez de responder
+ * 404 para um post que existe. `cache` garante uma consulta por request,
+ * compartilhada entre `generateMetadata` e a página.
+ */
+const getPost = cache(async (slug: string): Promise<Post | null> => {
+  const supabase = createPublicClient();
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("slug", slug)
+    .eq("status", "published")
+    .maybeSingle();
+  if (error) throw new Error(`Falha ao buscar o post "${slug}": ${error.message}`);
+  return (data as Post | null) ?? null;
+});
 
 async function getRelatedPosts(relatedIds: string[] | null): Promise<Post[]> {
   if (!relatedIds || relatedIds.length === 0) return [];
@@ -58,7 +64,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPost(slug);
-  if (!post) return {};
+  // A metadata do 404 vem de `not-found.tsx`, não daqui.
+  if (!post) notFound();
 
   // Usar campos de SEO se disponíveis, senão usar valores padrão
   const metaTitle = post.seo_meta_title || `${post.title} — RC2 Soluções`;
