@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 import { Check } from "lucide-react";
 import { PageHero } from "@/components/marketing/PageHero";
@@ -64,7 +65,7 @@ export default async function ServicosPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemaWebPage) }}
       />
       <PageHero
         label="Serviços"

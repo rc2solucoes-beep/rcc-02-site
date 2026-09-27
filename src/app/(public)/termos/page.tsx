@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { PageHero } from "@/components/marketing/PageHero";
-import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
+import { getOrgSettingsOrNull, getWebPageSchema } from "@/lib/schema";
 import { BASE_URL } from "@/lib/siteMetadata";
 
 export const metadata: Metadata = {
@@ -12,32 +13,24 @@ export const metadata: Metadata = {
 };
 
 export default async function TermosPage() {
-  let schemaWebPage;
-
-  try {
-    const settings = await getOrgSettings();
-    schemaWebPage = getWebPageSchema(
-      settings,
-      {
-        title: "Termos de Uso",
-        description:
-          "Termos de Uso do site RC2 Soluções — condições de acesso e utilização.",
-        url: `${BASE_URL}/termos`,
-        keywords: "termos de uso, condições, acesso, site, políticas",
-        image: `${BASE_URL}/og-image.png`,
-      },
-      BASE_URL
-    );
-  } catch (error) {
-    console.error("Error loading schema:", error);
-    schemaWebPage = { "@context": "https://schema.org", "@type": "WebPage" };
-  }
+  const schemaWebPage = getWebPageSchema(
+    await getOrgSettingsOrNull(),
+    {
+      title: "Termos de Uso",
+      description:
+        "Termos de Uso do site RC2 Soluções — condições de acesso e utilização.",
+      url: `${BASE_URL}/termos`,
+      keywords: "termos de uso, condições, acesso, site, políticas",
+      image: `${BASE_URL}/og-image.png`,
+    },
+    BASE_URL
+  );
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemaWebPage) }}
       />
       <PageHero
         label="Legal"

@@ -1,9 +1,17 @@
 import type { Metadata, Viewport } from "next";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 import { Suspense } from "react";
 import { DelayedGtm } from "@/components/tracking/DelayedGtm";
 import { PageViewTracker } from "@/components/tracking/PageViewTracker";
-import { getOrgSettings, getOrganizationSchema, getLocalBusinessSchema } from "@/lib/schema";
+import {
+  getOrgSettings,
+  getOrganizationSchema,
+  getLogoSchema,
+  getWebSiteSchema,
+} from "@/lib/schema";
+import { SCHEMA_IDS } from "@/lib/schemaIds";
+import type { Organization } from "@/lib/types/schema";
 import { SITE_NAME, BASE_URL as SITE_BASE_URL } from "@/lib/siteMetadata";
 import "./globals.css";
 
@@ -88,39 +96,31 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const schemaWebSite = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "RC2 Soluções",
-  url: BASE_URL,
-};
+const schemaWebSite = getWebSiteSchema(BASE_URL);
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  let schemaOrganization, schemaLocalBusiness;
+  // A RC2 é representada só por Organization (`#organization`): o LocalBusiness
+  // duplicava a mesma empresa e foi removido na Fase 7 (docs/schema/baseline.md).
+  let schemaOrganization: Organization;
 
   try {
     const settings = await getOrgSettings();
     schemaOrganization = getOrganizationSchema(settings, BASE_URL);
-    schemaLocalBusiness = getLocalBusinessSchema(settings, BASE_URL);
   } catch (error) {
     console.error("Error loading organization settings:", error);
+    // A identidade (#organization, #logo) não depende do banco: o fallback
+    // mantém os mesmos @id que o caminho normal.
     schemaOrganization = {
       "@context": "https://schema.org",
       "@type": "Organization",
+      "@id": SCHEMA_IDS.organization,
       name: "RC2 Soluções",
       url: BASE_URL,
-      logo: `${BASE_URL}/images/logo-base-transparente-preto.png`,
-    };
-    schemaLocalBusiness = {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      name: "RC2 Soluções",
-      url: BASE_URL,
-      logo: `${BASE_URL}/images/logo-base-transparente-preto.png`,
+      logo: getLogoSchema(),
     };
   }
 
@@ -133,15 +133,11 @@ export default async function RootLayout({
         {/* next/font/google handles font loading automatically */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrganization) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemaOrganization) }}
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaLocalBusiness) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebSite) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemaWebSite) }}
         />
       </head>
       <body className="min-h-full flex flex-col bg-rc2-sand text-rc2-ebony antialiased">

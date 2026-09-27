@@ -25,12 +25,40 @@ export interface WebPageInfo {
 }
 
 // Schema.org types
+
+/** Referência a uma entidade já declarada no grafo. */
+export interface SchemaReference {
+  "@id": string;
+}
+
+export interface ImageObject {
+  "@type": "ImageObject";
+  "@id": string;
+  url: string;
+}
+
+export interface WebSite {
+  "@context": "https://schema.org";
+  "@type": "WebSite";
+  "@id": string;
+  name: string;
+  url: string;
+  publisher: SchemaReference;
+}
+
+/**
+ * Área atendida: o país, tipado, ou um texto simples quando não há regra que
+ * classifique o valor (Schema.org aceita `Text` em `areaServed`).
+ */
+export type AreaServed = { "@type": "Country"; name: string } | string;
+
 export interface Organization {
   "@context": "https://schema.org";
   "@type": "Organization";
+  "@id": string;
   name: string;
   url: string;
-  logo: string;
+  logo: ImageObject;
   email?: string;
   telephone?: string;
   address?: {
@@ -41,10 +69,7 @@ export interface Organization {
     postalCode?: string;
     addressCountry?: string;
   };
-  areaServed?: {
-    "@type": "City" | "Region" | "Country";
-    name: string;
-  }[];
+  areaServed?: AreaServed[];
   sameAs?: string[];
   contactPoint?: {
     "@type": "ContactPoint";
@@ -56,62 +81,60 @@ export interface Organization {
   }[];
 }
 
-export interface LocalBusiness {
-  "@context": "https://schema.org";
-  "@type": "LocalBusiness";
-  name: string;
-  url: string;
-  logo: string;
-  email?: string;
-  telephone?: string;
-  address?: {
-    "@type": "PostalAddress";
-    streetAddress?: string;
-    addressLocality?: string;
-    addressRegion?: string;
-    postalCode?: string;
-    addressCountry?: string;
-  };
-  geo?: {
-    "@type": "GeoCoordinates";
-    latitude?: number | string;
-    longitude?: number | string;
-  };
-  areaServed?: {
-    "@type": "City" | "Region" | "Country";
-    name: string;
-  }[];
-  sameAs?: string[];
-}
-
 export interface WebPage {
   "@context": "https://schema.org";
   "@type": "WebPage";
+  "@id": string;
   name: string;
   description: string;
   url: string;
   keywords?: string;
-  image?: string | { "@type": "ImageObject"; url: string };
-  isPartOf?: {
-    "@type": "WebSite";
-    url: string;
-    name: string;
-  };
-  publisher?: {
-    "@type": "Organization";
-    name: string;
-    url: string;
-    logo?: string;
-  };
+  image?: string;
+  isPartOf: SchemaReference;
+  publisher?: SchemaReference;
+  mainEntity?: SchemaReference;
+  breadcrumb?: SchemaReference;
+}
+
+/** Autor individual real de um post. Campos opcionais só existem com dado real. */
+export interface Person {
+  "@context": "https://schema.org";
+  "@type": "Person";
+  "@id": string;
+  name: string;
+  jobTitle?: string;
+  image?: string;
+  sameAs?: string[];
+}
+
+export interface BlogPosting {
+  "@context": "https://schema.org";
+  "@type": "BlogPosting";
+  "@id": string;
+  url: string;
+  headline: string;
+  description: string;
+  image?: string;
+  datePublished: string;
+  dateModified: string;
+  /** `#organization` (autoria institucional) ou `#person-{slug}`. */
+  author: SchemaReference;
+  publisher: SchemaReference;
+  isPartOf: SchemaReference;
+  mainEntityOfPage: SchemaReference;
+}
+
+export interface ListItem {
+  "@type": "ListItem";
+  position: number;
+  name: string;
+  /** Ausente no último item (a página corrente). */
+  item?: string;
 }
 
 export interface BreadcrumbList {
   "@context": "https://schema.org";
   "@type": "BreadcrumbList";
-  itemListElement: {
-    "@type": "ListItem";
-    position: number;
-    name: string;
-    item?: string;
-  }[];
+  "@id": string;
+  itemListElement: ListItem[];
 }

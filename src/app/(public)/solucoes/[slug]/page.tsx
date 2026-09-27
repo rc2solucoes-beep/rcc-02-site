@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Check } from "lucide-react";
@@ -90,12 +91,12 @@ export default async function SolucaoPage({ params }: Props) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemaWebPage) }}
       />
       {schemaFaq && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaFaq) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemaFaq) }}
         />
       )}
 

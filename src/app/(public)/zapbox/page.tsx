@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { ArrowRight, ArrowUpRight, CheckCircle2, Circle } from "lucide-react";
 import { PageHero } from "@/components/marketing/PageHero";
 import { SectionLabel } from "@/components/ui/SectionLabel";
@@ -20,6 +21,8 @@ import {
   RC2_TERRITORY,
 } from "@/lib/content/zapboxBridge";
 import { BASE_URL, buildOg } from "@/lib/siteMetadata";
+import { SCHEMA_IDS, schemaWebPageId } from "@/lib/schemaIds";
+import type { WebPage } from "@/lib/types/schema";
 
 /**
  * Ponte RC2 → Zapbox — Fase 6D (`docs/19`, `docs/20`).
@@ -48,17 +51,15 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function ZapboxBridgePage() {
   // Apenas WebPage. Product/Offer/SoftwareApplication ficariam de fora por
   // decisão: preço e disponibilidade do produto vivem em www.zapbox.cloud.
-  const schemaWebPage = {
+  const pageUrl = `${BASE_URL}/zapbox`;
+  const schemaWebPage: WebPage = {
     "@context": "https://schema.org",
     "@type": "WebPage",
+    "@id": schemaWebPageId(pageUrl),
     name: ZAPBOX_BRIDGE_METADATA.title,
     description: ZAPBOX_BRIDGE_METADATA.description,
-    url: `${BASE_URL}/zapbox`,
-    isPartOf: {
-      "@type": "WebSite",
-      url: BASE_URL,
-      name: "RC2 Soluções",
-    },
+    url: pageUrl,
+    isPartOf: { "@id": SCHEMA_IDS.website },
   };
 
   const [verSolucoes, verIntegracao] = ZAPBOX_BRIDGE_INTERNAL_LINKS;
@@ -67,7 +68,7 @@ export default function ZapboxBridgePage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemaWebPage) }}
       />
 
       {/* ── 1. Hero ── */}

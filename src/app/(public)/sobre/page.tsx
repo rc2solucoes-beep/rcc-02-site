@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { BASE_URL, buildOg } from "@/lib/siteMetadata";
 import { PageHero } from "@/components/marketing/PageHero";
 import { SignalList } from "@/components/ui/SignalList";
@@ -7,7 +8,7 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { NumberedList, type NumberedItem } from "@/components/ui/NumberedList";
 import { HOME_METHOD } from "@/lib/content/home";
-import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
+import { getOrgSettings, getOrgSettingsOrNull, getWebPageSchema } from "@/lib/schema";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getOrgSettings();
@@ -42,32 +43,24 @@ const steps: NumberedItem[] = HOME_METHOD.steps.map((step) => ({
 }));
 
 export default async function SobrePage() {
-  let schemaWebPage;
-
-  try {
-    const settings = await getOrgSettings();
-    schemaWebPage = getWebPageSchema(
-      settings,
-      {
-        title: "Sobre a RC2",
-        description:
-          "Fundada por Robson Azevedo, com mais de 20 anos de experiência em TI, e-commerce e transformação digital. Conheça a RC2 Soluções.",
-        url: `${BASE_URL}/sobre`,
-        keywords: "sobre RC2, consultoria, IA, automação, transformação digital, Robson Azevedo, time",
-        image: `${BASE_URL}/og-image.png`,
-      },
-      BASE_URL
-    );
-  } catch (error) {
-    console.error("Error loading schema:", error);
-    schemaWebPage = { "@context": "https://schema.org", "@type": "WebPage" };
-  }
+  const schemaWebPage = getWebPageSchema(
+    await getOrgSettingsOrNull(),
+    {
+      title: "Sobre a RC2",
+      description:
+        "Fundada por Robson Azevedo, com mais de 20 anos de experiência em TI, e-commerce e transformação digital. Conheça a RC2 Soluções.",
+      url: `${BASE_URL}/sobre`,
+      keywords: "sobre RC2, consultoria, IA, automação, transformação digital, Robson Azevedo, time",
+      image: `${BASE_URL}/og-image.png`,
+    },
+    BASE_URL
+  );
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemaWebPage) }}
       />
       <PageHero
         label="Sobre a RC2"

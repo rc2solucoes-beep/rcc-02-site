@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { XCircle } from "lucide-react";
 import { PageHero } from "@/components/marketing/PageHero";
 import { CTABlock } from "@/components/marketing/CTABlock";
@@ -14,6 +15,8 @@ import {
   AGENDA_CONFIRMADA_ROUTE as ROUTE,
 } from "@/lib/content/agendaConfirmada";
 import { BASE_URL, buildOg } from "@/lib/siteMetadata";
+import { SCHEMA_IDS, schemaWebPageId } from "@/lib/schemaIds";
+import type { WebPage } from "@/lib/types/schema";
 
 /**
  * Agenda Confirmada — Fase 6.
@@ -48,24 +51,22 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function AgendaConfirmadaPage() {
   // Só WebPage. Sem Product/Offer: não há preço, disponibilidade nem escopo
   // por versão aprovado em nenhuma fonte.
-  const schemaWebPage = {
+  const pageUrl = `${BASE_URL}${ROUTE}`;
+  const schemaWebPage: WebPage = {
     "@context": "https://schema.org",
     "@type": "WebPage",
+    "@id": schemaWebPageId(pageUrl),
     name: META.title,
     description: META.description,
-    url: `${BASE_URL}${ROUTE}`,
-    isPartOf: {
-      "@type": "WebSite",
-      url: BASE_URL,
-      name: "RC2 Soluções",
-    },
+    url: pageUrl,
+    isPartOf: { "@id": SCHEMA_IDS.website },
   };
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemaWebPage) }}
       />
       <main id="main-content">
         <PageHero

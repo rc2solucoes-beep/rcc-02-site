@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { serializeJsonLd } from "@/lib/jsonLd";
 
 interface BreadcrumbItem {
   label: string;
@@ -28,7 +29,7 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }}
       />
       <nav aria-label="Breadcrumb" className="hidden">
         <ol>

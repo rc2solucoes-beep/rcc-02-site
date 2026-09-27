@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { ArrowUpRight } from "lucide-react";
 import { buildOg, BASE_URL } from "@/lib/siteMetadata";
 import { SectionLabel } from "@/components/ui/SectionLabel";
@@ -19,7 +20,7 @@ import {
   HOME_PHILOSOPHY,
   HOME_HERO_KINETIC,
 } from "@/lib/content/home";
-import { getOrgSettings, getWebPageSchema } from "@/lib/schema";
+import { getOrgSettings, getOrgSettingsOrNull, getWebPageSchema } from "@/lib/schema";
 
 const HOME_TITLE = "Automação, Integração e IA para PMEs";
 const HOME_DESCRIPTION =
@@ -50,32 +51,24 @@ const heroPrefix = HOME_COPY.h1.slice(0, kineticAt);
 const heroSuffix = HOME_COPY.h1.slice(kineticAt + HOME_HERO_KINETIC.word.length);
 
 export default async function HomePage() {
-  let schemaWebPage;
-
-  try {
-    const settings = await getOrgSettings();
-    schemaWebPage = getWebPageSchema(
-      settings,
-      {
-        title: HOME_TITLE,
-        description: HOME_DESCRIPTION,
-        url: BASE_URL,
-        keywords:
-          "automação de processos, integração de sistemas, IA para operações, operações digitais e commerce, consultoria de operação, PME",
-        image: `${BASE_URL}/og-image.png`,
-      },
-      BASE_URL
-    );
-  } catch (error) {
-    console.error("Error loading schema:", error);
-    schemaWebPage = { "@context": "https://schema.org", "@type": "WebPage" };
-  }
+  const schemaWebPage = getWebPageSchema(
+    await getOrgSettingsOrNull(),
+    {
+      title: HOME_TITLE,
+      description: HOME_DESCRIPTION,
+      url: BASE_URL,
+      keywords:
+        "automação de processos, integração de sistemas, IA para operações, operações digitais e commerce, consultoria de operação, PME",
+      image: `${BASE_URL}/og-image.png`,
+    },
+    BASE_URL
+  );
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebPage) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemaWebPage) }}
       />
 
       {/* ── 1. Hero ── */}
