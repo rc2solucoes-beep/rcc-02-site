@@ -71,6 +71,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const metaTitle = post.seo_meta_title || `${post.title} — RC2 Soluções`;
   const metaDescription = post.seo_meta_description || post.summary;
   const ogImage = post.og_image || post.cover_url;
+  const shouldIndex = post.seo_index_status !== "noindex";
+  const shouldFollow = post.seo_index_status !== "nofollow";
 
   return {
     title: metaTitle,
@@ -78,9 +80,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     alternates: {
       canonical: blogPostUrl(slug),
     },
+    // O merge de metadata é raso: este `robots` substitui o do layout raiz
+    // inteiro, `googleBot` incluído. Por isso as diretivas de preview do site
+    // são repetidas aqui, com index/follow sempre iguais aos do robots genérico.
     robots: {
-      index: post.seo_index_status !== "noindex",
-      follow: post.seo_index_status !== "nofollow",
+      index: shouldIndex,
+      follow: shouldFollow,
+      googleBot: {
+        index: shouldIndex,
+        follow: shouldFollow,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
     openGraph: {
       title: post.og_title || post.title,

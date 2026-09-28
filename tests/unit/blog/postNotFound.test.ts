@@ -129,7 +129,8 @@ describe("/blog/[slug] — post existente", () => {
   it("metadata mantém canonical, robots e Open Graph do post", async () => {
     const meta = await postModule.generateMetadata(params("post-valido"));
     expect(meta.alternates?.canonical).toBe(blogPostUrl("post-valido"));
-    expect(meta.robots).toEqual({ index: true, follow: true });
+    // googleBot: tests/unit/seo/postRobotsDirectives.test.ts (SEO-ROBOTS-BLOG-01)
+    expect(meta.robots).toMatchObject({ index: true, follow: true });
     expect(meta.openGraph).toMatchObject({ url: blogPostUrl("post-valido"), type: "article" });
   });
 
