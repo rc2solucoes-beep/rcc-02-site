@@ -246,6 +246,9 @@ IDX-01 e IDX-03 não dependem de decisão de negócio: podem seguir para SPEC.
 | 2026-09-27 | IDX-01 | **confirmado em produção** (PR #32, merge `6a736828ad042bcc8229350e4544660e59f01997`) | ver abaixo |
 | 2026-09-27 | IDX-08 | **aberto** (achado da validação do IDX-01) | ver abaixo |
 | 2026-09-27 | IDX-08 | **corrigido localmente** (branch `fix/seo-global-404-metadata`, aguardando PR/deploy) | ver abaixo |
+| 2026-09-27 | IDX-08 | **confirmado em produção** (PR #33, merge `c5899c5fe30ffd6c3957e92ee8d2c009c811bd49`) | ver abaixo |
+| 2026-09-27 | SEO-ROBOTS-BLOG-01 | **aberto** (achado da validação do IDX-08) | ver abaixo |
+| 2026-09-27 | SEO-ROBOTS-BLOG-01 | **corrigido localmente** (branch `fix/seo-blog-googlebot-directives`, aguardando PR/deploy) | ver abaixo |
 
 **IDX-01 — corrigido.** Causa confirmada por experimento: os `loading.tsx` de
 `/blog` e de `/blog/[slug]` envolviam a página em Suspense e a resposta
@@ -335,5 +338,51 @@ a produção. 404 visualmente idêntico (screenshots com o mesmo hash). 0 consul
 ao banco no 404. Testes: `tests/unit/seo/globalNotFoundMetadata.test.ts` e
 `tests/e2e/global-not-found.spec.ts` (contra a produção atual, os 4 testes de
 404 global falham com `robots "index, follow"` — controle negativo).
+
+Pendente: confirmar em produção após o deploy.
+
+**IDX-08 — confirmado em produção (2026-09-27).** PR #33 mesclada por merge
+commit `c5899c5fe30ffd6c3957e92ee8d2c009c811bd49` (pais `6a73682` e `01dcb68`);
+deployment de Production do Vercel concluído para esse commit. Em
+`https://www.rc2solucoes.com.br`, `/pagina-inexistente-idx08`,
+`/nao-existe-rc2-idx08` e `/foo/bar/inexistente-idx08` (e também `/Sobre`,
+`/SOLUCOES` e o User-Agent do Googlebot): 404, robots só `noindex` +
+`noindex, nofollow`, nenhuma tag `googlebot` indexável, 0 canonical, 0 Open
+Graph, título "Página não encontrada — RC2 Soluções". Home preservada: 200,
+`index, follow`, `googlebot` com `max-image-preview:large`, canonical e Open
+Graph próprios. 23 URLs do sitemap sem nenhuma diferença; captura do 404
+idêntica à anterior.
+
+### SEO-ROBOTS-BLOG-01 — Diretivas do Googlebot ausentes nos posts · **BAIXA**
+
+**Evidência (produção, `main` @ `c5899c5`).** Os 15 posts publicados (todos
+`index`, inferido do robots emitido; `/blog` e o sitemap listam os mesmos 15)
+emitem só `<meta name="robots" content="index, follow">` — nenhuma tag
+`googlebot`. A Home e as páginas institucionais emitem
+`googlebot: index, follow, max-image-preview:large, max-snippet:-1`.
+
+**Causa.** Merge raso de metadata: o `robots` do `generateMetadata` do post
+(`src/app/(public)/blog/[slug]/page.tsx`) substitui inteiro o `robots` do
+layout raiz, e com ele o `googleBot`.
+
+**Correção.** O post repete o `googleBot` do layout, com `index`/`follow`
+derivados do mesmo `seo_index_status` do robots genérico:
+
+| `seo_index_status` | robots | googlebot |
+|---|---|---|
+| `index` | `index, follow` | `index, follow, max-image-preview:large, max-snippet:-1` |
+| `noindex` | `noindex, follow` | `noindex, follow, max-image-preview:large, max-snippet:-1` |
+| `nofollow` | `index, nofollow` | `index, nofollow, max-image-preview:large, max-snippet:-1` |
+
+Layout raiz inalterado; nenhuma diretiva nova além das que o site já usa.
+
+**Validação (build local).** 15/15 posts com a tag `googlebot` completa; nas 23
+URLs do sitemap a única diferença é essa tag nos posts (title, canonical, OG,
+Twitter, JSON-LD, H1 e texto idênticos). 0 consulta adicional. Testes:
+`tests/unit/seo/postRobotsDirectives.test.ts` (os três estados e a igualdade
+index/follow entre robots e googleBot) e `tests/e2e/blog-robots-directives.spec.ts`
+(contra a produção atual, os 2 testes do post falham — controle negativo).
+Nenhum post `noindex`/`nofollow` publicado hoje: esses estados têm só
+cobertura unitária.
 
 Pendente: confirmar em produção após o deploy.
