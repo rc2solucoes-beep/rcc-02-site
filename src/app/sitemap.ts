@@ -8,7 +8,10 @@ import {
 } from "@/lib/content/migratedRoutes";
 import { createPublicClient } from "@/lib/supabase/server";
 
-export const revalidate = 60;
+// F-7 (docs/seo/03): com `revalidate`, a Vercel servia o sitemap congelado no
+// deploy. Dinâmico, cada request lê o estado atual dos posts — inclusive os
+// publicados pelo pg_cron, que não passam pelo Next.
+export const dynamic = "force-dynamic";
 
 type StaticSitemapEntry = {
   path: string;
@@ -156,46 +159,29 @@ function mapPostRoutes(rows: PostRouteRow[]): MetadataRoute.Sitemap {
     }));
 }
 
+/**
+ * Posts publicados e indexáveis. Falha do banco lança: a rota responde erro em
+ * vez de um sitemap 200 sem nenhum post. Zero posts com a consulta bem-sucedida
+ * é um resultado válido.
+ */
 async function getBlogRoutes(): Promise<MetadataRoute.Sitemap> {
   const supabase = createPublicClient();
 
-  const { data: postsWithSeo, error: seoError } = await supabase
+  const { data, error } = await supabase
     .from("posts")
     .select("slug,updated_at,seo_index_status")
     .eq("status", "published");
 
-  if (!seoError) {
-    return mapPostRoutes((postsWithSeo ?? []) as PostRouteRow[]);
+  if (error) {
+    console.error("[sitemap] Failed to load published posts:", error);
+    throw new Error("Failed to generate sitemap from published posts");
   }
 
-  console.error("[sitemap] Failed SEO-aware posts query, trying fallback:", seoError);
-
-  const { data: fallbackPosts, error: fallbackError } = await supabase
-    .from("posts")
-    .select("slug,updated_at")
-    .eq("status", "published");
-
-  if (fallbackError) {
-    console.error("[sitemap] Fallback posts query failed:", fallbackError);
-    return [];
-  }
-
-  return (fallbackPosts ?? []).map((post: { slug: string; updated_at: string }) => ({
-    url: absoluteUrl(`/blog/${post.slug}`),
-    lastModified: new Date(post.updated_at),
-    changeFrequency: "weekly",
-    priority: 0.7,
-  }));
+  return mapPostRoutes((data ?? []) as PostRouteRow[]);
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  let postRoutes: MetadataRoute.Sitemap = [];
-
-  try {
-    postRoutes = await getBlogRoutes();
-  } catch (error) {
-    console.error("[sitemap] Unexpected error loading published blog posts:", error);
-  }
+  const postRoutes = await getBlogRoutes();
 
   return sortRoutes(
     dedupeRoutes([

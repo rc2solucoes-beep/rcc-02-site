@@ -251,6 +251,8 @@ IDX-01 e IDX-03 não dependem de decisão de negócio: podem seguir para SPEC.
 | 2026-09-27 | SEO-ROBOTS-BLOG-01 | **corrigido localmente** (branch `fix/seo-blog-googlebot-directives`, aguardando PR/deploy) | ver abaixo |
 | 2026-09-28 | SEO-ROBOTS-BLOG-01 | **confirmado em produção** (PR #34, merge `a7e68f8b187c1039a5a9ced6b242ca15f8599801`) | ver abaixo |
 | 2026-09-29 | IDX-02 | **migração principal confirmada em produção (31/32)**; #4 pendente por decisão editorial | `docs/seo/02-idx02-links-internos.md` |
+| 2026-09-29 | F-7 | **Fase A (diagnóstico) concluída** — sitemap servido sem ISR na Vercel (fresh-by-deploy); decisão pendente | `docs/seo/03-sitemap-freshness.md` |
+| 2026-09-29 | F-7 | **corrigido localmente** (branch `fix/seo-sitemap-freshness`, `force-dynamic` + fail-fast; aguardando PR/deploy) | `docs/seo/03-sitemap-freshness.md` |
 
 **IDX-01 — corrigido.** Causa confirmada por experimento: os `loading.tsx` de
 `/blog` e de `/blog/[slug]` envolviam a página em Suspense e a resposta
