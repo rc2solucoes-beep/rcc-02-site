@@ -249,6 +249,8 @@ IDX-01 e IDX-03 não dependem de decisão de negócio: podem seguir para SPEC.
 | 2026-09-27 | IDX-08 | **confirmado em produção** (PR #33, merge `c5899c5fe30ffd6c3957e92ee8d2c009c811bd49`) | ver abaixo |
 | 2026-09-27 | SEO-ROBOTS-BLOG-01 | **aberto** (achado da validação do IDX-08) | ver abaixo |
 | 2026-09-27 | SEO-ROBOTS-BLOG-01 | **corrigido localmente** (branch `fix/seo-blog-googlebot-directives`, aguardando PR/deploy) | ver abaixo |
+| 2026-09-28 | SEO-ROBOTS-BLOG-01 | **confirmado em produção** (PR #34, merge `a7e68f8b187c1039a5a9ced6b242ca15f8599801`) | ver abaixo |
+| 2026-09-29 | IDX-02 | **migração principal confirmada em produção (31/32)**; #4 pendente por decisão editorial | `docs/seo/02-idx02-links-internos.md` |
 
 **IDX-01 — corrigido.** Causa confirmada por experimento: os `loading.tsx` de
 `/blog` e de `/blog/[slug]` envolviam a página em Suspense e a resposta
@@ -386,3 +388,24 @@ Nenhum post `noindex`/`nofollow` publicado hoje: esses estados têm só
 cobertura unitária.
 
 Pendente: confirmar em produção após o deploy.
+
+**SEO-ROBOTS-BLOG-01 — confirmado em produção (2026-09-28).** PR #34 mesclada
+por merge commit `a7e68f8b187c1039a5a9ced6b242ca15f8599801` (pais `c5899c5` e
+`b621a8b`); deployment de Production do Vercel concluído para esse commit. Em
+`https://www.rc2solucoes.com.br`, 15/15 posts publicados (todos `index`):
+`robots = index, follow` e
+`googlebot = index, follow, max-image-preview:large, max-snippet:-1`. Nas 23
+URLs do sitemap, a única diferença contra o pré-merge é essa tag nos 15 posts;
+0 regressões nas outras 8 URLs (Home e `/sobre` inclusive). IDX-01 e IDX-08
+intactos.
+
+**IDX-02 — migração principal confirmada em produção (31/32).** Executada no
+Supabase SQL Editor em 2026-09-28 20:47:24 UTC (`docs/sql/32-idx02-links-internos-canonicos.sql`),
+depois de uma 1ª tentativa abortada sem efeito. 13 posts, 31 ocorrências
+aprovadas aplicadas, backup `public.idx02_links_backup_20260928` (13 linhas,
+RLS), `updated_at` 13/13 preservado, trigger ativo, 0 mudanças fora do mapa,
+0 regressões de metadata/JSON-LD. Pendente: #4 (`atendimento-omnichannel-pme`),
+por decisão editorial. Na validação final havia 16 posts publicados — o 16º
+(`o-que-e-agente-de-ia`) é posterior à auditoria e não tem links do IDX-02.
+Achados novos: ordem de "Posts Relacionados" não determinística (F-6) e
+`sitemap.xml` sem regenerar (F-7). Detalhes em `docs/seo/02`, seção 11.
