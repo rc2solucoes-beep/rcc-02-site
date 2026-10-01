@@ -15,8 +15,11 @@ describe("ConsentManager", () => {
   it("offers clear accept, reject and configure actions without blocking content", async () => {
     render(createElement(ConsentManager));
     expect(await screen.findByText("Preferências de cookies")).toBeVisible();
-    expect(screen.getByRole("button", { name: "Aceitar todos" })).toBeVisible();
-    expect(screen.getByRole("button", { name: "Rejeitar opcionais" })).toBeVisible();
+    const accept = screen.getByRole("button", { name: "Aceitar todos" });
+    const reject = screen.getByRole("button", { name: "Rejeitar opcionais" });
+    expect(accept).toBeVisible();
+    expect(reject).toBeVisible();
+    expect(accept.className).toBe(reject.className);
     expect(screen.getByRole("button", { name: "Configurar" })).toBeVisible();
     expect(screen.getByRole("link", { name: "Política de Privacidade" })).toHaveAttribute("href", "/privacidade");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();

@@ -11,6 +11,7 @@ import {
 } from "@/lib/consent";
 
 const OPEN_EVENT = "rc2:open-consent-preferences";
+const choiceButtonClass = "ui-focus-ring min-h-11 rounded-lg border border-rc2-border px-5 text-sm font-semibold text-rc2-heading hover:bg-rc2-bg-alt";
 
 export function ConsentPreferencesButton() {
   return (
@@ -102,10 +103,10 @@ export function ConsentManager() {
           </button>
         ) : (
           <>
-            <button type="button" onClick={() => choose(true, true)} className={buttonVariants({ variant: "brand", size: "brand-md" })}>
+            <button type="button" onClick={() => choose(true, true)} className={choiceButtonClass}>
               Aceitar todos
             </button>
-            <button type="button" onClick={() => choose(false, false)} className="ui-focus-ring min-h-11 rounded-lg border border-rc2-border px-5 text-sm font-semibold text-rc2-heading hover:bg-rc2-bg-alt">
+            <button type="button" onClick={() => choose(false, false)} className={choiceButtonClass}>
               Rejeitar opcionais
             </button>
             <button type="button" onClick={() => setConfiguring(true)} className="ui-focus-ring min-h-11 rounded-lg px-5 text-sm font-semibold text-rc2-brand-text underline-offset-4 hover:underline">
