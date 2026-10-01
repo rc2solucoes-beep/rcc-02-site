@@ -1,7 +1,7 @@
 # Fundação P0 de mensuração e consentimento — Design
 
-Data: 2026-10-01  
-Base: `origin/main` em `9d74862`  
+Data: 2026-10-01
+Base: `origin/main` em `9d74862`
 Escopo: código da aplicação, documentação de handoff e testes de regressão
 
 ## 1. Contexto e objetivo
