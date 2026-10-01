@@ -39,10 +39,13 @@ describe("consent foundation", () => {
   beforeEach(() => {
     window.localStorage.clear();
     window.dataLayer = [];
+    delete window.gtag;
   });
 
   it("sets explicit denied defaults before GTM on the first visit", () => {
     const target = bootstrap(null);
+    expect(Object.prototype.toString.call(target.dataLayer?.[0])).toBe("[object Arguments]");
+    expect(Array.isArray(target.dataLayer?.[0])).toBe(false);
     expect(Array.from(target.dataLayer?.[0] as ArrayLike<unknown>)).toEqual(["consent", "default", denied]);
     expect(target.dataLayer).toHaveLength(1);
   });
@@ -84,6 +87,8 @@ describe("consent foundation", () => {
   it("publishes a consent update and a two-field event without PII", () => {
     const preference = { version: 1 as const, analytics: true, marketing: false, updatedAt: "2026-10-01T00:00:00.000Z" };
     publishConsentUpdate(preference);
+    expect(Object.prototype.toString.call(window.dataLayer?.[0])).toBe("[object Arguments]");
+    expect(Array.isArray(window.dataLayer?.[0])).toBe(false);
     expect(Array.from(window.dataLayer?.[0] as unknown as ArrayLike<unknown>)).toEqual([
       "consent", "update", { ...denied, analytics_storage: "granted" },
     ]);

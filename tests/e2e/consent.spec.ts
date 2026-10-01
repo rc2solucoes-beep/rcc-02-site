@@ -9,8 +9,12 @@ test("consent defaults before GTM, rejection persists, and footer reopens settin
   const banner = page.getByRole("region", { name: "Preferências de cookies" });
   await expect(banner).toBeVisible();
 
-  const firstCommand = await page.evaluate(() => Array.from(window.dataLayer?.[0] as unknown as ArrayLike<unknown>));
-  expect(firstCommand).toEqual(["consent", "default", {
+  const firstCommand = await page.evaluate(() => ({
+    type: Object.prototype.toString.call(window.dataLayer?.[0]),
+    values: Array.from(window.dataLayer?.[0] as unknown as ArrayLike<unknown>),
+  }));
+  expect(firstCommand.type).toBe("[object Arguments]");
+  expect(firstCommand.values).toEqual(["consent", "default", {
     analytics_storage: "denied", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied",
   }]);
 
@@ -31,8 +35,12 @@ test("granular preference restores before GTM on reload", async ({ page }) => {
   await banner.getByRole("button", { name: "Salvar preferências" }).click();
   await page.reload();
 
-  const firstCommand = await page.evaluate(() => Array.from(window.dataLayer?.[0] as unknown as ArrayLike<unknown>));
-  expect(firstCommand).toEqual(["consent", "default", {
+  const firstCommand = await page.evaluate(() => ({
+    type: Object.prototype.toString.call(window.dataLayer?.[0]),
+    values: Array.from(window.dataLayer?.[0] as unknown as ArrayLike<unknown>),
+  }));
+  expect(firstCommand.type).toBe("[object Arguments]");
+  expect(firstCommand.values).toEqual(["consent", "default", {
     analytics_storage: "granted", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied",
   }]);
 });
