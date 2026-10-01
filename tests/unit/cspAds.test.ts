@@ -28,11 +28,12 @@ describe("Ads CSP", () => {
     expect(directive("script-src")).toContain("https://www.googletagmanager.com");
   });
 
-  it("allows the GTM Ahrefs analytics script only in script-src", () => {
+  it("allows the observed Ahrefs script and event endpoint only where needed", () => {
     const host = "https://analytics.ahrefs.com";
     expect(directive("script-src").split(" ")).toContain(host);
-    for (const name of ["connect-src", "img-src", "frame-src"]) {
-      expect(directive(name).split(" ")).not.toContain(host);
+    expect(directive("connect-src").split(" ")).toContain(host);
+    for (const part of policy.split("; ").filter((item) => !item.startsWith("script-src ") && !item.startsWith("connect-src "))) {
+      expect(part.split(" ")).not.toContain(host);
     }
   });
 

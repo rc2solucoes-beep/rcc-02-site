@@ -20,7 +20,7 @@ const cspDirectives = [
   // GA4 sends beacons to google.com/g/collect (not google-analytics.com)
   // Exact Google Ads hosts: ad.doubleclick.net was blocked in Tag Assistant;
   // the other three are required by Google's GTM/Ads CSP guidance.
-  "connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://places.googleapis.com https://ad.doubleclick.net https://www.googleadservices.com https://googleads.g.doubleclick.net https://pagead2.googlesyndication.com https://analytics.google.com",
+  "connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://places.googleapis.com https://ad.doubleclick.net https://www.googleadservices.com https://googleads.g.doubleclick.net https://pagead2.googlesyndication.com https://analytics.google.com https://analytics.ahrefs.com",
   // Workers: Turnstile uses web workers for its challenge processing
   "worker-src blob: https://challenges.cloudflare.com",
   // Base URI restriction
