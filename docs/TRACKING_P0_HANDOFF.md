@@ -13,6 +13,8 @@ Data: 2026-10-01. Implementação: `docs/superpowers/specs/2026-10-01-tracking-p
 
 O site usa GTM como único container. Não foi instalado `gtag.js` direto, Meta Pixel direto ou Google Ads direto. A fundação **não configura** tags, consent requirements ou conversões nas plataformas externas. A própria [documentação do Google](https://developers.google.com/tag-platform/security/guides/consent) alerta que comandos `gtag` em GTM podem ser processados depois de mensagens pendentes; inspecione a ordem no Tag Assistant e configure as tags para respeitar o estado efetivo. O evento `consent_update` permite condições adicionais para Meta, mas não substitui os consent requirements do container.
 
+Na execução E2E local de 01/10/2026, o container externo ainda carregou `fbevents.js` com Pixel ID inválido antes de uma escolha de Marketing. Isso confirma que a publicação do estado `denied` pelo site não bloqueia por si só as tags Meta atuais. Ajustar consent requirements e substituir o placeholder no GTM é pendência necessária antes de retomar Ads.
+
 ## Checklist pós-deploy — Preview e produção
 
 ### Page view

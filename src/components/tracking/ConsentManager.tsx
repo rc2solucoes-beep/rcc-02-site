@@ -33,7 +33,8 @@ export function ConsentManager() {
   const [marketing, setMarketing] = useState(false);
 
   useEffect(() => {
-    setPreference(readConsentPreference());
+    // Read after hydration so the server and first client render match.
+    queueMicrotask(() => setPreference(readConsentPreference()));
     const reopen = () => {
       const saved = readConsentPreference();
       setAnalytics(saved?.analytics ?? false);

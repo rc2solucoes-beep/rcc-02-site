@@ -62,7 +62,7 @@ export function toConsentState(preference: Pick<ConsentPreference, "analytics" |
 export function getConsentBootstrapScript(): string {
   return `(function(){
     var layer=window.dataLayer=window.dataLayer||[];
-    window.gtag=function(){layer.push(arguments);};
+    window.gtag=function(...args){layer.push(args);};
     var analytics=false,marketing=false;
     try {
       var raw=window.localStorage.getItem(${JSON.stringify(CONSENT_STORAGE_KEY)});
@@ -102,8 +102,8 @@ export function publishConsentUpdate(preference: ConsentPreference): void {
   window.dataLayer = window.dataLayer ?? [];
   const state = toConsentState(preference);
   if (!window.gtag) {
-    window.gtag = function () {
-      (window.dataLayer as unknown as unknown[]).push(arguments);
+    window.gtag = function (...args) {
+      (window.dataLayer as unknown as unknown[]).push(args);
     };
   }
   window.gtag("consent", "update", state);

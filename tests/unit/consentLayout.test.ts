@@ -15,7 +15,9 @@ describe("root layout consent ordering", () => {
 
   it("mounts the preference manager and provides a persistent footer control", () => {
     const footer = readFileSync(resolve(process.cwd(), "src/components/layout/Footer.tsx"), "utf8");
-    expect(source).toContain("<ConsentManager />");
+    const publicLayout = readFileSync(resolve(process.cwd(), "src/app/(public)/layout.tsx"), "utf8");
+    expect(publicLayout).toContain("<ConsentManager />");
+    expect(source).not.toContain("<ConsentManager />");
     expect(footer).toContain("<ConsentPreferencesButton />");
   });
 });

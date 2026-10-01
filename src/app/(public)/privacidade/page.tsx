@@ -110,7 +110,7 @@ export default async function PrivacidadePage() {
             <section>
               <h2 className="text-xl font-semibold text-rc2-heading mb-3">7. Cookies</h2>
               <p>
-                Cookies essenciais mantêm o site funcionando. Analytics e Marketing são categorias opcionais que você pode aceitar, rejeitar ou configurar. As ferramentas de mensuração são gerenciadas pelo Google Tag Manager conforme essas preferências. O botão “Preferências de cookies” no rodapé permite alterar sua escolha.
+                Cookies essenciais mantêm o site funcionando. Analytics e Marketing são categorias opcionais que você pode aceitar, rejeitar ou configurar. O site registra sua escolha e envia o estado de consentimento ao Google Tag Manager. O botão “Preferências de cookies” no rodapé permite alterar sua escolha.
               </p>
             </section>
 

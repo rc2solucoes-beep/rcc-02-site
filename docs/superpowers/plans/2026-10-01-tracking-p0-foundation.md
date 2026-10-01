@@ -68,7 +68,7 @@
 
 ### Fase 3 — UI, update e persistência
 
-**Arquivos:** criar `src/components/tracking/ConsentManager.tsx` e teste `tests/unit/tracking/ConsentManager.test.tsx`; modificar `src/app/layout.tsx`, `src/components/layout/Footer.tsx`, `src/app/(public)/privacidade/page.tsx` apenas para coerência técnica.
+**Arquivos:** criar `src/components/tracking/ConsentManager.tsx` e teste `tests/unit/consentManager.test.ts`; modificar `src/app/(public)/layout.tsx`, `src/components/layout/Footer.tsx`, `src/app/(public)/privacidade/page.tsx` apenas para coerência técnica.
 
 - [ ] Escrever testes para aceitar todos, rejeitar opcionais, Analytics on / Marketing off, persistência e reabrir preferências; confirmar vermelho.
 - [ ] Implementar UI first-party com três ações, toggles separados, essenciais fixas, link `/privacidade`, botão no footer, foco visível e responsividade por tokens existentes.
