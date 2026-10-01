@@ -4,6 +4,7 @@ import { Barlow, Barlow_Condensed } from "next/font/google";
 import { Suspense } from "react";
 import { DelayedGtm } from "@/components/tracking/DelayedGtm";
 import { PageViewTracker } from "@/components/tracking/PageViewTracker";
+import { getConsentBootstrapScript } from "@/lib/consent";
 import {
   getOrgSettings,
   getOrganizationSchema,
@@ -130,6 +131,10 @@ export default async function RootLayout({
       className={`h-full ${barlow.variable} ${barlowCondensed.variable}`}
     >
       <head>
+        <script
+          id="rc2-consent-bootstrap"
+          dangerouslySetInnerHTML={{ __html: getConsentBootstrapScript() }}
+        />
         {/* next/font/google handles font loading automatically */}
         <script
           type="application/ld+json"
@@ -141,20 +146,6 @@ export default async function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-rc2-sand text-rc2-ebony antialiased">
-        <noscript>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
-        <script
-          id="gtm-datalayer"
-          dangerouslySetInnerHTML={{
-            __html: "window.dataLayer = window.dataLayer || [];",
-          }}
-        />
         <DelayedGtm gtmId={GTM_ID} />
         <Suspense fallback={null}>
           <PageViewTracker />

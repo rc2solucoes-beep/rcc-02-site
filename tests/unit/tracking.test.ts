@@ -101,6 +101,40 @@ describe("tracking helpers", () => {
     ]);
   });
 
+  it("tracks each pathname once while ignoring query-only navigation", () => {
+    navigationState.pathname = "/contato";
+    document.title = "Contato";
+    const view = render(createElement(PageViewTracker));
+
+    expect(window.dataLayer).toEqual([{
+      event: "page_view",
+      page_path: "/contato",
+      page_location: `${window.location.origin}/contato`,
+      page_title: "Contato",
+    }]);
+
+    for (const query of ["utm_source=google", "gclid=abc", "fbclid=abc", "gtm_debug=1"]) {
+      navigationState.searchParams = new URLSearchParams(query);
+      window.history.replaceState(null, "", `/contato?${query}`);
+      view.rerender(createElement(PageViewTracker));
+    }
+    expect(window.dataLayer).toHaveLength(1);
+
+    navigationState.pathname = "/solucoes";
+    document.title = "Soluções";
+    window.history.pushState(null, "", "/solucoes");
+    view.rerender(createElement(PageViewTracker));
+    expect(window.dataLayer).toHaveLength(2);
+    expect(window.dataLayer?.[1]).toMatchObject({ event: "page_view", page_path: "/solucoes" });
+
+    navigationState.pathname = "/contato";
+    document.title = "Contato";
+    window.history.replaceState(null, "", "/contato");
+    view.rerender(createElement(PageViewTracker));
+    expect(window.dataLayer).toHaveLength(3);
+    expect(window.dataLayer?.[2]).toMatchObject({ event: "page_view", page_path: "/contato" });
+  });
+
   it("pushes cta_click payload", () => {
     trackCtaClick({
       location: "header",

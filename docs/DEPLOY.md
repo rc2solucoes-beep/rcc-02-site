@@ -30,6 +30,17 @@ No painel Vercel → Project → Settings → Environment Variables, configure t
 
 > **Nunca** configure `SUPABASE_SERVICE_ROLE_KEY` como variável pública (`NEXT_PUBLIC_*`).
 
+### Preview — teste do formulário de contato
+
+No Vercel → Project → Settings → Environment Variables, configure as [chaves oficiais de teste do Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/troubleshooting/testing/) **somente no ambiente Preview**:
+
+```env
+NEXT_PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
+```
+
+Production continua com as chaves reais. Após configurar as variáveis, crie um novo deployment Preview para que a chave pública entre no build. Verifique também que as [variáveis de sistema da Vercel](https://vercel.com/docs/environment-variables/system-environment-variables) estão disponíveis: a API aceita como origem adicional apenas o hostname exato de `VERCEL_URL` quando `VERCEL_ENV=preview`. Faça o teste pelo URL desse deployment; se o alias da branch (`VERCEL_BRANCH_URL`) for diferente, ele não entra na allowlist de CSRF.
+
 ---
 
 ## 2. Migrations do Supabase

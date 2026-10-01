@@ -160,12 +160,17 @@ function isValidOrigin(origin: string | null): boolean {
   if (!origin) return false;
   try {
     const url = new URL(origin);
-    return (
+    const allowedProductionOrigin = (
       url.hostname === "rc2solucoes.com.br" ||
       url.hostname === "www.rc2solucoes.com.br" ||
       url.hostname === "localhost" ||
       url.hostname === "127.0.0.1"
     );
+    if (allowedProductionOrigin) return true;
+
+    if (process.env.VERCEL_ENV !== "preview" || !process.env.VERCEL_URL) return false;
+    const previewHostname = new URL(`https://${process.env.VERCEL_URL}`).hostname;
+    return url.hostname === previewHostname;
   } catch {
     return false;
   }
