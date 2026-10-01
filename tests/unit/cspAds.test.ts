@@ -27,4 +27,12 @@ describe("Ads CSP", () => {
     expect(directive("frame-src")).toContain("https://www.googletagmanager.com");
     expect(directive("script-src")).toContain("https://www.googletagmanager.com");
   });
+
+  it("allows the GTM Ahrefs analytics script only in script-src", () => {
+    const host = "https://analytics.ahrefs.com";
+    expect(directive("script-src").split(" ")).toContain(host);
+    for (const name of ["connect-src", "img-src", "frame-src"]) {
+      expect(directive(name).split(" ")).not.toContain(host);
+    }
+  });
 });

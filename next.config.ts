@@ -7,7 +7,7 @@ const cspDirectives = [
   "default-src 'self'",
   // Scripts: self + Turnstile + GTM + inline scripts (Next.js hydration)
   // unsafe-eval is required: Cloudflare Turnstile uses eval() internally in its challenge scripts
-  `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://www.gstatic.com https://connect.facebook.net https://www.googleadservices.com https://www.google.com`,
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://www.gstatic.com https://connect.facebook.net https://www.googleadservices.com https://www.google.com https://analytics.ahrefs.com`,
   // Styles: self + Google Fonts
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   // Fonts: self + Google Fonts CDN
