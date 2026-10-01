@@ -35,4 +35,12 @@ describe("Ads CSP", () => {
       expect(directive(name).split(" ")).not.toContain(host);
     }
   });
+
+  it("allows the observed GA4 endpoint only in connect-src", () => {
+    const host = "https://analytics.google.com";
+    expect(directive("connect-src").split(" ")).toContain(host);
+    for (const part of policy.split("; ").filter((item) => !item.startsWith("connect-src "))) {
+      expect(part.split(" ")).not.toContain(host);
+    }
+  });
 });
