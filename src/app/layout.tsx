@@ -4,6 +4,7 @@ import { Barlow, Barlow_Condensed } from "next/font/google";
 import { Suspense } from "react";
 import { DelayedGtm } from "@/components/tracking/DelayedGtm";
 import { PageViewTracker } from "@/components/tracking/PageViewTracker";
+import { ConsentManager } from "@/components/tracking/ConsentManager";
 import { getConsentBootstrapScript } from "@/lib/consent";
 import {
   getOrgSettings,
@@ -150,6 +151,7 @@ export default async function RootLayout({
         <Suspense fallback={null}>
           <PageViewTracker />
         </Suspense>
+        <ConsentManager />
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-rc2-orange focus:text-white focus:text-sm focus:font-medium focus:rounded"

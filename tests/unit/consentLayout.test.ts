@@ -12,4 +12,10 @@ describe("root layout consent ordering", () => {
     expect(loader).toBeGreaterThan(bootstrap);
     expect(source).not.toContain("<noscript>");
   });
+
+  it("mounts the preference manager and provides a persistent footer control", () => {
+    const footer = readFileSync(resolve(process.cwd(), "src/components/layout/Footer.tsx"), "utf8");
+    expect(source).toContain("<ConsentManager />");
+    expect(footer).toContain("<ConsentPreferencesButton />");
+  });
 });
