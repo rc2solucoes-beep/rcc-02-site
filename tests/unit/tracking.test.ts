@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { render } from "@testing-library/react";
+import { act, render, waitFor } from "@testing-library/react";
 import { createElement } from "react";
 import { PageViewTracker } from "@/components/tracking/PageViewTracker";
 import {
@@ -101,7 +101,7 @@ describe("tracking helpers", () => {
     ]);
   });
 
-  it("tracks each pathname once while ignoring query-only navigation", () => {
+  it("tracks each pathname once while ignoring query-only navigation", async () => {
     navigationState.pathname = "/contato";
     document.title = "Contato";
     const view = render(createElement(PageViewTracker));
@@ -121,18 +121,108 @@ describe("tracking helpers", () => {
     expect(window.dataLayer).toHaveLength(1);
 
     navigationState.pathname = "/solucoes";
-    document.title = "Soluções";
     window.history.pushState(null, "", "/solucoes");
     view.rerender(createElement(PageViewTracker));
-    expect(window.dataLayer).toHaveLength(2);
+    await act(async () => { document.title = "Soluções"; });
+    await waitFor(() => expect(window.dataLayer).toHaveLength(2));
     expect(window.dataLayer?.[1]).toMatchObject({ event: "page_view", page_path: "/solucoes" });
 
     navigationState.pathname = "/contato";
-    document.title = "Contato";
     window.history.replaceState(null, "", "/contato");
     view.rerender(createElement(PageViewTracker));
-    expect(window.dataLayer).toHaveLength(3);
+    await act(async () => { document.title = "Contato"; });
+    await waitFor(() => expect(window.dataLayer).toHaveLength(3));
     expect(window.dataLayer?.[2]).toMatchObject({ event: "page_view", page_path: "/contato" });
+  });
+
+  it("waits for the new title before tracking a SPA pathname change", async () => {
+    document.title = "Home — RC2 Soluções";
+    const view = render(createElement(PageViewTracker));
+
+    expect(window.dataLayer).toEqual([{
+      event: "page_view",
+      page_path: "/",
+      page_location: `${window.location.origin}/`,
+      page_title: "Home — RC2 Soluções",
+    }]);
+
+    navigationState.pathname = "/solucoes";
+    window.history.pushState(null, "", "/solucoes");
+    view.rerender(createElement(PageViewTracker));
+    expect(window.dataLayer).toHaveLength(1);
+
+    await act(async () => {
+      document.title = "Soluções — RC2 Soluções";
+    });
+    await waitFor(() => expect(window.dataLayer).toHaveLength(2));
+    expect(window.dataLayer?.[1]).toEqual({
+      event: "page_view",
+      page_path: "/solucoes",
+      page_location: `${window.location.origin}/solucoes`,
+      page_title: "Soluções — RC2 Soluções",
+    });
+    await act(async () => { document.title = "Soluções | RC2 Soluções"; });
+    expect(window.dataLayer).toHaveLength(2);
+  });
+
+  it("tracks immediately when the SPA title changed before the pathname effect", () => {
+    document.title = "Home";
+    const view = render(createElement(PageViewTracker));
+    expect(window.dataLayer).toHaveLength(1);
+
+    navigationState.pathname = "/solucoes";
+    document.title = "Soluções";
+    window.history.pushState(null, "", "/solucoes");
+    view.rerender(createElement(PageViewTracker));
+
+    expect(window.dataLayer).toHaveLength(2);
+    expect(window.dataLayer?.[1]).toEqual({
+      event: "page_view",
+      page_path: "/solucoes",
+      page_location: `${window.location.origin}/solucoes`,
+      page_title: "Soluções",
+    });
+  });
+
+  it("uses a bounded fallback when the next route keeps the same title", () => {
+    vi.useFakeTimers();
+    try {
+      document.title = "RC2 Soluções";
+      const view = render(createElement(PageViewTracker));
+      navigationState.pathname = "/solucoes";
+      view.rerender(createElement(PageViewTracker));
+
+      expect(window.dataLayer).toHaveLength(1);
+      act(() => { vi.advanceTimersByTime(4999); });
+      expect(window.dataLayer).toHaveLength(1);
+      act(() => { vi.advanceTimersByTime(1); });
+      expect(window.dataLayer).toHaveLength(2);
+      expect(window.dataLayer?.[1]).toMatchObject({ page_path: "/solucoes", page_title: "RC2 Soluções" });
+      act(() => { vi.advanceTimersByTime(5000); });
+      expect(window.dataLayer).toHaveLength(2);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("cancels the previous route's observer and timer on rapid navigation", async () => {
+    vi.useFakeTimers();
+    try {
+      document.title = "Home";
+      const view = render(createElement(PageViewTracker));
+      navigationState.pathname = "/solucoes";
+      view.rerender(createElement(PageViewTracker));
+      navigationState.pathname = "/sobre";
+      view.rerender(createElement(PageViewTracker));
+
+      await act(async () => { document.title = "Sobre"; });
+      expect(window.dataLayer).toHaveLength(2);
+      expect(window.dataLayer?.[1]).toMatchObject({ page_path: "/sobre", page_title: "Sobre" });
+      act(() => { vi.advanceTimersByTime(5000); });
+      expect(window.dataLayer).toHaveLength(2);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("pushes cta_click payload", () => {
