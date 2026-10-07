@@ -14,8 +14,8 @@ const cspDirectives = [
   "font-src 'self' https://fonts.gstatic.com",
   // Images: self + data URIs + Supabase storage + any HTTPS (for OG images from posts)
   "img-src 'self' data: blob: https:",
-  // Frames: Turnstile widget + Google Maps embed
-  "frame-src https://challenges.cloudflare.com https://www.google.com https://www.googletagmanager.com",
+  // Frames: Turnstile widget + Google Maps embed + GTM + Meta Pixel transport
+  "frame-src https://challenges.cloudflare.com https://www.google.com https://www.googletagmanager.com https://www.facebook.com",
   // Connections: self + Supabase + Cloudflare Turnstile + GTM + Google Places
   // GA4 sends beacons to google.com/g/collect (not google-analytics.com)
   // Exact Google Ads hosts: ad.doubleclick.net was blocked in Tag Assistant;
@@ -25,8 +25,8 @@ const cspDirectives = [
   "worker-src blob: https://challenges.cloudflare.com",
   // Base URI restriction
   "base-uri 'self'",
-  // Form action: self only
-  "form-action 'self'",
+  // Form actions: self + Meta Pixel transport
+  "form-action 'self' https://www.facebook.com",
   // No embedding in iframes
   "frame-ancestors 'none'",
 ].join("; ");
