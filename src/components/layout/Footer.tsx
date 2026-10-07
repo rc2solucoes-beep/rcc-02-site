@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
+import { ConsentPreferencesButton } from "@/components/tracking/ConsentManager";
 import {
   FOOTER_COMPANY_LINKS,
   FOOTER_PRODUCT_LINK,
@@ -130,7 +131,7 @@ export function Footer() {
           <p className="text-xs font-normal text-rc2-dark-text-secondary text-center sm:text-left">
             © 2026 RC2 Soluções. Todos os direitos reservados.
           </p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap justify-center gap-6">
             {legalLinks.map((link) => (
               <Link
                 key={link.href}
@@ -140,6 +141,7 @@ export function Footer() {
                 {link.label}
               </Link>
             ))}
+            <ConsentPreferencesButton />
           </div>
         </div>
       </div>

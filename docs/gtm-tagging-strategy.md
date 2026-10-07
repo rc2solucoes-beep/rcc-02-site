@@ -17,7 +17,7 @@ Use the production GTM container for the live domain. For preview or staging env
 
 | Event | When it fires | Parameters |
 | --- | --- | --- |
-| `page_view` | Initial hydration and route/search-param changes | `page_path`, `page_location`, `page_title` |
+| `page_view` | Initial hydration and pathname changes only | `page_path`, `page_location`, `page_title` |
 | `cta_click` | Public internal/commercial CTA click | `location`, `label`, `destination` |
 | `whatsapp_click` | Public WhatsApp CTA/share click | `location`, `label`, `destination` |
 | `generate_lead_start` | First meaningful focus in contact form step 1 | `form_name` |
@@ -37,6 +37,7 @@ window.dataLayer.push({
 ```
 
 `page_path` and `page_location` are sanitized. They include only the pathname and origin plus pathname respectively, with no query string or fragment.
+Changes to `utm_*`, `gclid`, `fbclid`, `gtm_debug`, or other query parameters do not publish another `page_view` for the same pathname. See `docs/TRACKING_P0_HANDOFF.md` for consent and Ads QA before publishing GTM changes.
 
 Example lead success payload:
 

@@ -110,7 +110,7 @@ export default async function PrivacidadePage() {
             <section>
               <h2 className="text-xl font-semibold text-rc2-heading mb-3">7. Cookies</h2>
               <p>
-                Utilizamos cookies para funcionamento do site e analytics de privacidade (Umami — sem cookies de rastreamento individual). Você pode desativar cookies no seu navegador.
+                Cookies essenciais mantêm o site funcionando. Analytics e Marketing são categorias opcionais que você pode aceitar, rejeitar ou configurar. O site registra sua escolha e envia o estado de consentimento ao Google Tag Manager. O botão “Preferências de cookies” no rodapé permite alterar sua escolha.
               </p>
             </section>
 
