@@ -96,7 +96,13 @@ Sem este checklist assinado, a execução real da matriz não começa.
 npm run test:integration
 ```
 
-A guarda (`tests/integration/support/guard.ts`, `target.ts`) roda antes de qualquer conexão e é **reaplicada em cada criação de cliente e a cada chamada ao cliente `service_role`** (o cliente privilegiado é um proxy que revalida o alvo em toda chamada de método). A suíte **não** faz parte do `npm test`.
+A guarda (`tests/integration/support/guard.ts`, `target.ts`) roda antes de qualquer conexão e é reaplicada em cada criação de cliente. O cliente `service_role` é um proxy com três propriedades:
+
+1. **Revalida cada chamada** de método, inclusive em objetos aninhados como `auth.admin`: guardar a referência não permite usá-la depois que o ambiente deixar de ser seguro.
+2. **Revalida a execução diferida.** Os construtores de consulta do Supabase (`from().select().eq()`) só enviam a requisição ao serem aguardados; o proxy envolve também os resultados das chamadas, então `then` revalida imediatamente antes do envio. Uma consulta montada com o alvo válido e aguardada depois de invalidá-lo não dispara nenhuma requisição.
+3. **Fica preso ao alvo original.** A cada chamada compara URL, ref e chaves atuais com o `VerifiedTarget` com que o cliente nasceu; trocar o projeto A por outro projeto B igualmente válido invalida as referências de A (`target_changed`). A comparação não imprime nem registra chaves.
+
+Erros externos (Supabase, rede, bibliotecas) nunca têm a mensagem copiada para logs, relatórios ou exceções: o harness registra só categorias e códigos controlados (`tests/integration/support/errors.ts`), preservando os motivos conhecidos da guarda. A suíte **não** faz parte do `npm test`.
 
 Relatórios: `test-results/integration/rls-matrix-<nome>.{json,md}` (pasta ignorada pelo git). Anexe o `.md` à evidência.
 
