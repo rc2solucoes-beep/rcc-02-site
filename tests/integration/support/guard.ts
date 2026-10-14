@@ -21,7 +21,8 @@ export type GuardFailure =
   | "is_production"
   | "key_ref_mismatch"
   | "missing_keys"
-  | "missing_marker";
+  | "missing_marker"
+  | "env_conflict";
 
 export type GuardInput = {
   testUrl?: string;
