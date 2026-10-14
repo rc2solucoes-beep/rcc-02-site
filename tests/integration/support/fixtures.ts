@@ -1,11 +1,12 @@
 import { randomUUID } from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { CleanupRegistry } from "./cleanup";
+import { HarnessError, describeError } from "./errors";
 import type { Fixture } from "./probes";
 
 async function insertOrThrow(service: SupabaseClient, table: string, row: Record<string, unknown>): Promise<void> {
   const { error } = await service.from(table).insert(row);
-  if (error) throw new Error(`Falha ao semear ${table}: ${error.code ?? error.message}`);
+  if (error) throw new HarnessError(`Falha ao semear ${table}: ${describeError(error)}`);
 }
 
 // Todas registram o recurso ANTES de criá-lo.

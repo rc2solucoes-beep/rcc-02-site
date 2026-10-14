@@ -1,7 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { CleanupRegistry, describeError, runTeardownPhases } from "../support/cleanup";
+import { CleanupRegistry, runTeardownPhases } from "../support/cleanup";
+import { HarnessError, describeError, sanitizeThrown } from "../support/errors";
 import { createRoleClients, type RoleClients } from "../support/clients";
 import { makeAuthor, makeLead, makePost, makeSetting } from "../support/fixtures";
 import {
@@ -114,9 +115,9 @@ beforeAll(async () => {
   } catch (error) {
     const problems = [...(await teardown())];
     if (problems.length > 0) {
-      throw new AggregateError([error, new Error(problems.join(" | "))], "O setup falhou e a limpeza também");
+      throw new AggregateError([sanitizeThrown(error, "setup"), new Error(problems.join(" | "))], "O setup falhou e a limpeza também");
     }
-    throw error;
+    throw sanitizeThrown(error, "setup");
   }
 });
 
@@ -222,7 +223,7 @@ describe("matriz de RLS sobre tabelas de política estável (67 verificações)"
           const outcome = await observeUpdate(cl, svc(), fxAdminUser, "email", `e0a-${tag()}-${randomUUID().slice(0, 6)}@example.test`);
           if (role === "service_role") {
             const restored = await svc().from("admin_users").update({ email: adminEmail }).eq("id", fxAdminUser.id);
-            if (restored.error) throw new Error(`Falha ao restaurar o admin sintético: ${restored.error.code}`);
+            if (restored.error) throw new HarnessError(`Falha ao restaurar o admin sintético: ${describeError(restored.error)}`);
           }
           return outcome;
         },

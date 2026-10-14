@@ -96,7 +96,7 @@ describe("CleanupRegistry resiliente a exceções (B-02)", () => {
     registry.track("posts", "id", "b");
     const failures = await registry.run(throwingService("delete"));
     expect(failures).toHaveLength(1);
-    expect(failures[0]).toMatch(/exceção rede caiu/);
+    expect(failures[0]).toMatch(/exceção excecao:Error/);
   });
 
   it("exceção na inspeção de um item: reporta e ainda inspeciona os outros", async () => {
@@ -134,7 +134,7 @@ describe("runTeardownPhases (B-02)", () => {
     expect(ran).toEqual(["um", "dois", "três"]);
     expect(problems).toEqual([
       "falha-1",
-      'fase "dois" lançou exceção: explodiu',
+      'fase "dois" lançou exceção: excecao:Error',
       "não removidos (evidência): posts.id=a",
     ]);
   });

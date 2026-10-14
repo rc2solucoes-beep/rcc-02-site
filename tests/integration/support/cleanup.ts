@@ -1,12 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-
-// Mensagem segura para relatório: nunca inclui chaves nem o objeto de erro inteiro.
-export function describeError(thrown: unknown): string {
-  if (thrown && typeof thrown === "object" && "reason" in thrown && typeof thrown.reason === "string") {
-    return `guarda:${thrown.reason}`;
-  }
-  return thrown instanceof Error ? thrown.message : "erro desconhecido";
-}
+import { describeError } from "./errors";
 
 export type TeardownPhase = {
   name: string;
@@ -68,7 +61,7 @@ export class CleanupRegistry {
       try {
         const { error } = await service.from(item.table).delete().eq(item.idColumn, item.id);
         if (error) {
-          failures.push(`${item.table}.${item.idColumn}=${item.id.slice(0, 12)}: ${error.code ?? error.message}`);
+          failures.push(`${item.table}.${item.idColumn}=${item.id.slice(0, 12)}: ${describeError(error)}`);
         }
       } catch (thrown) {
         failures.push(`${item.table}.${item.idColumn}=${item.id.slice(0, 12)}: exceção ${describeError(thrown)}`);
@@ -84,7 +77,7 @@ export class CleanupRegistry {
       try {
         const { data, error } = await service.from(item.table).select(item.idColumn).eq(item.idColumn, item.id);
         if (error) {
-          residue.push(`inspeção falhou em ${item.table}: ${error.code ?? error.message}`);
+          residue.push(`inspeção falhou em ${item.table}: ${describeError(error)}`);
         } else if ((data?.length ?? 0) > 0) {
           residue.push(`remanescente em ${item.table}: ${item.id.slice(0, 12)}`);
         }

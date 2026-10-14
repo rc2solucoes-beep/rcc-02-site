@@ -14,6 +14,8 @@ const h = vi.hoisted(() => ({
   marker: { value: null as string | null },
   users: [] as Array<{ id: string; email: string }>,
   createMode: "ok" as "ok" | "lost-response" | "throws",
+  leak: "",
+  apiErrors: false,
   deleteThrows: false,
   deleteIgnored: false,
   listThrows: false,
@@ -51,19 +53,21 @@ vi.mock("@supabase/supabase-js", () => {
             h.requests.push("createUser");
             const user = { id: `00000000-0000-4000-8000-${String(++h.seq).padStart(12, "0")}`, email: args.email };
             h.users.push(user);
-            if (h.createMode === "lost-response") return { data: { user: null }, error: { message: "timeout de rede" } };
-            if (h.createMode === "throws") throw new Error("conexão encerrada");
+            if (h.createMode === "lost-response") return { data: { user: null }, error: { message: `timeout ${h.leak}`, code: h.leak, status: 504 } };
+            if (h.createMode === "throws") throw new Error(`conexão encerrada ${h.leak}`);
             return { data: { user }, error: null };
           },
           deleteUser: async (id: string) => {
             h.requests.push("deleteUser");
-            if (h.deleteThrows) throw new Error("falha ao excluir");
+            if (h.deleteThrows) throw new Error(`falha ao excluir ${h.leak}`);
+            if (h.apiErrors) return { error: { message: h.leak, code: h.leak, status: 500 } };
             if (!h.deleteIgnored) h.users = h.users.filter((user) => user.id !== id);
             return { error: null };
           },
           listUsers: async (params: { page: number; perPage: number }) => {
             h.requests.push(`listUsers:${params.page}`);
-            if (h.listThrows) throw new Error("falha ao listar");
+            if (h.listThrows) throw new Error(`falha ao listar ${h.leak}`);
+            if (h.apiErrors) return { data: null, error: { message: h.leak, code: h.leak } };
             const start = (params.page - 1) * params.perPage;
             return { data: { users: h.users.slice(start, start + params.perPage) }, error: null };
           },
@@ -101,6 +105,8 @@ beforeEach(() => {
   h.users = [];
   h.marker.value = TEST_REF;
   h.createMode = "ok";
+  h.leak = "";
+  h.apiErrors = false;
   h.deleteThrows = false;
   h.deleteIgnored = false;
   h.listThrows = false;
@@ -216,7 +222,7 @@ describe("I-02: usuários órfãos por resposta ambígua", () => {
 
   it("criação com exceção de rede (resposta perdida): também reconcilia", async () => {
     h.createMode = "throws";
-    await expect(createRoleClients()).rejects.toThrow(/conexão encerrada/);
+    await expect(createRoleClients()).rejects.toThrow(/Falha ao criar o usuário sintético \(admin\): excecao:Error/);
     expect(h.users).toEqual([]);
   });
 
@@ -279,7 +285,7 @@ describe("B-02: limpeza de usuários resiliente a exceções", () => {
     const clients = await createRoleClients();
     h.listThrows = true;
     const failures = await clients.cleanup();
-    expect(failures.filter((f) => f.includes("falha ao listar")).length).toBeGreaterThanOrEqual(1);
+    expect(failures.filter((f) => f.includes("lançou exceção") && f.includes("excecao:Error")).length).toBeGreaterThanOrEqual(1);
   });
 
   it("alvo invalidado durante a limpeza: o relatório preserva a evidência e nada vaza", async () => {
@@ -290,5 +296,57 @@ describe("B-02: limpeza de usuários resiliente a exceções", () => {
     expect(failures.join(" ")).toContain("guarda:");
     expect(failures.at(-1)).toMatch(/ids conhecidos = \[/);
     expect(failures.join(" ")).not.toContain(SERVICE_KEY);
+  });
+});
+
+describe("sanitização de erros externos nos fluxos do harness", () => {
+  // Credenciais FICTÍCIAS embutidas em mensagens, códigos e URLs de erro.
+  const LEAK =
+    "Bearer eyJhbGciOiJIUzI1NiJ9.FICTICIO.assinatura apikey=sb_secret_FICTICIO_123 https://x.supabase.co/rest/v1/posts?apikey=SEGREDO_FICTICIO";
+  const FRAGMENTS = ["eyJhbGci", "sb_secret_FICTICIO", "SEGREDO_FICTICIO", "Bearer", "apikey", "supabase.co/rest"];
+
+  function everyText(value: unknown): string {
+    if (value instanceof AggregateError) return [value.message, ...value.errors.map(everyText)].join(" | ");
+    if (value instanceof Error) return `${value.name}: ${value.message}`;
+    return Array.isArray(value) ? value.join(" | ") : String(value);
+  }
+  function expectClean(text: string): void {
+    for (const fragment of FRAGMENTS) expect(text).not.toContain(fragment);
+  }
+
+  it("criação com resposta perdida + exclusão que lança: nenhuma exceção final carrega o conteúdo externo", async () => {
+    h.leak = LEAK;
+    h.createMode = "lost-response";
+    h.deleteThrows = true;
+    const text = everyText(await createRoleClients().catch((e: unknown) => e));
+    expect(text).toContain("excecao:"); // evidência útil permanece
+    expectClean(text);
+  });
+
+  it("criação que lança com credenciais na mensagem: a exceção final só traz categoria controlada", async () => {
+    h.leak = LEAK;
+    h.createMode = "throws";
+    const text = everyText(await createRoleClients().catch((e: unknown) => e));
+    expect(text).toContain("Falha ao criar o usuário sintético");
+    expectClean(text);
+  });
+
+  it("erros devolvidos pela API (não lançados) em exclusão e listagem: relatório sem conteúdo externo", async () => {
+    const clients = await createRoleClients();
+    h.leak = LEAK;
+    h.apiErrors = true;
+    const failures = await clients.cleanup();
+    expect(failures.length).toBeGreaterThan(0);
+    expectClean(failures.join(" | "));
+  });
+
+  it("exceções lançadas em exclusão e listagem: relatório sem conteúdo externo", async () => {
+    const clients = await createRoleClients();
+    h.leak = LEAK;
+    h.deleteThrows = true;
+    h.listThrows = true;
+    const failures = await clients.cleanup();
+    expect(failures.length).toBeGreaterThan(0);
+    expectClean(failures.join(" | "));
   });
 });

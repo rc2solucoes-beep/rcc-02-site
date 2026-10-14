@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { CleanupRegistry } from "./cleanup";
+import { HarnessError, describeError, safeCode, sanitizeThrown } from "./errors";
 import { recordEntry, type Operation, type Outcome, type Role } from "./matrix";
 
 export type Fixture = { table: string; idColumn: string; id: string };
@@ -29,19 +30,19 @@ export function classifyWrite(o: WriteObservation): Outcome | "error" {
 type DbError = { code?: string; message?: string } | null;
 
 function errorCodeOf(error: DbError): string | null {
-  return error ? (error.code ?? "unknown") : null;
+  return error ? (safeCode(error.code) ?? "unknown") : null;
 }
 
 // Leituras privilegiadas lançam em caso de erro: nunca viram "deny" por engano.
 async function rowExists(service: SupabaseClient, fx: Fixture): Promise<boolean> {
   const { data, error } = await service.from(fx.table).select(fx.idColumn).eq(fx.idColumn, fx.id);
-  if (error) throw new Error(`Leitura privilegiada falhou em ${fx.table}: ${error.code ?? error.message}`);
+  if (error) throw new HarnessError(`Leitura privilegiada falhou em ${fx.table}: ${describeError(error)}`);
   return (data?.length ?? 0) > 0;
 }
 
 async function columnValue(service: SupabaseClient, fx: Fixture, column: string): Promise<unknown> {
   const { data, error } = await service.from(fx.table).select(column).eq(fx.idColumn, fx.id);
-  if (error) throw new Error(`Leitura privilegiada falhou em ${fx.table}.${column}: ${error.code ?? error.message}`);
+  if (error) throw new HarnessError(`Leitura privilegiada falhou em ${fx.table}.${column}: ${describeError(error)}`);
   const rows = data as unknown as Array<Record<string, unknown>> | null;
   return rows?.[0]?.[column] ?? null;
 }
@@ -107,7 +108,14 @@ export async function check(args: {
   expected: Outcome;
   observe: () => Promise<Outcome | "error">;
 }): Promise<Outcome | "error"> {
-  const observed = await args.observe();
+  let observed: Outcome | "error";
+  try {
+    observed = await args.observe();
+  } catch (thrown) {
+    // Registra como inconclusivo e propaga uma versão sanitizada (sem conteúdo externo).
+    recordEntry({ table: args.table, role: args.role, operation: args.operation, expected: args.expected, observed: "error" });
+    throw sanitizeThrown(thrown, `observação falhou em ${args.table}/${args.role}/${args.operation}`);
+  }
   recordEntry({
     table: args.table,
     role: args.role,

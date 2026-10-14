@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { describeError } from "./cleanup";
 import { loadTestEnvFile } from "./env";
+import { HarnessError, describeError, sanitizeThrown } from "./errors";
 import { IntegrationGuardError } from "./guard";
 import { getVerifiedTarget, type VerifiedTarget } from "./target";
 
@@ -107,16 +107,21 @@ export async function createRoleClients(): Promise<RoleClients> {
   async function makeUser(label: "admin" | "member") {
     const email = `${emailPrefix}${label}@example.test`;
     intendedEmails.push(email); // registrado ANTES de chamar a API
-    const created = await svc().auth.admin.createUser({ email, password, email_confirm: true });
+    let created: Awaited<ReturnType<SupabaseClient["auth"]["admin"]["createUser"]>>;
+    try {
+      created = await svc().auth.admin.createUser({ email, password, email_confirm: true });
+    } catch (thrown) {
+      throw new HarnessError(`Falha ao criar o usuário sintético (${label}): ${describeError(thrown)}`);
+    }
     if (created.error || !created.data.user) {
-      throw new Error(`Falha ao criar o usuário sintético (${label}): ${created.error?.message}`);
+      throw new HarnessError(`Falha ao criar o usuário sintético (${label}): ${describeError(created.error)}`);
     }
     createdUserIds.push(created.data.user.id); // registrado imediatamente
 
     const client = createClient(target.url, target.anonKey, clientOptions);
     const signedIn = await client.auth.signInWithPassword({ email, password });
     if (signedIn.error) {
-      throw new Error(`Falha ao autenticar o usuário sintético (${label}): ${signedIn.error.message}`);
+      throw new HarnessError(`Falha ao autenticar o usuário sintético (${label}): ${describeError(signedIn.error)}`);
     }
     return { client, id: created.data.user.id, email };
   }
@@ -127,7 +132,7 @@ export async function createRoleClients(): Promise<RoleClients> {
     for (let page = 1; page <= MAX_USER_PAGES; page++) {
       const listed = await svc().auth.admin.listUsers({ page, perPage: USER_PAGE_SIZE });
       if (listed.error) {
-        failures.push(`${phase}: listagem de usuários falhou na página ${page}: ${listed.error.message}`);
+        failures.push(`${phase}: listagem de usuários falhou na página ${page}: ${describeError(listed.error)}`);
         return found;
       }
       const users = listed.data?.users ?? [];
@@ -144,14 +149,14 @@ export async function createRoleClients(): Promise<RoleClients> {
     try {
       const removedAdmin = await svc().from("admin_users").delete().eq("id", id);
       if (removedAdmin.error) {
-        failures.push(`admin_users ${id.slice(0, 8)}: ${removedAdmin.error.code ?? removedAdmin.error.message}`);
+        failures.push(`admin_users ${id.slice(0, 8)}: ${describeError(removedAdmin.error)}`);
       }
     } catch (thrown) {
       failures.push(`admin_users ${id.slice(0, 8)}: exceção ${describeError(thrown)}`);
     }
     try {
       const removedUser = await svc().auth.admin.deleteUser(id);
-      if (removedUser.error) failures.push(`auth.users ${id.slice(0, 8)}: ${removedUser.error.message}`);
+      if (removedUser.error) failures.push(`auth.users ${id.slice(0, 8)}: ${describeError(removedUser.error)}`);
     } catch (thrown) {
       failures.push(`auth.users ${id.slice(0, 8)}: exceção ${describeError(thrown)}`);
     }
@@ -198,7 +203,7 @@ export async function createRoleClients(): Promise<RoleClients> {
 
     const registered = await svc().from("admin_users").insert({ id: admin.id, email: admin.email });
     if (registered.error) {
-      throw new Error(`Falha ao registrar o admin sintético: ${registered.error.message}`);
+      throw new HarnessError(`Falha ao registrar o admin sintético: ${describeError(registered.error)}`);
     }
 
     return {
@@ -219,10 +224,10 @@ export async function createRoleClients(): Promise<RoleClients> {
     const failures = await cleanup();
     if (failures.length > 0) {
       throw new AggregateError(
-        [error, new Error(`Falha de limpeza: ${failures.join(" | ")}`)],
+        [sanitizeThrown(error, "setup"), new Error(`Falha de limpeza: ${failures.join(" | ")}`)],
         "O setup falhou e a limpeza também",
       );
     }
-    throw error;
+    throw sanitizeThrown(error, "setup");
   }
 }
