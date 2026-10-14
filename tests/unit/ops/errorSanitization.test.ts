@@ -45,6 +45,51 @@ describe("describeError: nunca reproduz conteúdo externo", () => {
     );
   });
 
+  it("códigos de sistema: só a lista fechada passa; padrões 'E...' arbitrários são rejeitados", () => {
+    for (const code of ["ECONNREFUSED", "ECONNRESET", "ENOTFOUND", "ETIMEDOUT", "EAI_AGAIN", "UND_ERR_CONNECT_TIMEOUT"]) {
+      expect(describeError({ name: "TypeError", cause: { code } })).toBe(`excecao:TypeError;codigo=${code}`);
+      expect(describeError({ code })).toBe(`excecao:nao_classificado;codigo=${code}`);
+    }
+    for (const code of [
+      "EAPIKEY_SECRET123",
+      "EACCESS_TOKEN_2026",
+      "ECONNREFUSED_sb_secret_FICTICIO",
+      "ECONNREFUSED2",
+      "econnrefused",
+      "EUNKNOWN",
+      "EXYZ",
+      "E",
+      "ESEGREDO_FICTICIO",
+    ]) {
+      const direct = describeError({ message: HOSTILE, code });
+      const nested = describeError({ name: "TypeError", cause: { code, message: HOSTILE } });
+      expect(direct).toBe("excecao:nao_classificado");
+      expect(nested).toBe("excecao:TypeError");
+      for (const text of [direct, nested]) {
+        if (code.length > 4) expect(text).not.toContain(code);
+        expectClean(text);
+      }
+    }
+  });
+
+  it("código arbitrário no pipeline de limpeza: relatório e exceção final não reproduzem o valor", async () => {
+    const registry = new CleanupRegistry();
+    registry.track("posts", "id", "a");
+    const service = {
+      from: () => ({
+        delete: () => ({ eq: async () => ({ error: { code: "EAPIKEY_SECRET123", message: HOSTILE } }) }),
+        select: () => ({ eq: () => Promise.reject(Object.assign(new Error(HOSTILE), { code: "EACCESS_TOKEN_2026" })) }),
+      }),
+    } as unknown as SupabaseClient;
+    const text = [...(await registry.run(service)), ...(await registry.inspectResidue(service))].join(" | ");
+    expect(text.length).toBeGreaterThan(0);
+    for (const leaked of ["EAPIKEY_SECRET123", "EACCESS_TOKEN_2026"]) expect(text).not.toContain(leaked);
+    expectClean(text);
+    expect(sanitizeThrown(Object.assign(new Error(HOSTILE), { code: "EACCESS_TOKEN_2026" }), "ctx").message).toBe(
+      "ctx: excecao:Error",
+    );
+  });
+
   it("status fora de 100-599 ou não numérico é ignorado", () => {
     expect(describeError({ status: "500; apikey=x" })).toBe("excecao:nao_classificado");
     expect(describeError({ status: 99999 })).toBe("excecao:nao_classificado");

@@ -22,6 +22,25 @@ const KNOWN_NAMES = new Set([
   "FunctionsFetchError",
 ]);
 
+// Códigos de sistema operacional/rede conhecidos (lista fechada: nenhum padrão aberto).
+const KNOWN_SYSTEM_CODES = new Set([
+  "ECONNREFUSED",
+  "ECONNRESET",
+  "ECONNABORTED",
+  "ENOTFOUND",
+  "EAI_AGAIN",
+  "ETIMEDOUT",
+  "EPIPE",
+  "EHOSTUNREACH",
+  "ENETUNREACH",
+  "ENETDOWN",
+  "EADDRINUSE",
+  "EPROTO",
+  "ERR_SOCKET_CONNECTION_TIMEOUT",
+  "UND_ERR_CONNECT_TIMEOUT",
+  "UND_ERR_SOCKET",
+]);
+
 const KNOWN_AUTH_CODES = new Set([
   "user_already_exists",
   "email_exists",
@@ -40,7 +59,7 @@ export function safeCode(value: unknown): string | null {
   if (typeof value !== "string") return null;
   if (/^[0-9A-Z]{5}$/.test(value)) return value; // SQLSTATE
   if (/^PGRST\d{3}$/.test(value)) return value; // PostgREST
-  if (/^E[A-Z0-9_]{2,20}$/.test(value)) return value; // sistema (ECONNREFUSED...)
+  if (KNOWN_SYSTEM_CODES.has(value)) return value; // sistema/rede (lista fechada)
   if (KNOWN_AUTH_CODES.has(value)) return value;
   return null;
 }
