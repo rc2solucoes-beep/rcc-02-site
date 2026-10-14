@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { CleanupRegistry } from "../support/cleanup";
+import { CleanupRegistry, describeError, runTeardownPhases } from "../support/cleanup";
 import { createRoleClients, type RoleClients } from "../support/clients";
 import { makeAuthor, makeLead, makePost, makeSetting } from "../support/fixtures";
 import {
@@ -35,7 +35,7 @@ const ROLE_ORDER: Role[] = ["anon", "authenticated_non_admin", "authenticated_ad
 
 const registry = new CleanupRegistry();
 let c: RoleClients | undefined;
-let torn = false;
+let tearing: Promise<string[]> | undefined;
 let adminEmail = "";
 let fxPostPublished: Fixture;
 let fxPostDraft: Fixture;
@@ -60,12 +60,18 @@ function roles(): Array<[Role, SupabaseClient]> {
   ];
 }
 
-// Limpeza idempotente. Nunca silenciosa: devolve todas as falhas.
-async function teardown(): Promise<string[]> {
-  if (torn || !c) return [];
-  torn = true;
-  const service = c.service;
-  return [...(await registry.run(service)), ...(await registry.inspectResidue(service)), ...(await c.cleanup())];
+// Limpeza idempotente e resiliente: executa TODAS as fases mesmo que uma falhe ou
+// lance exceção, acumula tudo e guarda o resultado (a segunda chamada devolve o
+// mesmo relatório, não "limpo"). Nunca silenciosa.
+function teardown(): Promise<string[]> {
+  const current = c;
+  if (!current) return Promise.resolve([]);
+  tearing ??= runTeardownPhases([
+    { name: "remoção dos recursos registrados", run: async () => registry.run(current.service), evidence: () => registry.describePending() },
+    { name: "inspeção de resíduos", run: async () => registry.inspectResidue(current.service), evidence: () => registry.describePending() },
+    { name: "usuários sintéticos", run: () => current.cleanup() },
+  ]);
+  return tearing;
 }
 
 type Case = {
@@ -106,7 +112,7 @@ beforeAll(async () => {
     if (adminRow.error || !adminRow.data?.[0]) throw new Error("admin sintético não encontrado");
     adminEmail = String(adminRow.data[0].email);
   } catch (error) {
-    const problems = await teardown();
+    const problems = [...(await teardown())];
     if (problems.length > 0) {
       throw new AggregateError([error, new Error(problems.join(" | "))], "O setup falhou e a limpeza também");
     }
@@ -115,8 +121,12 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  const problems = await teardown();
-  writeMatrixReport("baseline");
+  const problems = [...(await teardown())];
+  try {
+    writeMatrixReport("baseline");
+  } catch (thrown) {
+    problems.push(`relatório da matriz falhou: ${describeError(thrown)}`);
+  }
   // Falha de limpeza reprova a suíte: nunca é silenciosa.
   if (problems.length > 0) throw new Error(`Falha de limpeza (${problems.length}): ${problems.join(" | ")}`);
 });
