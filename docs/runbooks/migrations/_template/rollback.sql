@@ -1,0 +1,15 @@
+-- Rollback da migration NNN.
+--
+-- REGRAS
+--  * Escreva apenas desfazimentos seguros e idempotentes.
+--  * Se a migration REMOVE uma permissão insegura (ex.: DEC-08, remoção de
+--    leads_anon_insert), este arquivo NÃO recria a permissão. Documente aqui a
+--    contingência segura (por exemplo, corrigir o consumidor) e deixe o
+--    arquivo sem DDL.
+--  * Rollback que apaga dados (tabelas com notas, consentimentos, tokens)
+--    exige exportação prévia e autorização explícita; registre no README.
+--  * Reverter o código vem ANTES de remover objetos de banco que ele usa.
+--
+-- BEGIN;
+--   -- desfazimentos aqui
+-- COMMIT;
