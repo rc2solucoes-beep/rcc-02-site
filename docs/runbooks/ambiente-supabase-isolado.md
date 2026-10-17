@@ -77,7 +77,7 @@ RC2_TEST_SUPABASE_SERVICE_ROLE_KEY=...
 3. **Nunca** coloque essas chaves em `.env.local` (que pode apontar para produção), em commits, em logs ou em evidências.
 4. Não exporte variáveis `RC2_TEST_*` no shell com valores diferentes dos do arquivo (a suíte recusa a execução).
 
-## Verificação independente (C14, obrigatória antes da primeira execução real)
+## Verificação independente (C14, via padrão do gate da primeira execução real)
 
 Feita pelo dono da infraestrutura **ou por uma segunda pessoa**, que não deve ser quem configurou o `.env.test.local`, e registrada na evidência (nome, data, resultado de cada item):
 
@@ -88,13 +88,95 @@ Feita pelo dono da infraestrutura **ou por uma segunda pessoa**, que não deve s
 5. O `.env.test.local` não contém nenhuma URL de produção, e `RC2_TEST_PROJECT_REF_ALLOWLIST` contém somente refs de projetos de teste.
 6. O marcador existe **no projeto de teste** com o valor correto (item K do `verify-baseline.sql`).
 
-Sem este checklist assinado, a execução real da matriz não começa.
+O gate da primeira execução real tem **duas vias**; basta uma delas, e nenhuma dispensa a autorização expressa e separada da execução:
+
+- **Via A:** este checklist C14, assinado por verificador independente.
+- **Via B:** a exceção E0a-C14-EX01 (abaixo), formalizada e acompanhada dos controles compensatórios exigíveis antes da execução.
+
+Sem a via A **ou** a via B comprovada, a execução real da matriz não começa.
+
+### Exceção E0a-C14-EX01 (via B)
+
+Resultado do C14 original em 2026-10-16: **NÃO ATENDIDO**. A exceção não altera o requisito, não o dá por atendido e não o substitui.
+
+| Campo | Valor |
+|---|---|
+| ID | E0a-C14-EX01 |
+| Aprovada em | 2026-10-16 |
+| Autoridade | Responsável pelo projeto e pela infraestrutura |
+| Justificativa | Indisponibilidade de segunda pessoa |
+| Escopo | Exclusivamente a E0a e o projeto isolado `rc2-test-isolated`; não vale para outros projetos nem para fases posteriores |
+| Risco residual aceito | Ausência de segregação entre configuração, conferência e autorização |
+| Estado | Aceitação de risco aprovada; controles compensatórios sujeitos a comprovação |
+
+**Controles exigíveis antes da execução (pré):** CC-1 a CC-8 e CC-9a. **Após a execução (pós):** CC-9b. A aprovação da exceção, isoladamente, **não libera nada**. Cada controle é registrado na evidência com resultado individual, sem ref de produção, URL de produção nem chaves.
+
+| ID | Controle | Aceite objetivo | Fase |
+|---|---|---|---|
+| CC-1 | Identidade do projeto isolado | Nome e ref de teste conferidos no painel; não é o projeto de produção | pré |
+| CC-2 | Ref de produção | Valor conferido no painel de produção e diferente do ref de teste; registrar "confirmado: sim/não", nunca o valor | pré |
+| CC-3 | URL, ref e allowlist | Só o projeto de teste; validação local repetida imediatamente antes da execução | pré |
+| CC-4 | Chaves e ambiente | Claims `role`/`ref`/`exp` de chaves JWT conferem; sem variáveis `RC2_*` divergentes no shell; chaves opacas `sb_…` conferidas manualmente no painel | pré |
+| CC-5 | Guarda anti-produção | `npx vitest run tests/unit/ops` verde e saídas D1–D4 da Task 3 arquivadas. O ensaio D5 **não** conta aqui | pré |
+| CC-6 | Marcador de isolamento | Item K do `verify-baseline.sql` com 1 linha e valor igual ao ref de teste | pré |
+| CC-7 | Criação e limpeza | `cleanup.ts` e o passo de limpeza da Task 8 revisados; prefixos `e0a-` e `__e0a_` listados; inspeção manual definida | pré |
+| CC-8 | Interrupção no primeiro erro | Procedimento único de falha da Task 8 (Step 4) aceito pelo responsável | pré |
+| CC-9a | Higiene de segredos, pré-execução | `.env.test.local` ignorado e não rastreado; varredura do diff (commitado e não commitado) e das evidências existentes, com saída apenas de status | pré |
+| CC-9b | Higiene de segredos, pós-execução | Varredura final das evidências novas e do diff, com saída apenas de status | pós |
+
+As varreduras de segredos produzem somente `CONFORME` ou `DIVERGENTE`, nunca exibem correspondências e nunca leem o `.env.test.local`.
+
+#### Procedimento da varredura de segredos (CC-9a, antes; CC-9b, depois)
+
+A função abaixo extrai **valores plausíveis** (JWT, chaves `sb_secret_`/`sb_publishable_` e atribuições de `SERVICE_ROLE_KEY`/`ANON_KEY` com 20 ou mais caracteres, em formato `=`, `:` ou JSON, com ou sem aspas) e **descarta somente os valores que contêm o marcador `FICTICIO`**. A exceção é por valor, não por linha nem por arquivo: um segredo real na mesma linha, ou no mesmo arquivo, de uma fixture `FICTICIO` continua sendo detectado. Valores só com maiúsculas e `_` (placeholders como `SUBSTITUIR_MANUALMENTE`), reticências, `<…>` e nomes de variáveis não são tratados como segredo. A saída é apenas `CONFORME`, `DIVERGENTE` ou `NÃO INSPECIONADO`.
+
+```bash
+tokens() {
+  local t; t="$(cat)"
+  printf '%s' "$t" | grep -oE 'eyJ[A-Za-z0-9_-]{10,}(\.[A-Za-z0-9_-]+){0,2}'
+  printf '%s' "$t" | grep -oE 'sb_(secret|publishable)_[A-Za-z0-9_-]{10,}'
+  printf '%s' "$t" | grep -oE "(SERVICE_ROLE_KEY|ANON_KEY)[\"']?[[:space:]]*[:=][[:space:]]*[\"']?[A-Za-z0-9_.+/=-]{20,}" \
+    | sed -E "s/^[^:=]*[:=][[:space:]]*[\"']?//" | grep -E '[a-z0-9]'
+}
+scan_secrets() { tokens | grep -v 'FICTICIO' | grep -q .; case $? in 0) echo DIVERGENTE;; 1) echo CONFORME;; *) echo "NÃO VERIFICADO";; esac; }
+scan_paths() { if ls "$@" >/dev/null 2>&1; then cat "$@" | scan_secrets; else echo "NÃO INSPECIONADO"; fi; }
+```
+
+Nunca imprima a saída de `tokens`; use apenas `scan_secrets`/`scan_paths`.
+
+**CC-9a (antes da execução).** Cole a função e execute:
+
+```bash
+git check-ignore -q .env.test.local && echo "env ignorado: CONFORME" || echo "env ignorado: DIVERGENTE"
+git ls-files --error-unmatch .env.test.local >/dev/null 2>&1 && echo "env rastreado: DIVERGENTE" || echo "env rastreado: CONFORME"
+echo "diff commitado:";   git diff main...HEAD | scan_secrets
+echo "diff não staged:";  git diff | scan_secrets
+echo "diff staged:";      git diff --cached | scan_secrets
+echo "evidências:";       scan_paths docs/runbooks/evidence/*.md
+```
+
+**CC-9b (depois da execução).** Repita os comandos acima e acrescente as evidências novas e os relatórios gerados:
+
+```bash
+echo "relatórios:";      scan_paths test-results/integration/*
+```
+
+Limites declarados: a varredura não lê o `.env.test.local` nem outros arquivos de credenciais; não detecta valores curtos (menos de 20 caracteres) em formato desconhecido; não detecta o ref de produção (um identificador de 20 caracteres sem padrão distintivo; ele é controlado por regra de registro, CC-2); e o marcador `FICTICIO` só vale para valores sintéticos. Fonte não listada não foi inspecionada: o resultado **não** afirma cobertura completa.
+
+**Autorizações separadas.** O gate resolvido não autoriza, por si, a execução. São autorizações expressas, específicas e distintas: **AUT-D5** (ensaio D5, real, que remove e restaura o marcador) e **AUT-EXEC** (execução real da suíte). A autorização de uma não vale para a outra.
 
 ## Como rodar
 
+Só com o gate C14 resolvido (via A ou via B) **e** autorização expressa da execução real (AUT-EXEC). Para preservar o código de saída real da suíte, **não** encadeie o comando a um pipe (o status de `tail` mascararia o do teste); redirecione para um log e capture o status:
+
 ```bash
-npm run test:integration
+mkdir -p test-results/integration
+LOG="test-results/integration/run-$(date +%Y%m%dT%H%M%S).log"
+npm run test:integration > "$LOG" 2>&1; STATUS=$?
+echo "exit=$STATUS"; tail -25 "$LOG"
 ```
+
+`exit=0` é o único resultado de sucesso. Qualquer outro valor, ou qualquer divergência, aciona o procedimento de falha da Task 8 (Step 4): parar, registrar, preservar, tratar resíduos só no projeto de teste e exigir nova autorização antes de repetir. Não há reexecução automática.
 
 A guarda (`tests/integration/support/guard.ts`, `target.ts`) roda antes de qualquer conexão e é reaplicada em cada criação de cliente. O cliente `service_role` é um proxy com três propriedades:
 
@@ -108,7 +190,7 @@ Relatórios: `test-results/integration/rls-matrix-<nome>.{json,md}` (pasta ignor
 
 ## Dados sintéticos e limpeza
 
-Os testes criam dois usuários (`e0a-<tag>-admin@example.test` e `…-member@example.test`) e linhas com prefixo `e0a-` ou `__e0a_`. **Cada recurso é registrado antes de ser criado**, removido no `afterAll` e inspecionado ao final; **qualquer falha de limpeza reprova a suíte**. Se uma execução for interrompida, remova pelo painel do **projeto de teste** os usuários `e0a-*` e as linhas com esses prefixos.
+Os testes criam dois usuários (`e0a-<tag>-admin@example.test` e `…-member@example.test`) e linhas com prefixo `e0a-` ou `__e0a_`. **Cada recurso é registrado antes de ser criado**, removido no `afterAll` e inspecionado ao final; **qualquer falha de limpeza reprova a suíte**. Se uma execução for interrompida, remova pelo painel do **projeto de teste** (com a autorização aplicável) os usuários `e0a-*` e as linhas com esses prefixos.
 
 ## Descarte
 

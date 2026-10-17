@@ -23,6 +23,7 @@
 |---|---|---|
 | 1 | 2026-10-14 | Plano inicial |
 | 2 | 2026-10-14 | Correções do parecer de engenharia: rollback da Task 0 sem risco de perder a baseline documental; guarda reaplicada na criação de clientes e nas operações privilegiadas, com marcador de ambiente e verificação independente; sondas de RLS refeitas (efeito real, UPDATE e DELETE, quatro papéis); limpeza obrigatória e não silenciosa; lint de SQL com limites documentados; matriz ampliada de 28 para **67 verificações**; baseline renomeada para "snapshot histórico" |
+| 3 | 2026-10-16 | Exceção `E0a-C14-EX01` (aprovada em 2026-10-16): gate C14 com duas vias (checklist original **ou** exceção com controles compensatórios), C14 original registrado como **NÃO ATENDIDO**, autorizações separadas (AUT-D5, AUT-EXEC), execução com código de saída preservado, procedimento único de falha sem reexecução automática e varredura de segredos só com status. O runbook embutido na Task 7 foi harmonizado apenas quanto ao gate; em caso de divergência, vale `docs/runbooks/ambiente-supabase-isolado.md` |
 
 ## Decisões confirmadas pela revisão de engenharia
 
@@ -130,7 +131,7 @@ Tasks 1, 2 e 6 são independentes entre si. Tasks 4 e 5 são **escritas e valida
 | EX-0b | (Opcional, recomendado) enviar a branch e a tag ao remoto para durabilidade | Responsável pelo repositório | Após Task 0 |
 | **EX-1** | Criar o ambiente isolado (**projeto Supabase separado**, recomendado), com possível custo | Dono da infraestrutura | Antes de Task 8 |
 | **EX-2** | Aplicar o snapshot histórico e **criar o marcador de ambiente de teste** no projeto de teste (SQL Editor do projeto de teste); rodar `verify-baseline.sql` | Dono da infraestrutura (ou executor com credenciais **só do projeto de teste**) | Task 8 |
-| **EX-3** | Fornecer as chaves **do projeto de teste** em `.env.test.local` e **assinar a verificação independente** (C14) | Dono da infraestrutura | Task 8 |
+| **EX-3** | Fornecer as chaves **do projeto de teste** em `.env.test.local` e satisfazer o gate C14 por **uma** via: **assinatura da verificação independente** **ou** exceção E0a-C14-EX01 com os controles pré-execução comprovados | Dono da infraestrutura | Task 8 |
 | EX-4 | (Opcional, fora de E0a) apontar um Preview da Vercel ao ambiente isolado | Dono da infraestrutura | Não faz parte de E0a |
 
 **Nenhuma etapa de E0a precisa de credencial, URL, leitura ou escrita de produção.** O executor não deve receber credenciais de produção.
@@ -139,14 +140,14 @@ Tasks 1, 2 e 6 são independentes entre si. Tasks 4 e 5 são **escritas e valida
 
 ## Critérios objetivos de conclusão de E0a
 
-Todos precisam ser verdadeiros e ter evidência em `docs/runbooks/evidence/E0a-<data>.md`:
+Todos precisam ser verdadeiros e ter evidência em `docs/runbooks/evidence/E0a-<data>.md`, com uma única ressalva: o **C14** pode ser satisfeito por uma de duas vias (C14 original **ou** C14-alt, abaixo). O C14 original é registrado separadamente e **nunca** passa a "atendido" pela via excepcional. Em 2026-10-16 o resultado do C14 original é **NÃO ATENDIDO**:
 
 | ID | Critério | Como verificar |
 |---|---|---|
 | C1 | `.tsx` executa no `npm test` | `npx vitest list --filesOnly` lista `tests/unit/admin/security-page-sanitization.test.tsx`; `npm test` verde |
 | C2 | `npm test` não executa nada de `tests/integration/` | `npx vitest list --filesOnly` sem `tests/integration` |
 | C3 | Testes unitários de `tests/unit/ops` verdes (T-OPS-U01, T-OPS-U02 e os de guarda, clientes, limpeza, sondas, lint e runbook) | `npx vitest run tests/unit/ops` |
-| C4 | A guarda aborta **antes de qualquer conexão** nos ensaios D1–D4 (sem rede), os testes do caminho de criação de clientes passam e o ensaio D5 (marcador ausente, no ambiente isolado) aborta antes de criar o cliente `service_role` | saídas arquivadas |
+| C4 | A guarda aborta **antes de qualquer conexão** nos ensaios D1–D4 (sem rede), os testes do caminho de criação de clientes passam e o ensaio D5 (marcador ausente, no ambiente isolado) aborta antes de criar o cliente `service_role`. D1–D4 são offline; D5 é real e só ocorre após o gate C14 e com autorização específica (Task 8, Step 3) | saídas arquivadas |
 | C5 | `npm run test:integration` verde no ambiente isolado | relatório do Vitest |
 | C6 | Matriz com **67 verificações**, **0 divergências** e **0 resultados inconclusivos (`error`)** | `test-results/integration/rls-matrix-baseline.md` anexado |
 | C7 | `verify-baseline.sql` executado no ambiente isolado; divergências em relação ao **snapshot histórico** documentadas. **Não se declara paridade atual com a produção** | saída arquivada |
@@ -156,7 +157,8 @@ Todos precisam ser verdadeiros e ter evidência em `docs/runbooks/evidence/E0a-<
 | C11 | Nenhum segredo no diff nem na evidência | `git diff main...HEAD` sem `eyJ…`, `sb_secret_`, valores de chave |
 | C12 | `fix/tracking-p0-foundation` intacta | `git rev-parse fix/tracking-p0-foundation` = `bfc50d0c7a08221529b02cbc345f4a6c6dbd627c` |
 | C13 | **Limpeza sem resíduo:** o registro de limpeza, a inspeção final automática e a inspeção manual no projeto de teste não encontram nenhum recurso sintético; nenhuma falha de limpeza foi silenciada | saída do `afterAll` e inspeção manual registrada |
-| C14 | **Verificação independente assinada** (§ "Verificação independente" da Task 7) antes da primeira execução real | checklist preenchido na evidência |
+| C14 | **Verificação independente assinada** (§ "Verificação independente" da Task 7) antes da primeira execução real. Resultado histórico: **NÃO ATENDIDO** | checklist preenchido na evidência |
+| C14-alt | **Via excepcional**, aceita no lugar do C14 enquanto o C14 original estiver não atendido: exceção `E0a-C14-EX01` aprovada **e** CC-1..CC-8 comprovados antes da execução, CC-9a conforme antes e CC-9b conforme depois. Não altera o estado do C14 original | seção "Exceção C14" da evidência |
 
 ## Procedimento de rollback da fase
 
@@ -935,7 +937,7 @@ RC2_TEST_PROJECT_REF_ALLOWLIST=dddddddddddddddddddd RC2_PRODUCTION_PROJECT_REF=c
 RC2_TEST_SUPABASE_ANON_KEY="$FAKEJWT" RC2_TEST_SUPABASE_SERVICE_ROLE_KEY=opaca npm run test:integration 2>&1 | tail -6
 # esperado: "(key_ref_mismatch)"
 ```
-Guarde as saídas para a evidência (C4). Nenhum `.env.test.local` pode existir durante D1.
+Guarde as saídas para a evidência (C4). Nenhum `.env.test.local` pode existir durante D1. Com o `.env.test.local` presente, D2–D4 terminam em `env_conflict` (variáveis do shell divergem do arquivo), então D1–D4 **não se repetem** no repositório depois da EX-3: reaproveite as saídas arquivadas (CC-5). Se não houver saída arquivada, reproduza-os **fora do repositório**, num diretório temporário sem nenhum arquivo `.env*` (cópia de `vitest.integration.config.ts`, `package.json` e `tests/integration/support/`, `node_modules` por junção e um teste vazio no lugar de `baseline.test.ts`), sem copiar credenciais. Resultado de 2026-10-16: ver `docs/runbooks/evidence/E0a-C14-EX01-2026-10-16-pre-gate.md`.
 
 - [ ] **Step 7: Typecheck e lint**
 
@@ -2688,7 +2690,7 @@ RC2_TEST_SUPABASE_SERVICE_ROLE_KEY=...
 
 3. **Nunca** coloque essas chaves em `.env.local` (que pode apontar para produção), em commits, em logs ou em evidências.
 
-## Verificação independente (C14, obrigatória antes da primeira execução real)
+## Verificação independente (C14, via padrão do gate da primeira execução real)
 
 Feita pelo dono da infraestrutura **ou por uma segunda pessoa**, que não deve ser quem configurou o `.env.test.local`, e registrada na evidência (nome, data, resultado de cada item):
 
@@ -2699,7 +2701,7 @@ Feita pelo dono da infraestrutura **ou por uma segunda pessoa**, que não deve s
 5. O `.env.test.local` não contém nenhuma URL de produção, e `RC2_TEST_PROJECT_REF_ALLOWLIST` contém somente refs de projetos de teste.
 6. O marcador existe **no projeto de teste** com o valor correto (item K do `verify-baseline.sql`).
 
-Sem este checklist assinado, a Task 8 não começa.
+O gate da Task 8 tem duas vias: este checklist assinado por verificador independente **ou** a exceção `E0a-C14-EX01` com controles compensatórios (ver `docs/runbooks/ambiente-supabase-isolado.md`). Sem uma das duas, a Task 8 não começa; com qualquer uma, ainda é preciso a autorização expressa da execução.
 
 ## Como rodar
 
@@ -2747,7 +2749,7 @@ Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
 **Files:**
 - Create: `docs/runbooks/evidence/E0a-<AAAA-MM-DD>.md`
 
-**Depende de:** Tasks 1–7 concluídas **e** EX-1, EX-2, EX-3 atendidas. Sem elas, esta task não começa.
+**Depende de:** Tasks 1–7 concluídas, EX-1, EX-2, EX-3 atendidas, **gate C14 resolvido** (via A ou via B, Step 1) **e** autorização expressa da execução real (AUT-EXEC). Sem elas, esta task não começa. A exceção E0a-C14-EX01 não libera a task isoladamente.
 
 **Interfaces:** consome tudo; produz o arquivo de evidência com a tabela de critérios C1–C14.
 
@@ -2758,25 +2760,47 @@ Run:
 test -f .env.test.local && echo "env de teste presente" || echo "FALTA .env.test.local (EX-3)"
 git check-ignore .env.test.local
 ```
-Expected: `env de teste presente` e o caminho impresso por `check-ignore`. **Confirme com o dono** que EX-1 e EX-2 foram feitos (snapshot aplicado, marcador criado, `verify-baseline.sql` executado) e que o **checklist de verificação independente (C14) está assinado**. Sem o checklist assinado, **pare**.
+Expected: `env de teste presente` e o caminho impresso por `check-ignore`. **Confirme com o dono** que EX-1 e EX-2 foram feitos (snapshot aplicado, marcador criado, `verify-baseline.sql` executado) e que o **gate C14** está resolvido por **uma** de duas vias: **(A)** checklist de verificação independente (C14) assinado por verificador independente; **ou (B)** exceção `E0a-C14-EX01` formalizada, com CC-1..CC-8 comprovados e CC-9a conforme (runbook, § "Exceção E0a-C14-EX01"). Sem A **ou** B, **pare**. A exceção, isoladamente, **não libera**. Mesmo com o gate resolvido, os Steps seguintes exigem **autorização expressa da execução real (AUT-EXEC)**, e o Step 3 exige ainda a **AUT-D5**, ambas separadas e específicas. Critério de liberação: `(A ∨ B) ∧ AUT-EXEC`.
 
 - [ ] **Step 2: Arquivar a saída de `verify-baseline.sql`**
 
 O dono (ou o executor com credenciais **só do projeto de teste**) roda `docs/runbooks/ambiente-teste/verify-baseline.sql` no SQL Editor **do projeto de teste** e cola o resultado na evidência (sem chaves). Compare com os valores esperados do arquivo e registre cada divergência (C7), **sem afirmar paridade com a produção**.
 
-- [ ] **Step 3: Ensaio D5 (marcador ausente, no ambiente isolado)**
+- [ ] **Step 3: Ensaio D5 (marcador ausente, ensaio real no ambiente isolado)**
 
-Com autorização do dono, no **projeto de teste**: remova temporariamente o marcador (`DELETE FROM public.settings WHERE key = '__rc2_isolated_test_env__';`), rode `npm run test:integration 2>&1 | tail -8`, e **restaure** o marcador com o `INSERT … ON CONFLICT` da Task 7.
+D1–D4 são **offline** e já foram feitos na Task 3. D5 é **real**: toca o projeto de teste. Só pode ocorrer após (i) o gate C14 resolvido (A ou B), (ii) CC-1..CC-9a comprovados e (iii) **autorização específica do responsável para o D5 (AUT-D5)**, distinta da AUT-EXEC.
+
+No **projeto de teste**: remova temporariamente o marcador (`DELETE FROM public.settings WHERE key = '__rc2_isolated_test_env__';`), rode a suíte **preservando o código de saída** (sem pipe para `tail`):
+```bash
+mkdir -p test-results/integration
+LOG="test-results/integration/d5-$(date +%Y%m%dT%H%M%S).log"
+npm run test:integration > "$LOG" 2>&1; STATUS=$?
+echo "exit=$STATUS"; tail -8 "$LOG"
+```
+Aqui o esperado é `exit` diferente de 0 com `(missing_marker)`. Em seguida **restaure** o marcador com o `INSERT … ON CONFLICT` da Task 7 e **confirme a restauração** (item K do `verify-baseline.sql`: 1 linha, valor igual ao ref de teste). Se a restauração falhar ou não puder ser confirmada, **interrompa o processo**, não execute o Step 4 e aplique o procedimento de falha do Step 4.
 Expected: falha com `(missing_marker)` **antes** de qualquer criação de usuário ou semeadura; nada novo no projeto de teste. Guarde a saída (C4).
 
 - [ ] **Step 4: Rodar a suíte de integração**
 
-Run: `npm run test:integration 2>&1 | tail -25`
-Expected: linha `[integração] alvo de teste validado`, 6 testes passam (1 de identidades + 4 grupos da matriz + 1 de resumo), sem erros e sem `Falha de limpeza`. Se falhar:
-- `missing_marker`: o marcador não existe ou difere do ref (Task 7);
-- `permission denied` inesperado ou `error` na matriz: confira se o snapshot foi aplicado corretamente (`verify-baseline.sql`) e se as chaves são do projeto de teste;
-- falha de criação de usuário: confira se a chave é `service_role` do projeto de teste;
-- `Falha de limpeza`: **não** ignore; trate como achado, limpe manualmente no projeto de teste e reexecute.
+Só com o gate C14 resolvido (A ou B) e a **AUT-EXEC**. Run, **preservando o código de saída** (não encadeie com `| tail`, que mascara o status do teste):
+```bash
+mkdir -p test-results/integration
+LOG="test-results/integration/run-$(date +%Y%m%dT%H%M%S).log"
+npm run test:integration > "$LOG" 2>&1; STATUS=$?
+echo "exit=$STATUS"; tail -25 "$LOG"
+```
+Expected: `exit=0`, linha `[integração] alvo de teste validado`, 6 testes passam (1 de identidades + 4 grupos da matriz + 1 de resumo), sem erros e sem `Falha de limpeza`.
+
+**Procedimento único diante de falha ou divergência relevante** (`exit` diferente de 0, `Falha de limpeza`, `error` ou divergência na matriz, `missing_marker` inesperado, falha de criação de usuário):
+1. **Parar.** Não reexecutar.
+2. **Registrar** o erro por categoria e código, nunca por mensagem bruta, sem chaves.
+3. **Preservar** as evidências (`test-results/integration/`, incluindo o log, e a saída do terminal); não apagar.
+4. **Inspecionar e tratar resíduos** somente no projeto de teste e apenas mediante a autorização aplicável (usuários `e0a-*`, `posts` com slug `e0a-*`, `settings` com chave `__e0a_*`, `authors` com nome `E0a author*`, `leads` com e-mail `e0a-*@example.test`). O marcador **deve** continuar existindo.
+5. **Nova autorização expressa** antes de repetir qualquer teste real.
+
+Causas prováveis, só para diagnóstico e sem ação automática: marcador ausente ou diferente do ref (Task 7); snapshot mal aplicado (`verify-baseline.sql`); chave que não é a `service_role` do projeto de teste.
+
+Nota: a flag `--bail <n>` do Vitest pode ser usada como complemento, mas **não** é controle de interrupção. O cancelamento ocorre ao término de um teste que falhou, as divergências da matriz só reprovam o teste de resumo final e o efeito sobre o `afterAll` não foi verificado. O controle é o procedimento acima.
 
 - [ ] **Step 5: Conferir a matriz (C6)**
 
@@ -2785,7 +2809,7 @@ Expected: `Total: 67 · divergências: 0 · inconclusivos (error): 0`. Anexe o c
 
 - [ ] **Step 6: Confirmar a limpeza (C13)**
 
-A suíte já executa a limpeza, a inspeção de resíduos e a inspeção de usuários e reprova em caso de falha. Além disso, **inspecione manualmente** o projeto de teste (painel ou SQL Editor do projeto de teste) e registre que não restaram: usuários `e0a-*`, linhas de `posts` com slug `e0a-*`, `settings` com chave `__e0a_*`, `authors` com nome `E0a author*` e `leads` com e-mail `e0a-*@example.test`. O marcador **deve** continuar existindo.
+A suíte já executa a limpeza, a inspeção de resíduos e a inspeção de usuários e reprova em caso de falha. Além disso, **inspecione manualmente** o projeto de teste (painel ou SQL Editor do projeto de teste) e registre que não restaram: usuários de autenticação `e0a-*`, **linhas de `admin_users` associadas aos usuários sintéticos (e-mail `e0a-*@example.test`)**, linhas de `posts` com slug `e0a-*`, `settings` com chave `__e0a_*`, `authors` com nome `E0a author*` e `leads` com e-mail `e0a-*@example.test`. Esta lista cobre também resíduos de execuções anteriores interrompidas, que a reconciliação automática (restrita ao tag da execução) não alcança. O marcador **deve** continuar existindo. Apenas inspecione e registre; qualquer remoção exige a autorização aplicável (Step 4, item 4).
 
 - [ ] **Step 7: Verificações do repositório (C1, C2, C3, C8–C12)**
 
@@ -2797,10 +2821,18 @@ npx vitest run tests/unit/ops
 npm run check
 npm run audit:brand
 git diff --stat main...HEAD
-git diff main...HEAD | grep -nE "eyJ[A-Za-z0-9_-]{10,}|sb_secret_|sb_publishable_[A-Za-z0-9]{10,}|SERVICE_ROLE_KEY=.+" || echo "sem segredos"
 git rev-parse fix/tracking-p0-foundation
 ```
-Expected: `1`; `0`; testes de `tests/unit/ops` verdes; `check` e `audit:brand` verdes; `--stat` somente com arquivos do mapa (nada em `src/`, `next.config.ts`, `supabase/migrations/`, PRD ou SDDs); `sem segredos`; `bfc50d0c7a08221529b02cbc345f4a6c6dbd627c`. Contagem final de `npm test`: **B + 10 arquivos / B + 61 testes** (com B = 57/643 na ponta da tracking, isso daria 67/704).
+Varredura de segredos (**CC-9b**, depois da execução), **somente status**: use o procedimento do runbook (`docs/runbooks/ambiente-supabase-isolado.md`, § "Procedimento da varredura de segredos"), que carrega as funções `scan_secrets` e `scan_paths`. Nunca exiba correspondências, nunca use `-n`/`-o` fora das funções e **nunca** leia o `.env.test.local`. A exceção vale só para valores que contêm o marcador `FICTICIO` (fixtures de `tests/unit/ops`); não há exclusão por arquivo. Cobre o diff commitado, o diff não commitado (staged e unstaged), as evidências e os relatórios (arquivos não rastreados):
+```bash
+# (funções do runbook carregadas)
+echo "diff commitado:";   git diff main...HEAD | scan_secrets
+echo "diff não staged:";  git diff | scan_secrets
+echo "diff staged:";      git diff --cached | scan_secrets
+echo "evidências:";       scan_paths docs/runbooks/evidence/*.md
+echo "relatórios:";       scan_paths test-results/integration/*
+```
+Expected: `1`; `0`; testes de `tests/unit/ops` verdes; `check` e `audit:brand` verdes; `--stat` somente com arquivos do mapa (nada em `src/`, `next.config.ts`, `supabase/migrations/`, PRD ou SDDs); `CONFORME` em todas as varreduras (qualquer `DIVERGENTE` ou `NÃO INSPECIONADO` bloqueia o commit da evidência); `bfc50d0c7a08221529b02cbc345f4a6c6dbd627c`. Contagem final de `npm test`: **B + 10 arquivos / B + 61 testes** (com B = 57/643 na ponta da tracking, isso daria 67/704).
 
 - [ ] **Step 8: Escrever a evidência**
 
@@ -2828,7 +2860,21 @@ Data: <AAAA-MM-DD> · Branch: feat/admin-e0a-foundation · Commit: <sha curto>
 | C11 Sem segredos no diff nem aqui | ok/falha | grep |
 | C12 Branch de tracking intacta | ok/falha | SHA |
 | C13 Limpeza sem resíduo (automática e manual) | ok/falha | saída do afterAll e inspeção manual |
-| C14 Verificação independente assinada | ok/falha | checklist abaixo |
+| C14 Verificação independente assinada (original) | **NÃO ATENDIDO** (fixo; só muda se o checklist abaixo for assinado por verificador independente) | checklist abaixo |
+| C14-alt Exceção E0a-C14-EX01 com controles compensatórios | ok/falha | seção "Exceção C14" abaixo |
+
+## Exceção C14 (E0a-C14-EX01)
+
+| Campo | Valor |
+|---|---|
+| Resultado do C14 original | NÃO ATENDIDO |
+| ID da exceção | E0a-C14-EX01, aprovada em 2026-10-16 |
+| Aceitação do risco residual | registrada por <responsável> em <AAAA-MM-DD> |
+| CC-1 a CC-8 e CC-9a (pré-execução) | uma linha por controle: ok/falha, data, evidência. Sem ref de produção, URL de produção nem chaves; CC-2 como "confirmado: sim/não" |
+| CC-9b (pós-execução) | CONFORME/DIVERGENTE, data |
+| Decisão do gate | `(A ∨ B)`: liberado / não liberado, motivo |
+| AUT-D5 | <quem, quando>; registro separado |
+| AUT-EXEC | <quem, quando>; registro separado |
 
 ## Verificação independente (C14)
 
