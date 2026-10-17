@@ -6,4 +6,6 @@ Preencha **uma linha por aplicação por ambiente**, no mesmo PR da migration.
 
 | Migration | Ambiente | Data | Aplicado por | Autorizado por | Preflight | Verify | Evidência |
 |---|---|---|---|---|---|---|---|
-| _(nenhuma aplicada ainda pelo novo processo)_ | | | | | | | |
+| 012_leads_remove_anon_access | isolado (`rc2-test-isolated`) | 17/10/2026 | Operador (SQL Editor, manual) | Operador | informado (E0b.1) | ok (`relrowsecurity`, `auth_sel`, `auth_upd`) | `docs/runbooks/evidence/E0b-2026-10-17.md` |
+| 013_admin_audit_logs_admin_select | isolado (`rc2-test-isolated`) | 17/10/2026 | Operador (SQL Editor, manual) | Operador | informado (E0b.1) | ok (3 índices) | `docs/runbooks/evidence/E0b-2026-10-17.md` |
+| 012 e 013 | **produção** | — | **não aplicadas** | — | — | — | Bloqueio: PV-20 (012); autorização pendente |
