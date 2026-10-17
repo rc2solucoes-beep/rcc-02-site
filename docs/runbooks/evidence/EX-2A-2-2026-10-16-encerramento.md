@@ -1,9 +1,9 @@
 # Evidência de encerramento — EX-2A-2
 
-**Projeto:** RC2 Admin Evolution — E0a / Fundação  
-**Etapa:** EX-2A-2 — Auditoria somente leitura do snapshot histórico no Supabase isolado  
-**Data de encerramento:** 16/10/2026  
-**Estado:** **APROVADA — 10/10 blocos B0–B9, sem divergências pendentes nos critérios auditados**  
+**Projeto:** RC2 Admin Evolution — E0a / Fundação\
+**Etapa:** EX-2A-2 — Auditoria somente leitura do snapshot histórico no Supabase isolado\
+**Data de encerramento:** 16/10/2026\
+**Estado:** **APROVADA — 10/10 blocos B0–B9, sem divergências pendentes nos critérios auditados**\
 **Natureza da evidência:** resultados de consultas executadas manualmente pelo operador no SQL Editor e submetidos a revisão independente nesta conversa. **Não houve acesso direto do revisor ao Supabase.**
 
 > **Escopo estrito.** O banco isolado reproduz um *snapshot histórico conhecido*, inclusive configurações de risco. A aprovação desta etapa **não comprova paridade atual com o ambiente produtivo, não homologa a segurança do snapshot e não substitui testes comportamentais de RLS**. A eventual paridade com produção depende de preflight E0b.1, sujeito a autorização específica.
@@ -27,7 +27,7 @@
 
 ## 2. Artefato de auditoria
 
-**Arquivo de trabalho no equipamento do operador:** `D:\Projetos\rc2-ex2a-2-auditoria-somente-leitura.sql` (fora do repositório).  
+**Arquivo de trabalho no equipamento do operador:** `D:\Projetos\rc2-ex2a-2-auditoria-somente-leitura.sql` (fora do repositório).\
 **Arquivo de auditoria fornecido para revisão:** `rc2-ex2a-2-auditoria-somente-leitura(1).sql`.
 
 - **SHA-256 final, calculado independentemente sobre o arquivo anexado:** `aaddd89eadc845578ff7feb263a9bd9522856ed2ed091cecd74495ab3e105427`.
@@ -120,6 +120,6 @@ A configuração do Supabase isolado demonstrou aderência aos **critérios do s
 
 ---
 
-**Referências de processo:** `docs/runbooks/ambiente-supabase-isolado.md`; `docs/runbooks/ambiente-teste/verify-baseline.sql`; `docs/runbooks/migrations-manuais.md`; `docs/07-supabase-migration-baseline.md` (snapshot histórico).  
-**Destino sugerido no repositório, ainda NÃO aplicado:** `docs/runbooks/evidence/EX-2A-2-2026-10-16.md`.  
+**Referências de processo:** `docs/runbooks/ambiente-supabase-isolado.md`; `docs/runbooks/ambiente-teste/verify-baseline.sql`; `docs/runbooks/migrations-manuais.md`; `docs/07-supabase-migration-baseline.md` (snapshot histórico).\
+**Destino sugerido no repositório, ainda NÃO aplicado:** `docs/runbooks/evidence/EX-2A-2-2026-10-16.md`.\
 **Classificação:** Evidência técnica, sem segredos ou credenciais.
