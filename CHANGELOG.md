@@ -12,3 +12,4 @@
 - README.md com visão geral do projeto
 - CLAUDE.md com contexto completo para o Claude Code
 - .env.example com todas as variáveis necessárias
+- Fundação E0a da evolução do painel: runbook de migrations manuais (`docs/runbooks/`), ambiente Supabase isolado documentado (snapshot histórico, marcador e controle de isolamento), suíte de integração de RLS com guarda anti-produção reaplicada na criação de clientes (`npm run test:integration`) e descoberta de testes `.tsx` no Vitest.
