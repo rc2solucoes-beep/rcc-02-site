@@ -13,3 +13,4 @@
 - CLAUDE.md com contexto completo para o Claude Code
 - .env.example com todas as variáveis necessárias
 - Fundação E0a da evolução do painel: runbook de migrations manuais (`docs/runbooks/`), ambiente Supabase isolado documentado (snapshot histórico, marcador e controle de isolamento), suíte de integração de RLS com guarda anti-produção reaplicada na criação de clientes (`npm run test:integration`) e descoberta de testes `.tsx` no Vitest.
+- E0b.2/E0b.3: migrations 012 (remove acesso `anon` a `leads`) e 013 (leitura administrativa de `admin_audit_logs`), com runbooks, testes unitários e matriz de RLS de integração (29 verificações). Homologadas manualmente apenas no Supabase isolado; **não aplicadas em produção** (bloqueio PV-20). Incidente de exposição de credenciais segue aberto.

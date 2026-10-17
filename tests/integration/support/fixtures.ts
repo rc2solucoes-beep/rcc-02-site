@@ -59,3 +59,16 @@ export async function makeLead(service: SupabaseClient, registry: CleanupRegistr
   });
   return { table: "leads", idColumn: "id", id };
 }
+
+export async function makeAuditLog(service: SupabaseClient, registry: CleanupRegistry, tag: string): Promise<Fixture> {
+  const id = randomUUID();
+  registry.track("admin_audit_logs", "id", id);
+  await insertOrThrow(service, "admin_audit_logs", {
+    id,
+    event: "e0a_synthetic",
+    severity: "info",
+    actor_type: "system",
+    path: `/e0a/${tag}`,
+  });
+  return { table: "admin_audit_logs", idColumn: "id", id };
+}
