@@ -4,10 +4,22 @@
 |---|---|
 | Branch | `feat/admin-e1-cms` |
 | Estado | **PREPARADA. NÃO APLICADA em nenhum ambiente.** Nenhum SQL deste diretório foi executado |
-| Revisão humana | **PENDENTE** |
+| Revisão humana independente | **PENDENTE** |
 | C14 Via A (verificação independente do ambiente isolado) | **PENDENTE** |
-| Exceção C14 Via B | **Não formalizada.** E0a-C14-EX01 vale só para a E0a e não cobre a E1 |
-| Revisão técnica por IA (Fase A) | Feita; é checagem adicional e **não substitui** esta revisão |
+| E1-REV-EX01 (exceção ao gate de revisão) | **PROPOSTA — NÃO APROVADA** (`E1-REV-EX01.md`) |
+| E1-C14-EX01 (C14 Via B para a E1) | **PROPOSTA — NÃO APROVADA** (`E1-C14-EX01.md`) |
+| Revisão técnica por IA (Fase A) | Feita; checagem adicional, **não** é revisão humana independente |
+| Validação no banco (PV-17, D2, PV-14, D3) | **PENDENTE** (nada foi executado em banco) |
+
+## Três coisas diferentes (não confundir)
+
+| Camada | O que é | Estado |
+|---|---|---|
+| Revisão técnica por IA | Leitura e testes unitários/estáticos feitos pelo agente em 2026-10-19 | Concluída; não satisfaz o gate |
+| Exceções propostas | E1-REV-EX01 e E1-C14-EX01: pedidos formais de dispensa, com controles compensatórios | Propostas; só valem após decisão formal do responsável |
+| Validação no banco | Preflight, apply, verify e testes de integração no isolado | Não iniciada; Fase B bloqueada |
+
+Uma exceção aprovada substitui o gate correspondente com risco aceito; **não** o transforma em "atendido" e **não** substitui a validação no banco.
 
 Este documento não contém identificadores de produção, credenciais nem valores de variáveis de ambiente.
 
@@ -96,13 +108,14 @@ Marcar cada item no momento da revisão. Nenhum está marcado por quem preparou 
 - [ ] Transação `BEGIN READ ONLY` e `ROLLBACK` final
 - [ ] Itens 2 e 4 batem com o esquema esperado (6 colunas; CHECK com `draft, scheduled, published`)
 - [ ] Item 3 detecta `sort_at` e índice já existentes
-- [ ] Item 11 registra as policies antes da aplicação
+- [ ] Item 11 registra a definição completa das policies (nome, permissividade, papéis, comando, qual, with_check) e o `impressao_md5`
 - [ ] Contagens sem ler `content`
 
 ### 8.3 `verify.sql`
 - [ ] Transação `READ ONLY`
 - [ ] Itens 1 a 4 comprovam geração, `NOT NULL`, expressão, divergência zero e índice válido
-- [ ] Itens 5 a 9 comprovam índices antigos, total de linhas, policies, cron e trigger
+- [ ] Itens 5 a 9 comprovam índices antigos, total de linhas, cron e trigger
+- [ ] Item 7 devolve `total_policies` e `impressao_md5` iguais ao item 11 do preflight (definição completa, não só nome e comando)
 - [ ] Reconhecido: exposição pelo PostgREST **não** é verificada aqui (vem de I01, I04, I06)
 
 ### 8.4 `rollback.sql`

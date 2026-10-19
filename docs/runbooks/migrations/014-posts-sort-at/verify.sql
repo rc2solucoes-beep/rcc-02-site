@@ -42,10 +42,21 @@ ORDER BY indexname;
 -- 6. Total de linhas. Esperado: igual ao total_posts do preflight.
 SELECT count(*) AS total_posts FROM public.posts;
 
--- 7. Policies de posts inalteradas. Esperado: as mesmas do preflight, item 11 (leitura pública de published + acesso admin).
-SELECT policyname, cmd FROM pg_catalog.pg_policies
+-- 7. Policies de posts inalteradas: definição completa (nome, permissividade, papéis, comando, qual, with_check).
+-- Esperado: total_policies e impressao_md5 IGUAIS aos do preflight, item 11 (leitura pública de published + acesso admin).
+-- Qualquer diferença de md5 = policy alterada: NÃO prossiga sem decisão.
+SELECT policyname, permissive, roles::text AS papeis, cmd,
+       coalesce(qual, '<nulo>') AS qual, coalesce(with_check, '<nulo>') AS with_check
+FROM pg_catalog.pg_policies
 WHERE schemaname = 'public' AND tablename = 'posts'
 ORDER BY policyname;
+
+SELECT count(*) AS total_policies,
+       pg_catalog.md5(coalesce(string_agg(
+         concat_ws(' | ', policyname, permissive, roles::text, cmd, coalesce(qual, '<nulo>'), coalesce(with_check, '<nulo>')),
+         ' ## ' ORDER BY policyname), '')) AS impressao_md5
+FROM pg_catalog.pg_policies
+WHERE schemaname = 'public' AND tablename = 'posts';
 
 -- 8. Job do cron intacto. Esperado: 1 linha, active = true.
 SELECT jobname, schedule, active FROM cron.job WHERE jobname = 'publish-scheduled-posts';

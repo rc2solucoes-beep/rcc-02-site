@@ -71,10 +71,20 @@ WHERE schemaname = 'public' AND definition ILIKE '%posts%';
 -- Esperado: 1 linha, active = true.
 SELECT jobname, schedule, active FROM cron.job WHERE jobname = 'publish-scheduled-posts';
 
--- 11. Policies de posts ANTES da migration (o verify #7 compara com este resultado).
--- Esperado: registrar a lista (policyname, cmd) e compará-la com o verify.
-SELECT policyname, cmd FROM pg_catalog.pg_policies
+-- 11. Policies de posts ANTES da migration: definição completa (o verify #7 compara com este resultado).
+-- Esperado: registrar as linhas E o impressao_md5 da segunda consulta; o verify deve devolver o mesmo md5.
+-- Colunas: nome, permissividade, papéis, comando, qual (USING) e with_check.
+SELECT policyname, permissive, roles::text AS papeis, cmd,
+       coalesce(qual, '<nulo>') AS qual, coalesce(with_check, '<nulo>') AS with_check
+FROM pg_catalog.pg_policies
 WHERE schemaname = 'public' AND tablename = 'posts'
 ORDER BY policyname;
+
+SELECT count(*) AS total_policies,
+       pg_catalog.md5(coalesce(string_agg(
+         concat_ws(' | ', policyname, permissive, roles::text, cmd, coalesce(qual, '<nulo>'), coalesce(with_check, '<nulo>')),
+         ' ## ' ORDER BY policyname), '')) AS impressao_md5
+FROM pg_catalog.pg_policies
+WHERE schemaname = 'public' AND tablename = 'posts';
 
 ROLLBACK;
