@@ -3,15 +3,15 @@
 | Campo | Valor |
 |---|---|
 | ID | E1-REV-EX01 |
-| **Status** | **PROPOSTA — NÃO APROVADA** |
+| **Status** | **APROVADA** em 19/10/2026 (escopo e limites abaixo) |
 | Data da proposta | 2026-10-19 |
 | Branch | `feat/admin-e1-cms` |
 | Gate de origem | `docs/runbooks/migrations-manuais.md`, regra 6 e passo 3: "um segundo engenheiro revisa `apply`, `preflight`, `verify` e `rollback`" |
 | Motivo | A RC2 não dispõe de segundo engenheiro |
 | Decisor | Responsável pelo projeto e pela infraestrutura (decisão formal pendente) |
-| Aprovada por / em | — (em branco até a decisão) |
+| Aprovada por / em | Responsável pelo projeto e pela infraestrutura, em 19/10/2026 (declaração expressa; ver seção 6) |
 
-> Este documento **não** dispensa o gate. Enquanto o status for PROPOSTA, a revisão humana permanece **PENDENTE** e a Fase B permanece **BLOQUEADA**.
+> **Aprovada, com risco residual aceito.** A exceção dispensa o gate de segundo engenheiro apenas para a E1, migration 014, no projeto `rc2-test-isolated`. Ela **não** transforma a revisão humana independente em concluída: a ausência dela é um risco residual conhecido e aceito, e a análise técnica por IA **não** deve ser registrada como revisão humana independente. A Fase B **não está liberada**: AUT-APPLY-014 e AUT-EXEC-E1 seguem NÃO CONCEDIDAS.
 
 ## 1. Escopo pedido
 
@@ -59,7 +59,9 @@ O responsável também **não é independente**: o gate existe para separar auto
 
 O isolado não contém dados de produção, o que limita o impacto. A exceção **não** aceita nenhum risco em produção.
 
-## 4. Controles compensatórios (todos exigíveis antes da aplicação)
+## 4. Controles compensatórios (REV-1 a REV-10 exigíveis, conforme a aplicabilidade de cada um)
+
+Estado em 19/10/2026: **nenhum controle foi executado ainda**. O estado de cada um está na seção 6.1.
 
 | ID | Controle | Aceite objetivo |
 |---|---|---|
@@ -82,14 +84,30 @@ O isolado não contém dados de produção, o que limita o impacto. A exceção 
 - Não se estende a produção nem a E2/E3.
 - Não encerra o incidente de credenciais (permanece ABERTO).
 
-## 6. Decisão formal (a preencher pelo responsável)
+## 6. Decisão formal
 
 | Campo | Valor |
 |---|---|
-| Decisão | ☐ APROVAR  ☐ REJEITAR  ☐ APROVAR COM AJUSTES (descrever) |
-| Condições / ajustes | |
-| Risco residual (R1 a R6) aceito | ☐ sim  ☐ não |
-| Data | |
-| Responsável | |
+| Decisão | **APROVAR** |
+| Data | 19/10/2026 |
+| Fundamento | Declaração expressa do responsável pelo projeto e pela infraestrutura, feita ao agente nesta conversa em 19/10/2026. Nenhuma assinatura, nome ou identificador é registrado; o agente não a verificou por outro meio. |
+| Risco residual (R1 a R6) aceito | **Sim**, incluindo a ausência de segundo engenheiro e de revisão humana independente |
+| Escopo | Exclusivamente a E1, migration 014, projeto `rc2-test-isolated` |
+| Não autoriza | Produção; migration 015; E2E de escrita; AUT-APPLY-014; AUT-EXEC-E1 |
+| Revisão humana independente | **NÃO REALIZADA** (continua pendente como fato; a exceção apenas dispensa o gate) |
+| Natureza do registro | Declaração humana informada ao agente; sem assinatura |
 
-Até o preenchimento, o status é **PROPOSTA — NÃO APROVADA**.
+### 6.1 Estado dos controles (nenhum conforme sem evidência)
+
+| ID | Estado em 19/10/2026 |
+|---|---|
+| REV-1 | PENDENTE (checklist do `REVISAO-HUMANA.md` não preenchido) |
+| REV-2 | PENDENTE (depende de REV-1 e do intervalo) |
+| REV-3 | PENDENTE (preflight não executado) |
+| REV-4 | PENDENTE (scripts reforçados e commitados; a comparação só ocorre no banco) |
+| REV-5 | PENDENTE para o momento do apply; as verificações locais de 19/10 não substituem a repetição imediatamente antes |
+| REV-6 | PENDENTE (aplicação manual futura) |
+| REV-7 | PENDENTE (vale durante a execução) |
+| REV-8 | OPCIONAL; não realizado |
+| REV-9 | EM VIGOR (escopo travado por esta decisão) |
+| REV-10 | PENDENTE (varredura CC-9a/b) |

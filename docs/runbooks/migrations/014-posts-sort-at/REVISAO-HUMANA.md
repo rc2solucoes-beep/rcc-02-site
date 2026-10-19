@@ -4,22 +4,24 @@
 |---|---|
 | Branch | `feat/admin-e1-cms` |
 | Estado | **PREPARADA. NÃO APLICADA em nenhum ambiente.** Nenhum SQL deste diretório foi executado |
-| Revisão humana independente | **PENDENTE** |
+| Revisão humana independente | **NÃO REALIZADA** (gate dispensado pela E1-REV-EX01; o fato continua pendente) |
 | C14 Via A (verificação independente do ambiente isolado) | **PENDENTE** |
-| E1-REV-EX01 (exceção ao gate de revisão) | **PROPOSTA — NÃO APROVADA** (`E1-REV-EX01.md`) |
-| E1-C14-EX01 (C14 Via B para a E1) | **PROPOSTA — NÃO APROVADA** (`E1-C14-EX01.md`) |
-| Revisão técnica por IA (Fase A) | Feita; checagem adicional, **não** é revisão humana independente |
+| E1-REV-EX01 (exceção ao gate de revisão) | **APROVADA** em 19/10/2026, apenas E1/014/isolado; risco residual aceito (`E1-REV-EX01.md`) |
+| E1-C14-EX01 (C14 Via B para a E1) | **APROVADA** em 19/10/2026, apenas E1/isolado; controles ainda **não comprovados** (`E1-C14-EX01.md`) |
+| Revisão técnica por IA (Fase A) | Feita; **não** deve ser registrada como revisão humana independente |
 | Validação no banco (PV-17, D2, PV-14, D3) | **PENDENTE** (nada foi executado em banco) |
+| AUT-APPLY-014 / AUT-EXEC-E1 | **NÃO CONCEDIDAS** |
+| Fase B | **NÃO LIBERADA** |
 
 ## Três coisas diferentes (não confundir)
 
 | Camada | O que é | Estado |
 |---|---|---|
-| Revisão técnica por IA | Leitura e testes unitários/estáticos feitos pelo agente em 2026-10-19 | Concluída; não satisfaz o gate |
-| Exceções propostas | E1-REV-EX01 e E1-C14-EX01: pedidos formais de dispensa, com controles compensatórios | Propostas; só valem após decisão formal do responsável |
+| Revisão técnica por IA | Leitura e testes unitários/estáticos feitos pelo agente em 2026-10-19 | Concluída; não é revisão humana independente |
+| Exceções | E1-REV-EX01 e E1-C14-EX01: dispensa dos gates com controles compensatórios | Aprovadas em 19/10/2026; controles pendentes |
 | Validação no banco | Preflight, apply, verify e testes de integração no isolado | Não iniciada; Fase B bloqueada |
 
-Uma exceção aprovada substitui o gate correspondente com risco aceito; **não** o transforma em "atendido" e **não** substitui a validação no banco.
+Uma exceção aprovada dispensa o gate correspondente com risco aceito; **não** o transforma em "atendido" e **não** substitui a validação no banco.
 
 Este documento não contém identificadores de produção, credenciais nem valores de variáveis de ambiente.
 
