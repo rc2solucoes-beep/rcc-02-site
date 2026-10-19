@@ -8,6 +8,7 @@ import { writeAdminAuditLog } from "@/lib/admin/auditLog";
 import { createSessionClient } from "@/lib/supabase/server";
 import type { AuthorSnapshotComparableFields } from "@/lib/types/author";
 import { validatePostInputByStatus } from "@/lib/validations/post";
+import { classifyRowsResult, validatePostSchedule } from "@/lib/admin/postSchedule";
 import type { PostStatus } from "@/lib/types/post";
 
 // Helper para calcular tempo de leitura (palavras / 200 = minutos)
@@ -74,6 +75,28 @@ async function syncGlobalAuthorIfRequested(
   }
 }
 
+export type DeletePostResult = { ok: false; message: string };
+
+// Atualização que não encontrou o post (ou a RLS o escondeu): erro explícito, sem sucesso auditado.
+async function postNotFoundOnUpdate(
+  admin: Awaited<ReturnType<typeof requireAdminActorForPosts>>,
+  id: string
+): Promise<PostFormState> {
+  await writeAdminAuditLog({
+    event: "admin_post_update_not_found",
+    severity: "warning",
+    actorUserId: admin.userId,
+    actorEmail: admin.email,
+    actorType: "admin",
+    path: "/admin/posts",
+    method: "SERVER_ACTION",
+    status: 404,
+    resourceType: "post",
+    resourceId: id,
+  });
+  return { message: "Post não encontrado ou sem permissão para editar." };
+}
+
 export async function createPost(prevState: PostFormState, formData: FormData): Promise<PostFormState> {
   const admin = await requireAdminActorForPosts();
   const raw = {
@@ -131,6 +154,17 @@ export async function createPost(prevState: PostFormState, formData: FormData): 
 
   const { content, status } = parsed.data;
   const reading_time = parsed.data.reading_time_minutes || calculateReadingTime(content);
+
+  // Novos agendamentos exigem data futura (DEC-18, RF-CMS-10).
+  const schedule = validatePostSchedule({
+    status,
+    scheduledPublishAt: parsed.data.scheduled_publish_at,
+    existing: null,
+    now: new Date(),
+  });
+  if (!schedule.ok) {
+    return { errors: { scheduled_publish_at: [schedule.message] } };
+  }
 
   try {
     const syncAuthorError = await syncGlobalAuthorIfRequested(
@@ -263,6 +297,35 @@ export async function updatePost(id: string, prevState: PostFormState, formData:
   const reading_time = parsed.data.reading_time_minutes || calculateReadingTime(content);
 
   try {
+    const supabase = await createSessionClient();
+    const now = new Date().toISOString();
+
+    // Estado atual: preserva published_at e decide se o agendamento precisa ser revalidado.
+    // maybeSingle: post inexistente (ou invisível pela RLS) vira `null`, não erro silencioso.
+    const { data: existing, error: existingError } = await supabase
+      .from("posts")
+      .select("status,published_at,scheduled_publish_at")
+      .eq("id", id)
+      .maybeSingle();
+
+    if (existingError) {
+      throw existingError;
+    }
+    if (!existing) {
+      return await postNotFoundOnUpdate(admin, id);
+    }
+
+    // Agendamento futuro; data inalterada de um agendamento histórico não é revalidada (DEC-18).
+    const schedule = validatePostSchedule({
+      status,
+      scheduledPublishAt: parsed.data.scheduled_publish_at,
+      existing,
+      now: new Date(now),
+    });
+    if (!schedule.ok) {
+      return { errors: { scheduled_publish_at: [schedule.message] } };
+    }
+
     const syncAuthorError = await syncGlobalAuthorIfRequested(
       formData,
       parsed.data.author_id
@@ -271,28 +334,19 @@ export async function updatePost(id: string, prevState: PostFormState, formData:
       return syncAuthorError;
     }
 
-    const supabase = await createSessionClient();
-    const now = new Date().toISOString();
-
-    // Preserve published_at if already published
-    const { data: existing } = await supabase
-      .from("posts")
-      .select("status,published_at")
-      .eq("id", id)
-      .single();
-
     const published_at =
       status === "published"
-        ? (existing?.published_at ?? now)
+        ? (existing.published_at ?? now)
         : null;
 
-    const { error } = await supabase.from("posts").update({
+    // select("id"): confirma que exatamente uma linha foi atualizada (D8).
+    const { data: updatedRows, error } = await supabase.from("posts").update({
       ...parsed.data,
       reading_time_minutes: reading_time,
       status: status as PostStatus,
       published_at,
       updated_at: now,
-    }).eq("id", id);
+    }).eq("id", id).select("id");
 
     if (error) {
       if (error.code === "23505") {
@@ -312,6 +366,10 @@ export async function updatePost(id: string, prevState: PostFormState, formData:
       }
       console.error("Supabase error:", error);
       throw error;
+    }
+
+    if (classifyRowsResult({ data: updatedRows, error: null }) !== "affected") {
+      return await postNotFoundOnUpdate(admin, id);
     }
   } catch (err) {
     console.error("Error updating post:", err);
@@ -352,10 +410,37 @@ export async function updatePost(id: string, prevState: PostFormState, formData:
   redirect("/admin/posts");
 }
 
-export async function deletePost(id: string): Promise<void> {
+export async function deletePost(id: string): Promise<DeletePostResult | void> {
   const admin = await requireAdminActorForPosts();
   const supabase = await createSessionClient();
-  await supabase.from("posts").delete().eq("id", id);
+  // select("id"): só audita sucesso depois de confirmar que a linha foi removida (RF-CMS-11).
+  const { data, error } = await supabase.from("posts").delete().eq("id", id).select("id");
+  const outcome = classifyRowsResult({ data, error });
+
+  if (outcome !== "affected") {
+    const notFound = outcome === "not_found";
+    if (!notFound) {
+      console.error("Error deleting post:", { code: error?.code ?? "unexpected_rows" });
+    }
+    await writeAdminAuditLog({
+      event: notFound ? "admin_post_delete_not_found" : "admin_post_delete_error",
+      severity: notFound ? "warning" : "error",
+      actorUserId: admin.userId,
+      actorEmail: admin.email,
+      actorType: "admin",
+      path: "/admin/posts",
+      method: "SERVER_ACTION",
+      status: notFound ? 404 : 500,
+      resourceType: "post",
+      resourceId: id,
+    });
+    return {
+      ok: false,
+      message: notFound
+        ? "Post não encontrado ou sem permissão para excluir."
+        : "Erro ao excluir o post. Tente novamente.",
+    };
+  }
 
   await writeAdminAuditLog({
     event: "admin_post_deleted",

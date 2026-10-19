@@ -14,7 +14,7 @@ import type { Author } from "@/lib/types/author";
 import type { Post, FaqItem, CtaBlock } from "@/lib/types/post";
 import type { PostFormState } from "@/app/admin/(protected)/posts/actions";
 import { slugify } from "@/lib/utils";
-import { utcIsoToSaoPauloInput } from "@/lib/datetime";
+import { formatSaoPauloDateTime, utcIsoToSaoPauloInput } from "@/lib/datetime";
 
 interface PostFormProps {
   authors: Author[];
@@ -46,8 +46,6 @@ interface PostFormData {
   tags: string;
   content_type: string;
   status: string;
-  published_at: string;
-  updated_at: string;
   scheduled_publish_at: string;
   reading_time_minutes: string;
   // Autor
@@ -170,8 +168,6 @@ const FIELD_LOCATION: Record<string, { tab: TabKey; label: string }> = {
   tags: { tab: "publicacao", label: "Tags" },
   content_type: { tab: "publicacao", label: "Tipo de conteúdo" },
   status: { tab: "publicacao", label: "Status" },
-  published_at: { tab: "publicacao", label: "Data de publicação" },
-  updated_at: { tab: "publicacao", label: "Data de atualização" },
   scheduled_publish_at: { tab: "publicacao", label: "Agendamento de publicação" },
   reading_time_minutes: { tab: "publicacao", label: "Tempo de leitura" },
   author_id: { tab: "autor", label: "Autor" },
@@ -224,8 +220,6 @@ export function PostFormRefactored({ authors, post, action }: PostFormProps) {
     tags: post?.tags?.join(", ") ?? "",
     content_type: post?.content_type ?? "",
     status: post?.status ?? "draft",
-    published_at: post?.published_at ? utcIsoToSaoPauloInput(post.published_at) : "",
-    updated_at: post?.updated_at ? utcIsoToSaoPauloInput(post.updated_at) : "",
     scheduled_publish_at: post?.scheduled_publish_at ? utcIsoToSaoPauloInput(post.scheduled_publish_at) : "",
     reading_time_minutes: post?.reading_time_minutes?.toString() ?? "",
     // Autor
@@ -485,7 +479,14 @@ export function PostFormRefactored({ authors, post, action }: PostFormProps) {
         )}
 
         {activeTab === "seo" && <SeoTab formData={formData} onChange={handleFieldChange} />}
-        {activeTab === "publicacao" && <PublicationTab formData={formData} onChange={handleFieldChange} />}
+        {activeTab === "publicacao" && (
+          <PublicationTab
+            formData={formData}
+            onChange={handleFieldChange}
+            publishedAt={post?.published_at ? formatSaoPauloDateTime(post.published_at) : null}
+            updatedAt={post?.updated_at ? formatSaoPauloDateTime(post.updated_at) : null}
+          />
+        )}
         {activeTab === "autor" && (
           <AuthorTab
             authors={authors}
