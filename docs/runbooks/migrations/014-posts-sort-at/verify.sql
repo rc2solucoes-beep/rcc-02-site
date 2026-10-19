@@ -42,12 +42,18 @@ ORDER BY indexname;
 -- 6. Total de linhas. Esperado: igual ao total_posts do preflight.
 SELECT count(*) AS total_posts FROM public.posts;
 
--- 7. Policies de posts inalteradas. Esperado: as mesmas do preflight (leitura pública de published + acesso admin).
+-- 7. Policies de posts inalteradas. Esperado: as mesmas do preflight, item 11 (leitura pública de published + acesso admin).
 SELECT policyname, cmd FROM pg_catalog.pg_policies
 WHERE schemaname = 'public' AND tablename = 'posts'
 ORDER BY policyname;
 
 -- 8. Job do cron intacto. Esperado: 1 linha, active = true.
 SELECT jobname, schedule, active FROM cron.job WHERE jobname = 'publish-scheduled-posts';
+
+-- 9. Trigger de updated_at intacto. Esperado: posts_updated_at com tgenabled = 'O' (igual ao preflight, item 5).
+SELECT tgname, tgenabled
+FROM pg_catalog.pg_trigger
+WHERE tgrelid = 'public.posts'::regclass AND NOT tgisinternal
+ORDER BY tgname;
 
 ROLLBACK;

@@ -71,4 +71,10 @@ WHERE schemaname = 'public' AND definition ILIKE '%posts%';
 -- Esperado: 1 linha, active = true.
 SELECT jobname, schedule, active FROM cron.job WHERE jobname = 'publish-scheduled-posts';
 
+-- 11. Policies de posts ANTES da migration (o verify #7 compara com este resultado).
+-- Esperado: registrar a lista (policyname, cmd) e compará-la com o verify.
+SELECT policyname, cmd FROM pg_catalog.pg_policies
+WHERE schemaname = 'public' AND tablename = 'posts'
+ORDER BY policyname;
+
 ROLLBACK;

@@ -137,13 +137,17 @@ describe("T-CMS-I03 — busca literal com entradas hostis (PRP-07, D2)", () => {
   // Cada caractere hostil é pesquisado no formato real do app (buildSearchOrFilter). O resultado
   // deve conter SOMENTE os posts cujo título/slug/resumo contém o termo literalmente.
   const hostile = ["%", "_", "\\", '"', ",", "(", ")", ".", "*", "--", "a b", "ação ñ 日本", "x),title.eq.1,(y", '"),or=(id.neq.0'];
+  // Ramo imatch (termos com `*`): metacaracteres de regex combinados com `*`. Sem escape, casariam as iscas.
+  const hostileRegex = [".*", "a*b", "[a-z]*", "(x|y)*", "^*$", "{1}*", "\\*", "+*", "?*"];
 
-  it.each(hostile)("termo %j devolve só correspondências literais", async (h) => {
+  it.each([...hostile, ...hostileRegex])("termo %j devolve só correspondências literais", async (h) => {
     const term = `${prefix()}-${h}`;
     const hit = await seedPost({ title: `${term}-hit` });
     // Iscas: casariam se `%`, `_` ou `*` fossem curingas, ou se a sintaxe vazasse.
     await seedPost({ title: `${prefix()}-Zdecoy` });
     await seedPost({ title: `${prefix()}-decoy` });
+    await seedPost({ title: `${prefix()}-b` });
+    await seedPost({ title: `${prefix()}-ab` });
 
     const { data, error } = await svc()
       .from("posts")
