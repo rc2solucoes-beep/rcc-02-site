@@ -94,6 +94,13 @@ export function postListDateBounds(params: Pick<PostListParams, "from" | "to">):
 
 // ─── Itens, origem da data e anomalias ────────────────────────────────────────
 
+/** Colunas da listagem. NUNCA `content`: a lista não carrega o HTML dos posts (RF-CMS-07). */
+export const POST_LIST_COLUMNS =
+  "id,slug,title,status,published_at,scheduled_publish_at,created_at,updated_at,sort_at";
+
+/** Colunas pesquisadas pelo termo `q` (RF-CMS-01). */
+export const POST_SEARCH_COLUMNS = ["title", "slug", "summary"] as const;
+
 export type PostListItem = {
   id: string;
   slug: string;

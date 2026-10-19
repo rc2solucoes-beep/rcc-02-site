@@ -29,7 +29,6 @@ export function parsePage(value: string | string[] | undefined): number {
 export function parseSearchTerm(value: string | string[] | undefined): string {
   const raw = firstParam(value);
   if (!raw) return "";
-  // eslint-disable-next-line no-control-regex
   const cleaned = raw.replace(/[\u0000-\u001f\u007f]/g, " ").trim();
   const chars = Array.from(cleaned);
   if (chars.length < SEARCH_MIN) return "";
