@@ -1,5 +1,7 @@
 # Execução da AUT-EXEC-E1 no isolado — 19/10/2026
 
+> **Duas execuções, uma por autorização.** Execução 1 (AUT-EXEC-E1): `exit=1`, suíte E1 não carregou (seções 1 a 7). Execução 2 (AUT-EXEC-E1-02, após a correção do alias em `c6a2b5c`): **`exit=0`**, 39 testes aprovados (seção 8). Seções 1 a 7 descrevem a execução 1 e ficam como registro histórico.
+
 Branch `feat/admin-e1-cms`, HEAD de partida `e911ca0`. Sem refs, URLs, chaves nem valores de variáveis. O log bruto fica em `test-results/integration/` (ignorado pelo Git) e passou pela varredura de segredos antes de ser lido.
 
 ## Resultado em uma linha
@@ -79,3 +81,28 @@ Erro (do log, sem dado sensível): `Cannot find package '@/lib/datetime' importe
 1. T-CMS-I01 a I08, PV-17, D2, D3, PV-14: **não responderam**. Exigem corrigir o alias e **nova autorização** para nova execução (a AUT-EXEC-E1 era de uma execução).
 2. E1-CC-12: consulta de resíduos pendente, a cargo do responsável.
 3. E1 **não concluída**. Fase B **não liberada**. Incidente de credenciais **ABERTO**.
+
+## 8. Execução 2 — AUT-EXEC-E1-02 (19/10/2026, após `c6a2b5c`)
+
+AUT-EXEC-E1-02 concedida expressamente pelo responsável (declaração ao agente; sem documento próprio no repositório). Uma execução. A AUT-EXEC-E1 original não foi reutilizada.
+
+**Gate imediato (automatizado, sem rede):** `feat/admin-e1-cms`, HEAD `c6a2b5c`, árvore limpa; CC-5: 16 arquivos, 133 testes; guarda estática CONFORME; 6/6 variáveis `RC2_*`; sem `env_conflict`; `.env.test.local` ignorado e não rastreado; CC-9a CONFORME; `test-results/` ignorado.
+
+**Comando (uma vez):** `npm run test:integration -- --bail 1 > "$LOG" 2>&1`. **`exit=0`.**
+
+**Resumo do Vitest (log, 57 s):** 3 arquivos aprovados (3/3); **39 testes aprovados, 0 reprovados, 0 ignorados**. O log não é verboso, então a divisão por teste abaixo é **por contagem, não por listagem**: 9 testes da regressão RLS (execução 1) + 7 testes únicos da E1 (I01, I02, I04, I05, I06, I07, I08) + 23 casos de I03 (`it.each` com 14 termos hostis + 9 de regex) = 39. A contagem fecha exatamente; se algum teste não tivesse rodado, não fecharia.
+
+| Item | Resultado (observado) |
+|---|---|
+| T-CMS-I01 a I08 | **APROVADOS** (I03 com os 23 casos); ver ressalvas |
+| D2 (busca literal, inclusive `*`) | I03 aprovado: os 23 termos devolveram só correspondências literais e o post-alvo. **Evidência técnica para encerrar D2**; a decisão de encerrar é do responsável. Limite: dataset sintético pequeno; a contingência 015 não é necessária segundo este resultado |
+| D3 (página fora do intervalo) | I08 aprovado. O teste aceita `PGRST103` **ou** lista vazia; qual dos dois ocorreu **não foi observado** (log não verboso) |
+| PV-17 (`sort_at` pelo PostgREST) | I01, I04, I06 e I07 aprovados: `sort_at` é lido, ordenado e rejeitado na escrita via PostgREST. **Evidência técnica de exposição** sem `NOTIFY` |
+| PV-14 | **Continua PARCIAL**: I05 aprovado prova que o `UPDATE` equivalente ao cron recalcula `sort_at`; "o cron não revalida o cache do blog" segue por leitura |
+| BL-04 (regressão RLS) | **Aprovada**: baseline e e0b-security passaram; relatórios com 67 e 29 verificações, 0 divergências, 0 inconclusivos |
+| Setup / teardown / limpeza | Nenhuma falha de setup nem de limpeza (o `afterAll` reprovaria o arquivo). Inferência do harness; não é prova no banco |
+| CC-9b (log, relatórios, evidências) | CONFORME |
+
+**Resíduos (E1-CC-12).** Da execução 1: sete consultas feitas pelo responsável, todas com zero (declaração). **Da execução 2: consulta manual PENDENTE.** A execução criou dezenas de posts sintéticos; o agente não consultou o banco. O responsável deve rodar as sete consultas da seção 7.2 do `AUT-EXEC-E1-2026-10-19.md` no isolado. Não houve falha de limpeza que indique resíduo.
+
+**Ressalvas.** (a) Resultados por teste vêm da contagem e do exit code, não de listagem. (b) `--bail 1` não foi acionado. (c) Não é revisão humana nem decisão de homologação: a E1 não é declarada concluída e a Fase B não é liberada por este registro. (d) Incidente de credenciais: ABERTO.
