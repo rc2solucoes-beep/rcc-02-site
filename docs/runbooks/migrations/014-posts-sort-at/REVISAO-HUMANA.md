@@ -3,14 +3,15 @@
 | Campo | Valor |
 |---|---|
 | Branch | `feat/admin-e1-cms` |
-| Estado | **PREPARADA. NÃO APLICADA em nenhum ambiente.** Nenhum SQL deste diretório foi executado |
+| Estado | **APLICADA NO ISOLADO por declaração do responsável (19/10/2026); NÃO APLICADA em produção.** O agente não executou SQL. Ver `E1-migration-014-isolado-2026-10-19.md` |
 | Revisão humana independente | **NÃO REALIZADA** (gate dispensado pela E1-REV-EX01; o fato continua pendente) |
 | C14 Via A (verificação independente do ambiente isolado) | **PENDENTE** |
 | E1-REV-EX01 (exceção ao gate de revisão) | **APROVADA** em 19/10/2026, apenas E1/014/isolado; risco residual aceito (`E1-REV-EX01.md`) |
 | E1-C14-EX01 (C14 Via B para a E1) | **APROVADA** em 19/10/2026, apenas E1/isolado; controles ainda **não comprovados** (`E1-C14-EX01.md`) |
 | Revisão técnica por IA (Fase A) | Feita; **não** deve ser registrada como revisão humana independente |
-| Validação no banco (PV-17, D2, PV-14, D3) | **PENDENTE** (nada foi executado em banco) |
-| AUT-APPLY-014 / AUT-EXEC-E1 | **NÃO CONCEDIDAS** |
+| Validação no banco (PV-17, D2, PV-14, D3) | **PENDENTE.** O verify (9/9, declarado) prova estrutura, não a exposição pelo PostgREST nem D2/D3; a suíte não foi executada |
+| AUT-APPLY-014 | **CONCEDIDA e UTILIZADA**, por declaração do responsável |
+| AUT-EXEC-E1 | **NÃO CONCEDIDA** (preparada, pendente de confirmação final) |
 | Fase B | **NÃO LIBERADA** |
 
 ## Três coisas diferentes (não confundir)
