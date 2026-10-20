@@ -14,7 +14,7 @@
 
 ## Estado atual
 
-**APLICADA NO ISOLADO (`rc2-test-isolated`), por declaração do responsável em 19/10/2026; NÃO APLICADA em produção.** O agente não executou nenhum SQL deste diretório nem verificou o resultado. Validação por testes de integração (PV-17, D2, D3, PV-14): **PENDENTE**, pois AUT-EXEC-E1 não foi concedida.
+**APLICADA NO ISOLADO (`rc2-test-isolated`), por declaração do responsável em 19/10/2026; NÃO APLICADA em produção.** O agente não executou nenhum SQL deste diretório nem verificou o resultado. Homologação no isolado (20/10/2026): verify 9/9 (declarado), integração 39/39, E2E 9/9; **PV-17, D2 e D3 encerrados; PV-14 PARCIAL** (o cron real não foi executado). Plano de implantação em produção: `PLANO-PRODUCAO.md` (execução não autorizada).
 
 ## O que faz
 
@@ -44,7 +44,7 @@ Adiciona `posts.sort_at timestamptz GENERATED ALWAYS AS (…) STORED NOT NULL` e
 | Ambiente | Autorizado por | Data | Observação |
 |---|---|---|---|
 | Isolado (teste) | Responsável (AUT-APPLY-014, por declaração; sem documento próprio) | 19/10/2026 | Aplicada manualmente; verify 9/9 declarado |
-| Produção | | | Pendente. Preflight de produção não autorizado |
+| Produção | | | Pendente. Preflight de produção não autorizado. Ver `PLANO-PRODUCAO.md` |
 
 ## Ordem
 
@@ -57,7 +57,7 @@ Adiciona `posts.sort_at timestamptz GENERATED ALWAYS AS (…) STORED NOT NULL` e
 
 ## Evidências
 
-`docs/runbooks/evidence/E1-migration-014-isolado-2026-10-19.md` (declaração do responsável; sem evidência automatizada do banco). Suíte de integração: não executada (`AUT-EXEC-E1-2026-10-19.md`, pendente de confirmação final).
+`docs/runbooks/evidence/E1-migration-014-isolado-2026-10-19.md` (declaração do responsável; sem evidência automatizada do banco). Suíte de integração e E2E: `docs/runbooks/evidence/E1-execucao-AUT-EXEC-E1-2026-10-19.md` (run 1 falhou por alias ausente, corrigido; run 2: 39/39; E2E: 9/9 na segunda execução).
 
 ## Reversão
 
