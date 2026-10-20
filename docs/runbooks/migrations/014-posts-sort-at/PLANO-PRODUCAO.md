@@ -144,3 +144,80 @@ Obrigam parar (e voltar ao responsável):
 - [ ] C: Autorização 2 → D: apply → E: verify = preflight (total, md5) → REGISTRO.md
 - [ ] F: Autorização 3 (CI verde, revisão humana, PR fora de Draft, incidente tratado) → merge/deploy
 - [ ] G: smoke tests → acompanhar PV-14 → atualizar REGISTRO/README/PR
+
+## 9. Controles pendentes para o GO final (preparados em 20/10/2026; NADA abaixo está aprovado)
+
+Status mantido: **GO TÉCNICO PRELIMINAR — APPLY NÃO AUTORIZADO.** A Autorização 1 (preflight) foi utilizada; os dois controles abaixo e a Autorização 2 (apply) continuam pendentes. A revisão feita pelo agente **não é** revisão humana independente, e E1-REV-EX01 / E1-C14-EX01 **não** se aplicam a produção.
+
+### 9.1 Handoff para o segundo revisor humano
+
+**Escopo e integridade.** Revisar somente estes arquivos, no commit abaixo (referência de preparação: `3328682`; o revisor registra o SHA que de fato leu). Conferir com `git hash-object <arquivo>` que o conteúdo é o mesmo (prefixos dos blobs na preparação):
+
+| Arquivo | Blob (12 primeiros) |
+|---|---|
+| `supabase/migrations/014_posts_sort_at.sql` | `749df7476c6c` |
+| `docs/runbooks/migrations/014-posts-sort-at/preflight.sql` | `a00eb077c895` |
+| `docs/runbooks/migrations/014-posts-sort-at/verify.sql` | `5a7e32043ceb` |
+| `docs/runbooks/migrations/014-posts-sort-at/rollback.sql` | `ca859bc15ed0` |
+
+Contexto: este plano e `docs/runbooks/evidence/E1-preflight-producao-014-2026-10-20.md` (resultados **declarados** pelo responsável: PostgreSQL 17.6, 20 posts, 2 policies, md5 `8953fc15d02f1bf67b61807687eb8e32`, `sort_at`/índice ausentes). O revisor não executa SQL em produção; trabalha sobre os arquivos.
+
+**Checklist** (marcar SIM / NÃO / N/A e anotar justificativa):
+
+| # | Verificar | Resp. |
+|---|---|---|
+| 1 | **PostgreSQL 17.6:** `GENERATED ALWAYS AS (...) STORED` e `ADD COLUMN IF NOT EXISTS`/`CREATE INDEX IF NOT EXISTS` são válidos; a expressão é imutável (só `CASE`, `coalesce`, colunas `text`/`timestamptz` da mesma linha, sem `now()`/funções STABLE) |  |
+| 2 | **Expressão e semântica:** published → `coalesce(published_at, created_at)`; scheduled → `coalesce(scheduled_publish_at, updated_at)`; demais → `updated_at`. Coerente com o SDD (`docs/superpowers/specs/2026-10-13-admin-cms-listing-design.md` §5.1) e com o que o cron faz (`status='published'`, `published_at=scheduled_publish_at`) |  |
+| 3 | **NOT NULL:** com `created_at`/`updated_at` NOT NULL (preflight item 2) nenhum ramo gera nulo; os 20 posts (19 published com `published_at` presente, 1 scheduled com `scheduled_publish_at` presente) obtêm valor; o `ADD COLUMN ... NOT NULL` não falha em linhas existentes |  |
+| 4 | **Índice:** `(sort_at DESC, id DESC)` serve à ordenação nas duas direções (desempate por `id` na mesma direção); é necessário/suficiente para a listagem; sem `CONCURRENTLY` é aceitável com 20 linhas e dentro de transação |  |
+| 5 | **Atomicidade:** `BEGIN … COMMIT` com `SET LOCAL lock_timeout = '5s'`; qualquer erro ou estouro desfaz tudo; comportamento no SQL Editor (lote único) entendido; nada fica parcial |  |
+| 6 | **Cron:** o job `publish-scheduled-posts` (`*/5 * * * *`, `UPDATE posts …`) pode disputar o bloqueio exclusivo do `ADD COLUMN`; o `lock_timeout` limita a espera; momento de aplicação evita o tick do cron e o horário do post agendado |  |
+| 7 | **Preservação:** a migration não altera policies, trigger `posts_updated_at` nem o job; `verify.sql` itens 7 (policies: total + md5), 8 (cron) e 9 (trigger) comprovam a igualdade com o preflight |  |
+| 8 | **Cobertura do verify:** itens 1–9 têm esperado objetivo; `nulos = 0`, `divergentes = 0`, `indisvalid`, `total_posts` igual, md5 igual. Lacuna conhecida: item 5 exige `posts_slug` e `posts_status_published_at`, que o preflight não verifica (não bloqueante) — o revisor decide se exige verificação prévia |  |
+| 9 | **Ordem e rollback:** migration → verify → decisão de deploy; rollback (`DROP INDEX`, `DROP COLUMN`) só após reverter o código; dado derivado, sem perda; não há ponto de não retorno |  |
+| 10 | **Interromper a implantação se:** qualquer item do §5 deste plano ocorrer; erro ou estouro de `lock_timeout` com estado não verificado; `verify` com qualquer item fora do esperado; md5/total de policies ≠ preflight; `total_posts` ≠ 20 sem explicação; backup (§9.2) não confirmado |  |
+
+**Registro do revisor** (preencher **somente** o próprio revisor; o agente não preenche):
+
+| Campo | Valor |
+|---|---|
+| Nome / identificação do revisor | |
+| Data da revisão | |
+| SHA dos scripts revisados | |
+| Independência (não é o autor do código/scripts) | |
+| Achados | |
+| Decisão | ☐ APROVADO ☐ APROVADO COM RESSALVAS ☐ REPROVADO |
+| Ressalvas a cumprir antes do apply | |
+
+Alternativa: decisão expressa e registrada do responsável dispensando esse requisito para produção (não reutiliza as exceções do isolado).
+
+### 9.2 Checklist de backup e recuperação (conferência MANUAL, em etapa futura e separadamente autorizada)
+
+Não presumir que o plano contratado tem PITR; não afirmar backup recuperável sem evidência; não testar restauração nem iniciar backup nesta etapa. A conferência é no painel do projeto, pelo responsável.
+
+| # | Confirmar | Registro (valor + onde foi visto) |
+|---|---|---|
+| 1 | Projeto correto: RCC-02 (identidade conferida pelo responsável; ref não reproduzido em documentos) | |
+| 2 | Tipo de proteção disponível: backup diário e/ou PITR (ou nenhum) | |
+| 3 | Data e horário do último ponto recuperável | |
+| 4 | Cobertura: inclui o banco PostgreSQL do projeto (schema `public`, `auth`, extensões como `pg_cron`) | |
+| 5 | Retenção aplicável | |
+| 6 | Procedimento oficial de restauração disponível e documentado | |
+| 7 | Permissões necessárias para restaurar (quem pode executar) | |
+| 8 | Tempo estimado e impacto operacional (indisponibilidade; perda de escritas posteriores ao ponto) | |
+| 9 | Limitações que impeçam restaurar o estado anterior à migration (ex.: restauração substitui o projeto, ponto menos recente que o necessário) | |
+| 10 | Evidência documental da confirmação (captura sem segredos, referência ou declaração) e data | |
+| 11 | Se não houver backup/PITR utilizável: decisão expressa do responsável sobre aceitar o risco (a 014 é aditiva e tem rollback próprio) ou obter proteção antes | |
+
+Resultado: ☐ proteção confirmada com evidência ☐ aceite de risco registrado ☐ NÃO confirmada (**NO-GO do apply**). Responsável / data: ____________
+
+### 9.3 GO final (decisão posterior e separada)
+
+| Condição para solicitar a Autorização 2 (apply) | Estado |
+|---|---|
+| Preflight de produção conforme (declarado) | cumprido |
+| Item 03 do preflight (coluna e índice ausentes) | confirmado pelo responsável (declarado) |
+| Revisão humana independente (§9.1) ou dispensa expressa | **pendente** |
+| Backup/ponto de restauração (§9.2) | **pendente** |
+| Autorização específica do responsável para executar a 014 | **pendente** |
+| Merge/deploy (Autorização 3), smoke tests, PV-14 (parcial), 012/013 em produção, incidente de credenciais (ABERTO) | fora desta decisão; pendentes |
