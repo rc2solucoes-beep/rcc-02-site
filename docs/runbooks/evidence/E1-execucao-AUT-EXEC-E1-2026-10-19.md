@@ -168,3 +168,26 @@ Autorização expressa do responsável (declaração ao agente). HEAD `011c711` 
 **Correções necessárias antes de qualquer nova AUT (não aplicadas):** (1) seletor "De"/"Até"/"Status" com `exact`; (2) seletor de alerta de erro; (3) log fora de `test-results/` (ex.: `e2e-logs/`, ignorado pelo Git) ou `outputDir` próprio no config isolado; (4) conferir E04/E05, ainda não observados.
 
 E1 não encerrada; Fase B não liberada; incidente de credenciais ABERTO.
+
+## 12. Correções locais pós AUT-E2E-E1-01 (20/10/2026, sem Playwright, sem servidor, sem banco)
+
+E1-CC-12 da AUT-E2E-E1-01: sete consultas READ ONLY feitas pelo responsável, todas zero (**declaração**).
+
+| Ponto | Causa | Correção |
+|---|---|---|
+| E01 | `getByLabel("De")` é por substring e casou "Ordem", seções de mês e o botão do Next DevTools | Locators escopados em `getByRole("search", { name: "Filtrar posts" })` com `exact: true` para Status, De e Até; botão "Filtrar" exato. Sem índices. Componentes do CMS não alterados. Mesmo problema potencial em E04: `#status` (id estável) |
+| E03 | `getByRole("alert")` pegou o `alert` vazio do anunciador de rota do Next | Falha real = `alert` com texto "Não foi possível carregar os posts" (page.tsx) ou "Algo deu errado ao abrir os posts" (error.tsx), contagem 0; mais: título "Posts" visível e lista ou "Nenhum post encontrado" visível. Critério não enfraquecido (agora também exige o estado legítimo). "período invertido" usa `getByRole("status")` filtrado por texto |
+| Log | `test-results/` é apagado pelo Playwright ao iniciar | Destino `e2e-logs/` (ignorado pelo Git, fora do outputDir). Launcher e proteções não alterados |
+
+**Validação local:** locators conferidos contra a marcação real do `PostsFilterBar` em teste unitário (`postsFilterBarLocators.test.tsx`: cada campo único dentro do `search`; spec sem os seletores genéricos); contrato do diretório de logs em `e2eIsolated.test.ts`; 39 arquivos, 321 testes; `tsc` e eslint limpos; `playwright test --list`: 9 testes (lista não inicia servidor, navegador nem setup). Nenhuma conexão com Supabase.
+
+**Comando para a futura AUT-E2E-E1-02 (não executado):**
+```bash
+cd /d/Projetos/RC2-2026-e1
+mkdir -p e2e-logs
+LOG="e2e-logs/run-$(date +%Y%m%dT%H%M%S).log"
+RC2_E2E_ISOLATED=1 npm run test:e2e:isolated > "$LOG" 2>&1
+STATUS=$?
+echo "exit=$STATUS"
+```
+Limites: E04/E05 seguem nunca observados (seletores de leitura de código); morte forçada do processo pula o teardown. EX-4 e E1 não concluídos; Fase B não liberada; incidente de credenciais ABERTO.

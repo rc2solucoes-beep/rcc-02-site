@@ -48,11 +48,13 @@ test.beforeEach(async ({ page }) => {
 test.describe("Listagem de posts (leitura sobre dados sintéticos semeados)", () => {
   test("T-CMS-E01: busca, status e período ficam refletidos na URL", async ({ page }) => {
     await page.goto("/admin/posts");
-    await page.getByLabel(/Buscar por título/i).fill("automação");
-    await page.getByLabel("Status").selectOption("published");
-    await page.getByLabel("De").fill("2026-01-01");
-    await page.getByLabel("Até").fill("2026-12-31");
-    await page.getByRole("button", { name: /Filtrar/i }).click();
+    // Escopo no formulário de filtros (role=search): "De" também casa "Ordem", seções de mês e o botão do Next DevTools.
+    const filters = page.getByRole("search", { name: "Filtrar posts" });
+    await filters.getByLabel(/Buscar por título/i).fill("automação");
+    await filters.getByLabel("Status", { exact: true }).selectOption("published");
+    await filters.getByLabel("De", { exact: true }).fill("2026-01-01");
+    await filters.getByLabel("Até", { exact: true }).fill("2026-12-31");
+    await filters.getByRole("button", { name: "Filtrar", exact: true }).click();
 
     await expect(page).toHaveURL(/q=automa/);
     await expect(page).toHaveURL(/status=published/);
@@ -69,7 +71,7 @@ test.describe("Listagem de posts (leitura sobre dados sintéticos semeados)", ()
 
   test("T-CMS-E01: período invertido mostra aviso", async ({ page }) => {
     await page.goto("/admin/posts?from=2026-05-10&to=2026-05-01");
-    await expect(page.getByRole("status")).toContainText(/período foi ignorado/i);
+    await expect(page.getByRole("status").filter({ hasText: /período foi ignorado/i })).toBeVisible();
   });
 
   test("T-CMS-E02: cabeçalhos de mês e paginação por links (46 posts semeados, 3 páginas)", async ({ page }) => {
@@ -96,10 +98,16 @@ test.describe("Listagem de posts (leitura sobre dados sintéticos semeados)", ()
   });
 
   test("T-CMS-E03: busca hostil não gera erro 500 nem estado de erro", async ({ page }) => {
+    // Estados de erro da aplicação: falha de consulta (page.tsx) e error boundary (error.tsx).
+    // Não se usa getByRole("alert") genérico: o Next injeta um alert vazio (anunciador de rota).
+    const appError = page.getByRole("alert").filter({ hasText: /Não foi possível carregar os posts|Algo deu errado ao abrir os posts/ });
     for (const q of ["%%", "__", "\\\\", '"', "a,b", "(x)", "a*b", "--"]) {
       const response = await page.goto(`/admin/posts?q=${encodeURIComponent(q)}`);
       expect(response?.status(), q).toBeLessThan(500);
-      await expect(page.getByRole("alert")).toHaveCount(0);
+      await expect(page.getByRole("heading", { name: "Posts", level: 1 }), q).toBeVisible();
+      // Resultado legítimo: lista ou "Nenhum post encontrado"; nunca a mensagem de falha.
+      await expect(page.getByText("Nenhum post encontrado").or(page.getByRole("navigation", { name: "Paginação" })).or(page.locator("section[aria-labelledby^='mes-']")).first(), q).toBeVisible();
+      await expect(appError, q).toHaveCount(0);
     }
   });
   // Estado de erro (E03) e lista vazia sem filtros: cobertos pelo teste unitário da página
@@ -118,7 +126,7 @@ test.describe("Agendamento e regressão (ESCRITA no isolado)", () => {
   test("T-CMS-E04: agendamento no passado é rejeitado e no futuro é aceito (rascunho semeado)", async ({ page }) => {
     await page.goto(`/admin/posts/${DRAFT_ID}`);
     await openPublicationTab(page);
-    await page.getByLabel("Status").selectOption("scheduled");
+    await page.locator("#status").selectOption("scheduled");
 
     await page.getByLabel(/Agendar Publicação Para/i).fill("2020-01-01T10:00");
     await page.getByRole("button", { name: /Atualizar Post/ }).click();

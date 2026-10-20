@@ -184,6 +184,14 @@ describe("contratos estáticos do E2E isolado", () => {
     expect(spec).toContain("T-CMS-E05");
   });
 
+  it("o log do E2E fica em e2e-logs/ (ignorado pelo Git), fora do outputDir que o Playwright apaga", () => {
+    expect(read(".gitignore")).toMatch(/^e2e-logs\/\s*$/m);
+    expect(read(".gitignore")).toMatch(/^test-results\/\s*$/m);
+    const config = read("playwright.isolated.config.ts");
+    expect(config).not.toContain("e2e-logs");
+    expect(config).not.toMatch(/outputDir:/); // padrão: test-results/, apagado a cada execução
+  });
+
   it("nenhum arquivo do E2E isolado contém segredos literais", () => {
     for (const file of ["playwright.isolated.config.ts", "tests/e2e/admin-posts-list.spec.ts", ...listFiles(resolve(root, "tests/e2e-support")).map((f) => f.slice(root.length + 1))]) {
       const text = read(file);
