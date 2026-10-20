@@ -11,7 +11,7 @@ Escopo: PR #40 (`feat/admin-e1-cms`, Draft). Os scripts não são repetidos aqui
 | Item | Estado |
 |---|---|
 | 014 no isolado (`rc2-test-isolated`) | aplicada e verificada 9/9 (declaração do responsável); integração 39/39; E2E 9/9; D2, D3, PV-17, EX-4 encerrados |
-| 014 em produção | **não aplicada**; preflight de produção **não autorizado** |
+| 014 em produção | **não aplicada**; preflight de produção executado em 20/10/2026 por declaração do responsável (AUT-READ-PROD-014): GO técnico preliminar, apply não autorizado — ver `docs/runbooks/evidence/E1-preflight-producao-014-2026-10-20.md` |
 | 012 e 013 em produção | **não aplicadas** |
 | PV-14 | **parcial** (cron real não executado; só o `UPDATE` que ele faz foi exercitado) |
 | PV-13 (posts com datas nulas) | só respondível no preflight de produção |
@@ -119,7 +119,7 @@ Obrigam parar (e voltar ao responsável):
 
 | # | Decisão | Quem | Estado |
 |---|---|---|---|
-| 1 | Preflight READ ONLY em produção | Responsável | **pendente** |
+| 1 | Preflight READ ONLY em produção | Responsável | concedida e utilizada (AUT-READ-PROD-014, 20/10/2026); item 03 do preflight pendente de confirmação individual |
 | 2 | Apply da 014 em produção | Responsável | **pendente** |
 | 3 | Merge/deploy do PR #40 | Responsável | **pendente** |
 | 4 | `NOTIFY pgrst` (se necessário) | Responsável | só se ocorrer |

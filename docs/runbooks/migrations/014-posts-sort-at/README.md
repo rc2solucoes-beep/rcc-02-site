@@ -37,14 +37,14 @@ Adiciona `posts.sort_at timestamptz GENERATED ALWAYS AS (…) STORED NOT NULL` e
 | D2 | Busca literal por filtro PostgREST, inclusive `*` | T-CMS-I03. Ver `DECISAO-D2.md` e `contingencia-rpc-busca.sql` |
 | D3 | Página além do total devolve erro `PGRST103` (416) | T-CMS-I08 |
 
-**PV-13** (posts com `published_at`/`scheduled_publish_at` nulos) só pode ser respondida no **preflight de produção**, porque o isolado não tem posts. **O preflight de produção NÃO está autorizado.** A pergunta não bloqueia a migration: só determina quantas anomalias a lista exibirá.
+**PV-13** (posts com `published_at`/`scheduled_publish_at` nulos) só pode ser respondida no **preflight de produção**, porque o isolado não tem posts. **Respondida em 20/10/2026** (preflight de produção, declarado pelo responsável): 0 posts publicados sem `published_at` e 0 agendados sem `scheduled_publish_at`. A pergunta nunca bloqueou a migration. O apply em produção NÃO está autorizado.
 
 ## Autorização (preencher antes de aplicar em cada ambiente)
 
 | Ambiente | Autorizado por | Data | Observação |
 |---|---|---|---|
 | Isolado (teste) | Responsável (AUT-APPLY-014, por declaração; sem documento próprio) | 19/10/2026 | Aplicada manualmente; verify 9/9 declarado |
-| Produção | | | Pendente. Preflight de produção não autorizado. Ver `PLANO-PRODUCAO.md` |
+| Produção | | | Apply pendente e NÃO autorizado. Preflight de produção executado em 20/10/2026 (AUT-READ-PROD-014, declarado): `docs/runbooks/evidence/E1-preflight-producao-014-2026-10-20.md`. Ver `PLANO-PRODUCAO.md` |
 
 ## Ordem
 
