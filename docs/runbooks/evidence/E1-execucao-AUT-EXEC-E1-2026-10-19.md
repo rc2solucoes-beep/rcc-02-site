@@ -125,3 +125,22 @@ AUT-EXEC-E1-02 concedida expressamente pelo responsável (declaração ao agente
 | PV-14 | **PARCIAL**: I05 prova o recálculo de `sort_at` no `UPDATE` equivalente ao cron; o cron real **não** foi executado nem observado |
 
 E1 não declarada concluída; Fase B não liberada; incidente de credenciais ABERTO.
+
+## 10. EX-4 — preparação do E2E isolado (20/10/2026, local, sem servidor, sem navegador, sem banco)
+
+**Risco identificado no `playwright.config.ts` atual (NÃO seguro para o isolado):** o `webServer` roda `npm run dev` com `reuseExistingServer: !CI`. O Next lê `.env.local` (credenciais de produção) para toda variável que o processo não definiu, e o Playwright pode **reaproveitar um servidor já aberto na porta 3000** com esse ambiente. O spec antigo só dependia de `RC2_E2E_ISOLATED=1`, uma flag sem relação com o alvo real do servidor, e usava `ADMIN_EMAIL` do shell.
+
+**Preparado (nada executado):**
+- `playwright.isolated.config.ts` + `npm run test:e2e:isolated`: recusa sem `RC2_E2E_ISOLATED=1`; carrega só `.env.test.local`; chama a guarda existente (`getVerifiedTarget`: URL, ref, allowlist, ref de produção, claims, `env_conflict`) **antes** de montar o servidor; porta própria 3100, `reuseExistingServer: false`; ambiente do servidor **explícito** (`tests/e2e-support/isolatedEnv.ts`): Supabase do alvo verificado e valores neutros para todas as demais variáveis lidas em `src/` ou documentadas em `.env.example` (processo definido não é sobrescrito pelos `.env*`; teste unitário falha se surgir variável nova); sem trace, vídeo nem captura.
+- `playwright.config.ts` padrão passa a ignorar `admin-posts-list.spec.ts`.
+- Segunda camada no navegador: `installSupabaseGuard` aborta e reprova qualquer requisição a Supabase de outro projeto (sem registrar o host).
+- `isolatedGlobalSetup.ts`: reusa `createRoleClients` (guarda + marcador `__rc2_isolated_test_env__` + service revalidado); cria admin sintético `e0a-<tag>-e2eadmin@example.test` (+ `admin_users`) e semeia 45 posts publicados (3 meses) e 1 rascunho com prefixo `e0a-e2e-<tag>`, cada id registrado **antes** de criar. Teardown (também com testes falhando): remove registrados, reconcilia por prefixo os posts criados pela interface, inspeciona resíduos e remove usuários; falha de limpeza reprova a execução.
+- Spec: E01 a E05 sem depender de posts existentes (E02 usa o seed: 3 páginas; E04 usa o rascunho semeado; E05 cria/edita/visualiza/exclui sob o prefixo).
+
+**Estado:** E01, E02, E03 (vazio filtrado, busca hostil), E04 e E05 **escritos, PENDENTES de execução**. E03 estado de erro e lista vazia sem filtros: cobertos só por teste unitário (`postsPagePagination.test.tsx`). Seletores de E04/E05 foram escritos por leitura do código e podem exigir ajuste na primeira execução.
+
+**Validação local:** 15 testes novos (`tests/unit/ops/e2eIsolated.test.ts`; inclui recusa de produção, ref divergente, fora da allowlist e `NEXT_PUBLIC_SUPABASE_URL` do shell); `tests/unit/admin` + `ops`: 38 arquivos, 318 testes; `tsc` e eslint limpos; `playwright test --list` lista os 9 testes só no config isolado e recusa sem a flag. Nenhum servidor, navegador ou conexão.
+
+**Limites.** (a) A proteção do servidor depende de definir todas as variáveis que o app lê; variável nova exige atualizar `isolatedEnv.ts` (o teste unitário avisa). (b) Morte forçada do processo (Ctrl+C, queda) não roda o teardown: reconciliar com as consultas da seção 7.2 de `AUT-EXEC-E1-2026-10-19.md`. (c) Uma execução real exige autorização específica, que não existe.
+
+**Comando futuro (uma vez):** `RC2_E2E_ISOLATED=1 npm run test:e2e:isolated > "$LOG" 2>&1` (Git Bash; mesmo padrão de log e exit code da suíte de integração), com nenhum servidor na porta 3100 e `.env.test.local` presente.
