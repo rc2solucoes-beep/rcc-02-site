@@ -18,6 +18,9 @@ import { isForeignSupabaseHost } from "../../e2e-support/supabaseGuard";
 
 vi.mock("../../integration/support/env", () => ({ loadTestEnvFile: () => {} }));
 
+// Varredura de src/ e import do config do Playwright passam de 5 s sob carga; sem isso o teste é instável.
+vi.setConfig({ testTimeout: 30_000 });
+
 const root = process.cwd();
 const read = (path: string) => readFileSync(resolve(root, path), "utf8");
 
