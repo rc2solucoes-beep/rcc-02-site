@@ -59,9 +59,11 @@ Esta revisão por agente **não substitui** a revisão humana independente por s
 
 Confirmações já registradas: item 3 do preflight (coluna e índice ausentes, declarado pelo responsável em confirmação posterior) e origem do MD5 (SQL Editor de produção, declarado).
 
+Atualização de 20/10/2026 — **PROD-014-REV-EX01: DISPENSA APROVADA** (aceite formal de risco residual, decisão expressa do responsável; detalhes, controles compensatórios e limites em `PLANO-PRODUCAO.md` §9.4). A revisão humana independente **não aconteceu**; o requisito foi dispensado só para a implantação da 014 em produção (RCC-02) e a dispensa não vale para 012, 013 ou futuras, nem reutiliza E1-REV-EX01/E1-C14-EX01.
+
 Pendências obrigatórias antes de pedir autorização para o apply:
-1. Revisão humana independente dos scripts, ou nova decisão expressa do responsável sobre esse requisito para produção.
-2. Confirmação de backup/ponto de restauração recente do banco de produção.
-3. Autorização específica para executar a migration 014 em produção.
+1. ~~Revisão humana independente~~ — **dispensada formalmente (PROD-014-REV-EX01)**; não realizada.
+2. Confirmação de backup/ponto de restauração recente do banco de produção — **PENDENTE** (a dispensa não cobre este item).
+3. Autorização específica para executar a migration 014 em produção — **NÃO AUTORIZADA**.
 
 Permanecem também: autorização do merge/deploy, smoke tests, PV-14 parcial, 012/013 não aplicadas em produção e incidente de credenciais ABERTO.

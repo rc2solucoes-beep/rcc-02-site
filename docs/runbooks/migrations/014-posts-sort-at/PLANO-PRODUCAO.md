@@ -16,7 +16,7 @@ Escopo: PR #40 (`feat/admin-e1-cms`, Draft). Os scripts não são repetidos aqui
 | PV-14 | **parcial** (cron real não executado; só o `UPDATE` que ele faz foi exercitado) |
 | PV-13 (posts com datas nulas) | só respondível no preflight de produção |
 | Incidente de credenciais | **ABERTO** |
-| Revisão humana independente por segundo engenheiro | **não houve** (exceções E1-REV-EX01 e E1-C14-EX01 valem só no escopo aprovado) |
+| Revisão humana independente por segundo engenheiro | **não houve**. Em 20/10/2026 o responsável aprovou a dispensa formal **PROD-014-REV-EX01** (aceite de risco residual, §9.4); a revisão independente continua **não realizada** (exceções E1-REV-EX01 e E1-C14-EX01 valem só no isolado) |
 
 ## 2. Dependências reais (com origem)
 
@@ -125,7 +125,7 @@ Obrigam parar (e voltar ao responsável):
 | 4 | `NOTIFY pgrst` (se necessário) | Responsável | só se ocorrer |
 | 5 | Rollback da 014 (se necessário) | Responsável | só se ocorrer |
 | 6 | 012 (após PV-20) e 013 em produção | Responsável | fora deste release; pendentes |
-| 7 | Revisão humana independente / tratamento do incidente de credenciais | Responsável | pendentes |
+| 7 | Revisão humana independente / tratamento do incidente de credenciais | Responsável | revisão: **dispensada formalmente** para a 014 em produção (PROD-014-REV-EX01, §9.4; a revisão não ocorreu); incidente: pendente (ABERTO) |
 
 ## 7. Recuperação (nada aqui foi executado ou simulado)
 
@@ -189,7 +189,7 @@ Contexto: este plano e `docs/runbooks/evidence/E1-preflight-producao-014-2026-10
 | Decisão | ☐ APROVADO ☐ APROVADO COM RESSALVAS ☐ REPROVADO |
 | Ressalvas a cumprir antes do apply | |
 
-Alternativa: decisão expressa e registrada do responsável dispensando esse requisito para produção (não reutiliza as exceções do isolado).
+Alternativa: decisão expressa e registrada do responsável dispensando esse requisito para produção (não reutiliza as exceções do isolado). **Exercida em 20/10/2026: ver §9.4 (PROD-014-REV-EX01). O registro do revisor acima permanece em branco: a revisão independente não aconteceu.**
 
 ### 9.2 Checklist de backup e recuperação (conferência MANUAL, em etapa futura e separadamente autorizada)
 
@@ -217,7 +217,46 @@ Resultado: ☐ proteção confirmada com evidência ☐ aceite de risco registra
 |---|---|
 | Preflight de produção conforme (declarado) | cumprido |
 | Item 03 do preflight (coluna e índice ausentes) | confirmado pelo responsável (declarado) |
-| Revisão humana independente (§9.1) ou dispensa expressa | **pendente** |
-| Backup/ponto de restauração (§9.2) | **pendente** |
+| Revisão humana independente (§9.1) ou dispensa expressa | **dispensa aprovada** (PROD-014-REV-EX01, 20/10/2026, §9.4); a revisão independente **não** foi realizada |
+| Backup/ponto de restauração (§9.2) | **PENDENTE** (único bloqueio operacional restante antes de solicitar a Autorização 2, salvo pendência nova na revisão dos registros) |
 | Autorização específica do responsável para executar a 014 | **pendente** |
 | Merge/deploy (Autorização 3), smoke tests, PV-14 (parcial), 012/013 em produção, incidente de credenciais (ABERTO) | fora desta decisão; pendentes |
+
+### 9.4 Dispensa formal de revisão independente — PROD-014-REV-EX01
+
+| Campo | Valor |
+|---|---|
+| Identificador | **PROD-014-REV-EX01** |
+| Tipo | aceite formal de risco residual |
+| Responsável pela decisão | proprietário/responsável pelo projeto, conforme aprovação expressa na conversa |
+| Data | 20/10/2026 |
+| Status | **DISPENSA APROVADA** |
+| Backup / ponto de restauração | **PENDENTE** |
+| Apply da 014 em produção | **NÃO AUTORIZADO** |
+
+**Escopo (somente):** `supabase/migrations/014_posts_sort_at.sql`, `preflight.sql`, `verify.sql` e `rollback.sql`, exclusivamente na implantação da migration 014 no Supabase de produção RCC-02.
+
+**Justificativa e controles compensatórios considerados pelo responsável:**
+1. Homologação prévia da migration no ambiente isolado.
+2. Preflight de produção com 11/11 verificações conformes (declaração do responsável).
+3. Revisão estática dos quatro scripts, sem bloqueadores identificados.
+4. Migration transacional com `lock_timeout` de 5 segundos.
+5. Verify documentado para conferir estrutura, dados, índices, policies, trigger e cron.
+6. Plano de recuperação documentado, respeitando a ordem código → rollback SQL.
+7. Autorizações independentes para aplicação da migration e para merge/deploy.
+
+**Risco aceito:** a ausência de revisão por um segundo engenheiro humano aumenta a possibilidade de uma falha não identificada na avaliação técnica e operacional.
+
+**Esta dispensa NÃO declara que a revisão independente aconteceu.** O registro do revisor (§9.1) permanece em branco e a revisão do agente continua sem valor de revisão independente.
+
+**Limites — a dispensa NÃO:**
+- autoriza aplicar a migration;
+- dispensa a confirmação de backup ou ponto de restauração (§9.2);
+- autoriza `NOTIFY` ou rollback;
+- autoriza merge ou deploy;
+- encerra o PV-14 (permanece parcial);
+- resolve o incidente de credenciais (permanece ABERTO);
+- vale para as migrations 012, 013 ou futuras;
+- reutiliza E1-REV-EX01 ou E1-C14-EX01 (válidas só no isolado).
+
+Histórico preservado: os itens 9.1 a 9.3, a revisão estática do agente e o registro do preflight permanecem como foram escritos.

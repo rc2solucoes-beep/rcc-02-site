@@ -44,12 +44,12 @@ Adiciona `posts.sort_at timestamptz GENERATED ALWAYS AS (…) STORED NOT NULL` e
 | Ambiente | Autorizado por | Data | Observação |
 |---|---|---|---|
 | Isolado (teste) | Responsável (AUT-APPLY-014, por declaração; sem documento próprio) | 19/10/2026 | Aplicada manualmente; verify 9/9 declarado |
-| Produção | | | Apply pendente e NÃO autorizado. Preflight de produção executado em 20/10/2026 (AUT-READ-PROD-014, declarado): `docs/runbooks/evidence/E1-preflight-producao-014-2026-10-20.md`. Ver `PLANO-PRODUCAO.md` |
+| Produção | | | Apply pendente e NÃO autorizado. Preflight de produção executado em 20/10/2026 (AUT-READ-PROD-014, declarado): `docs/runbooks/evidence/E1-preflight-producao-014-2026-10-20.md`. Dispensa formal da revisão independente aprovada em 20/10/2026 (PROD-014-REV-EX01; a revisão não ocorreu); backup PENDENTE. Ver `PLANO-PRODUCAO.md` §9.4 |
 
 ## Ordem
 
 1. `preflight.sql` (somente leitura, `BEGIN READ ONLY`) → estado esperado confirmado.
-2. Revisão **humana** de `apply`, `preflight`, `verify` e `rollback` por um segundo engenheiro (o lint não basta).
+2. Revisão **humana** de `apply`, `preflight`, `verify` e `rollback` por um segundo engenheiro (o lint não basta). Em produção, dispensada formalmente só para a 014 (PROD-014-REV-EX01, 20/10/2026; aceite de risco, revisão não realizada).
 3. `apply` no ambiente isolado → `verify.sql` → `npm run test:integration` (inclui `e1-posts-sort-at.test.ts`).
 4. Autorização explícita → preflight de produção → `apply` → `verify.sql`.
 5. **Deploy do código depois da migration.**
