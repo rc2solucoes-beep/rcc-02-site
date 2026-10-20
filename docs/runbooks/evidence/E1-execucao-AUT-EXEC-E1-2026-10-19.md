@@ -191,3 +191,27 @@ STATUS=$?
 echo "exit=$STATUS"
 ```
 Limites: E04/E05 seguem nunca observados (seletores de leitura de código); morte forçada do processo pula o teardown. EX-4 e E1 não concluídos; Fase B não liberada; incidente de credenciais ABERTO.
+
+## 13. Execução AUT-E2E-E1-02 (20/10/2026, uma vez, launcher isolado, commit 9828cb8)
+
+Gate pré-execução aprovado: branch `feat/admin-e1-cms`, árvore limpa, CC-5 (18 arquivos / 151 testes), CC-9a CONFORME, seis variáveis RC2_* presentes só em `.env.test.local` (nenhuma no shell), `.env.test.local` ignorado e não rastreado, porta 3100 livre, Chromium instalado, config isolada preservada.
+
+Execução única: `RC2_E2E_ISOLATED=1 npm run test:e2e:isolated`, log `e2e-logs/run-20261020T120145.log` (preservado, ignorado pelo Git). **exit=0; 9 aprovados, 0 reprovados, 0 ignorados** (1,2 min).
+
+| Teste | Resultado |
+|---|---|
+| E01 busca/status/período na URL | aprovado |
+| E01 valores inválidos na URL | aprovado |
+| E01 período invertido | aprovado |
+| E02 meses e paginação por links | aprovado |
+| E02 página além do total → última | aprovado |
+| E03 vazio filtrado / Limpar filtros | aprovado |
+| E03 busca hostil sem erro | aprovado |
+| E04 agendamento passado rejeitado / futuro aceito | aprovado |
+| E05 criar, editar, visualizar, excluir | aprovado |
+
+Sem problemas de seletor, autenticação, navegação ou regra de negócio nesta execução; nenhum defeito do CMS observado. Os avisos do log (`/api/admin/init` sem sessão, `scroll-behavior`) são ruído esperado do login e do Next, não falhas.
+
+Teardown: o log não registra erro de limpeza (falha no teardown faria a execução falhar com "Falha de limpeza do E2E"); isso é indício, não prova de ausência de resíduos. CC-9b sobre o log: CONFORME. Porta 3100 livre após a execução. Nenhum SQL executado pelo agente. **E1-CC-12 (7 consultas READ ONLY) fica a cargo do responsável.**
+
+Limites: E1 não concluída; Fase B não liberada; incidente de credenciais ABERTO; AUT-E2E-E1-02 consumida.
