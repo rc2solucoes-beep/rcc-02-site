@@ -119,7 +119,7 @@ Obrigam parar (e voltar ao responsável):
 
 | # | Decisão | Quem | Estado |
 |---|---|---|---|
-| 1 | Preflight READ ONLY em produção | Responsável | concedida e utilizada (AUT-READ-PROD-014, 20/10/2026); item 03 do preflight pendente de confirmação individual |
+| 1 | Preflight READ ONLY em produção | Responsável | concedida e utilizada (AUT-READ-PROD-014, 20/10/2026); item 03 confirmado pelo responsável (declarado) |
 | 2 | Apply da 014 em produção | Responsável | **pendente** |
 | 3 | Merge/deploy do PR #40 | Responsável | **pendente** |
 | 4 | `NOTIFY pgrst` (se necessário) | Responsável | só se ocorrer |
