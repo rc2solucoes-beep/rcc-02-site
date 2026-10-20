@@ -144,3 +144,27 @@ E1 não declarada concluída; Fase B não liberada; incidente de credenciais ABE
 **Limites.** (a) A proteção do servidor depende de definir todas as variáveis que o app lê; variável nova exige atualizar `isolatedEnv.ts` (o teste unitário avisa). (b) Morte forçada do processo (Ctrl+C, queda) não roda o teardown: reconciliar com as consultas da seção 7.2 de `AUT-EXEC-E1-2026-10-19.md`. (c) Uma execução real exige autorização específica, que não existe.
 
 **Comando futuro (uma vez):** `RC2_E2E_ISOLATED=1 npm run test:e2e:isolated > "$LOG" 2>&1` (Git Bash; mesmo padrão de log e exit code da suíte de integração), com nenhum servidor na porta 3100 e `.env.test.local` presente.
+
+## 11. Execução AUT-E2E-E1-01 (20/10/2026, uma vez, launcher isolado)
+
+Autorização expressa do responsável (declaração ao agente). HEAD `011c711` (inclui `ba20af8`).
+
+**Gate (automatizado, local):** branch correta e árvore limpa; CC-5 verde em execução normal (148 testes; uma falha inicial era timeout de 5 s no meu teste novo do launcher sob carga, corrigida com timeout de 30 s e commitada antes da execução; sob 5 execuções simultâneas artificiais até um teste antigo estoura 5 s, artefato do estresse); CC-9a CONFORME; guarda estática, 6/6 variáveis e ausência de `env_conflict` CONFORMES; `.env.test.local` ignorado/não rastreado; porta 3100 livre e nada na 3000 usado; Chromium já instalado. O marcador de isolamento é validado **dentro** do `globalSetup` (`createRoleClients`), depois que o Playwright sobe o servidor; não existe validação do marcador anterior ao servidor neste desenho.
+
+**Comando (uma vez):** `RC2_E2E_ISOLATED=1 npm run test:e2e:isolated > test-results/e2e/run-….log`. **`exit=1`.**
+
+**LOG PERDIDO (defeito do procedimento, não do isolamento).** O Playwright apaga o `outputDir` padrão `test-results/` ao iniciar; o log estava dentro dele e foi removido. Não há contagem oficial de aprovados/reprovados nem saída do teardown. Não foi repetida a execução.
+
+**O que sobrou como evidência (CC-9b CONFORME sobre isso):** `test-results/.last-run.json` (`status: failed`, **2 testes reprovados**, nenhum outro listado) e o `error-context.md` dos dois. Como houve falhas reportadas, o spec não foi pulado (`canRun` verdadeiro) e o setup/semeadura funcionou. **Inferência, não observação:** os outros 7 testes não aparecem como reprovados; aprovação deles **não está comprovada** sem o log.
+
+| Teste | Resultado | Causa (evidência do `error-context.md`) |
+|---|---|---|
+| T-CMS-E01 busca/status/período na URL | **REPROVADO** | Defeito do seletor: `getByLabel("De")` casou 5 elementos (modo estrito: "Ordem", seções de mês, botão do Next DevTools). Corrigir com `{ exact: true }`. Não indica defeito do CMS |
+| T-CMS-E03 busca hostil | **REPROVADO** | `getByRole("alert")` achou 1 elemento: um `alert` vazio na raiz da página (anunciador de rota do Next); a página mostrava "Nenhum post encontrado", sem a mensagem de erro do app. Seletor amplo demais; filtrar pelo texto "Não foi possível carregar os posts" |
+| E01 (2 outros), E02 (2), E03 vazio filtrado, E04, E05 | **INCONCLUSIVOS** | Sem log: não observados como aprovados nem reprovados em evidência. Não contam como comprovados |
+
+**Teardown e limpeza: NÃO COMPROVADOS.** Sem o log não há evidência de que o teardown rodou nem do resultado da inspeção de resíduos do harness. Servidor encerrado (nada escutando na 3100; sem processo `next`). **Limpeza manual necessária:** o responsável deve rodar as sete consultas de resíduos (seção 7.2 de `AUT-EXEC-E1-2026-10-19.md`; `e0a-%` cobre `e0a-e2e-<tag>` e `e0a-<tag>-e2eadmin@example.test`). Se houver resíduo, nenhuma exclusão sem autorização.
+
+**Correções necessárias antes de qualquer nova AUT (não aplicadas):** (1) seletor "De"/"Até"/"Status" com `exact`; (2) seletor de alerta de erro; (3) log fora de `test-results/` (ex.: `e2e-logs/`, ignorado pelo Git) ou `outputDir` próprio no config isolado; (4) conferir E04/E05, ainda não observados.
+
+E1 não encerrada; Fase B não liberada; incidente de credenciais ABERTO.
