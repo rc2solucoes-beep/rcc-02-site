@@ -106,3 +106,22 @@ AUT-EXEC-E1-02 concedida expressamente pelo responsável (declaração ao agente
 **Resíduos (E1-CC-12).** Da execução 1: sete consultas feitas pelo responsável, todas com zero (declaração). **Da execução 2: consulta manual PENDENTE.** A execução criou dezenas de posts sintéticos; o agente não consultou o banco. O responsável deve rodar as sete consultas da seção 7.2 do `AUT-EXEC-E1-2026-10-19.md` no isolado. Não houve falha de limpeza que indique resíduo.
 
 **Ressalvas.** (a) Resultados por teste vêm da contagem e do exit code, não de listagem. (b) `--bail 1` não foi acionado. (c) Não é revisão humana nem decisão de homologação: a E1 não é declarada concluída e a Fase B não é liberada por este registro. (d) Incidente de credenciais: ABERTO.
+
+## 9. Consolidação das decisões e fechamento de D3 (19/10/2026, sem acesso a banco)
+
+**Contrato (SDD `2026-10-13-admin-cms-listing-design.md`, seções 6.1 e 9):** página acima do total redireciona para a última página. PGRST103/416 e lista vazia são resultados possíveis da camada de dados; nenhum define sozinho o comportamento da interface. I08 (integração) só prova a camada de dados.
+
+**Inspeção:** a implementação já cumpria o contrato; **nenhum código de produção foi alterado.** `listAdminPosts` devolve `ok:true` com `total` e `pageCount` tanto para lista vazia além do alcance quanto para PGRST103 (uma contagem `head` adicional, só nesse caso); falha vira `ok:false`. `posts/page.tsx` redireciona com `postListHref(params, { page: pageCount })` quando `total > 0 && page > pageCount`. A lacuna era de teste: o redirecionamento da página não tinha cobertura.
+
+**Prova (automatizada, unitária, sem rede):** `tests/unit/admin/postsPagePagination.test.tsx`, 8 testes, renderiza a página real com a camada de dados real e cliente falso: page=99/3 páginas → `/admin/posts?page=3` (lista vazia e PGRST103); page=3 permanece; total=0 com page=5 (vazia e PGRST103) → estado vazio, sem redirecionar nem laço; `q`, `status`, `from`, `to` e `dir` preservados; erro real e PGRST103 seguido de falha na contagem → alerta de erro, não vazio. Ao desativar temporariamente a condição de redirecionamento, 3 testes falharam (sensibilidade confirmada); a alteração foi revertida.
+
+| Decisão | Estado |
+|---|---|
+| D2 | Encerrada pelos 23 casos de I03 (execução 2) |
+| PV-17 | Encerrada pelos testes PostgREST I01, I04, I06, I07 |
+| BL-04 | Aprovada (67 + 29 verificações, 0 divergências) |
+| E1-CC-12 (execução 2) | Sete consultas manuais, todas zero: **declaração do responsável** |
+| D3 | **Encerrada**: contrato de redirecionamento provado pelos testes de página (unitários) e camada de dados por I08 e `listAdminPosts.test.ts`. Limite: qual resposta do PostgREST ocorre no isolado (PGRST103 ou lista vazia) segue não observada; ambas estão cobertas |
+| PV-14 | **PARCIAL**: I05 prova o recálculo de `sort_at` no `UPDATE` equivalente ao cron; o cron real **não** foi executado nem observado |
+
+E1 não declarada concluída; Fase B não liberada; incidente de credenciais ABERTO.
