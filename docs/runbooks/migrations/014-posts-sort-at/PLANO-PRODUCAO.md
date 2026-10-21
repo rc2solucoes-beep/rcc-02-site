@@ -147,7 +147,7 @@ Obrigam parar (e voltar ao responsável):
 | Autorização | AUT-BACKUP-PROD-01 |
 | Ambiente / origem | RCC-02 (produção); exportação CSV **manual pelo responsável, pelo Dashboard** (declarado; o agente não acessou o Supabase) |
 | Validação | local, offline, pelo agente em 21/10/2026 (módulo `csv` do Python; nenhum conteúdo impresso) |
-| Armazenamento | pasta local dedicada `D:\Backups\RC2\RCC-026-10-21`, fora de qualquer repositório Git; cópias das exportações também na pasta de origem do responsável, no Google Drive |
+| Armazenamento | pasta local dedicada `D:\Backups\RC2\RCC-02\2026-10-21`, fora de qualquer repositório Git; cópias das exportações também na pasta de origem do responsável, no Google Drive |
 | Criptografia | **nenhuma, por decisão expressa do responsável** (GnuPG não foi usado) |
 | TAR consolidado | `rcc02-csv-20261021.tar`, 542720 bytes, SHA-256 `2ef6c2fa448bee9eace5ba0abf95046820730375ddc865da07a5b651877bf01a`; 7 membros, estrutura íntegra; conteúdo igual aos CSVs locais e aos da origem (comparação por SHA-256) |
 
