@@ -173,7 +173,7 @@ Obrigam parar (e voltar ao responsável):
 - As exportações por tabela são operações separadas, **não** um snapshot transacional único.
 - **Nenhuma restauração foi testada.** A integridade dos arquivos não comprova, sozinha, a completude de toda a base.
 
-Efeito sobre o §9.2: existe uma cópia dos dados das tabelas de aplicação, validada offline; isso **não** equivale a backup/PITR do projeto nem a procedimento de restauração comprovado. A decisão do responsável sobre aceitar esse nível de proteção (ou obter backup/PITR do painel) segue sendo dele; o item permanece **não encerrado por este agente**. A migration 014 continua **NÃO AUTORIZADA**; sem GO final.
+Efeito sobre o §9.2: existe uma cópia dos dados das tabelas de aplicação, validada offline; isso **não** equivale a backup/PITR do projeto nem a procedimento de restauração comprovado. Em 21/10/2026 o responsável aceitou esse nível de proteção por exceção (PROD-014-BKP-EX01, §9.5). Texto anterior preservado: a decisão sobre aceitar esse nível de proteção (ou obter backup/PITR do painel) era dele. A migration 014 continua **NÃO AUTORIZADA**; sem GO final.
 
 ## 8. Checklist resumido do responsável
 
@@ -184,7 +184,7 @@ Efeito sobre o §9.2: existe uma cópia dos dados das tabelas de aplicação, va
 
 ## 9. Controles pendentes para o GO final (preparados em 20/10/2026; NADA abaixo está aprovado)
 
-Status mantido: **GO TÉCNICO PRELIMINAR — APPLY NÃO AUTORIZADO.** A Autorização 1 (preflight) foi utilizada; os dois controles abaixo e a Autorização 2 (apply) continuam pendentes. A revisão feita pelo agente **não é** revisão humana independente, e E1-REV-EX01 / E1-C14-EX01 **não** se aplicam a produção.
+Atualização de 21/10/2026: os controles prévios foram satisfeitos por dispensa/exceção (PROD-014-REV-EX01 e PROD-014-BKP-EX01, §9.4 e §9.5), sujeitos à confirmação de que não houve mudança relevante desde o preflight; o apply segue **NÃO AUTORIZADO**. Texto original desta seção, preservado: Status mantido: **GO TÉCNICO PRELIMINAR — APPLY NÃO AUTORIZADO.** A Autorização 1 (preflight) foi utilizada; os dois controles abaixo e a Autorização 2 (apply) continuam pendentes. A revisão feita pelo agente **não é** revisão humana independente, e E1-REV-EX01 / E1-C14-EX01 **não** se aplicam a produção.
 
 ### 9.1 Handoff para o segundo revisor humano
 
@@ -255,7 +255,7 @@ Resultado: ☐ proteção confirmada com evidência ☐ aceite de risco registra
 | Preflight de produção conforme (declarado) | cumprido |
 | Item 03 do preflight (coluna e índice ausentes) | confirmado pelo responsável (declarado) |
 | Revisão humana independente (§9.1) ou dispensa expressa | **dispensa aprovada** (PROD-014-REV-EX01, 20/10/2026, §9.4); a revisão independente **não** foi realizada |
-| Backup/ponto de restauração (§9.2) | **PENDENTE** — existe backup CSV validado e não criptografado (§7.1, restauração não testada), que não substitui backup/PITR; decisão do responsável pendente (único bloqueio operacional restante antes de solicitar a Autorização 2, salvo pendência nova na revisão dos registros) |
+| Backup/ponto de restauração (§9.2) | **ACEITO POR EXCEÇÃO** (PROD-014-BKP-EX01, 21/10/2026, §9.5): backup CSV validado e não criptografado (§7.1), restauração não testada; **não** é backup integral recuperável |
 | Autorização específica do responsável para executar a 014 | **pendente** |
 | Merge/deploy (Autorização 3), smoke tests, PV-14 (parcial), 012/013 em produção, incidente de credenciais (ABERTO) | fora desta decisão; pendentes |
 
@@ -297,3 +297,35 @@ Resultado: ☐ proteção confirmada com evidência ☐ aceite de risco registra
 - reutiliza E1-REV-EX01 ou E1-C14-EX01 (válidas só no isolado).
 
 Histórico preservado: os itens 9.1 a 9.3, a revisão estática do agente e o registro do preflight permanecem como foram escritos.
+
+### 9.5 Exceção de backup — PROD-014-BKP-EX01
+
+| Campo | Valor |
+|---|---|
+| Identificador | **PROD-014-BKP-EX01** |
+| Status | **APROVADA** |
+| Data / decisor | 21/10/2026; proprietário/responsável pelo projeto, aprovação expressa na conversa |
+| Ambiente e escopo | RCC-02 (produção); exclusivamente a migration `014_posts_sort_at.sql` |
+| Controle de recuperação | **ACEITO POR EXCEÇÃO** (não é backup integral recuperável) |
+| Apply da 014 | **NÃO AUTORIZADO** |
+| Merge/deploy do PR #40 | **BLOQUEADOS** (Autorização 3 pendente) |
+
+O responsável aceita o backup CSV disponível (§7.1) como controle compensatório **suficiente para a implantação da 014** e assume os riscos residuais: backup apenas dos dados exportados em CSV; ausência de DDL, índices, triggers, policies e funções; sem garantia de cobertura integral de Auth, Storage e configurações do Supabase; exportações sem snapshot transacional único; ausência de teste de restauração; armazenamento não criptografado, inclusive com cópias sincronizadas no Google Drive.
+
+**Evidências preservadas (§7.1):** sete CSVs validados; posts: 20 registros (19 `published`, 1 `scheduled`), sem `id` vazio ou duplicado; TAR `rcc02-csv-20261021.tar`, 542720 bytes, SHA-256 `2ef6c2fa448bee9eace5ba0abf95046820730375ddc865da07a5b651877bf01a`. As limitações documentadas no §7.1 continuam valendo.
+
+**Limites:** o aceite se limita à suficiência desse controle de recuperação para a 014. Não autoriza novos compartilhamentos ou exposição de dados pessoais, não autoriza apply, `NOTIFY`, rollback, merge ou deploy, não encerra PV-14 (parcial) nem o incidente de credenciais (ABERTO), e não vale para 012, 013 ou futuras migrations.
+
+**GO/NO-GO documental (21/10/2026):**
+
+| Condição | Estado |
+|---|---|
+| Preflight de produção conforme (declarado) e item 03 confirmado | satisfeito |
+| Revisão independente | dispensada (PROD-014-REV-EX01); **não realizada** |
+| Recuperação | aceita por exceção (PROD-014-BKP-EX01); restauração não testada |
+| Mudança relevante desde o preflight (20/10/2026) | **a confirmar pelo responsável** antes do apply (ex.: contagem de posts, policies, cron, versão do PostgreSQL) |
+| Autorização 2 — apply da 014 | **pendente / NÃO AUTORIZADO** |
+| Autorização 3 — merge/deploy do PR #40 | **pendente / bloqueados** |
+| Smoke tests, PV-14 (parcial), 012/013 em produção, incidente de credenciais (ABERTO) | pendentes, fora desta decisão |
+
+Não há GO final: os controles prévios estão satisfeitos por exceção, mas a execução depende de autorização específica.
