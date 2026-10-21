@@ -138,6 +138,43 @@ Obrigam parar (e voltar ao responsável):
 | Necessidade de remover `sort_at` | **Somente depois** de o código compatível (anterior) estar implantado e com **autorização separada**; então `rollback.sql` (remove índice e coluna; dado derivado, sem perda). Ponto de não retorno: nenhum. |
 | 012 / 013 | A reversão da 012 **não restaura** acesso `anon` (intencional; corrigir o consumidor, nunca reabrir `anon`). A da 013 é parcial (remove só a policy; `/admin/security` passa a listar zero eventos; não restaura escrita revogada). |
 
+### 7.1 Backup CSV de produção — AUT-BACKUP-PROD-01 (21/10/2026)
+
+**Classificação: BACKUP CSV VALIDADO — NÃO CRIPTOGRAFADO — RESTAURAÇÃO NÃO TESTADA.**
+
+| Campo | Valor |
+|---|---|
+| Autorização | AUT-BACKUP-PROD-01 |
+| Ambiente / origem | RCC-02 (produção); exportação CSV **manual pelo responsável, pelo Dashboard** (declarado; o agente não acessou o Supabase) |
+| Validação | local, offline, pelo agente em 21/10/2026 (módulo `csv` do Python; nenhum conteúdo impresso) |
+| Armazenamento | pasta local dedicada `D:\Backups\RC2\RCC-026-10-21`, fora de qualquer repositório Git; cópias das exportações também na pasta de origem do responsável, no Google Drive |
+| Criptografia | **nenhuma, por decisão expressa do responsável** (GnuPG não foi usado) |
+| TAR consolidado | `rcc02-csv-20261021.tar`, 542720 bytes, SHA-256 `2ef6c2fa448bee9eace5ba0abf95046820730375ddc865da07a5b651877bf01a`; 7 membros, estrutura íntegra; conteúdo igual aos CSVs locais e aos da origem (comparação por SHA-256) |
+
+| Arquivo | Bytes | Registros | Colunas | SHA-256 |
+|---|---|---|---|---|
+| `admin_audit_logs_rows.csv` | 76442 | 204 | 15 | `828fbdfee868d64af8527fa5682aa86221405169647583d9602f0211e925c292` |
+| `admin_users_rows.csv` | 113 | 1 | 3 | `530824a7d878cdf1420902b6d059b30dfa842b3d697394ddc8ebb6c11b956598` |
+| `authors_rows.csv` | 224 | 1 | 8 | `e19629c1bd8db1490accff0920580030ab7d957ee0bcd39d935b17962c2668cd` |
+| `idx02_links_backup_20260928_rows.csv` | 147298 | 13 | 7 | `f539d93ea095c4a901195ecedcd361509212b12055d0ef4824238f504e820011` |
+| `leads_rows.csv` | 2142 | 9 | 12 | `194b9788edbcced41fa49f73a472fd307c168f5e12541a4502d72e1d70c0aa5b` |
+| `posts_rows.csv` | 300814 | 20 | 34 | `86dd5ebc43d66c40f2a1bf0de4ed090aad1f0917110960143556f98d2d6ea399` |
+| `settings_rows.csv` | 1225 | 15 | 13 | `ce8906e82135d7af9add9b2e7988cb93067340c7220d5b770bddc8c02a00e062` |
+
+**Posts:** 20 registros (= baseline do preflight); 19 `published` e 1 `scheduled`; `id`, `status`, `published_at` e `scheduled_publish_at` presentes; sem `id` vazio ou duplicado; sem `sort_at` (esperado: a 014 não foi aplicada). Sem erro de parsing em nenhum arquivo. As seis tabelas de aplicação criadas pelas migrations (`leads`, `posts`, `settings`, `admin_users`, `authors`, `admin_audit_logs`) estão representadas, além de `idx02_links_backup_20260928`. Na pasta de origem existem também `posts_rows.json` e `posts_rows.sql`, que **não** foram validados nem incluídos no TAR.
+
+**Risco de exposição (aceito pelo responsável ao dispensar a criptografia):** os arquivos contêm dados pessoais (leads: nome, e-mail, WhatsApp, mensagem; e-mails de administradores; registros de auditoria com hashes de IP) em texto puro. As cópias na pasta sincronizada do Google Drive ficam sob o controle de acesso e a retenção desse serviço externo; a cópia local depende apenas do acesso à máquina. Nenhum arquivo foi excluído ou movido.
+
+**Limitações de recuperação (não declarar proteção integral):**
+- É backup de **dados em CSV**, não backup completo do PostgreSQL.
+- Não preserva automaticamente DDL, índices, constraints, triggers, policies RLS, funções, privilégios, extensões nem o job do `pg_cron`.
+- Não inclui necessariamente Auth (usuários e sessões), Storage (arquivos binários), Edge Functions, segredos e configurações da plataforma.
+- Tipos como `jsonb`, arrays e timestamps podem exigir tratamento na reimportação; a reimportação exige o esquema já existente.
+- As exportações por tabela são operações separadas, **não** um snapshot transacional único.
+- **Nenhuma restauração foi testada.** A integridade dos arquivos não comprova, sozinha, a completude de toda a base.
+
+Efeito sobre o §9.2: existe uma cópia dos dados das tabelas de aplicação, validada offline; isso **não** equivale a backup/PITR do projeto nem a procedimento de restauração comprovado. A decisão do responsável sobre aceitar esse nível de proteção (ou obter backup/PITR do painel) segue sendo dele; o item permanece **não encerrado por este agente**. A migration 014 continua **NÃO AUTORIZADA**; sem GO final.
+
 ## 8. Checklist resumido do responsável
 
 - [ ] A: pré-requisitos e Autorização 1 → B: preflight + GO/NO-GO registrado
@@ -218,7 +255,7 @@ Resultado: ☐ proteção confirmada com evidência ☐ aceite de risco registra
 | Preflight de produção conforme (declarado) | cumprido |
 | Item 03 do preflight (coluna e índice ausentes) | confirmado pelo responsável (declarado) |
 | Revisão humana independente (§9.1) ou dispensa expressa | **dispensa aprovada** (PROD-014-REV-EX01, 20/10/2026, §9.4); a revisão independente **não** foi realizada |
-| Backup/ponto de restauração (§9.2) | **PENDENTE** (único bloqueio operacional restante antes de solicitar a Autorização 2, salvo pendência nova na revisão dos registros) |
+| Backup/ponto de restauração (§9.2) | **PENDENTE** — existe backup CSV validado e não criptografado (§7.1, restauração não testada), que não substitui backup/PITR; decisão do responsável pendente (único bloqueio operacional restante antes de solicitar a Autorização 2, salvo pendência nova na revisão dos registros) |
 | Autorização específica do responsável para executar a 014 | **pendente** |
 | Merge/deploy (Autorização 3), smoke tests, PV-14 (parcial), 012/013 em produção, incidente de credenciais (ABERTO) | fora desta decisão; pendentes |
 
