@@ -67,3 +67,7 @@ Pendências obrigatórias antes de pedir autorização para o apply:
 3. Autorização específica para executar a migration 014 em produção — **NÃO AUTORIZADA**.
 
 Permanecem também: autorização do merge/deploy, smoke tests, PV-14 parcial, 012/013 não aplicadas em produção e incidente de credenciais ABERTO.
+
+## 5. Desfecho (21/10/2026) — aplicação e verify em produção
+
+A 014 foi aplicada e verificada em produção pelo responsável em 21/10/2026 (AUT-APPLY-PROD-014, consumida): apply `Success. No rows returned.`, verify 9/9 conforme, 20 posts, policies 2 com o mesmo MD5 deste baseline, cron e trigger preservados, sem NOTIFY nem rollback (declarado; o agente não verificou). Detalhes em `docs/runbooks/migrations/014-posts-sort-at/PLANO-PRODUCAO.md` §10. As decisões e pendências das seções anteriores permanecem como registro histórico do preflight; PROD-014-REV-EX01 e PROD-014-BKP-EX01 continuam em vigor com seus riscos residuais.

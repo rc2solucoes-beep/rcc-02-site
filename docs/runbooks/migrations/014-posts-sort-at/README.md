@@ -14,7 +14,7 @@
 
 ## Estado atual
 
-**APLICADA NO ISOLADO (`rc2-test-isolated`), por declaração do responsável em 19/10/2026; NÃO APLICADA em produção.** O agente não executou nenhum SQL deste diretório nem verificou o resultado. Homologação no isolado (20/10/2026): verify 9/9 (declarado), integração 39/39, E2E 9/9; **PV-17, D2 e D3 encerrados; PV-14 PARCIAL** (o cron real não foi executado). Plano de implantação em produção: `PLANO-PRODUCAO.md` (execução não autorizada).
+**APLICADA E VERIFICADA EM PRODUÇÃO (RCC-02) em 21/10/2026 — 9/9 conformes, por declaração do responsável** (AUT-APPLY-PROD-014, consumida; aplicação manual; nenhum NOTIFY nem rollback). Antes, aplicada no isolado (`rc2-test-isolated`) em 19/10/2026. O agente não executou nenhum SQL deste diretório nem verificou o resultado. Merge e deploy do PR #40 NÃO estão autorizados (Draft); migrations 012 e 013 NÃO APLICADAS em produção; incidente de credenciais ABERTO. Homologação no isolado (20/10/2026): verify 9/9 (declarado), integração 39/39, E2E 9/9; **PV-17, D2 e D3 encerrados; PV-14 PARCIAL** (o cron real não foi executado). Plano de implantação em produção: `PLANO-PRODUCAO.md` (registro de produção em §10).
 
 ## O que faz
 
@@ -37,14 +37,14 @@ Adiciona `posts.sort_at timestamptz GENERATED ALWAYS AS (…) STORED NOT NULL` e
 | D2 | Busca literal por filtro PostgREST, inclusive `*` | T-CMS-I03. Ver `DECISAO-D2.md` e `contingencia-rpc-busca.sql` |
 | D3 | Página além do total devolve erro `PGRST103` (416) | T-CMS-I08 |
 
-**PV-13** (posts com `published_at`/`scheduled_publish_at` nulos) só pode ser respondida no **preflight de produção**, porque o isolado não tem posts. **Respondida em 20/10/2026** (preflight de produção, declarado pelo responsável): 0 posts publicados sem `published_at` e 0 agendados sem `scheduled_publish_at`. A pergunta nunca bloqueou a migration. O apply em produção NÃO está autorizado.
+**PV-13** (posts com `published_at`/`scheduled_publish_at` nulos) só pode ser respondida no **preflight de produção**, porque o isolado não tem posts. **Respondida em 20/10/2026** (preflight de produção, declarado pelo responsável): 0 posts publicados sem `published_at` e 0 agendados sem `scheduled_publish_at`. A pergunta nunca bloqueou a migration. O apply em produção foi executado em 21/10/2026 (ver Estado atual); o merge/deploy do PR #40 NÃO está autorizado.
 
 ## Autorização (preencher antes de aplicar em cada ambiente)
 
 | Ambiente | Autorizado por | Data | Observação |
 |---|---|---|---|
 | Isolado (teste) | Responsável (AUT-APPLY-014, por declaração; sem documento próprio) | 19/10/2026 | Aplicada manualmente; verify 9/9 declarado |
-| Produção | | | Apply pendente e NÃO autorizado. Preflight de produção executado em 20/10/2026 (AUT-READ-PROD-014, declarado): `docs/runbooks/evidence/E1-preflight-producao-014-2026-10-20.md`. Dispensa formal da revisão independente aprovada em 20/10/2026 (PROD-014-REV-EX01; a revisão não ocorreu); backup PENDENTE. Ver `PLANO-PRODUCAO.md` §9.4 |
+| Produção | Responsável (AUT-APPLY-PROD-014, consumida) | 21/10/2026 | Aplicada manualmente; verify 9/9 conforme (declarado). Antes: preflight de 20/10/2026 (AUT-READ-PROD-014, declarado) em `docs/runbooks/evidence/E1-preflight-producao-014-2026-10-20.md`; revisão independente dispensada (PROD-014-REV-EX01, não realizada); backup CSV aceito por exceção (PROD-014-BKP-EX01; restauração não testada). Ver `PLANO-PRODUCAO.md` §10 |
 
 ## Ordem
 

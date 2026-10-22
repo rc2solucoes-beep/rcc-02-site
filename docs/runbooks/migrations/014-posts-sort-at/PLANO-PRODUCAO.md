@@ -1,6 +1,6 @@
 # Plano de implantação em produção — E1 (migration 014 + código do CMS)
 
-**STATUS: PLANO PREPARADO — EXECUÇÃO NÃO AUTORIZADA.**
+**STATUS (21/10/2026): MIGRATION 014 APLICADA E VERIFICADA EM PRODUÇÃO (9/9, declarado) — MERGE/DEPLOY DO PR #40 NÃO AUTORIZADOS.** Histórico: o plano foi preparado em 20/10/2026 com o status "PLANO PREPARADO — EXECUÇÃO NÃO AUTORIZADA"; o apply foi depois autorizado (AUT-APPLY-PROD-014) e executado pelo responsável (§10). As fases C a E estão cumpridas; as fases F (merge/deploy) e G (smoke) seguem pendentes.
 
 Preparado em 20/10/2026, somente a partir de arquivos locais. Nenhum acesso a Supabase (produção ou isolado), SQL, migration, merge ou deploy foi feito. Este plano não autoriza nada: cada fase marcada **[AUTORIZAÇÃO]** exige autorização expressa e separada do responsável.
 
@@ -11,7 +11,7 @@ Escopo: PR #40 (`feat/admin-e1-cms`, Draft). Os scripts não são repetidos aqui
 | Item | Estado |
 |---|---|
 | 014 no isolado (`rc2-test-isolated`) | aplicada e verificada 9/9 (declaração do responsável); integração 39/39; E2E 9/9; D2, D3, PV-17, EX-4 encerrados |
-| 014 em produção | **não aplicada**; preflight de produção executado em 20/10/2026 por declaração do responsável (AUT-READ-PROD-014): GO técnico preliminar, apply não autorizado — ver `docs/runbooks/evidence/E1-preflight-producao-014-2026-10-20.md` |
+| 014 em produção | **APLICADA E VERIFICADA em 21/10/2026** (9/9, declarado; §10). Estado anterior: preflight de 20/10/2026 conforme (AUT-READ-PROD-014), ver `docs/runbooks/evidence/E1-preflight-producao-014-2026-10-20.md` |
 | 012 e 013 em produção | **não aplicadas** |
 | PV-14 | **parcial** (cron real não executado; só o `UPDATE` que ele faz foi exercitado) |
 | PV-13 (posts com datas nulas) | só respondível no preflight de produção |
@@ -120,7 +120,7 @@ Obrigam parar (e voltar ao responsável):
 | # | Decisão | Quem | Estado |
 |---|---|---|---|
 | 1 | Preflight READ ONLY em produção | Responsável | concedida e utilizada (AUT-READ-PROD-014, 20/10/2026); item 03 confirmado pelo responsável (declarado) |
-| 2 | Apply da 014 em produção | Responsável | **pendente** |
+| 2 | Apply da 014 em produção | Responsável | **concedida e consumida** (AUT-APPLY-PROD-014, 21/10/2026; §10) |
 | 3 | Merge/deploy do PR #40 | Responsável | **pendente** |
 | 4 | `NOTIFY pgrst` (se necessário) | Responsável | só se ocorrer |
 | 5 | Rollback da 014 (se necessário) | Responsável | só se ocorrer |
@@ -329,3 +329,46 @@ O responsável aceita o backup CSV disponível (§7.1) como controle compensató
 | Smoke tests, PV-14 (parcial), 012/013 em produção, incidente de credenciais (ABERTO) | pendentes, fora desta decisão |
 
 Não há GO final: os controles prévios estão satisfeitos por exceção, mas a execução depende de autorização específica.
+
+## 10. Registro da aplicação e verificação em produção (21/10/2026)
+
+**Fonte: declaração do responsável.** O agente não acessou o Supabase, não executou nem reexecutou nenhum SQL e não verificou o banco diretamente.
+
+| Campo | Valor |
+|---|---|
+| Ambiente | Supabase RCC-02 — produção |
+| Data | 21/10/2026 |
+| Autorização | **AUT-APPLY-PROD-014** (concedida expressamente pelo responsável; **consumida**) |
+| Execução | manual pelo responsável: `supabase/migrations/014_posts_sort_at.sql` e depois `verify.sql` (não repetir) |
+| Resultado do apply | `Success. No rows returned.` |
+| NOTIFY / rollback | **nenhum executado** |
+| Controles prévios | PROD-014-REV-EX01 (revisão independente dispensada; **não realizada**) e PROD-014-BKP-EX01 (backup CSV aceito por exceção; riscos residuais do §7.1 e §9.5 mantidos) |
+
+**Verify — 9/9 conformes (declarado):**
+
+| # | Verificação | Resultado declarado |
+|---|---|---|
+| 1 | Coluna `sort_at` | `attgenerated = s`, `attnotnull = true`, `timestamp with time zone` |
+| 2 | Expressão | published → `coalesce(published_at, created_at)`; scheduled → `coalesce(scheduled_publish_at, updated_at)`; senão `updated_at` |
+| 3 | Integridade | nulos 0; divergentes 0 |
+| 4 | Índice | `posts_sort_at_id_idx` `(sort_at DESC, id DESC)`, `indisvalid = true` |
+| 5 | Índices preservados | `posts_slug`, `posts_status_published_at` |
+| 6 | Total de posts | 20 (= preflight) |
+| 7 | Policies | 2; `impressao_md5` `8953fc15d02f1bf67b61807687eb8e32` (= baseline de produção) |
+| 8 | Cron | `publish-scheduled-posts`, `*/5 * * * *`, `active = true` |
+| 9 | Trigger | `posts_updated_at`, `tgenabled = O` |
+
+Conclusão: **MIGRATION 014 APLICADA E VERIFICADA EM PRODUÇÃO — 9/9 CONFORMES (declarado).** O achado 1 da revisão estática (índices do item 5 não cobertos pelo preflight) ficou resolvido: ambos existem.
+
+**Estado após o registro**
+
+| Item | Estado |
+|---|---|
+| Migration 014 em produção | aplicada e verificada (declarado) |
+| PR #40 | **Draft — merge NÃO autorizado** |
+| Deploy | **NÃO autorizado** |
+| Migrations 012 e 013 em produção | **não aplicadas** |
+| PV-14 | **parcial**: cron configurado e preservado; execução real do job ainda não homologada |
+| Incidente anterior de credenciais | **ABERTO** |
+
+**Pendências antes de liberar o PR #40:** Autorização 3 (merge/deploy) do responsável; CI verde e revisão humana do PR; PR fora de Draft e atualizado com a `main` vigente (reconfirmar testes se avançou); tratamento do incidente de credenciais ou aceite expresso do risco; decisão explícita sobre 012/013; publicação dos commits documentais locais no PR (hoje não publicados); smoke tests não destrutivos após o deploy (Fase G); acompanhamento do PV-14. Observação: a coluna `sort_at` já existe em produção e o código atual de produção não a usa (inofensiva); o PR segue Draft e bloqueado.
