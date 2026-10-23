@@ -32,7 +32,7 @@ Em 23/10/2026, após o deploy, o responsável informou os seguintes resultados d
 
 ## 3. Homologação anterior e controles
 
-- Testes anteriormente reportados: **917 unitários em 85 arquivos**, **39 de integração em três arquivos** no Supabase isolado e **9 E2E** no isolado; não foram reexecutados após o merge exclusivamente documental.
+- Testes anteriormente reportados: **917 unitários em 85 arquivos**, **39 de integração em três arquivos** no Supabase isolado e **9 E2E** no isolado; não foram reexecutados após o merge do PR #40. Os dois últimos commits da branch antes do merge alteraram apenas documentação.
 - **Revisão humana independente do código:** não realizada, **dispensada expressamente** para a E1 conforme `E1-PR40-REV-EX01` (§12 do plano).
 - **Migration 014:** revisão independente dos scripts dispensada **somente para essa implantação** (`PROD-014-REV-EX01`); backup por CSV aceito como exceção (`PROD-014-BKP-EX01`), sem restauração testada e sem equivaler a backup integral.
 - **Autorização 3:** o responsável autorizou expressamente o merge/deploy da E1; o merge ocorreu pelo GitHub CLI. A autorização foi consumida.
