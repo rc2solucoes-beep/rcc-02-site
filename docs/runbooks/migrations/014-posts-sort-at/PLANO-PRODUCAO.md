@@ -395,3 +395,42 @@ Complementa o histórico acima sem alterá-lo. **As informações de produção 
 | Merge / deploy | **NÃO autorizados.** Esta atualização não é um GO. |
 
 Autorizações anteriores (§6) e exceções PROD-014-REV-EX01 e PROD-014-BKP-EX01 permanecem como registradas, com seus riscos residuais.
+
+## 12. Decisões de governança de 23/10/2026 — encerramento da E1
+
+**Fonte e autoridade:** decisões expressas pelo responsável do projeto na conversa de 23/10/2026, após a publicação do commit documental `544cd369` no PR #40. Este registro documenta dispensas e adiamentos; **não equivale a revisão realizada, remediação de incidente, aprovação de merge ou GO de deploy**.
+
+### E1-PR40-REV-EX01 — dispensa de revisão humana independente do código
+
+| Campo | Decisão |
+|---|---|
+| Objeto | Revisão humana independente do código do PR #40, exclusivamente para o release E1 do CMS. |
+| Decisão | **DISPENSADA EXPRESSAMENTE pelo responsável** em 23/10/2026. |
+| Execução real | **NÃO REALIZADA**: zero reviews humanos registrados no PR na última conferência. |
+| Evidências compensatórias | Revisão estática por IA, testes locais e isolados anteriormente registrados e checks da Vercel aprovados para o HEAD `544cd369`. Nenhum desses controles é equivalente a uma revisão humana independente. |
+| Risco residual aceito | Possibilidade de defeitos funcionais, de segurança ou de integração não identificados pela revisão estática e pelos testes. |
+| Limite | Válida apenas para o PR #40 / E1. Não se estende a outros PRs, migrations ou releases. |
+
+A dispensa acima é distinta de `PROD-014-REV-EX01`, cuja validade permanece restrita à revisão independente dos scripts SQL na implantação da migration 014.
+
+### E1-ISO-CRED-DEFER-01 — adiamento da remediação das credenciais isoladas
+
+| Campo | Decisão |
+|---|---|
+| Origem | Incidente registrado em E0a, em 17/10/2026: conteúdo de `.env.test.local` com duas chaves JWT do Supabase isolado entrou no contexto da sessão de um agente. O Reference ID de produção também foi incluído, mas não constitui credencial. |
+| Decisão | O responsável determinou que a rotação/remediação das credenciais isoladas ocorrerá **ao final do projeto RC2 Admin Evolution como um todo**, e **não como condição para o release E1**. |
+| Aceite para E1 | Prosseguir com o processo de release E1 sob risco residual conhecido, sem declarar o incidente solucionado. |
+| Situação técnica | **INCIDENTE ABERTO**; não há evidência de revogação ou rotação das duas chaves JWT; a chave `service_role` do isolado pode ignorar RLS nesse projeto. |
+| Risco residual | Possibilidade de uso indevido das credenciais do ambiente isolado, caso tenham sido retidas ou compartilhadas. A ausência de exposição pública comprovada não demonstra inexistência de exposição. |
+| Pendência futura | Rotacionar/revogar as credenciais aplicáveis, atualizar consumidores, verificar funcionamento e registrar evidências de execução e de eventual análise de uso. |
+| Limite | Adiamento aceito apenas como exceção para o release E1; **não** encerra o incidente, não altera controles de produção nem autoriza novas exposições. |
+
+### Consolidação e próximos gates
+
+- **Preview:** permanece compartilhando Supabase e Vercel Blob com produção. Segregação e Deployment Protection dispensadas/adiadas para E1 por decisão prévia; o risco continua presente. Não realizar escritas administrativas no Preview.
+- **Migration 014:** aplicada e verificada em produção em 21/10/2026, **conforme declaração do responsável** (9/9); não reaplicar.
+- **Migrations 012 e 013:** não aplicadas em produção; fora do escopo E1, com tratamento próprio.
+- **PV-14:** parcial; acompanhar após o deploy, sem declarar homologação end-to-end do cron.
+- **PR #40:** em 23/10/2026, após o push de `544cd369`, tinha 33 commits, estava aberto em Draft, `main` em `9a0cfea`, checks Vercel aprovados e merge sem conflito na última consulta. São fotografias daquele momento, não garantias sobre estado futuro.
+- **Ainda não autorizado:** tirar o PR de Draft, mergear ou publicar em produção. A **Autorização 3** (merge/deploy) continua pendente de decisão expressa e separada do responsável.
+- **Antes do merge:** confirmar novamente HEAD/base, checks e regras de proteção da branch; estabelecer smoke tests não destrutivos e uma via de retorno do código. Merge para `main` aciona deploy automático na Vercel.
