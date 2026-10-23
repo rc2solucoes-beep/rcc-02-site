@@ -372,3 +372,26 @@ Conclusão: **MIGRATION 014 APLICADA E VERIFICADA EM PRODUÇÃO — 9/9 CONFORME
 | Incidente anterior de credenciais | **ABERTO** |
 
 **Pendências antes de liberar o PR #40:** Autorização 3 (merge/deploy) do responsável; CI verde e revisão humana do PR; PR fora de Draft e atualizado com a `main` vigente (reconfirmar testes se avançou); tratamento do incidente de credenciais ou aceite expresso do risco; decisão explícita sobre 012/013; publicação dos commits documentais locais no PR (hoje não publicados); smoke tests não destrutivos após o deploy (Fase G); acompanhamento do PV-14. Observação: a coluna `sort_at` já existe em produção e o código atual de produção não a usa (inofensiva); o PR segue Draft e bloqueado.
+
+## 11. Atualização de 22/10/2026 — preparação documental para a decisão de release
+
+Complementa o histórico acima sem alterá-lo. **As informações de produção deste registro são declaradas pelo responsável**; o agente não acessou o Supabase de produção.
+
+| Item | Situação em 22/10/2026 |
+|---|---|
+| Commits documentais pendentes (§10) | Os nove commits documentais foram publicados no PR #40; **a pendência de publicação está encerrada**. |
+| PR #40 | Aberto, **Draft**, 32 commits, HEAD `3c2723a`. |
+| `main` de referência | Permanece `9a0cfea` na última conferência (22/10/2026). |
+| Checks | `Vercel` e `Vercel Preview Comments` passaram. Não há workflows do GitHub Actions. |
+| Migration 014 | Já aplicada e verificada em produção (9/9, declarado). Não reaplicar. |
+| Segregação do Supabase e do Vercel Blob nos Previews | O responsável **decidiu adiar**. Nenhum novo banco será criado neste release. |
+| Deployment Protection | **Não será exigido** neste release (decisão do responsável). |
+| Isolamento do Preview | **Não há isolamento.** O Preview permanece tecnicamente conectado a recursos de produção (Supabase e Blob). **Risco residual reconhecido pelo responsável**; nada aqui afirma que houve isolamento. |
+| Escrita administrativa no Preview | **Nenhuma operação administrativa de escrita deve ser realizada no Preview** durante a preparação do release. |
+| Revisão humana do código do PR | **Pendente.** |
+| Incidente de credenciais do ambiente isolado | **Aberto**, sem rotação comprovada. |
+| Migrations 012 e 013 | Continuam em processos independentes, **fora do escopo deste release**; não aplicadas em produção. |
+| PV-14 | Parcial. |
+| Merge / deploy | **NÃO autorizados.** Esta atualização não é um GO. |
+
+Autorizações anteriores (§6) e exceções PROD-014-REV-EX01 e PROD-014-BKP-EX01 permanecem como registradas, com seus riscos residuais.

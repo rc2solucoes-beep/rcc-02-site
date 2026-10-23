@@ -62,3 +62,7 @@ Adiciona `posts.sort_at timestamptz GENERATED ALWAYS AS (…) STORED NOT NULL` e
 ## Reversão
 
 **Segura e completa** (`rollback.sql`): remove o índice e a coluna; nada se perde porque o dado é derivado. **Ordem obrigatória: reverter o deploy do código primeiro**, senão a listagem do CMS cai no estado de erro. Ponto de não retorno: não há.
+
+## Falhas ou timeouts em execuções futuras
+
+O comentário do cabeçalho de `014_posts_sort_at.sql` sugere repetir a operação após estouro de `lock_timeout`. Esse artefato já foi aplicado em produção (21/10/2026) e **não deve ser alterado**. Em qualquer falha ou timeout futuro (em outro ambiente ou em reaplicação), **não repetir automaticamente**: avaliar a causa (estado parcial, bloqueios, cron em execução) e obter **nova autorização** do responsável antes de qualquer nova tentativa. Este aviso prevalece sobre o comentário do SQL.
