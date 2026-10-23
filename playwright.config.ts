@@ -4,6 +4,8 @@ const BASE_URL = process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3000";
 
 export default defineConfig({
   testDir: "./tests/e2e",
+  // Escreve posts: só roda por playwright.isolated.config.ts (EX-4), nunca contra o .env.local.
+  testIgnore: /admin-posts-list\.spec\.ts/,
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,

@@ -95,3 +95,5 @@ contrast-audit.html
 
 # Isolated feature worktrees
 .worktrees/
+# Logs do E2E isolado (fora do outputDir do Playwright, que apaga test-results/)
+e2e-logs/
