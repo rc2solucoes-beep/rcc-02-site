@@ -19,6 +19,7 @@ const ALERT_EVENTS = new Set([
   "admin_bootstrap_denied_missing_token",
   "admin_bootstrap_denied_admin_exists",
   "admin_post_action_denied",
+  "admin_lead_action_denied",
   "admin_author_action_denied",
   "admin_upload_invalid_mime",
   "admin_upload_too_large",

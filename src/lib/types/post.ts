@@ -71,18 +71,3 @@ export interface Post {
   faq_items: FaqItem[] | null;
   cta_block: CtaBlock | null;
 }
-
-export interface Lead {
-  id: string;
-  name: string;
-  company: string;
-  email: string;
-  whatsapp: string;
-  segment: string;
-  size: string;
-  solution: string;
-  message: string;
-  source: string;
-  ip_hash: string;
-  created_at: string;
-}

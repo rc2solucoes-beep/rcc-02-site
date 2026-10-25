@@ -78,15 +78,24 @@ describe("nenhum outro código de src/ escreve em leads (EV-07)", () => {
   const root = resolve(process.cwd(), "src");
   const files = walk(root).filter((f) => /\.(ts|tsx)$/.test(f));
 
-  it("só a rota de contato escreve em leads, e com o cliente de serviço", () => {
+  it("só a rota de contato (serviço) e as actions de gestão da E2 (sessão do admin) escrevem em leads", () => {
     const writers = files.filter((f) => {
       const text = readFileSync(f, "utf8");
       return /from\(\s*["']leads["']\s*\)[\s\S]{0,80}\.(insert|update|delete|upsert)\(/.test(text);
     });
-    expect(writers.map((f) => relative(root, f).replaceAll("\\", "/"))).toEqual(["app/api/contact/route.ts"]);
+    expect(writers.map((f) => relative(root, f).replaceAll("\\", "/")).sort()).toEqual([
+      "app/admin/(protected)/leads/actions.ts",
+      "app/api/contact/route.ts",
+    ]);
     const route = readFileSync(resolve(root, "app/api/contact/route.ts"), "utf8");
     expect(route).toMatch(/createServiceClient\(\)/);
     expect(route).not.toMatch(/createSessionClient|createBrowserClient|NEXT_PUBLIC_SUPABASE_ANON_KEY/);
+
+    // E2 (SDD §11): as actions do admin usam a sessão e a RLS; nenhum service_role nem chave anônima direta.
+    const actions = readFileSync(resolve(root, "app/admin/(protected)/leads/actions.ts"), "utf8");
+    expect(actions).toMatch(/createSessionClient\(\)/);
+    expect(actions).toMatch(/requireAdmin\(\)/);
+    expect(actions).not.toMatch(/createServiceClient|createBrowserClient|NEXT_PUBLIC_SUPABASE_ANON_KEY|SUPABASE_SERVICE_ROLE_KEY/);
   });
 
   it("os leitores do admin (dashboard e listagem) usam a sessão autenticada, não a chave anônima direta", () => {

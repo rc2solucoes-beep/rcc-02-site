@@ -1,9 +1,21 @@
 /**
  * Contratos de dados da E2 — Gestão de Leads.
  * Esta tipagem espelha a migration 015 PROPOSTA; não implica que o esquema
- * esteja aplicado em nenhum ambiente. Não importar em consultas de produção
- * até a homologação e o rollout da migration.
+ * esteja aplicado em nenhum ambiente. `LeadRecord` é o tipo canônico de
+ * `public.leads`: os campos de gestão (status, próxima ação, arquivamento,
+ * `updated_at`) só existem no banco depois da migration. Até lá, consultas
+ * em produção devem usar apenas as colunas históricas.
+ * A paridade com `supabase/migrations/015_leads_management.sql` é verificada
+ * por `tests/unit/lib/leadContractParity.test.ts`.
  */
+
+/** Limites espelhados dos CHECKs da migration 015. */
+export const LEAD_NEXT_ACTION_MAX_LENGTH = 280;
+export const LEAD_NOTE_MIN_LENGTH = 1;
+export const LEAD_NOTE_MAX_LENGTH = 2000;
+/** Confirmação literal da exclusão permanente (RF-LEAD-07, DEC-09). */
+export const LEAD_DELETE_CONFIRMATION = "EXCLUIR";
+
 export const LEAD_STATUSES = [
   "new",
   "in_review",
@@ -79,15 +91,29 @@ export type LeadNote = {
   created_at: string;
 };
 
-export type LeadActivity = {
+type LeadActivityBase = {
   id: string;
   lead_id: string;
   actor_id: string | null;
-  kind: LeadActivityKind;
-  from_value: string | null;
-  to_value: string | null;
   created_at: string;
 };
+
+/**
+ * Só `status_changed` carrega valores (enum, não PII); os demais eventos não
+ * gravam `from_value`/`to_value`. Na migration 015 a constraint
+ * `lead_activity_status_values_check` rejeita `status_changed` com valor nulo
+ * e exige valores nulos nos demais eventos; o trigger `leads_30_activity`
+ * (função `rc2_internal.leads_record_activity`) produz as linhas, mas a garantia final é da constraint.
+ */
+export type LeadActivity = LeadActivityBase &
+  (
+    | { kind: "status_changed"; from_value: LeadStatus; to_value: LeadStatus }
+    | {
+        kind: Exclude<LeadActivityKind, "status_changed">;
+        from_value: null;
+        to_value: null;
+      }
+  );
 
 export type LeadMutationResult =
   | { ok: true; unchanged?: boolean }
