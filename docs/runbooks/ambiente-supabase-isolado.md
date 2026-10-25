@@ -172,9 +172,11 @@ Só com o gate C14 resolvido (via A ou via B) **e** autorização expressa da ex
 ```bash
 mkdir -p test-results/integration
 LOG="test-results/integration/run-$(date +%Y%m%dT%H%M%S).log"
-npm run test:integration > "$LOG" 2>&1; STATUS=$?
+RC2_E2_PHASE=pre015 npm run test:integration > "$LOG" 2>&1; STATUS=$?   # ou post015
 echo "exit=$STATUS"; tail -25 "$LOG"
 ```
+
+**`RC2_E2_PHASE` é obrigatório (E2).** Valores aceitos: `pre015` (esquema 012, antes da migration 015) e `post015` (depois da 015). Sem a variável, ou com outro valor, as suítes legadas `baseline` e `e0b-security` falham de propósito (`requireLegacyLeadPhase`): as expectativas sobre `leads` diferem entre as fases (UPDATE de `message` pelo admin: permitido antes, negado depois; DELETE de leads pelo admin: negado antes, permitido depois). Declare a fase que corresponde ao estado real do banco; uma fase divergente do esquema produz falha, e isso é o comportamento esperado. As autorizações AUT-D5 e AUT-EXEC já emitidas para a E0/E1 **não** cobrem a E2 nem a fase `post015`: a execução com a 015 exige autorização própria. Os procedimentos da 015 (medição de locks, limpeza de fixtures) ficam em `docs/runbooks/migrations/015-leads-management/README.md`.
 
 `exit=0` é o único resultado de sucesso. Qualquer outro valor, ou qualquer divergência, aciona o procedimento de falha da Task 8 (Step 4): parar, registrar, preservar, tratar resíduos só no projeto de teste e exigir nova autorização antes de repetir. Não há reexecução automática.
 
