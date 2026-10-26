@@ -33,7 +33,13 @@ export const NEUTRALIZED_ENV_NAMES = [
 ] as const;
 
 /** Variáveis do aplicativo que recebem valor sintético próprio. */
-export const SYNTHETIC_ENV_NAMES = ["AUDIT_LOG_SALT", "IP_SALT", "NEXT_PUBLIC_SITE_URL"] as const;
+export const SYNTHETIC_ENV_NAMES = [
+  "AUDIT_LOG_SALT",
+  "IP_SALT",
+  "NEXT_PUBLIC_SITE_URL",
+  "RATE_LIMIT_PEPPER", // >= 32 caracteres: abaixo disso a rota de contato fecha (E0c)
+  "TRUST_CLOUDFLARE_PROXY", // "false": cf-connecting-ip nunca é confiável no E2E
+] as const;
 
 /** Variáveis do Supabase, sempre vindas do alvo verificado. */
 export const SUPABASE_ENV_NAMES = ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY", "SUPABASE_SERVICE_ROLE_KEY"] as const;
@@ -47,6 +53,8 @@ export function buildIsolatedServerEnv(target: Pick<VerifiedTarget, "url" | "ano
   env.AUDIT_LOG_SALT = `e2e-${randomUUID()}`;
   env.IP_SALT = `e2e-${randomUUID()}`;
   env.NEXT_PUBLIC_SITE_URL = E2E_BASE_URL;
+  env.RATE_LIMIT_PEPPER = `e2e-${randomUUID()}`;
+  env.TRUST_CLOUDFLARE_PROXY = "false";
   env.NEXT_PUBLIC_SUPABASE_URL = target.url;
   env.NEXT_PUBLIC_SUPABASE_ANON_KEY = target.anonKey;
   env.SUPABASE_SERVICE_ROLE_KEY = target.serviceKey;
