@@ -7,6 +7,7 @@ const ERROR_MESSAGE: Record<Extract<LeadMutationResult, { ok: false }>["error"],
   not_found: "Lead não encontrado. Ele pode ter sido excluído.",
   conflict: "Este lead foi alterado por outra pessoa. Recarregue a página para ver a versão atual.",
   failed: "Não foi possível concluir a ação. Tente novamente.",
+  disabled: "A exclusão definitiva está suspensa. Use o arquivamento para retirar o lead da lista.",
 };
 
 /** Mensagem da tela para o resultado de uma Server Action de leads. Sucesso: "Salvo." ou aviso de nada a salvar. */

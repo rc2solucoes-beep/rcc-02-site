@@ -117,4 +117,4 @@ export type LeadActivity = LeadActivityBase &
 
 export type LeadMutationResult =
   | { ok: true; unchanged?: boolean }
-  | { ok: false; error: "invalid" | "unauthorized" | "forbidden" | "not_found" | "conflict" | "failed" };
+  | { ok: false; error: "invalid" | "unauthorized" | "forbidden" | "not_found" | "conflict" | "failed" | "disabled" };

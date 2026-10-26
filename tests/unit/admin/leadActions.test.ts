@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 // Server Actions de leads (SDD §10.2, T-LEAD-U01..U05). Tudo com dublês: nenhum banco é acessado.
 
@@ -243,7 +243,10 @@ describe("archiveLead / restoreLead", () => {
   });
 });
 
-describe("deleteLead (T-LEAD-U03, RF-LEAD-07)", () => {
+describe("deleteLead com a exclusão habilitada (T-LEAD-U03, RF-LEAD-07; LEADS_DELETE_ENABLED=true)", () => {
+  beforeEach(() => vi.stubEnv("LEADS_DELETE_ENABLED", "true"));
+  afterEach(() => vi.unstubAllEnvs());
+
   it.each(["", "excluir", "EXCLUIR ", "Excluir", "SIM"])("confirmação %j é recusada no servidor sem excluir", async (confirmation) => {
     expect(await deleteLead({ id: ID, confirmation })).toEqual({ ok: false, error: "invalid" });
     expect(state.calls).toHaveLength(0);
@@ -276,6 +279,51 @@ describe("deleteLead (T-LEAD-U03, RF-LEAD-07)", () => {
     state.remove = { data: [{ id: ID }, { id: "outro" }], error: null };
     expect(await deleteLead({ id: ID, confirmation: "EXCLUIR" })).toEqual({ ok: false, error: "failed" });
     expect(redirectMock).not.toHaveBeenCalled();
+  });
+});
+
+describe("deleteLead suspenso (fail-closed; camada 1 da mitigação P1-2)", () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it("sem LEADS_DELETE_ENABLED: recusa, não abre o banco, audita o bloqueio sem dados pessoais", async () => {
+    vi.stubEnv("LEADS_DELETE_ENABLED", undefined as unknown as string);
+    expect(await deleteLead({ id: ID, confirmation: "EXCLUIR" })).toEqual({ ok: false, error: "disabled" });
+    expect(state.calls).toHaveLength(0); // nenhuma leitura nem DELETE
+    expect(redirectMock).not.toHaveBeenCalled();
+    expect(events()).toEqual(["admin_lead_delete_blocked"]);
+    const [input] = audit.mock.calls[0] as [Record<string, unknown>];
+    expect(input).toMatchObject({ severity: "warning", resourceType: "lead", resourceId: ID, status: 403 });
+    expect(input.metadata ?? null).toBeNull();
+  });
+
+  it.each(["false", "1", "TRUE", "True", "true ", " true", "yes", ""])("valor %j não habilita (só o texto exato `true`)", async (value) => {
+    vi.stubEnv("LEADS_DELETE_ENABLED", value);
+    expect(await deleteLead({ id: ID, confirmation: "EXCLUIR" })).toEqual({ ok: false, error: "disabled" });
+    expect(state.calls).toHaveLength(0);
+    expect(events()).toEqual(["admin_lead_delete_blocked"]);
+  });
+
+  it("a autorização vem antes do bloqueio: sem admin, o resultado é unauthorized/forbidden e não há evento de bloqueio", async () => {
+    state.admin = { ok: false, status: 403, userId: null, email: null };
+    expect(await deleteLead({ id: ID, confirmation: "EXCLUIR" })).toEqual({ ok: false, error: "forbidden" });
+    expect(events()).toEqual(["admin_lead_action_denied"]);
+    expect(state.calls).toHaveLength(0);
+  });
+
+  it("a validação Zod e a confirmação literal vêm antes do bloqueio: entrada inválida continua `invalid`", async () => {
+    expect(await deleteLead({ id: "x", confirmation: "EXCLUIR" })).toEqual({ ok: false, error: "invalid" });
+    expect(await deleteLead({ id: ID, confirmation: "excluir" })).toEqual({ ok: false, error: "invalid" });
+    expect(events()).toEqual([]);
+    expect(state.calls).toHaveLength(0);
+  });
+
+  it("arquivar e restaurar não dependem do flag", async () => {
+    vi.stubEnv("LEADS_DELETE_ENABLED", "false");
+    expect(await archiveLead({ id: ID, expectedUpdatedAt: EXPECTED })).toEqual({ ok: true });
+    state.current = { status: "new", next_action: null, next_action_at: null, archived_at: "2026-10-01T00:00:00+00:00" };
+    expect(await restoreLead({ id: ID, expectedUpdatedAt: EXPECTED })).toEqual({ ok: true });
+    expect(events()).toEqual(["admin_lead_archived", "admin_lead_restored"]);
+    expect(writes().every((w) => w.op === "update")).toBe(true);
   });
 });
 

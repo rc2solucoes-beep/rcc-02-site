@@ -10,6 +10,7 @@ import { LeadStatusBadge } from "@/components/admin/leads/LeadStatusBadge";
 import { LeadStatusForm } from "@/components/admin/leads/LeadStatusForm";
 import { LeadTimeline } from "@/components/admin/leads/LeadTimeline";
 import { getLeadDetail } from "@/lib/admin/getLeadDetail";
+import { isLeadDeletionEnabled } from "@/lib/admin/leadFeatures";
 import { LEADS_LIST_PATH, isNextActionOverdue, leadSolutionLabel } from "@/lib/admin/leadList";
 import { requireAdmin } from "@/lib/admin/requireAdmin";
 import { formatSaoPauloDateTime } from "@/lib/datetime";
@@ -144,7 +145,13 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             />
             <div className="flex flex-wrap items-start gap-3 border-t border-rc2-border-soft pt-4">
               <LeadArchiveButton leadId={lead.id} archived={archived} expectedUpdatedAt={lead.updated_at} />
-              <DeleteLeadDialog leadId={lead.id} leadLabel={lead.name} />
+              {isLeadDeletionEnabled() ? (
+                <DeleteLeadDialog leadId={lead.id} leadLabel={lead.name} />
+              ) : (
+                <p className="max-w-xs text-xs text-rc2-text-secondary">
+                  Exclusão definitiva suspensa. Arquive o lead para tirá-lo da lista.
+                </p>
+              )}
             </div>
           </section>
         </div>

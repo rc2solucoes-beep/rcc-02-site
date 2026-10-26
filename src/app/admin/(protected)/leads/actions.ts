@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireAdmin } from "@/lib/admin/requireAdmin";
 import { writeAdminAuditLog } from "@/lib/admin/auditLog";
+import { isLeadDeletionEnabled } from "@/lib/admin/leadFeatures";
 import { createSessionClient } from "@/lib/supabase/server";
 import {
   LEAD_DELETE_CONFIRMATION,
@@ -251,7 +252,8 @@ export async function restoreLead(input: { id: string; expectedUpdatedAt: string
 }
 
 /**
- * Exclusão permanente (RF-LEAD-07, DEC-09). A confirmação literal é validada AQUI, no servidor.
+ * Exclusão permanente (RF-LEAD-07, DEC-09). Suspensa por padrão (`LEADS_DELETE_ENABLED`, ver
+ * `leadFeatures.ts`). A confirmação literal é validada AQUI, no servidor.
  * Sucesso = exatamente 1 linha devolvida pelo DELETE; qualquer outro resultado é falha e gera
  * `admin_lead_delete_failed`. Em sucesso redireciona à lista.
  */
@@ -261,6 +263,12 @@ export async function deleteLead(input: { id: string; confirmation: string }): P
   const parsed = leadDeleteInput.safeParse(input);
   if (!parsed.success || parsed.data.confirmation !== LEAD_DELETE_CONFIRMATION) return { ok: false, error: "invalid" };
   const { id } = parsed.data;
+
+  // Suspensa (fail-closed): recusa ANTES de abrir o cliente do banco. A camada 2 é a migration 016.
+  if (!isLeadDeletionEnabled()) {
+    await audit(guard.admin, "admin_lead_delete_blocked", id, 403, null, "warning");
+    return { ok: false, error: "disabled" };
+  }
 
   const supabase = await createSessionClient();
   const { data, error } = await supabase.from("leads").delete().eq("id", id).select("id");
