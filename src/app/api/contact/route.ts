@@ -3,6 +3,8 @@ import crypto from "crypto";
 import { Resend } from "resend";
 import { contactApiSchema } from "@/lib/validations/contact";
 import { createServiceClient } from "@/lib/supabase/server";
+import { getClientIp } from "@/lib/security/clientIp";
+import { verifyTurnstile } from "@/lib/security/turnstile";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -10,65 +12,11 @@ function hashIp(ip: string): string {
   return crypto.createHash("sha256").update(ip + (process.env.IP_SALT ?? "rc2")).digest("hex").slice(0, 16);
 }
 
-function getIp(req: NextRequest): string {
-  // Vercel/Cloudflare sets CF-Connecting-IP (real client IP)
-  // X-Forwarded-For is second-order; split to get first (leftmost) IP
-  // which is the actual client before proxy chain
-  const cfConnectingIp = req.headers.get("cf-connecting-ip");
-  if (cfConnectingIp) return cfConnectingIp;
-
-  const xForwardedFor = req.headers.get("x-forwarded-for");
-  if (xForwardedFor) {
-    return xForwardedFor.split(",")[0]?.trim() ?? "unknown";
-  }
-
-  return req.headers.get("x-real-ip") ?? "unknown";
-}
-
-// ─── Turnstile verification ───────────────────────────────────────────────────
-
-function hasRealTurnstileSecret(secret: string | undefined): secret is string {
-  return Boolean(secret && secret !== "xxxx");
-}
-
-async function verifyTurnstile(token: string, ip: string): Promise<boolean> {
-  const secret = process.env.TURNSTILE_SECRET_KEY;
-  const isProduction = process.env.NODE_ENV === "production";
-  const hasRealSecret = hasRealTurnstileSecret(secret);
-  const shouldValidate = hasRealSecret;
-
-  // Allow local/test bypass only when no real secret is configured
-  if (!shouldValidate) return true;
-
-  // With real secret configured, token is always required
-  if (!token) {
-    return false;
-  }
-
-  const res = await fetch(
-    "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ secret, response: token, remoteip: ip }),
-    }
-  );
-
-  if (!res.ok) return false;
-
-  const data = (await res.json()) as { success: boolean };
-
-  // In production with real secret, only explicit success is accepted
-  if (isProduction && hasRealSecret) {
-    return data.success === true;
-  }
-
-  return data.success;
-}
-
 // ─── Rate limit via Supabase ──────────────────────────────────────────────────
 
-async function isRateLimited(email: string, ipHash: string): Promise<boolean> {
+// Sem IP confiável (ipHash nulo) o limite por e-mail continua valendo; a E0c move isso para
+// contadores próprios.
+async function isRateLimited(email: string, ipHash: string | null): Promise<boolean> {
   try {
     const supabase = createServiceClient();
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
@@ -76,7 +24,7 @@ async function isRateLimited(email: string, ipHash: string): Promise<boolean> {
     const { count } = await supabase
       .from("leads")
       .select("id", { count: "exact", head: true })
-      .or(`email.eq.${email},ip_hash.eq.${ipHash}`)
+      .or(ipHash ? `email.eq.${email},ip_hash.eq.${ipHash}` : `email.eq.${email}`)
       .gte("created_at", oneHourAgo);
 
     return (count ?? 0) >= 3;
@@ -210,12 +158,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true });
   }
 
-  const ip = getIp(req);
-  const ipHash = hashIp(ip);
+  const ip = getClientIp(req.headers, { trustCloudflare: process.env.TRUST_CLOUDFLARE_PROXY === "true" });
+  const ipHash = ip ? hashIp(ip) : null;
 
-  // 3. Turnstile verification (always required)
-  const valid = await verifyTurnstile(turnstileToken, ip);
-  if (!valid) {
+  // 3. Turnstile verification (negado em produção/preview sem segredo válido)
+  const turnstile = await verifyTurnstile(turnstileToken, { ip });
+  if (!turnstile.ok) {
     return NextResponse.json(
       { error: "Não foi possível validar a verificação de segurança. Recarregue a página e tente novamente ou fale pelo WhatsApp." },
       { status: 400 }
