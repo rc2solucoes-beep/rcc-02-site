@@ -1,6 +1,6 @@
 # Migration 016 — Suspender a exclusão definitiva de leads (E2)
 
-**ESTADO: PROPOSTA, NÃO APLICADA EM NENHUM AMBIENTE. NÃO EXECUTAR SQL SEM AUTORIZAÇÃO ESPECÍFICA POR AMBIENTE.**
+**ESTADO: APLICADA MANUALMENTE EM PRODUÇÃO (`RCC-02`), por declaração do operador (verify 16/16). No isolado, só o estado pós-016 foi verificado; a origem da aplicação lá não foi comprovada. NÃO EXECUTAR SQL SEM AUTORIZAÇÃO ESPECÍFICA POR AMBIENTE; NÃO REAPLICAR (o guard aborta).**
 
 | Campo | Valor |
 |---|---|
@@ -75,4 +75,5 @@ A reabilitação **não** é um rollback e **não** se faz só com `LEADS_DELETE
 
 ## Evidências
 
-Nenhuma ainda: a 016 não foi aplicada em nenhum ambiente.
+- **Produção (`RCC-02`):** `docs/runbooks/evidence/E2-producao-016-2026-10-26.md` (verify 16/16, SHA-256 `2ca3d94cbca1f8a04fcf04c92e917df63a3c40908638e49b750372da5dc81265`; informado pelo operador, sem verificação independente).
+- **Isolado:** estado pós-016 verificado (verify 16/16 e suíte `post016` 20 aprovados), sem prova de quem aplicou a 016 lá; ver a mesma evidência, §5.
