@@ -5,6 +5,7 @@ import { CleanupRegistry, runTeardownPhases } from "../support/cleanup";
 import { HarnessError, describeError, sanitizeThrown } from "../support/errors";
 import { createRoleClients, type RoleClients } from "../support/clients";
 import { makeAuthor, makeLead, makePost, makeSetting } from "../support/fixtures";
+import { requireLegacyLeadPhase, type E2Phase } from "../support/e2Fixtures";
 import {
   matrixEntries,
   mismatches,
@@ -26,6 +27,12 @@ import {
 // anônimo em `leads` (R1, E0b.2), o DELETE de `leads` (E2) nem
 // `admin_audit_logs` (E0b.3). Todo efeito é confirmado pelo cliente service_role
 // do ambiente isolado; negação exige fixture confirmada e estado inalterado.
+//
+// FASE EXPLÍCITA (A5): a migration 015 muda UMA linha desta matriz — o UPDATE de `message` em
+// `leads` pelo admin (PRP-01: authenticated só atualiza status, next_action, next_action_at e
+// archived_at). RC2_E2_PHASE=pre015 (015 NÃO aplicada: admin ALLOW), post015 (015 aplicada) ou
+// post016 (015 e 016 aplicadas): nas duas últimas o admin é DENY (42501). Sem a variável a suíte FALHA; nada é detectado por sondagem de privilégio.
+// Anon e não-admin permanecem DENY nas duas fases, e as demais tabelas não mudam.
 
 type Expectation = [anon: Outcome, nonAdmin: Outcome, admin: Outcome, service: Outcome];
 type Observation = Outcome | "error";
@@ -36,6 +43,7 @@ const ROLE_ORDER: Role[] = ["anon", "authenticated_non_admin", "authenticated_ad
 
 const registry = new CleanupRegistry();
 let c: RoleClients | undefined;
+let phase: E2Phase | undefined;
 let tearing: Promise<string[]> | undefined;
 let adminEmail = "";
 let fxPostPublished: Fixture;
@@ -100,6 +108,7 @@ async function runCases(cases: Case[]): Promise<void> {
 
 beforeAll(async () => {
   try {
+    phase = requireLegacyLeadPhase();
     c = await createRoleClients();
     const k = clients();
 
@@ -209,9 +218,10 @@ describe("matriz de RLS sobre tabelas de política estável (67 verificações)"
         run: async (_r, cl) => observeUpdate(cl, svc(), await makeAuthor(svc(), registry, tag()), "title", unique()),
       },
       {
+        // `message` está fora da PRP-01: pré-015 o admin atualiza; pós-015 recebe 42501.
         table: "leads",
         operation: "UPDATE",
-        expected: [DENY, DENY, ALLOW, ALLOW],
+        expected: phase === "pre015" ? [DENY, DENY, ALLOW, ALLOW] : [DENY, DENY, DENY, ALLOW],
         run: async (_r, cl) => observeUpdate(cl, svc(), await makeLead(svc(), registry, tag()), "message", unique()),
       },
       {

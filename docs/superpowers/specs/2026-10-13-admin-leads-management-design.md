@@ -250,7 +250,7 @@ Reaproveita `parse…`, `escapeSearchTerm` e `Pagination` descritos no SDD CMS �
 | `archived_at` | `timestamptz` | nulo = ativo |
 | `updated_at` | `timestamptz NOT NULL DEFAULT now()` | atualizado pelo `update_updated_at()` **existente, sem alteração**, disparado por trigger `BEFORE UPDATE ... WHEN (OLD.* IS DISTINCT FROM NEW.*)`, de modo que uma atualização sem mudança real **não** altera `updated_at` (§9.3); não é gravável pelo admin |
 
-`ADD COLUMN` com default constante é só de metadados: as 9 linhas existentes ficam `new`. O CHECK é criado como `NOT VALID` e depois validado, para evitar varredura com bloqueio longo. Nenhuma coluna existente é alterada. `POST /api/contact` não muda (RF-LEAD-09).
+`ADD COLUMN` com default constante é só de metadados: as 9 linhas existentes ficam `new`. **Nota de implementação (E2/A2, 23/10/2026):** `updated_at` é criado nulável, recebe `created_at` nos leads históricos por um único `UPDATE` executado antes de existir qualquer trigger (sem atividade, sem passar por `update_updated_at()`) e só então ganha `DEFAULT now()` e `NOT NULL`; o estado final é o da tabela acima. `status_updated_at` permanece `NULL` nos históricos. A migration também aborta (guard) se a 012 não tiver removido o acesso `anon`, sem substituir o PV-20. O CHECK é criado como `NOT VALID` e depois validado, para evitar varredura com bloqueio longo. Nenhuma coluna existente é alterada. `POST /api/contact` não muda (RF-LEAD-09).
 
 Rótulos: Novo, Em análise, Contatado, Qualificado, Encerrado.
 
@@ -310,7 +310,7 @@ O trigger 3 insere a linha de atividade usando `auth.uid()` como `actor_id`. Iss
 | `OLD.next_action IS DISTINCT FROM NEW.next_action` ou `OLD.next_action_at IS DISTINCT FROM NEW.next_action_at` | **um** `next_action_changed` por atualização |
 | `OLD.archived_at IS NULL AND NEW.archived_at IS NOT NULL` | `archived` |
 | `OLD.archived_at IS NOT NULL AND NEW.archived_at IS NULL` | `restored` |
-| `archived_at` passando de um valor não nulo para outro valor não nulo | nenhum |
+| `archived_at` passando de um valor não nulo para outro valor não nulo | nenhum (`archived`/`restored` exigem transição entre nulo e não nulo). É **mudança real**: `updated_at` é atualizado pelo trigger 2 e `status_updated_at` não muda |
 | nenhuma coluna monitorada mudou | **nenhum evento** |
 
 **Normalização antes de comparar:** `next_action` com apenas espaços ou vazio é gravado como nulo (a action e o trigger 1 normalizam do mesmo modo), de modo que `''` → `NULL` não conta como mudança. **A action não escreve** quando o valor pedido é igual ao atual: devolve `{ ok, unchanged: true }` sem `UPDATE`, sem mexer em `updated_at` e sem invalidar a trava otimista de quem está editando em paralelo. Os triggers são a segunda barreira, para escritas que não passem pela action.
@@ -448,7 +448,7 @@ Eventos de auditoria do §11; `console.error` com código do Postgres e `resourc
 | T-LEAD-I06 | Excluir lead remove `lead_notes` e `lead_activity` (cascade com RLS ativa) | RF-LEAD-07 |
 | T-LEAD-I07 | Migration sobre linhas existentes: todas `new`, nenhuma coluna antiga alterada | RF-LEAD-09 |
 | T-LEAD-I08 | Trigger registra atividade para status, próxima ação, arquivar e restaurar | RF-LEAD-08 |
-| T-LEAD-I12 | `UPDATE` sem mudança real (mesmo status, mesma próxima ação, `''` → `NULL`, `archived_at` não nulo → outro não nulo) não gera nenhum evento de atividade **e não altera `updated_at` nem `status_updated_at`** | RF-LEAD-08 |
+| T-LEAD-I12 | `UPDATE` sem mudança real (mesmo status, mesma próxima ação, `''` → `NULL`, mesmo valor após normalização) não gera nenhum evento de atividade **e não altera `updated_at` nem `status_updated_at`**. Caso distinto, na mesma verificação: `archived_at` de um valor não nulo para **outro** não nulo é mudança real — **atualiza `updated_at`**, não altera `status_updated_at` e não gera `archived` nem `restored` | RF-LEAD-08 |
 | T-LEAD-I13 | Mudança simultânea de `next_action` e `next_action_at` gera um único `next_action_changed` | RF-LEAD-08 |
 | T-LEAD-I14 | **Concorrência:** duas atualizações paralelas com o mesmo `expectedUpdatedAt` — uma tem sucesso, a outra recebe 0 linhas (conflito) e não sobrescreve; um `UPDATE` sem mudança feito entre a leitura e a escrita **não** causa conflito falso | RF-LEAD-10 |
 | T-LEAD-I15 | **Compatibilidade das fases:** a ordem `leads_10` → `leads_20` → `leads_30` se mantém; a cláusula `WHEN` do trigger 2 enxerga a normalização do trigger 1; mudança real de status ajusta `status_updated_at` e `updated_at` e gera 1 atividade; escrita de `service_role` em coluna não monitorada ajusta `updated_at` sem atividade; `update_updated_at()` continua servindo `posts` e `settings` sem alteração | RF-LEAD-08 |

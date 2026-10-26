@@ -23,7 +23,7 @@
 | Ambiente | Autorizado por | Data | Observação |
 |---|---|---|---|
 | Isolado (teste) | Operador | 17/10/2026 | Aplicada manualmente no SQL Editor de `rc2-test-isolated` |
-| Produção | | | |
+| Produção (`RCC-02`) | Operador, autorização específica | 25/10/2026 | Aplicada manualmente no SQL Editor; `verify.sql` conforme (valores informados). Evidência: `docs/runbooks/evidence/E2-producao-012-013-015-2026-10-25.md` |
 
 ## Ordem
 
@@ -37,7 +37,7 @@
 
 **Ambiente isolado (`rc2-test-isolated`), 17/10/2026** — aplicada manualmente pelo operador no SQL Editor; sem erro. `verify.sql`: índices `actor_user_id`, `created_at` e `event` presentes. `npm run test:integration`: 2 arquivos, 9 testes aprovados; matriz E0b 29/29 sem divergência.
 
-**Produção: NÃO aplicada.** Aguarda autorização explícita.
+**Produção (`RCC-02`): APLICADA em 25/10/2026**, por declaração do operador. Ver `docs/runbooks/evidence/E2-producao-012-013-015-2026-10-25.md` e `migrations/REGISTRO.md`.
 
 Evidência completa: `docs/runbooks/evidence/E0b-2026-10-17.md`.
 

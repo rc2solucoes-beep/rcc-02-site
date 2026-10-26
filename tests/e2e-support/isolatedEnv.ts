@@ -21,6 +21,7 @@ export const NEUTRALIZED_ENV_NAMES = [
   "GOOGLE_PLACES_API_KEY",
   "GOOGLE_PLACE_ID",
   "LEAD_NOTIFICATION_EMAIL",
+  "LEADS_DELETE_ENABLED", // valor neutro ≠ "true": a exclusão definitiva fica suspensa no E2E
   "NEXT_PUBLIC_GTM_ID",
   "NEXT_PUBLIC_SENTRY_DSN",
   "NEXT_PUBLIC_TURNSTILE_SITE_KEY",

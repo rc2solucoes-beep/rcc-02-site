@@ -64,6 +64,7 @@ const DENIED_EVENTS = new Set([
   "admin_bootstrap_denied_admin_exists",
   "admin_author_action_denied",
   "admin_post_action_denied",
+  "admin_lead_action_denied",
   "admin_upload_denied_no_session",
   "admin_upload_denied_not_admin",
 ]);

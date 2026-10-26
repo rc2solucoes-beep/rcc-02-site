@@ -5,6 +5,7 @@ import { CleanupRegistry, runTeardownPhases } from "../support/cleanup";
 import { describeError, sanitizeThrown } from "../support/errors";
 import { createRoleClients, type RoleClients } from "../support/clients";
 import { makeAuditLog, makeLead } from "../support/fixtures";
+import { requireLegacyLeadPhase, type E2Phase } from "../support/e2Fixtures";
 import {
   matrixEntries,
   mismatches,
@@ -20,6 +21,12 @@ import { check, observeDelete, observeInsert, observeSelect, observeUpdate, type
 // a matriz diverge de propósito (leads_anon_insert ainda existe, admin_audit_logs sem policy).
 // Segue o harness da E0a: todo efeito é confirmado pelo cliente service_role do ambiente
 // isolado; negação exige fixture confirmada e estado inalterado. `INSERT` usa observeInsert.
+//
+// FASE EXPLÍCITA (A5): a migration 015 muda UMA linha desta matriz — o DELETE de `leads` pelo
+// admin (SDD §9.4). RC2_E2_PHASE=pre015 (015 NÃO aplicada: admin DENY), post015 (015 aplicada:
+// admin ALLOW) ou post016 (015 e 016 aplicadas: a 016 retira o DELETE: admin DENY). Sem a variável a suíte FALHA; nada é detectado por sondagem de privilégio. Em
+// ambas as fases anon e não-admin seguem DENY em tudo, e INSERT em `leads` segue só do service_role.
+// O pré-requisito 012/013 acima continua valendo para as duas fases.
 
 type Expectation = [anon: Outcome, nonAdmin: Outcome, admin: Outcome, service: Outcome];
 type Observation = Outcome | "error";
@@ -30,6 +37,7 @@ const ROLE_ORDER: Role[] = ["anon", "authenticated_non_admin", "authenticated_ad
 
 const registry = new CleanupRegistry();
 let c: RoleClients | undefined;
+let phase: E2Phase | undefined;
 let tearing: Promise<string[]> | undefined;
 let fxLead: Fixture;
 let fxAudit: Fixture;
@@ -102,6 +110,7 @@ function leadRow(): Record<string, unknown> {
 
 beforeAll(async () => {
   try {
+    phase = requireLegacyLeadPhase();
     c = await createRoleClients();
     const k = clients();
     fxLead = await makeLead(k.service, registry, k.tag);
@@ -144,7 +153,8 @@ describe("E0b.2 — leads: anon sem acesso (T-SEG-I01)", () => {
       {
         table: "leads",
         operation: "DELETE",
-        expected: [DENY, DENY, DENY, ALLOW],
+        // Admin: pré-015 DENY (sem privilégio DELETE); post015 ALLOW (policy e grant da E2); post016 DENY (016).
+        expected: phase === "post015" ? [DENY, DENY, ALLOW, ALLOW] : [DENY, DENY, DENY, ALLOW],
         run: async (_r, cl) => observeDelete(cl, svc(), await makeLead(svc(), registry, tag())),
       },
     ]);
