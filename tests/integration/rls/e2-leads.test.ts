@@ -8,6 +8,7 @@ import {
   LEGACY_MANIFEST_PATH,
   LEGACY_SELECT,
   activityOf,
+  e2PhaseIn,
   e2PhaseIs,
   legacyFingerprint,
   makeActivity,
@@ -38,8 +39,8 @@ import {
 // E2 (Gestão de Leads) — T-LEAD-I01 a I16 do SDD (2026-10-13-admin-leads-management-design.md §Testes).
 // ESCRITO, NÃO EXECUTADO. A numeração é a OFICIAL do SDD e não pode ser alterada.
 //
-// Só roda com RC2_E2_PHASE=post015, no ambiente ISOLADO, DEPOIS de a migration 015 ser aplicada
-// manualmente (runbook docs/runbooks/migrations/015-leads-management/) e com autorização expressa.
+// Só roda com RC2_E2_PHASE=post015 (015 aplicada, 016 NÃO) ou post016 (015 e 016 aplicadas), no ambiente
+// ISOLADO, DEPOIS de a migration correspondente ser aplicada manualmente (runbook docs/runbooks/migrations/015-leads-management/) e com autorização expressa.
 // Sem a variável, tudo é ignorado. O T-LEAD-I07 exige a fase pré-015 (e2-leads-pre015.test.ts).
 // Só dados sintéticos (example.test). Todo recurso é registrado ANTES de criado; notas e atividades
 // saem por CASCADE com o lead. Erros do Supabase nunca são reproduzidos (só códigos controlados).
@@ -219,7 +220,7 @@ async function columnOf(table: string, idColumn: string, id: string, column: str
 
 // ─── suíte ──────────────────────────────────────────────────────────────────
 
-describe.skipIf(!e2PhaseIs("post015"))("E2 — Gestão de Leads (T-LEAD-I01 a I16, pós-migration 015)", () => {
+describe.skipIf(!e2PhaseIn("post015", "post016"))("E2 — Gestão de Leads (T-LEAD-I01 a I16, pós-migration 015 e 016)", () => {
   beforeAll(async () => {
     try {
       c = await createRoleClients();
@@ -315,7 +316,8 @@ describe.skipIf(!e2PhaseIs("post015"))("E2 — Gestão de Leads (T-LEAD-I01 a I1
       expect((await readLead(svc(), id)).status).toBe("new");
     });
 
-    it("T-LEAD-I04 — admin exclui lead pela sessão (sucesso só com 1 linha); não-admin não exclui", async () => {
+    // Só na fase post015: a 016 retira o DELETE de `authenticated` (ver T-LEAD-016-01 a 016-03 abaixo).
+    it.skipIf(!e2PhaseIs("post015"))("T-LEAD-I04 — admin exclui lead pela sessão (sucesso só com 1 linha); não-admin não exclui", async () => {
       const cases = accessCases("leads");
       await runMatrix({
         id: "I04",
@@ -337,6 +339,49 @@ describe.skipIf(!e2PhaseIs("post015"))("E2 — Gestão de Leads (T-LEAD-I01 a I1
       const second = await admin().from("leads").delete().eq("id", id).select("id");
       expect(second.error).toBeNull();
       expect(second.data).toHaveLength(0); // 0 linhas nunca é sucesso
+    });
+
+    it.skipIf(!e2PhaseIs("post016"))("T-LEAD-016-01 — DELETE de leads negado a admin e não-admin (negação efetiva, registro preservado)", async () => {
+      const cases = accessCases("leads");
+      await runMatrix({
+        id: "016-01",
+        table: "leads",
+        operation: "DELETE",
+        expected: { [ANON]: DENY, [NON_ADMIN]: DENY, [ADMIN]: DENY, [SERVICE]: ALLOW },
+        run: cases.DELETE,
+      });
+      expectMatrixClean("016-01");
+
+      const id = await newLeadId();
+      const before = legacyFingerprint(await legacyRow(svc(), id));
+      for (const [papel, cliente] of [["não-admin", clients().nonAdmin], ["admin", admin()]] as const) {
+        const attempt = await cliente.from("leads").delete().eq("id", id).select("id");
+        // Negação efetiva: nunca devolve a linha excluída; se houver erro, é de privilégio (42501).
+        expect(attempt.data ?? [], `${papel}: nenhuma linha excluída`).toHaveLength(0);
+        if (attempt.error) expect(attempt.error.code, `${papel}: código do erro`).toBe("42501");
+      }
+      expect((await readLead(svc(), id)).id).toBe(id);
+      expect(legacyFingerprint(await legacyRow(svc(), id))).toBe(before); // nenhuma coluna mudou
+    });
+
+    it.skipIf(!e2PhaseIs("post016"))("T-LEAD-016-02 — service_role preserva INSERT e DELETE em leads (formulário de contato e limpeza)", async () => {
+      const id = await newLeadId(); // INSERT pelo service_role, como faz o /api/contact
+      const removed = await svc().from("leads").delete().eq("id", id).select("id");
+      expect(removed.error).toBeNull();
+      expect(removed.data).toHaveLength(1);
+      expect((await svc().from("leads").select("id").eq("id", id)).data ?? []).toHaveLength(0);
+    });
+
+    it.skipIf(!e2PhaseIs("post016"))("T-LEAD-016-03 — arquivar e restaurar pelo admin e o UPDATE limitado continuam valendo", async () => {
+      const id = await newLeadId();
+      expect((await adminUpdate(id, { archived_at: new Date().toISOString() })).error).toBeNull();
+      expect((await adminUpdate(id, { archived_at: null })).error).toBeNull();
+      expect((await activityOf(svc(), id)).map((row) => row.kind)).toEqual(["archived", "restored"]);
+      const outside = await admin().from("leads").update({ message: "alterado" }).eq("id", id);
+      expect(outside.error?.code).toBe("42501"); // coluna fora da PRP-01
+      const read = await admin().from("leads").select("id,status").eq("id", id); // SELECT preservado
+      expect(read.error).toBeNull();
+      expect(read.data).toHaveLength(1);
     });
 
     it("T-LEAD-I05 — notas: INSERT com author_id alheio é negado; UPDATE e DELETE são negados", async () => {
@@ -429,7 +474,10 @@ describe.skipIf(!e2PhaseIs("post015"))("E2 — Gestão de Leads (T-LEAD-I01 a I1
       expect((await notesOf(svc(), id)).length).toBe(1);
       expect((await activityOf(svc(), id)).length).toBe(1);
 
-      const removed = await admin().from("leads").delete().eq("id", id).select("id");
+      // post015: o admin exclui pela sessão; post016: o DELETE de authenticated não existe mais, e o CASCADE
+      // é provado com o service_role (a FK e o CASCADE independem do papel que exclui).
+      const deleter = e2PhaseIs("post015") ? admin() : svc();
+      const removed = await deleter.from("leads").delete().eq("id", id).select("id");
       expect(removed.error).toBeNull();
       expect(removed.data).toHaveLength(1);
 

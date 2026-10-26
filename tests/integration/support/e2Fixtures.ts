@@ -11,8 +11,9 @@ import type { Fixture } from "./probes";
 
 /** Fases da suíte E2: nenhuma roda sem a variável explícita (evita execução acidental). */
 export const E2_PHASE_ENV = "RC2_E2_PHASE";
-export type E2Phase = "pre015" | "post015";
+export type E2Phase = "pre015" | "post015" | "post016";
 export const e2PhaseIs = (phase: E2Phase): boolean => process.env[E2_PHASE_ENV] === phase;
+export const e2PhaseIn = (...phases: E2Phase[]): boolean => phases.some((phase) => e2PhaseIs(phase));
 
 /**
  * Fase EXPLÍCITA para as suítes legadas (baseline, e0b-security) nos pontos em que a 015 muda
@@ -21,9 +22,9 @@ export const e2PhaseIs = (phase: E2Phase): boolean => process.env[E2_PHASE_ENV] 
  */
 export function requireLegacyLeadPhase(): E2Phase {
   const value = process.env[E2_PHASE_ENV];
-  if (value === "pre015" || value === "post015") return value;
+  if (value === "pre015" || value === "post015" || value === "post016") return value;
   throw new HarnessError(
-    `${E2_PHASE_ENV} ausente ou inválida: informe pre015 (015 NÃO aplicada) ou post015 (015 aplicada). Esta suíte não adivinha a fase.`,
+    `${E2_PHASE_ENV} ausente ou inválida: informe pre015 (015 NÃO aplicada), post015 (015 aplicada, 016 NÃO) ou post016 (015 e 016 aplicadas). Esta suíte não adivinha a fase.`,
   );
 }
 

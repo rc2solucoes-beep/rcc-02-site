@@ -30,8 +30,8 @@ import {
 //
 // FASE EXPLÍCITA (A5): a migration 015 muda UMA linha desta matriz — o UPDATE de `message` em
 // `leads` pelo admin (PRP-01: authenticated só atualiza status, next_action, next_action_at e
-// archived_at). RC2_E2_PHASE=pre015 (015 NÃO aplicada: admin ALLOW) ou post015 (015 aplicada:
-// admin DENY, 42501). Sem a variável a suíte FALHA; nada é detectado por sondagem de privilégio.
+// archived_at). RC2_E2_PHASE=pre015 (015 NÃO aplicada: admin ALLOW), post015 (015 aplicada) ou
+// post016 (015 e 016 aplicadas): nas duas últimas o admin é DENY (42501). Sem a variável a suíte FALHA; nada é detectado por sondagem de privilégio.
 // Anon e não-admin permanecem DENY nas duas fases, e as demais tabelas não mudam.
 
 type Expectation = [anon: Outcome, nonAdmin: Outcome, admin: Outcome, service: Outcome];
@@ -221,7 +221,7 @@ describe("matriz de RLS sobre tabelas de política estável (67 verificações)"
         // `message` está fora da PRP-01: pré-015 o admin atualiza; pós-015 recebe 42501.
         table: "leads",
         operation: "UPDATE",
-        expected: phase === "post015" ? [DENY, DENY, DENY, ALLOW] : [DENY, DENY, ALLOW, ALLOW],
+        expected: phase === "pre015" ? [DENY, DENY, ALLOW, ALLOW] : [DENY, DENY, DENY, ALLOW],
         run: async (_r, cl) => observeUpdate(cl, svc(), await makeLead(svc(), registry, tag()), "message", unique()),
       },
       {

@@ -16,7 +16,7 @@ const files = [main, pre, fixtures];
 
 // Só as linhas da MATRIZ (começam com o ID); a tabela de PV cita I06/I08 na última coluna.
 const officialIds = [...sdd.matchAll(/^\|\s*T-LEAD-I(\d{2})\s*\|/gm)].map((m) => `I${m[1]}`).sort();
-const titles = [...main.matchAll(/\bit\(\s*"T-LEAD-(I\d{2}) — ([^"]+)"/g)].map((m) => ({ id: m[1], text: m[2] }));
+const titles = [...main.matchAll(/\bit(?:\.skipIf\(![^\n]*?\)\))?\(\s*"T-LEAD-(I\d{2}) — ([^"]+)"/g)].map((m) => ({ id: m[1], text: m[2] }));
 
 describe("suíte de integração E2 — numeração oficial do SDD", () => {
   it("o SDD define exatamente I01 a I16", () => {
@@ -66,11 +66,11 @@ describe("suíte de integração E2 — numeração oficial do SDD", () => {
 });
 
 describe("suíte de integração E2 — segurança de execução e dados sintéticos", () => {
-  it("nada roda sem a variável de fase explícita (post015 e pre015 separadas)", () => {
-    expect(main).toMatch(/describe\.skipIf\(!e2PhaseIs\("post015"\)\)/);
+  it("nada roda sem a variável de fase explícita (pre015, post015 e post016 separadas)", () => {
+    expect(main).toMatch(/describe\.skipIf\(!e2PhaseIn\("post015", "post016"\)\)/);
     expect(pre).toMatch(/describe\.skipIf\(!e2PhaseIs\("pre015"\)\)/);
     expect(fixtures).toMatch(/RC2_E2_PHASE/);
-    const gate = main.search(/describe\.skipIf\(!e2PhaseIs\("post015"\)\)/);
+    const gate = main.search(/describe\.skipIf\(!e2PhaseIn\("post015", "post016"\)\)/);
     for (const title of main.matchAll(/\bit\(\s*"T-LEAD-I\d{2}/g)) expect(title.index).toBeGreaterThan(gate);
     expect(main.indexOf("beforeAll(")).toBeGreaterThan(gate); // nenhum beforeAll fora da trava
     expect(pre.indexOf("beforeAll(")).toBeGreaterThan(pre.search(/describe\.skipIf/));
@@ -140,10 +140,25 @@ describe("suíte de integração E2 — fase explícita nas suítes legadas (A5)
   });
 
   it("as únicas linhas que dependem da fase são o UPDATE de message e o DELETE de leads pelo admin", () => {
-    expect(baseline.match(/phase === "post015"/g)).toHaveLength(1);
-    expect(baseline).toMatch(/phase === "post015" \? \[DENY, DENY, DENY, ALLOW\] : \[DENY, DENY, ALLOW, ALLOW\]/);
+    expect(baseline.match(/phase === "pre015"/g)).toHaveLength(1);
+    expect(baseline).toMatch(/phase === "pre015" \? \[DENY, DENY, ALLOW, ALLOW\] : \[DENY, DENY, DENY, ALLOW\]/);
     expect(e0b.match(/phase === "post015"/g)).toHaveLength(1);
     expect(e0b).toMatch(/phase === "post015" \? \[DENY, DENY, ALLOW, ALLOW\] : \[DENY, DENY, DENY, ALLOW\]/);
+  });
+
+  it("a fase post016 existe, a post015 continua coberta e o DELETE de leads pelo admin é DENY na 016", () => {
+    expect(fixtures).toMatch(/E2Phase = "pre015" \| "post015" \| "post016"/);
+    expect(fixtures).toMatch(/value === "post016"/);
+    expect(main).toMatch(/it\.skipIf\(!e2PhaseIs\("post015"\)\)\("T-LEAD-I04/); // só antes da 016
+    for (const id of ["016-01", "016-02", "016-03"]) {
+      expect(main).toMatch(new RegExp(`it\\.skipIf\\(!e2PhaseIs\\("post016"\\)\\)\\("T-LEAD-${id} — `));
+    }
+    expect(main).toMatch(/const deleter = e2PhaseIs\("post015"\) \? admin\(\) : svc\(\)/); // I06 (CASCADE) nas duas fases
+    // e0b-security: o DELETE de leads pelo admin só é ALLOW em post015.
+    expect(e0b).toMatch(/phase === "post015" \? \[DENY, DENY, ALLOW, ALLOW\]/);
+    // A negação do DELETE exige erro de privilégio OU zero linhas, nunca uma linha devolvida, e o registro preservado.
+    expect(main).toMatch(/nenhuma linha excluída/);
+    expect(main).toMatch(/toBe\("42501"\)/);
   });
 
   it("preserva as asserções de segurança: anon e não-admin seguem DENY, e as contagens não mudam", () => {
