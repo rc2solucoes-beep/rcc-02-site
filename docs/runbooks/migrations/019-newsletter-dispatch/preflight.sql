@@ -22,7 +22,10 @@
 --     supabase_functions_admin (webhooks de banco) foi identificado no alvo e incluído
 --     na lista prevista com evidência G-2 no REGISTRO.md (27/10/2026). 15D lê o papel authenticator; se a configuração não
 --     puder ser lida o resultado é 'nao_verificavel' = REPROVADO (exige a evidência manual G-1 do
---     README ANTES do apply; nunca se presume aprovação). O README documenta a exposição
+--     README ANTES do apply; nunca se presume aprovação). A única exceção é
+--     OPERACIONAL (externa ao SQL): 17/18, apenas 15D nao_verificavel, evidência
+--     G-1 vinculada ao projeto e autorização específica de apply. Este SQL continua
+--     retornando REPROVADO. O README documenta a exposição
 --     transitória dos cabeçalhos HTTP (inclusive o bearer) no pg_net e os gates manuais G-1 a G-3.
 BEGIN READ ONLY;
 
