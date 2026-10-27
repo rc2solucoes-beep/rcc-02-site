@@ -7,6 +7,8 @@
 --   * Check ausente, resultado NULL e comparação NULL contam como FALHA.
 --   * Este arquivo NÃO dispara o job nem chama a rota. A demonstração ponta a ponta (autenticação,
 --     200/401, idempotência, recuperação) é o LC-01 (runbook README, seção "LC-01").
+--   * POS-15D nao_verificavel permanece REPROVADO no SQL. A exceção operacional
+--     17/18 + G-1 manual (documentada no README) não altera os resultados de checks.
 --   * POS-15B a POS-15D repetem os controles de acesso ao pg_net do preflight (sem SELECT = false:
 --     as tabelas net pertencem a supabase_admin no Supabase hospedado). Ver README, "Gates manuais".
 --   * Lê o COMANDO dos jobs (não contém segredo); nunca lê o valor de um segredo do Vault.
