@@ -121,7 +121,7 @@ describe("runbook da 019", () => {
 
   it("README: estado real da infraestrutura, análise do Preview protegido e etapas do LC-01", () => {
     expect(readme).toMatch(/`pg_cron`\s*\| \*\*instalado\*\*/);
-    expect(readme).toMatch(/`pg_net`\s*\| \*\*disponível, NÃO instalado\*\*/);
+    expect(readme).toMatch(/`pg_net`\s*\| \*\*instalado \(v0\.20\.4\)\*\*/);
     expect(readme).toMatch(/all_except_custom_domains/);
     expect(readme).toMatch(/Protection Bypass for Automation/);
     expect(readme).toMatch(/Cabeçalho HTTP, nunca token na URL/);
@@ -158,6 +158,9 @@ describe("runbook da 019", () => {
     expect(readme).toMatch(/Gates manuais/);
     for (const g of ["G-1", "G-2", "G-3"]) expect(readme, g).toContain(g);
     expect(readme).toMatch(/Risco residual/);
+    for (const sql of [preflight, verify]) expect(sql).toContain("'supabase_functions_admin'");
+    expect(readme).toMatch(/Database Webhooks/);
+    expect(read("docs/runbooks/migrations/REGISTRO.md")).toMatch(/G-2 — papéis com LOGIN/);
     expect(readme).toMatch(/Nenhum `REVOKE` nem troca de proprietário é tentado/);
     expect(readme).toMatch(/distinto do de \*\*Production\*\*/);
     expect(readme).not.toMatch(/exigem que \*\*`anon` e `authenticated` não tenham SELECT\*\*/);
