@@ -18,7 +18,9 @@
 --     supabase_admin e têm SELECT concedido a PUBLIC; o postgres não pode assumir esse papel e um
 --     REVOKE não tem efeito. Por isso NÃO se exige "SELECT = false". Os checks 15B-15D exigem, em
 --     vez disso: anon/authenticated sem LOGIN, nenhum papel com LOGIN fora da lista prevista e o
---     schema net fora de pgrst.db_schemas. 15D lê o papel authenticator; se a configuração não
+--     schema net fora de pgrst.db_schemas. O papel Supabase gerenciado
+--     supabase_functions_admin (webhooks de banco) foi identificado no alvo e incluído
+--     na lista prevista com evidência G-2 no REGISTRO.md (27/10/2026). 15D lê o papel authenticator; se a configuração não
 --     puder ser lida o resultado é 'nao_verificavel' = REPROVADO (exige a evidência manual G-1 do
 --     README ANTES do apply; nunca se presume aprovação). O README documenta a exposição
 --     transitória dos cabeçalhos HTTP (inclusive o bearer) no pg_net e os gates manuais G-1 a G-3.
@@ -43,7 +45,7 @@ checks(ord, check_id, expected, actual) AS (
   (13, 'PRE-13-JOB-PUBLISH-SCHEDULED-POSTS-DA-011-PRESENTE', '1', coalesce((SELECT CASE WHEN to_regclass('cron.job') IS NULL THEN 'ausente' ELSE (xpath('/row/c/text()', query_to_xml('SELECT count(*) AS c FROM cron.job WHERE jobname = ''publish-scheduled-posts''', false, true, '')))[1]::text END), 'ausente')),
   (14, 'PRE-14-JOB-PURGE-RATE-LIMIT-COUNTERS-DA-017-PRESENTE', '1', coalesce((SELECT CASE WHEN to_regclass('cron.job') IS NULL THEN 'ausente' ELSE (xpath('/row/c/text()', query_to_xml('SELECT count(*) AS c FROM cron.job WHERE jobname = ''purge-rate-limit-counters''', false, true, '')))[1]::text END), 'ausente')),
   (15, 'PRE-15B-ANON-E-AUTHENTICATED-SEM-LOGIN', '0', (SELECT count(*)::text FROM pg_roles WHERE rolname IN ('anon', 'authenticated') AND rolcanlogin)),
-  (16, 'PRE-15C-ROLES-COM-LOGIN-TODOS-PREVISTOS', 'nenhum', coalesce((SELECT string_agg(rolname::text, ',' ORDER BY rolname) FROM pg_roles WHERE rolcanlogin AND rolname NOT IN ('postgres', 'supabase_admin', 'authenticator', 'pgbouncer', 'supabase_auth_admin', 'supabase_storage_admin', 'supabase_read_only_user', 'supabase_replication_admin', 'supabase_etl_admin') AND rolname NOT LIKE 'pg\_%'), 'nenhum')),
+  (16, 'PRE-15C-ROLES-COM-LOGIN-TODOS-PREVISTOS', 'nenhum', coalesce((SELECT string_agg(rolname::text, ',' ORDER BY rolname) FROM pg_roles WHERE rolcanlogin AND rolname NOT IN ('postgres', 'supabase_admin', 'authenticator', 'pgbouncer', 'supabase_auth_admin', 'supabase_storage_admin', 'supabase_read_only_user', 'supabase_replication_admin', 'supabase_etl_admin', 'supabase_functions_admin') AND rolname NOT LIKE 'pg\_%'), 'nenhum')),
   (17, 'PRE-15D-SCHEMA-NET-FORA-DA-DATA-API', 'nao_exposto', (SELECT CASE WHEN count(v) = 0 THEN 'nao_verificavel' WHEN bool_or(string_to_array(regexp_replace(v, '\s', '', 'g'), ',') @> ARRAY['net']) THEN 'exposto' ELSE 'nao_exposto' END FROM (SELECT (SELECT substr(c, length('pgrst.db_schemas=') + 1) FROM unnest(d.setconfig) c WHERE c LIKE 'pgrst.db_schemas=%') AS v FROM pg_db_role_setting d WHERE d.setrole = (SELECT oid FROM pg_roles WHERE rolname = 'authenticator')) q)),
   (18, 'PRE-15-NENHUM-JOB-NEWSLETTER-AGENDADO', '0', coalesce((SELECT CASE WHEN to_regclass('cron.job') IS NULL THEN 'ausente' ELSE (xpath('/row/c/text()', query_to_xml('SELECT count(*) AS c FROM cron.job WHERE jobname LIKE ''newsletter%''', false, true, '')))[1]::text END), 'ausente'))
 ),
