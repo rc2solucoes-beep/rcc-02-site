@@ -156,9 +156,39 @@ export class ScriptedProvider implements EmailProvider {
   }
 }
 
-/** Provedor de produção a partir do ambiente; `null` quando a chave não existe (o dispatch recusa). */
+const LOOPBACK_HOSTS = new Set(["127.0.0.1", "localhost", "[::1]", "::1"]);
+
+/**
+ * O SDK do Resend lê `RESEND_BASE_URL` UMA vez, na carga do módulo, e passa a mandar TUDO (e-mail
+ * do contato, alertas de segurança, newsletter) para esse endereço. Por isso a variável é só do
+ * simulador de homologação (LC-01) e fica sob trava:
+ *   * em Production ela é proibida (qualquer valor);
+ *   * fora dela só vale um endereço de loopback (o simulador roda na própria máquina);
+ *   * nunca `resend.com` nem outro host remoto.
+ * Devolve o motivo do bloqueio, ou `null` quando a configuração é segura (inclusive "não definida").
+ */
+export function resendBaseUrlProblem(env: Record<string, string | undefined> = process.env): string | null {
+  const raw = env.RESEND_BASE_URL?.trim();
+  if (!raw) return null;
+  if (env.VERCEL_ENV === "production") return "RESEND_BASE_URL é proibida em Production";
+  let url: URL;
+  try {
+    url = new URL(raw);
+  } catch {
+    return "RESEND_BASE_URL inválida";
+  }
+  if (url.protocol !== "http:" && url.protocol !== "https:") return "RESEND_BASE_URL com protocolo inesperado";
+  if (!LOOPBACK_HOSTS.has(url.hostname)) return "RESEND_BASE_URL só pode apontar para loopback (simulador local)";
+  return null;
+}
+
+/**
+ * Provedor de produção a partir do ambiente; `null` quando a chave não existe OU quando
+ * `RESEND_BASE_URL` está definida de forma insegura (o dispatch recusa antes de reivindicar).
+ */
 export function createProviderFromEnv(env: Record<string, string | undefined> = process.env): EmailProvider | null {
   const apiKey = env.RESEND_API_KEY?.trim();
   if (!apiKey || apiKey === "xxxx") return null;
+  if (resendBaseUrlProblem(env) !== null) return null;
   return new ResendProvider(apiKey);
 }

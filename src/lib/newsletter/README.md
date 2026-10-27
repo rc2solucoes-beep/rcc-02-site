@@ -46,32 +46,15 @@ Backoff: 1 min, 5 min, 15 min, 1 h, 3 h e a cada 3 h, ±10%. Depois de 20 h a RP
 
 Leitura direta do Supabase isolado: **`pg_cron` instalado; `pg_net` disponível, mas NÃO instalado.** PV-04 fica **parcialmente verificada**: a disponibilidade está confirmada; falta instalar e demonstrar o `http_post` no isolado. **Instalar `pg_net` depende de autorização específica.**
 
-## Especificação objetiva da migration N2 (não criada)
+## Migration N2 (019) e LC-01 — preparados, NÃO aplicados nem executados
 
-Escopo: jobs do dispatch e da manutenção. **Só depois de LC-01 e com autorização específica.** Primeira aplicação estrita (guard), com `preflight`, `apply`, `verify` e `rollback` próprios, como a 017 e a 018.
-
-1. **Pré-requisitos (preflight):** 018 aplicada; `pg_cron` ligado; `pg_net` instalado (autorização à parte); extensão Vault disponível; **segredos criados pelo operador no Vault, nunca na migration:** URL do dispatch (`newsletter_dispatch_url`) e `NEWSLETTER_DISPATCH_SECRET` (`newsletter_dispatch_secret`), idêntico ao da Vercel do mesmo ambiente; jobs `newsletter-dispatch` e `newsletter-maintenance` ausentes; jobs 011 e 017 presentes.
-2. **Job `newsletter-dispatch`** (`* * * * *`, P = 60 s): `net.http_post(url := <Vault url>, headers := jsonb('Authorization', 'Bearer ' || <Vault secret>), timeout_milliseconds := 125000)`. O corpo é ignorado. O segredo é lido do Vault em tempo de execução; **nenhum segredo literal na migration**.
-3. **Job `newsletter-maintenance`** (`*/5 * * * *`): `SELECT public.newsletter_outbox_expire()`. Redundante com o `expire` do dispatch, mas mantém o prazo funcionando se o dispatch estiver pausado.
-4. **Fora da N2:** purgas (N3, depois de BL-01), funções administrativas (N4, E4) e a sonda externa de `health` (DEP-04, fora do banco).
-5. **Rollback:** `cron.unschedule` dos dois jobs. **Proibido** com `unsubscribe_link` pendente (SDD §18.4); usar a pausa de `confirmation` (flag) no lugar.
-6. **Verify:** jobs com os horários e o alvo esperados, sem segredo no `command`, 011 e 017 intactos; invocação autenticada manual devolve 200 e sem segredo devolve 401.
-
-## Especificação dos testes LC-01 (gate de lançamento do processador, SDD §8.9)
-
-Ambiente: **isolado**, com a N2 e o `pg_net` já autorizados, e **sem e-mail real**: o provedor aponta para um servidor simulado compatível com a API do Resend (o SDK aceita `RESEND_BASE_URL`; a verificar na LC-01), que também injeta falhas. Cada cenário registra as linhas do outbox antes e depois.
-
-| # | Cenário | Como provocar | Critério de aceite |
-|---|---|---|---|
-| 1 | Envio normal | enfileirar `unsubscribe_link`; aguardar a varredura | `sent` em ≤ P + T, 1 chamada ao simulador, payload apagado |
-| 2 | Processo encerrado no meio do envio | simulador segura a resposta e a invocação é encerrada | lease vence (L); **outro** worker recupera antes do prazo; `attempts` + 1, `outcome_unknown`, **mesma chave**; 1 e-mail no simulador |
-| 3 | 5xx injetado | simulador responde 500 uma vez | `retry` com a mesma chave; um único e-mail entregue |
-| 4 | Provedor fora do ar além de 20 h | simulador recusa por 20 h (ou prazo reduzido só no isolado) | `dead(deadline_elapsed)` e alerta; `outcome_unknown` preservado |
-| 5 | Dispatcher parado | pausar o job | a sonda de `health` alerta (idade do mais antigo > 15 min) |
-| 6 | Dois workers concorrentes | duas invocações simultâneas | nenhum item processado duas vezes (`SKIP LOCKED`) |
-| 7 | Item que derruba o processo | simulador derruba a conexão a cada tentativa | chega a `attempts_exhausted` sem laço infinito |
-
-Também medir (calibração do PRP-11): duração real das invocações, taxa do simulador e latência de recuperação (esperada ≤ 240 s).
+- **Proposta:** `supabase/migrations/019_newsletter_dispatch_jobs.sql` e runbook em `docs/runbooks/migrations/019-newsletter-dispatch/` (README, preflight 16 checks, verify 16 checks, rollback). Primeira aplicação estrita; exige 018, `pg_cron`, **`pg_net`**, Vault e segredos criados antes pelo operador; **nenhuma credencial literal**; preserva os jobs da 011 e da 017. O preflight **reprova hoje de propósito** (`pg_net` não instalado, Vault e segredos não verificados/criados).
+- **Acesso ao Preview protegido** (SSO `all_except_custom_domains`): análise no README da 019. Production usa o domínio próprio (sem proteção, só o bearer); o isolado/Preview precisa do *Protection Bypass for Automation* (cabeçalho, opcional no job, lido do Vault) ou de um domínio próprio. Nada foi criado.
+- **Harness LC-01** (`tests/lc01/`): `scenarios.ts` define os 7 cenários do SDD §8.9 contra a interface `Lc01Backend`, com o `ResendProvider` **real** (SDK) apontado por `RESEND_BASE_URL` para o **simulador em loopback** (`resendSimulator.ts`: sucesso, 429, 5xx, timeout, conexão derrubada, replay de `Idempotency-Key`, recusa de destinatário não sintético e de chave de API real).
+  - **Ensaio** em memória: `tests/unit/newsletter/lc01.dryrun.test.ts` (roda no conjunto unitário).
+  - **Execução real no isolado:** `tests/integration/lc01/lc01.test.ts` com `RC2_RUN_LC01=1` (RPCs reais da 018). Escrito, **não executado**.
+- **Trava de `RESEND_BASE_URL`:** o SDK a lê na carga do módulo e redireciona todo envio; por isso é proibida em Production e, fora dela, só loopback (`resendBaseUrlProblem`).
+- **Sonda:** `probe.ts` (`evaluateProbe`): alerta se a sonda falhar, se o item pronto mais antigo passar de 15 min ou se o lease vencido persistir em duas observações.
 
 ## Dependências remanescentes antes de qualquer ativação
 
