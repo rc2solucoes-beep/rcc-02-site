@@ -89,9 +89,18 @@ Papéis fora da lista só entram nela por decisão registrada no `REGISTRO.md` (
 
 SQL não prova tudo. Cada gate exige evidência registrada no `REGISTRO.md`; sem ela **não há apply**, mesmo com o preflight `APROVADO`.
 
+**Regra operacional para `PRE-15D`/`POS-15D` com `nao_verificavel` (sem alterar o SQL):**
+
+- O check 15D continua com `pass=false` e o resultado SQL oficial continua **`REPROVADO`**. Não editar `expected`, não trocar `nao_verificavel` por `nao_exposto` nem declarar 18/18.
+- Admite-se **GO OPERACIONAL CONDICIONAL POR G-1** exclusivamente quando **todos os outros 17/18 checks passam**, o único check falho é 15D com `actual=nao_verificavel` (nunca `exposto`) e há evidência G-1 recente, registrada para o ambiente exato, de que `net` não está na lista efetiva de *Exposed schemas*.
+- O operador confere o vínculo da captura ao projeto `pyhhygvdjokddphftuua` na sessão do painel, registrando responsável, data, schemas selecionados e ressalvas no `REGISTRO.md`. Uma imagem sem o ref visível **não comprova por si só** o projeto; o vínculo é uma declaração do operador no contexto do projeto, não uma verificação independente.
+- Requer os gates G-2 e G-3 satisfeitos, além de autorização específica **para o apply da 019**. Se houver qualquer outra falha (incluindo segredos ausentes) ou falta de evidência atual, o resultado é **NO-GO**.
+- O mesmo critério excepcional vale para `POS-15D` após o apply; registrar os resultados brutos do `verify`. O registro final será **17/18 SQL + 1 controle G-1 manual**, **nunca 18/18 SQL**. Falha ou schema `net` exposto é NO-GO e exige tratamento próprio.
+- O procedimento manual não altera a migration, não cria credenciais e não suspende os demais 17 controles. A autorização da exceção documental **não substitui** a autorização de aplicar a migration.
+
 | Gate | Evidência exigida |
 |---|---|
-| **G-1. Data API** | Captura/descrição do painel Supabase (*Settings → API → Exposed schemas*) mostrando que `net` **não** está exposto. **Obrigatório** quando `PRE-15D` der `nao_verificavel`; recomendado também quando der `nao_exposto` (a configuração efetiva do painel é a fonte; o papel `authenticator` é um reflexo dela) |
+| **G-1. Data API** | Evidência visual do operador registrada em 27/10/2026: `public` e `graphql_public` expostos, `rc2_internal` não exposto, `net` ausente da lista. Fornecida no contexto do isolado, mas **ref não aparece na imagem**; vínculo com o projeto deve ser conferido e declarado pelo operador antes de autorizar o apply. Obrigatório quando `PRE-15D` for `nao_verificavel`. |
 | **G-2. Papéis com `LOGIN`** | `supabase_functions_admin` identificado no isolado como conta gerenciada de infraestrutura (Database Webhooks); informações verificadas via catálogos PostgreSQL e documentação Supabase, registradas no `REGISTRO.md`. Para quaisquer nomes novos: identificar origem, finalidade e decisão do operador; nenhum nome é presumido seguro |
 | **G-3. Segredos segregados** | Confirmação de que o `NEWSLETTER_DISPATCH_SECRET` (e o bypass, se existir) do **Preview/isolado** é distinto do de **Production**, que o Vault do isolado não contém o segredo de Production e que Production **não tem** `newsletter_dispatch_bypass`. Verificar por existência e comprimento, **nunca** exibindo valores |
 
@@ -106,9 +115,9 @@ SQL não prova tudo. Cada gate exige evidência registrada no `REGISTRO.md`; sem
 1. **LC-01 etapa A** (não depende da 019 nem do `pg_net`): `RC2_RUN_LC01=1 npm run test:integration -- tests/integration/lc01/lc01.test.ts` no isolado, com a 018 aplicada. Processador + fila reais, provedor = simulador em loopback.
 2. Instalar `pg_net` (e confirmar Vault) no isolado.
 3. Criar os segredos no Vault (operador). Na Vercel Preview: `NEWSLETTER_DISPATCH_SECRET` (igual ao do Vault). **Sem `RESEND_API_KEY`** no Preview: o dispatch responde `503 not_configured` e nada é reivindicado (essa é a resposta **esperada e correta** da etapa B; não usar credencial real para forçar um 200).
-4. **Gates G-1 a G-3** com evidência registrada, depois **Preflight** (`preflight.sql`, READ ONLY): esperado `APROVADO` (**18 checks**). Para produção, trocar a linha `alvo` para `'ausente'`.
+4. **Gates G-1 a G-3** com evidência registrada, depois **Preflight** (`preflight.sql`, READ ONLY; **18 checks**): normal = `APROVADO` (18/18); se somente 15D for `nao_verificavel`, resultado SQL `REPROVADO` (17/18) e possibilidade de **GO operacional condicional por G-1** conforme critérios acima, após confirmação do projeto, G-2/G-3 e autorização específica. Qualquer outra falha = NO-GO. Para produção, trocar a linha `alvo` para `'ausente'` e obter prova G-1 própria de Production.
 5. **Apply** (`019_newsletter_dispatch_jobs.sql`): `Success. No rows returned`. Aborto = nada aplicado; **não contornar editando o SQL**.
-6. **Verify** (`verify.sql`, READ ONLY): esperado `APROVADO` (**18 checks**).
+6. **Verify** (`verify.sql`, READ ONLY; **18 checks**): esperado `APROVADO` (18/18) ou, apenas no caso 15D `nao_verificavel`, 17/18 SQL com evidência G-1 e aceite condicional formal registrado. Não inventar aprovação SQL.
 7. **LC-01 etapa B** (o salto): ver abaixo. Critério de aceite: 401 sem bearer válido e 503 `not_configured` com bearer válido, mais o job disparando a cada minuto.
 8. Só depois, e só em produção com autorização: nada de ativar flags antes da E4-essencial (BL-11).
 
