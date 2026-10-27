@@ -39,6 +39,8 @@ export const SYNTHETIC_ENV_NAMES = [
   "NEXT_PUBLIC_SITE_URL",
   "RATE_LIMIT_PEPPER", // >= 32 caracteres: abaixo disso a rota de contato fecha (E0c)
   "TRUST_CLOUDFLARE_PROXY", // "false": cf-connecting-ip nunca é confiável no E2E
+  "NEWSLETTER_SIGNUP_ENABLED", // "false": a inscrição pública nunca é ligada no E2E (E3)
+  "NEWSLETTER_CONFIRMATION_DISPATCH_ENABLED", // "false": nenhum disparo de confirmação no E2E (E3)
 ] as const;
 
 /** Variáveis do Supabase, sempre vindas do alvo verificado. */
@@ -55,6 +57,8 @@ export function buildIsolatedServerEnv(target: Pick<VerifiedTarget, "url" | "ano
   env.NEXT_PUBLIC_SITE_URL = E2E_BASE_URL;
   env.RATE_LIMIT_PEPPER = `e2e-${randomUUID()}`;
   env.TRUST_CLOUDFLARE_PROXY = "false";
+  env.NEWSLETTER_SIGNUP_ENABLED = "false";
+  env.NEWSLETTER_CONFIRMATION_DISPATCH_ENABLED = "false";
   env.NEXT_PUBLIC_SUPABASE_URL = target.url;
   env.NEXT_PUBLIC_SUPABASE_ANON_KEY = target.anonKey;
   env.SUPABASE_SERVICE_ROLE_KEY = target.serviceKey;

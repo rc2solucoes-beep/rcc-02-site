@@ -907,7 +907,15 @@ Logs estruturados com `event`, `outbox_id`, `attempt`, código de resultado e la
 | N3 | jobs de purga conforme `P-RET-*` | E3 | só depois de BL-01 |
 | N4 | papel `newsletter_ops`, funções administrativas `SECURITY DEFINER`, *policies* e grants | E4-essencial | **precisa estar aplicada antes da ativação pública (BL-11)** |
 
-Cada uma com `preflight`, `apply` idempotente, `verify` e `rollback`. Ordem: ambiente isolado primeiro, produção com autorização.
+**Regra de apply (revisada em 27/10/2026; substitui "`apply` idempotente").** Cada migration da newsletter tem `preflight`, `apply`, `verify` e `rollback`, e o `apply` é de **primeira aplicação estrita**, não idempotente:
+
+- O apply inicial roda **em uma única transação** e começa por um *guard* que aborta se qualquer objeto da migration já existir ou se faltar um pré-requisito.
+- **Reaplicação aborta sem nenhuma alteração** (a transação é revertida). Nenhum `CREATE` usa `IF NOT EXISTS` e o *guard* não é contornado editando o SQL.
+- **Qualquer evolução posterior exige uma nova migration**, com o seu próprio ciclo; a migration já aplicada não é editada.
+- A operação segue sempre **preflight → apply → verify**, por ambiente, com autorização específica. Ordem: ambiente isolado primeiro, produção com autorização.
+- O **rollback permanece um script separado**, nunca executado automaticamente, e depende de autorização específica (e, havendo assinantes reais, de decisão jurídica, BL-01).
+
+Motivo: é o modelo já aprovado e em produção na migration 017 (E0c). A idempotência convergente aceitaria em silêncio um objeto pré-existente com definição diferente. Registro da decisão: `docs/runbooks/migrations/018-newsletter-core/README.md`.
 
 ### 18.3 Sequência de implantação e ativação
 

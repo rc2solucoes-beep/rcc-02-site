@@ -132,11 +132,14 @@ describe("T-NL-U22 — páginas de token sem rastreadores por estrutura", () => 
     }
   });
 
-  it("o layout raiz não carrega rastreadores nem Header/Footer; só os layouts que podem os montam", () => {
+  it("o layout raiz e o not-found global não carregam rastreadores; só (public) os monta", () => {
     const rootLayout = read("src/app/layout.tsx");
     expect(rootLayout).not.toMatch(/TrackingScripts|DelayedGtm|PageViewTracker|getConsentBootstrapScript|ConsentManager/);
     expect(read("src/app/(public)/layout.tsx")).toContain("<TrackingScripts />");
-    expect(read("src/app/not-found.tsx")).toContain("<TrackingScripts />");
+    // O not-found GLOBAL fica no payload do layout raiz de TODAS as rotas (slot notFound): montar
+    // rastreadores ali enviaria o código deles ao navegador nas páginas de token. Por isso o 404
+    // não tem rastreadores (consequência da O5, SDD §6.5, decisão do responsável pela tracking).
+    expect(read("src/app/not-found.tsx")).not.toMatch(/TrackingScripts|DelayedGtm|PageViewTracker/);
     expect(read("src/app/(newsletter)/layout.tsx").replace(/\/\/[^\n]*/g, "")).not.toContain("TrackingScripts");
   });
 
