@@ -1,6 +1,6 @@
 # Migration 019 (N2) — Jobs de dispatch e manutenção da newsletter (E3)
 
-**ESTADO: PROPOSTA — NÃO APLICADA EM NENHUM AMBIENTE. NÃO EXECUTAR SQL SEM AUTORIZAÇÃO ESPECÍFICA POR AMBIENTE. NENHUMA EXTENSÃO FOI INSTALADA, NENHUM SEGREDO FOI CRIADO NO VAULT, NENHUM JOB EXISTE.**
+**ESTADO: PROPOSTA 019 — NÃO APLICADA EM NENHUM AMBIENTE. NÃO EXECUTAR SQL SEM AUTORIZAÇÃO ESPECÍFICA POR AMBIENTE. `pg_net` 0.20.4 INSTALADO SOMENTE NO ISOLADO; nenhum segredo da newsletter criado no Vault e nenhum job da newsletter agendado.**
 
 | Campo | Valor |
 |---|---|
@@ -17,7 +17,7 @@
 
 | Passo | Ambiente | Autorizado por | Data | Observação |
 |---|---|---|---|---|
-| Instalar `pg_net` | Isolado (`pyhhygvdjokddphftuua`) | | | |
+| Instalar `pg_net` | Isolado (`pyhhygvdjokddphftuua`) | Operador autorizou; ChatGPT executou | 27/10/2026 | Versão 0.20.4 confirmada; não implica autorização para migration 019 |
 | Criar segredos no Vault | Isolado | | | |
 | Apply da 019 | Isolado | | | Só depois do LC-01 etapa A |
 | Apply da 019 | Produção (`ymfcepzwhiemgkxzmbdm`) | | | Só depois do isolado, da E4-essencial (N4) e das aprovações do §18.3 do SDD |
@@ -27,11 +27,11 @@
 | Item | Estado | PV |
 |---|---|---|
 | `pg_cron` | **instalado** | — |
-| `pg_net` | **disponível, NÃO instalado** | PV-04 **parcial**: falta instalar e demonstrar o `http_post` |
-| Vault (`supabase_vault`) | **não verificado** | verificar no preflight (PRE-10/PRE-11) |
+| `pg_net` | **instalado (v0.20.4)** | PV-04 **parcial**: falta demonstrar o `http_post` real |
+| Vault (`supabase_vault`) | **instalado; estruturas verificadas** | Segredos da newsletter ainda ausentes (PRE-12) |
 | Segredos `newsletter_dispatch_url` e `newsletter_dispatch_secret` | **não criados** | criados pelo operador, nunca por agente nem por migration |
 
-Por isso o preflight **reprova hoje, de propósito** (PRE-09, PRE-10, PRE-12): é o portão da N2.
+O preflight oficial executado em leitura em 27/10/2026 retornou **15/18**, reprovando apenas PRE-12 (segredos ausentes), PRE-15C (`supabase_functions_admin`, agora identificado e incluído na lista prevista com registro G-2) e PRE-15D (`nao_verificavel`, requer evidência G-1 e decisão documentada). Não confundir essa revisão com aprovação ou aplicação da 019.
 
 ## O que a migration faz
 
@@ -80,10 +80,10 @@ Quem consegue ler as tabelas `net` precisa antes **conectar-se ao banco** ou **a
 | Check (preflight / verify) | Exige | Fecha |
 |---|---|---|
 | `PRE-15B` / `POS-15B` | `anon` e `authenticated` **sem `LOGIN`** (0 papéis) | conexão direta com os papéis públicos |
-| `PRE-15C` / `POS-15C` | **nenhum** papel com `LOGIN` fora da lista prevista (`postgres`, `supabase_admin`, `authenticator`, `pgbouncer`, `supabase_auth_admin`, `supabase_storage_admin`, `supabase_read_only_user`, `supabase_replication_admin`, `supabase_etl_admin`; `pg_*` ignorados). Qualquer outro nome aparece em `actual` e **reprova** | contas de conexão não previstas |
+| `PRE-15C` / `POS-15C` | **nenhum** papel com `LOGIN` fora da lista prevista (`postgres`, `supabase_admin`, `authenticator`, `pgbouncer`, `supabase_auth_admin`, `supabase_storage_admin`, `supabase_read_only_user`, `supabase_replication_admin`, `supabase_etl_admin`, `supabase_functions_admin` [Supabase Database Webhooks; evidência G-2 de 27/10/2026]; `pg_*` ignorados). Qualquer outro nome aparece em `actual` e **reprova** | contas de conexão não previstas |
 | `PRE-15D` / `POS-15D` | `pgrst.db_schemas` do papel `authenticator` (configuração efetiva do PostgREST) **sem `net`** → `nao_exposto`. Valor ausente ou ilegível → `nao_verificavel` = **REPROVADO** | leitura de `net` por `/rest/v1` |
 
-Papéis fora da lista só entram nela por decisão registrada no `REGISTRO.md` (nome, motivo, quem criou); a lista não é ampliada para fazer o check passar.
+Papéis fora da lista só entram nela por decisão registrada no `REGISTRO.md` (nome, motivo, origem e decisão). O papel `supabase_functions_admin` foi identificado no isolado (LOGIN=true, SUPERUSER=false, CREATEROLE=true) e relacionado aos Database Webhooks na documentação oficial do Supabase. É uma conta privilegiada de infraestrutura: permanecer na lista não significa que seu acesso ao banco seja irrestrito ou que as credenciais tenham sido auditadas. Nenhum papel desconhecido deve ser incluído sem identificação.
 
 ### Gates manuais (evidência ANTES do apply)
 
@@ -92,7 +92,7 @@ SQL não prova tudo. Cada gate exige evidência registrada no `REGISTRO.md`; sem
 | Gate | Evidência exigida |
 |---|---|
 | **G-1. Data API** | Captura/descrição do painel Supabase (*Settings → API → Exposed schemas*) mostrando que `net` **não** está exposto. **Obrigatório** quando `PRE-15D` der `nao_verificavel`; recomendado também quando der `nao_exposto` (a configuração efetiva do painel é a fonte; o papel `authenticator` é um reflexo dela) |
-| **G-2. Papéis com `LOGIN`** | Se `PRE-15C` listar nomes: a identificação de cada um (origem e finalidade) e a decisão de manter ou remover, tomada pelo operador. Nenhum nome é presumido seguro |
+| **G-2. Papéis com `LOGIN`** | `supabase_functions_admin` identificado no isolado como conta gerenciada de infraestrutura (Database Webhooks); informações verificadas via catálogos PostgreSQL e documentação Supabase, registradas no `REGISTRO.md`. Para quaisquer nomes novos: identificar origem, finalidade e decisão do operador; nenhum nome é presumido seguro |
 | **G-3. Segredos segregados** | Confirmação de que o `NEWSLETTER_DISPATCH_SECRET` (e o bypass, se existir) do **Preview/isolado** é distinto do de **Production**, que o Vault do isolado não contém o segredo de Production e que Production **não tem** `newsletter_dispatch_bypass`. Verificar por existência e comprimento, **nunca** exibindo valores |
 
 ### Risco residual (documentado, aceito para o isolado e o Preview)
