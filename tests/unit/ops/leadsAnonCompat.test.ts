@@ -13,8 +13,9 @@ const state = vi.hoisted(() => ({
 
 vi.mock("@/lib/supabase/server", () => ({
   createServiceClient: () => ({
+    // E0c: o limite usa rate_limit_hit (nunca consulta leads); aqui sempre permitido.
+    rpc: () => Promise.resolve({ data: [{ allowed: true, count: 1, reset_at: "2026-10-27T00:00:00.000Z" }], error: null }),
     from: () => ({
-      select: () => ({ or: () => ({ gte: () => Promise.resolve({ count: 0 }) }) }),
       insert: (row: Record<string, unknown>) => {
         state.serviceInserts.push(row);
         return Promise.resolve({ error: null });
@@ -48,6 +49,7 @@ beforeEach(() => {
   state.sessionCalls = 0;
   vi.stubEnv("TURNSTILE_SECRET_KEY", "");
   vi.stubEnv("RESEND_API_KEY", "xxxx");
+  vi.stubEnv("RATE_LIMIT_PEPPER", "p".repeat(40));
 });
 afterEach(() => vi.unstubAllEnvs());
 

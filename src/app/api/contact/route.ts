@@ -4,6 +4,7 @@ import { Resend } from "resend";
 import { contactApiSchema } from "@/lib/validations/contact";
 import { createServiceClient } from "@/lib/supabase/server";
 import { getClientIp } from "@/lib/security/clientIp";
+import { checkContactRateLimit } from "@/lib/security/rateLimit";
 import { verifyTurnstile } from "@/lib/security/turnstile";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -12,26 +13,18 @@ function hashIp(ip: string): string {
   return crypto.createHash("sha256").update(ip + (process.env.IP_SALT ?? "rc2")).digest("hex").slice(0, 16);
 }
 
-// ─── Rate limit via Supabase ──────────────────────────────────────────────────
+// ─── Rate limit via Supabase (E0c) ────────────────────────────────────────────
 
-// Sem IP confiável (ipHash nulo) o limite por e-mail continua valendo; a E0c move isso para
-// contadores próprios.
-async function isRateLimited(email: string, ipHash: string | null): Promise<boolean> {
+// Contadores atômicos próprios (rate_limit_hit), independentes de `leads`. 3/h por e-mail e,
+// quando há IP confiável, 3/h por IP; tentativas rejeitadas também contam. Qualquer falha
+// (pepper ausente, erro do banco, resposta inesperada) FECHA: devolve true (429).
+async function isRateLimited(email: string, ip: string | null): Promise<boolean> {
   try {
-    const supabase = createServiceClient();
-    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-
-    const { count } = await supabase
-      .from("leads")
-      .select("id", { count: "exact", head: true })
-      .or(ipHash ? `email.eq.${email},ip_hash.eq.${ipHash}` : `email.eq.${email}`)
-      .gte("created_at", oneHourAgo);
-
-    return (count ?? 0) >= 3;
+    const { allowed } = await checkContactRateLimit(createServiceClient(), { email, ip });
+    return !allowed;
   } catch (err) {
-    // Rate limit check failed — deny by default (fail-closed pattern)
-    // Prevents DoS if database becomes unavailable
-    console.error("[rate-limit] Failed to check rate limit:", err);
+    // Só o tipo do erro vai ao log: nunca e-mail, IP, chave, pepper ou mensagem do banco.
+    console.error("[rate-limit] falha fechada:", err instanceof Error ? err.name : "erro desconhecido");
     return true;
   }
 }
@@ -171,7 +164,7 @@ export async function POST(req: NextRequest) {
   }
 
   // 4. Rate limit
-  const limited = await isRateLimited(email, ipHash);
+  const limited = await isRateLimited(email, ip);
   if (limited) {
     return NextResponse.json(
       { error: "Muitas solicitações. Aguarde alguns minutos e tente novamente." },
