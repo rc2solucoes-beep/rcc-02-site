@@ -1,6 +1,6 @@
 # Migration 018 — Núcleo da newsletter (E3, fundação N1)
 
-**ESTADO: PROPOSTA — NÃO APLICADA EM NENHUM AMBIENTE. NÃO EXECUTAR SQL SEM AUTORIZAÇÃO ESPECÍFICA POR AMBIENTE.**
+**ESTADO: APLICADA, VERIFICADA E HOMOLOGADA NO ISOLADO (`pyhhygvdjokddphftuua`, 27/10/2026). PRODUÇÃO: NÃO APLICADA. NÃO REAPLICAR (guard de primeira aplicação estrita). NÃO EXECUTAR SQL EM PRODUÇÃO SEM AUTORIZAÇÃO ESPECÍFICA.**
 
 | Campo | Valor |
 |---|---|
@@ -18,8 +18,29 @@
 
 | Ambiente | Autorizado por | Data | Observação |
 |---|---|---|---|
-| Isolado (`pyhhygvdjokddphftuua`) | | | |
+| Isolado (`pyhhygvdjokddphftuua`) | Operador, autorização específica (isolado somente) | 27/10/2026 | Aplicada uma única vez pelo ChatGPT. Ver "Homologação no isolado" |
 | Produção (`ymfcepzwhiemgkxzmbdm`) | | | Só depois do isolado, da E4-essencial (N4) e das aprovações do §18.3 do SDD |
+
+## Homologação no isolado
+
+Projeto `pyhhygvdjokddphftuua`, 27/10/2026. **O que cada ferramenta executou** (o Claude Code não tem conexão que selecione o projeto para SQL; o apply, o preflight e o verify foram do ChatGPT e foram **informados**):
+
+| Etapa | Resultado | Executado por |
+|---|---|---|
+| `preflight.sql` | 17/17 `APROVADO` | ChatGPT (informado) |
+| `supabase/migrations/018_newsletter_core.sql` (apply) | sucesso, aplicada uma única vez | ChatGPT (informado) |
+| `verify.sql` | 40/40 `APROVADO` | ChatGPT (informado) |
+| Produção | **não acessada** | — |
+| `tests/integration/rls/e3-newsletter.test.ts` | **31/31 aprovados** (alvo `pyhh…` validado pela guarda do harness; `RC2_RUN_E3_NEWSLETTER=1`) | Claude Code (executado e verificado) |
+
+Resultado dos 31 testes de integração (T-NL-I01 a I06):
+
+- **Concorrência real (PostgREST, conexões separadas):** 10 inscrições paralelas do mesmo e-mail geram 1 assinante, 1 `consent_requested` e 1 item de confirmação; 6 confirmações paralelas do mesmo token dão exatamente 1 `confirmed` e 5 `invalid`, com 1 evento; 5 descadastros paralelos dão 1 `unsubscribed`, 4 `already_unsubscribed` e 1 evento; 4 claims paralelos sobre 8 itens reivindicam cada item exatamente uma vez (`SKIP LOCKED`).
+- **Regras transacionais:** cooldowns de 10 min, de 3 confirmações por 24 h e de 7 dias após o descadastro; índice parcial do outbox; confirmação de uso único com as versões do **pedido original**; descadastro idempotente com token que continua válido; recuperação de lease vencido (`attempts` + 1, `outcome_unknown`, mesma chave de idempotência); `prepare` idempotente e `complete` por comparação e troca; `expire` sem tocar `sending` com lease válido; CASCADE na exclusão do assinante.
+- **Privilégios reais:** `anon` sem leitura, escrita nem `EXECUTE`; usuário autenticado comum vê 0 linhas nas 3 tabelas liberadas (RLS), nada em tokens/payload e não executa funções; admin lê as 3 tabelas, não lê tokens/payload, não escreve e não executa funções; `service_role` lê, escreve e executa tudo.
+- **Isolamento de leads:** o mesmo e-mail existe nas duas tabelas sem relação; excluir um lado não afeta o outro; não há coluna `lead_id`.
+- **Limpeza:** a suíte registra os assinantes sintéticos (`e3-<tag>-*@example.com`) antes de usá-los e os remove no `afterAll`, seguido de inspeção de resíduos (que lança erro se sobrar algo); não lançou. Fixture da E2 e demais registros não foram tocados. Nenhum e-mail foi enviado (não existe dispatcher).
+- **Histórico da execução:** a primeira execução passou 30/31. A falha era do **setup do teste** (o item de confirmação ficava `sending` e a regra "item em aberto" corretamente bloqueava o novo pedido, o que o teste não pretendia exercitar). O teste foi corrigido; a migration **não foi alterada**. A segunda execução passou 31/31.
 
 ## O que a migration cria
 
@@ -82,10 +103,10 @@ Aplicada em Postgres efêmero (PGlite) com stubs de `auth.uid()`, `admin_users`,
 
 `rollback.sql` remove funções, as cinco tabelas e o helper. **Ponto de não retorno:** se já houver assinantes reais, o rollback elimina consentimentos e a supressão (a linha `unsubscribed` é a supressão, SDD §10.1) — **não executar sem decisão jurídica (BL-01)**. Antes: manter as flags desligadas. Com as funções removidas, a inscrição responde 500 e o one-click responde 503.
 
-## Pendências para autorizar o apply no isolado
+## Pendências para a E3 (após a homologação no isolado)
 
-1. Autorização específica do operador para o ref `pyhhygvdjokddphftuua`.
-2. Conferir que a 017 está aplicada no isolado (o preflight checa; deve estar, desde a E0c).
-3. Escrever os testes de integração T-NL-I* (concorrência real de `request_subscription`/`confirm`/`unsubscribe`, claim com `SKIP LOCKED`, privilégios reais por papel) para rodar logo após o apply.
-4. Decidir sobre a divergência do §18.2 (idempotência) e atualizar o texto do SDD.
-5. Registrar a aplicação em `docs/runbooks/migrations/REGISTRO.md` **somente depois** de executada.
+1. Aplicar em **produção** só com autorização específica, depois do isolado, da E4-essencial (migration N4) e das aprovações do §18.3 do SDD. O preflight de produção usa `alvo = 'ausente'`.
+2. Migrations **N2** (jobs de dispatch e manutenção, depende de BL-03/PV-04/LC-01) e **N3** (purgas, depende de BL-01 e dos `P-RET-*`).
+3. Dispatcher, e-mail e remetente (Resend/DNS, BL-02), formulário da Home, textos jurídicos e de consentimento definitivos (`draft-1` é provisório).
+4. Decisão do responsável pela tracking sobre `/admin`, `error.tsx` e o `not-found` global sem rastreadores (DEC-27), e coordenação com a branch de tracking (DEP-07).
+5. A aplicação no isolado está registrada em `docs/runbooks/migrations/REGISTRO.md`; a de produção só entra depois de executada.

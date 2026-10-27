@@ -389,7 +389,10 @@ describe.skipIf(!ENABLED)("T-NL-I03 — descadastro idempotente e supressão", (
 
   it("supressão: depois de descadastrar, nova inscrição só 7 dias depois, e continua 'unsubscribed' até confirmar", async () => {
     const email = newEmail("supp");
-    const { sub, unsub } = await activate(email);
+    const { sub, unsub, item } = await activate(email);
+    // O activate() deixa o item de confirmação em `sending`; para testar SÓ a regra dos 7 dias,
+    // ele precisa estar terminal (um item em aberto bloquearia o pedido por outra regra).
+    await svc().from("newsletter_outbox").update({ status: "sent", sent_at: new Date().toISOString(), provider_message_id: "int-supp", lease_until: null }).eq("id", item.id);
     await rpc(svc(), "newsletter_unsubscribe", { p_token_hash: unsub.hash, p_channel: "link" });
     await subscribe(email, V2); // < 7 dias: nada
     expect(await outboxOf(sub.id, "confirmation")).toHaveLength(1);

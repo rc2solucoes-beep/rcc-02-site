@@ -101,7 +101,10 @@ describe("runbook da migration 018", () => {
     expect(readme).toMatch(/Decisão técnica: guard de primeira aplicação estrita × "apply idempotente" \(SDD §18\.2\)/);
     expect(readme).toMatch(/não foi alterado em silêncio/);
     expect(readme).toMatch(/aborta no guard/);
-    expect(readme).toMatch(/NÃO APLICADA EM NENHUM AMBIENTE/);
-    expect(readme).not.toMatch(/ESTADO: (APLICADA|HOMOLOGADA)/);
+    // Estado após a homologação no isolado (27/10/2026): produção continua NÃO aplicada.
+    expect(readme).toMatch(/APLICADA, VERIFICADA E HOMOLOGADA NO ISOLADO/);
+    expect(readme).toMatch(/PRODUÇÃO: NÃO APLICADA/);
+    expect(readme).toMatch(/NÃO REAPLICAR/);
+    expect(readme).toContain("31/31");
   });
 });
