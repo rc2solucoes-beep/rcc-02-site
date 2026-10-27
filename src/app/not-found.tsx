@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { TrackingScripts } from "@/components/tracking/TrackingScripts";
 
 // O layout raiz declara `index, follow` (inclusive para o Googlebot), canonical
 // e og:url da Home para as páginas reais. Sem sobrescrever aqui, todo 404 herda
@@ -17,6 +18,8 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
+    <>
+    <TrackingScripts />
     <div className="flex-1 flex items-center justify-center min-h-[70vh] px-4">
       <div className="text-center max-w-lg">
         <SectionLabel className="block mb-4">Erro 404</SectionLabel>
@@ -40,5 +43,6 @@ export default function NotFound() {
         </Link>
       </div>
     </div>
+    </>
   );
 }
