@@ -42,7 +42,7 @@ Decisões de produto: remetente `newsletter@rc2solucoes.com.br` (sujeito a DNS);
 
 | ID | Premissa | Validação |
 |---|---|---|
-| PV-04 | `pg_net` disponível no projeto Supabase. | Preflight; senão, §8.9 (alternativas). |
+| PV-04 | `pg_net` disponível no projeto Supabase. | **Parcialmente verificada (27/10/2026, leitura direta do isolado): `pg_cron` instalado; `pg_net` disponível, mas NÃO instalado.** Falta instalar (autorização específica) e demonstrar o `http_post` (LC-01); senão, §8.9 (alternativas). Especificação da N2 e do LC-01: `src/lib/newsletter/README.md`. |
 | PV-05 | `ON DELETE CASCADE` ignora RLS nas tabelas filhas. | T-NL-I19 |
 | PV-08 | Plano da Vercel permite `maxDuration` de 120 s e o cron escolhido. | Painel da Vercel |
 | PV-09 | Scripts de terceiros não executam nas páginas de token após o isolamento. | LC-03, T-NL-E06 |

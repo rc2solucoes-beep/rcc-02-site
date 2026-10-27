@@ -43,6 +43,10 @@ const ALERT_EVENT_WHITELIST = new Set([
   "admin_upload_invalid_mime",
   "admin_upload_too_large",
   "admin_upload_denied_not_admin",
+  // Newsletter (E3, SDD §8.6 e §15): alertas operacionais do processador, com limite de 1 por tipo/hora.
+  "newsletter_outbox_dead",
+  "newsletter_provider_quota",
+  "newsletter_dispatch_unauthorized",
 ]);
 
 const INTERNAL_ALERT_EVENTS = new Set([

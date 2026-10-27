@@ -26,6 +26,7 @@ export const NEUTRALIZED_ENV_NAMES = [
   "NEXT_PUBLIC_SENTRY_DSN",
   "NEXT_PUBLIC_TURNSTILE_SITE_KEY",
   "NEXT_PUBLIC_WHATSAPP_NUMBER",
+  "NEWSLETTER_DISPATCH_SECRET", // neutro: os endpoints internos da newsletter negam todo acesso no E2E (E3)
   "RESEND_API_KEY",
   "SECURITY_ALERT_EMAIL",
   "SENTRY_DSN",
