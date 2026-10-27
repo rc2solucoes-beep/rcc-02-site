@@ -1,6 +1,6 @@
 # Migration 017 — Rate limit atômico do contato (E0c)
 
-**ESTADO: PROPOSTA — NÃO APLICADA EM NENHUM AMBIENTE. NÃO EXECUTAR SQL SEM AUTORIZAÇÃO ESPECÍFICA POR AMBIENTE.**
+**ESTADO: APLICADA E HOMOLOGADA NO ISOLADO (`pyhhygvdjokddphftuua`). PRODUÇÃO: NÃO APLICADA. NÃO EXECUTAR SQL EM PRODUÇÃO SEM AUTORIZAÇÃO ESPECÍFICA.**
 
 | Campo | Valor |
 |---|---|
@@ -18,8 +18,26 @@
 
 | Ambiente | Autorizado por | Data | Observação |
 |---|---|---|---|
-| Isolado (`pyhhygvdjokddphftuua`) | | | |
-| Produção | | | |
+| Isolado (`pyhhygvdjokddphftuua`) | Operador (aplicação executada pelo ChatGPT no projeto isolado, por instrução do operador) | Ver "Homologação no isolado" | Aplicada uma única vez; não reaplicar (guard de primeira aplicação estrita) |
+| Produção (`ymfcepzwhiemgkxzmbdm`) | | | **NÃO aplicada.** Exige autorização específica |
+
+## Homologação no isolado
+
+Projeto `pyhhygvdjokddphftuua`. Resultados informados pelo operador (a aplicação foi feita fora do agente); apenas os testes de integração foram executados e verificados neste fluxo.
+
+| Etapa | Resultado | Fonte |
+|---|---|---|
+| `preflight.sql` | 8/8 `APROVADO` | informado |
+| `017_rate_limit_counters.sql` (apply) | Sucesso | informado |
+| `verify.sql` | 23/23 `APROVADO` | informado |
+| Objetos | tabela `rate_limit_counters`, função `rate_limit_hit`, job `purge-rate-limit-counters` (`17 * * * *`); job `publish-scheduled-posts` preservado | informado |
+| `tests/integration/rls/e0c-rate-limit.test.ts` | **9/9 aprovados** (alvo `pyhh…`, guarda anti-produção ativa) | executado pelo agente |
+| Concorrência real (T-RL-I01) | contagens exatas sob N chamadas paralelas, sem repetição nem perda; exatamente `limit` permitidas no limite | executado pelo agente |
+| Privilégios (T-RL-I03) | `anon`, `authenticated` não-admin e `authenticated` admin sem EXECUTE e sem acesso à tabela | executado pelo agente |
+| Independência de `leads` (T-RL-I02) | excluir lead não altera o contador | executado pelo agente |
+| Resíduos sintéticos | chaves `e0c-<tag>` removidas e inspeção de resíduos sem falha no `afterAll` | executado pelo agente |
+
+**Produção (`ymfcepzwhiemgkxzmbdm`): a 017 NÃO foi aplicada.** O código da E0c não pode ir a Production antes de `RATE_LIMIT_PEPPER` e da migration (ver "Ordem com o código").
 
 ## O que a migration cria
 
@@ -56,7 +74,7 @@ As chaves são `contact:email:<hmac>` e `contact:ip:<hmac>`, com HMAC-SHA256 do 
 
 A migration vem **antes** do código: a rota nova fecha em 429 se `rate_limit_hit` não existir. O código antigo continua funcionando com a migration aplicada (ele ignora a tabela). Os contadores começam vazios no deploy: a janela efetivamente reinicia (risco aceito pelo SDD).
 
-## Testes de integração (preparados; executar só após a 017 no isolado)
+## Testes de integração (executados no isolado: 9/9)
 
 ```
 npm run test:integration -- tests/integration/rls/e0c-rate-limit.test.ts
@@ -74,4 +92,4 @@ Aplicada em um Postgres 17 efêmero (PGlite) com stub de `cron`: migration, auto
 
 ## Registro
 
-Registrar em `docs/runbooks/migrations/REGISTRO.md` **somente depois** de executada, com ambiente, autorização e resultado.
+O isolado já consta em `docs/runbooks/migrations/REGISTRO.md`. A linha de produção só entra **depois** de executada, com ambiente, autorização e resultado.

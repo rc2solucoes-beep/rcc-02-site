@@ -35,7 +35,7 @@ export default async function PrivacidadePage() {
       <PageHero
         label="Legal"
         title="Política de Privacidade"
-        description="Última atualização: maio de 2026"
+        description="Última atualização: outubro de 2026"
       />
 
       <section className="bg-rc2-bg py-16">
@@ -118,6 +118,9 @@ export default async function PrivacidadePage() {
               <h2 className="text-xl font-semibold text-rc2-heading mb-3">8. Segurança</h2>
               <p>
                 Adotamos medidas técnicas e organizacionais adequadas para proteger seus dados contra acesso não autorizado, perda ou divulgação indevida.
+              </p>
+              <p>
+                Para prevenir abuso do formulário de contato, mantemos contadores de segurança de tentativas. Eles usam identificadores pseudonimizados (HMAC) derivados do e-mail e do endereço IP, e não guardam esses valores em texto aberto. Esses contadores são eliminados automaticamente em até 2 dias.
               </p>
             </section>
 
