@@ -120,7 +120,7 @@ export default async function PrivacidadePage() {
                 Adotamos medidas técnicas e organizacionais adequadas para proteger seus dados contra acesso não autorizado, perda ou divulgação indevida.
               </p>
               <p>
-                Para prevenir abuso do formulário de contato, mantemos contadores de segurança de tentativas. Eles usam identificadores pseudonimizados (HMAC) derivados do e-mail e do endereço IP, e não guardam esses valores em texto aberto. Esses contadores são eliminados automaticamente em até 2 dias.
+                Para prevenir abuso do formulário de contato, mantemos contadores de segurança de tentativas. Eles usam identificadores pseudonimizados (HMAC) derivados do e-mail e do endereço IP, e não guardam esses valores em texto aberto. Esses contadores são mantidos por cerca de 2 dias e removidos por uma rotina automática, executada de hora em hora, que apaga os registros com mais de dois dias.
               </p>
             </section>
 

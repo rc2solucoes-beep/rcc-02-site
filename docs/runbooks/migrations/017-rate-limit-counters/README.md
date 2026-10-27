@@ -1,6 +1,6 @@
 # Migration 017 — Rate limit atômico do contato (E0c)
 
-**ESTADO: APLICADA E HOMOLOGADA NO ISOLADO (`pyhhygvdjokddphftuua`). PRODUÇÃO: NÃO APLICADA. NÃO EXECUTAR SQL EM PRODUÇÃO SEM AUTORIZAÇÃO ESPECÍFICA.**
+**ESTADO: APLICADA E VERIFICADA NO ISOLADO (`pyhhygvdjokddphftuua`) E EM PRODUÇÃO (`ymfcepzwhiemgkxzmbdm`, 27/10/2026). ENCERRADA. NÃO REAPLICAR (guard de primeira aplicação estrita).**
 
 | Campo | Valor |
 |---|---|
@@ -19,7 +19,7 @@
 | Ambiente | Autorizado por | Data | Observação |
 |---|---|---|---|
 | Isolado (`pyhhygvdjokddphftuua`) | Operador (aplicação executada pelo ChatGPT no projeto isolado, por instrução do operador) | Ver "Homologação no isolado" | Aplicada uma única vez; não reaplicar (guard de primeira aplicação estrita) |
-| Produção (`ymfcepzwhiemgkxzmbdm`) | | | **NÃO aplicada.** Exige autorização específica |
+| Produção (`ymfcepzwhiemgkxzmbdm`) | Operador, autorização explícita e específica para a 017 | 27/10/2026 | Aplicada uma única vez, via conexão Supabase com `project_id` explícito. Ver "Aplicação em Produção" |
 
 ## Homologação no isolado
 
@@ -37,7 +37,24 @@ Projeto `pyhhygvdjokddphftuua`. Resultados informados pelo operador (a aplicaç�
 | Independência de `leads` (T-RL-I02) | excluir lead não altera o contador | executado pelo agente |
 | Resíduos sintéticos | chaves `e0c-<tag>` removidas e inspeção de resíduos sem falha no `afterAll` | executado pelo agente |
 
-**Produção (`ymfcepzwhiemgkxzmbdm`): a 017 NÃO foi aplicada.** O código da E0c não pode ir a Production antes de `RATE_LIMIT_PEPPER` e da migration (ver "Ordem com o código").
+## Aplicação em Produção
+
+Projeto `ymfcepzwhiemgkxzmbdm`, 27/10/2026. Apply, preflight e verify executados pelo ChatGPT por conexão Supabase com `project_id` explícito, por autorização explícita do operador; os resultados foram **informados** ao agente (o agente não tem conexão que selecione o projeto e não executou SQL em Production).
+
+| Etapa | Resultado | Fonte |
+|---|---|---|
+| `RATE_LIMIT_PEPPER` em Production | criado como Secret, valor distinto de Preview e do local; deployment ativo inalterado até o merge | executado pelo agente (inventário da Vercel) |
+| `preflight.sql` | 8/8 `APROVADO` | informado |
+| `017_rate_limit_counters.sql` (apply) | sucesso | informado |
+| `verify.sql` | 23/23 `APROVADO` | informado |
+| PR #45 | merge `aac75c5e6484c061238d963c1b837f4d2fcda152` | verificado no GitHub |
+| Deployment | `dpl_3sjjWwPv2ReLXUgiVQkZRhRqnNJi`, target Production, READY; `www.rc2solucoes.com.br` e apex no novo deployment | verificado na Vercel |
+| Smoke A (válido, sem Turnstile) | HTTP 400 | executado pelo agente |
+| Smoke B (token real do widget) | HTTP 200; sem erro nos logs de runtime | executado pelo agente |
+| Contadores | leitura direta: um bucket de e-mail e um de IP, ambos com `count = 1` | informado |
+| Rollback | **não executado** | — |
+
+**Pendência administrativa:** o lead sintético `e0c-posdeploy@example.com` (nome "E0c Pos-deploy (teste sintetico)") continua em Production e precisa de **arquivamento administrativo**. Nenhum DELETE foi executado em Production. A mesma pendência vale para qualquer outro lead sintético de Production.
 
 ## O que a migration cria
 
