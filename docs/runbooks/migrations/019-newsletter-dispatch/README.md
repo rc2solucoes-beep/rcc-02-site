@@ -77,19 +77,43 @@ Situação verificada (projeto `rcc-02-site`): **SSO ativo, escopo `all_except_c
 
 1. **LC-01 etapa A** (não depende da 019 nem do `pg_net`): `RC2_RUN_LC01=1 npm run test:integration -- tests/integration/lc01/lc01.test.ts` no isolado, com a 018 aplicada. Processador + fila reais, provedor = simulador em loopback.
 2. Instalar `pg_net` (e confirmar Vault) no isolado.
-3. Criar os segredos no Vault (operador). Na Vercel Preview: `NEWSLETTER_DISPATCH_SECRET` (igual ao do Vault). **Sem `RESEND_API_KEY`** no Preview: o dispatch responde `503 not_configured` e nada é reivindicado.
+3. Criar os segredos no Vault (operador). Na Vercel Preview: `NEWSLETTER_DISPATCH_SECRET` (igual ao do Vault). **Sem `RESEND_API_KEY`** no Preview: o dispatch responde `503 not_configured` e nada é reivindicado (essa é a resposta **esperada e correta** da etapa B; não usar credencial real para forçar um 200).
 4. **Preflight** (`preflight.sql`, READ ONLY): esperado `APROVADO` (**16 checks**). Para produção, trocar a linha `alvo` para `'ausente'`.
 5. **Apply** (`019_newsletter_dispatch_jobs.sql`): `Success. No rows returned`. Aborto = nada aplicado; **não contornar editando o SQL**.
 6. **Verify** (`verify.sql`, READ ONLY): esperado `APROVADO` (**16 checks**).
-7. **LC-01 etapa B** (o salto): ver abaixo.
+7. **LC-01 etapa B** (o salto): ver abaixo. Critério de aceite: 401 sem bearer válido e 503 `not_configured` com bearer válido, mais o job disparando a cada minuto.
 8. Só depois, e só em produção com autorização: nada de ativar flags antes da E4-essencial (BL-11).
+
+## LC-01 — status
+
+| Etapa | Status | Data | Resultado |
+|---|---|---|---|
+| **A. Processador em processo** | **APROVADA** | 27/10/2026 | **8/8** no Supabase isolado (`pyhhygvdjokddphftuua`), RPCs reais da 018 e `ResendProvider` real → simulador em loopback; executado pelo Claude Code com `RC2_RUN_LC01=1`. Detalhes abaixo |
+| **B. Salto `pg_cron` → `pg_net` → Preview** | **PENDENTE** | — | Depende de: `pg_net` instalado, segredos no Vault, decisão do acesso ao Preview protegido, apply da 019 (todos com autorização específica) |
+
+### Etapa A — resultado (27/10/2026)
+
+Alvo validado pela guarda do harness (ref `pyh…`); `RESEND_API_KEY` e `RESEND_BASE_URL` ausentes do ambiente; o adaptador usou a chave sintética `re_sim_*` contra `127.0.0.1`; o simulador não registrou nenhuma violação (destinatário não sintético ou chave fora do padrão). Pré-condições lidas pelo ChatGPT antes da execução: outbox vazio, nenhum job da newsletter, nenhum segredo de dispatch ou bypass no Vault.
+
+| # | Cenário | Evidência observada |
+|---|---|---|
+| 1 | Envio normal | 2 itens (confirmação e link de descadastro) enviados; 2 entregas no simulador; cabeçalhos RFC 8058 só na confirmação; `provider_message_id` do banco = id da entrega; payload apagado |
+| 2 | Falha ao gravar o resultado depois do envio | entrega aceita e item preso em `sending`; nenhum outro worker o reivindica com o lease válido; após o vencimento, **outro** worker recupera (`attempts` = 2) e reenvia com a **mesma chave** `nl-<id>` e **corpo idêntico**; o simulador reconhece o replay e há **1 entrega só** |
+| 3 | 5xx e conexão derrubada após aceitar | 5xx: `retry` com `outcome_unknown`, 0 entregas; segunda tentativa entrega 1 vez com a mesma chave e o mesmo corpo. Conexão derrubada **depois** de aceitar: o retry recebe a resposta original (replay) e a chave tem **uma** entrega |
+| 3b | Timeout do cliente | `timeout` ambíguo; com a original ainda em voo a repetição recebe `concurrent_idempotent_requests` (retry curto); após liberar, entrega 1 vez, sempre com a mesma chave |
+| 4 | Indisponibilidade prolongada | 3 tentativas com backoff, 0 entregas; após o prazo nenhuma nova tentativa; `expire` leva a `dead(deadline_elapsed)` preservando `outcome_unknown = true`; payload apagado |
+| 5 | Dispatcher parado | item pronto há 20 min: `oldest_ready_age_seconds` > 900 e a sonda alerta (`queue_stalled`); sonda falhando alerta (`probe_failed`); depois de processar, normaliza e `health` não tem PII |
+| 6 | Dois workers concorrentes | 6 itens processados por 2 invocações simultâneas: 6 enviados, 0 conclusões obsoletas, **cada chave enviada exatamente 1 vez**, 6 entregas, nenhum replay (`SKIP LOCKED` real) |
+| 7 | Falha permanente | exatamente **12** requisições; depois o claim não reivindica mais e `expire` marca `dead(attempts_exhausted)`; chamadas extras de dispatch não enviam nada |
+
+Limpeza (verificada por leitura de contagens no isolado depois da execução): `newsletter_subscribers`, `newsletter_outbox`, `newsletter_outbox_payload`, `newsletter_tokens` e `newsletter_consents` com **0** registros; nenhum assinante com prefixo `lc01-` ou `e3-`; `leads` com **1** registro (a fixture da E2, preservada). Nenhum e-mail foi enviado a terceiros (simulador em loopback).
 
 ## LC-01 — o que cada etapa prova
 
 | Etapa | Ambiente | Prova | Não prova |
 |---|---|---|---|
 | **A. Processador em processo** | isolado, RPCs reais da 018, `ResendProvider` real → simulador em loopback | os 7 cenários do SDD §8.9: envio normal, recuperação de lease, 5xx com retry idempotente (e conexão derrubada após aceitar), deadline, sonda, dois workers, `attempts_exhausted` | o agendador, o `pg_net` e a autenticação ponta a ponta |
-| **B. Salto `pg_cron` → `pg_net` → Preview** | isolado, com a 019 aplicada | o job dispara a cada minuto; autenticação (401 sem segredo, 503 `not_configured` sem `RESEND_API_KEY`, 200 com `claimed: 0` com fila vazia); `net._http_response` mostra o resultado; `health` coerente; invocações sobrepostas não duplicam (lease + `SKIP LOCKED`) | envio com o provedor simulado através da Vercel |
+| **B. Salto `pg_cron` → `pg_net` → Preview** | isolado, com a 019 aplicada | o job dispara a cada minuto e a requisição chega à rota: **sem bearer válido → HTTP 401**; **com bearer válido e sem `RESEND_API_KEY` → HTTP 503 `not_configured`** (nada é reivindicado); `net._http_response` registra essas respostas; `health` (com bearer) coerente com a fila vazia | **HTTP 200 com `claimed = 0`** (isso exige provedor configurado e a execução da rota; **não está previsto para o Preview atual**, que não terá `RESEND_API_KEY`) · envio com o provedor simulado através da Vercel · duplicação em invocações sobrepostas (provada na etapa A) |
 | C. Ponta a ponta com simulador via Vercel | — | — | **Não planejada:** exigiria o simulador publicamente acessível e `RESEND_BASE_URL` fora de loopback, que o código **recusa** de propósito. Só com decisão explícita |
 
 `RESEND_BASE_URL` é lida pelo SDK **na carga do módulo** e redireciona **todo** envio do Resend. Por isso: **proibida em Production** e, fora dela, só loopback (`resendBaseUrlProblem` / `createProviderFromEnv`; testes em `lc01Safety.test.ts`). Nunca configurar na Vercel.

@@ -46,13 +46,13 @@ Backoff: 1 min, 5 min, 15 min, 1 h, 3 h e a cada 3 h, ±10%. Depois de 20 h a RP
 
 Leitura direta do Supabase isolado: **`pg_cron` instalado; `pg_net` disponível, mas NÃO instalado.** PV-04 fica **parcialmente verificada**: a disponibilidade está confirmada; falta instalar e demonstrar o `http_post` no isolado. **Instalar `pg_net` depende de autorização específica.**
 
-## Migration N2 (019) e LC-01 — preparados, NÃO aplicados nem executados
+## Migration N2 (019) e LC-01 — 019 NÃO aplicada; LC-01 etapa A aprovada, etapa B pendente
 
 - **Proposta:** `supabase/migrations/019_newsletter_dispatch_jobs.sql` e runbook em `docs/runbooks/migrations/019-newsletter-dispatch/` (README, preflight 16 checks, verify 16 checks, rollback). Primeira aplicação estrita; exige 018, `pg_cron`, **`pg_net`**, Vault e segredos criados antes pelo operador; **nenhuma credencial literal**; preserva os jobs da 011 e da 017. O preflight **reprova hoje de propósito** (`pg_net` não instalado, Vault e segredos não verificados/criados).
 - **Acesso ao Preview protegido** (SSO `all_except_custom_domains`): análise no README da 019. Production usa o domínio próprio (sem proteção, só o bearer); o isolado/Preview precisa do *Protection Bypass for Automation* (cabeçalho, opcional no job, lido do Vault) ou de um domínio próprio. Nada foi criado.
 - **Harness LC-01** (`tests/lc01/`): `scenarios.ts` define os 7 cenários do SDD §8.9 contra a interface `Lc01Backend`, com o `ResendProvider` **real** (SDK) apontado por `RESEND_BASE_URL` para o **simulador em loopback** (`resendSimulator.ts`: sucesso, 429, 5xx, timeout, conexão derrubada, replay de `Idempotency-Key`, recusa de destinatário não sintético e de chave de API real).
   - **Ensaio** em memória: `tests/unit/newsletter/lc01.dryrun.test.ts` (roda no conjunto unitário).
-  - **Execução real no isolado:** `tests/integration/lc01/lc01.test.ts` com `RC2_RUN_LC01=1` (RPCs reais da 018). Escrito, **não executado**.
+  - **Execução real no isolado:** `tests/integration/lc01/lc01.test.ts` com `RC2_RUN_LC01=1` (RPCs reais da 018). **Etapa A APROVADA em 27/10/2026 (8/8)**; **etapa B (salto `pg_cron` → `pg_net` → Preview) PENDENTE.** Resultado detalhado no README da 019.
 - **Trava de `RESEND_BASE_URL`:** o SDK a lê na carga do módulo e redireciona todo envio; por isso é proibida em Production e, fora dela, só loopback (`resendBaseUrlProblem`).
 - **Sonda:** `probe.ts` (`evaluateProbe`): alerta se a sonda falhar, se o item pronto mais antigo passar de 15 min ou se o lease vencido persistir em duas observações.
 

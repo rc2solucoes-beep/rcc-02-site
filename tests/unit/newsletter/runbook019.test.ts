@@ -131,4 +131,13 @@ describe("runbook da 019", () => {
     expect(readme).toMatch(/proibida em Production|PROIBIDA em Production|proibida em Production/i);
     expect(readme).not.toMatch(/ESTADO: (APLICADA|HOMOLOGADA)/);
   });
+
+  it("README: etapa A APROVADA, etapa B PENDENTE e expectativas da etapa B corretas (401 e 503, nunca 200 no Preview atual)", () => {
+    expect(readme).toMatch(/\*\*A\. Processador em processo\*\* \| \*\*APROVADA\*\*/);
+    expect(readme).toMatch(/\*\*B\. Salto[^|]*\*\* \| \*\*PENDENTE\*\*/);
+    expect(readme).toMatch(/sem bearer válido → HTTP 401/);
+    expect(readme).toMatch(/com bearer válido e sem `RESEND_API_KEY` → HTTP 503 `not_configured`/);
+    expect(readme).toMatch(/HTTP 200 com `claimed = 0`\*\* \(isso exige provedor configurado[^)]*não está previsto para o Preview atual/);
+    expect(readme).not.toMatch(/200 com `claimed: 0` com fila vazia/);
+  });
 });
