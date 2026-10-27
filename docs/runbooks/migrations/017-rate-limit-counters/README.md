@@ -70,7 +70,7 @@ A migration termina com uma **autoverificação** dentro da transação (RLS, au
 
 ## Dados pessoais
 
-As chaves são `contact:email:<hmac>` e `contact:ip:<hmac>`, com HMAC-SHA256 do valor normalizado e `RATE_LIMIT_PEPPER` (calculado na aplicação; **o pepper nunca chega ao banco**). É dado **pseudonimizado**, não anônimo (DEC-23), com retenção máxima de 2 dias. Deve constar na política de privacidade como contador antiabuso.
+As chaves são `contact:email:<hmac>` e `contact:ip:<hmac>`, com HMAC-SHA256 do valor normalizado e `RATE_LIMIT_PEPPER` (calculado na aplicação; **o pepper nunca chega ao banco**). É dado **pseudonimizado**, não anônimo (DEC-23), com retenção nominal de 2 dias (a purga horária remove o que passou de dois dias; não é exclusão em exatamente 48 h). Deve constar na política de privacidade como contador antiabuso.
 
 ## Variável de ambiente nova (DEP-05) — NÃO configurada ainda
 
