@@ -158,6 +158,12 @@ describe("runbook da 019", () => {
     expect(readme).toMatch(/Gates manuais/);
     for (const g of ["G-1", "G-2", "G-3"]) expect(readme, g).toContain(g);
     expect(readme).toMatch(/Risco residual/);
+    expect(readme).toContain("GO OPERACIONAL CONDICIONAL POR G-1");
+    expect(readme).toMatch(/outros 17\/18 checks passam/);
+    expect(readme).toMatch(/\*\*nunca 18\/18 SQL\*\*/);
+    expect(readme).toMatch(/ref não aparece na imagem/);
+    expect(read("docs/runbooks/migrations/REGISTRO.md")).toContain("Em 27/10/2026, o preflight disponível é **16/18**");
+    for (const sql of [preflight, verify]) expect(sql).toContain("nao_verificavel");
     for (const sql of [preflight, verify]) expect(sql).toContain("'supabase_functions_admin'");
     expect(readme).toMatch(/Database Webhooks/);
     expect(read("docs/runbooks/migrations/REGISTRO.md")).toMatch(/G-2 — papéis com LOGIN/);
