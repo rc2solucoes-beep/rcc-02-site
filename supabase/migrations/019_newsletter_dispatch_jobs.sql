@@ -31,7 +31,10 @@
 --
 -- ATENÇÃO — DADOS EM TRÂNSITO: pg_net grava a requisição (inclusive o cabeçalho Authorization) em
 -- net.http_request_queue até enviá-la, e a resposta (só contagens, sem PII) em net._http_response.
--- Quem lê essas tabelas enxerga o bearer: restrinja o acesso ao schema net (ver runbook).
+-- Quem lê essas tabelas enxerga o bearer. No Supabase hospedado elas pertencem a supabase_admin,
+-- com SELECT para PUBLIC, e um REVOKE não tem efeito: o controle é o schema net fora da Data API,
+-- anon/authenticated sem LOGIN e nenhum papel com LOGIN não previsto (preflight 15B-15D e gates
+-- manuais G-1 a G-3 do runbook). A exposição é transitória e o risco residual está documentado.
 --
 -- PRIMEIRA APLICAÇÃO ESTRITA: não é idempotente. Se algum objeto já existir, o guard aborta
 -- (transação inteira revertida). cron.schedule NÃO é usado de forma convergente: o guard exige

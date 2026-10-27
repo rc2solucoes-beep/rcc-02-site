@@ -83,17 +83,17 @@ describe("runbook da 019", () => {
     }
   });
 
-  it("o total de checks declarado bate com as linhas (16 e 16) e com o README", () => {
-    expect(declared(preflight)).toBe(16);
-    expect(total(preflight)).toBe(16);
-    expect(declared(verify)).toBe(16);
-    expect(total(verify)).toBe(16);
-    expect(readme.match(/\*\*16 checks\*\*/g)).toHaveLength(2);
+  it("o total de checks declarado bate com as linhas (18 e 18) e com o README", () => {
+    expect(declared(preflight)).toBe(18);
+    expect(total(preflight)).toBe(18);
+    expect(declared(verify)).toBe(18);
+    expect(total(verify)).toBe(18);
+    expect(readme.match(/\*\*18 checks\*\*/g)).toHaveLength(2);
   });
 
   it("o preflight reprova de propósito sem pg_net/Vault/segredos e nunca lê o VALOR de um segredo", () => {
     for (const id of ["PRE-05-MIGRATION-018", "PRE-09-PG-NET-INSTALADO", "PRE-10-VAULT-INSTALADO", "PRE-12-SEGREDOS-DO-VAULT-CRIADOS-SO-OS-NOMES",
-      "PRE-13-JOB-PUBLISH-SCHEDULED-POSTS-DA-011", "PRE-14-JOB-PURGE-RATE-LIMIT-COUNTERS-DA-017", "PRE-15-NENHUM-JOB-NEWSLETTER-AGENDADO", "PRE-15B-NET-SEM-ACESSO"]) {
+      "PRE-13-JOB-PUBLISH-SCHEDULED-POSTS-DA-011", "PRE-14-JOB-PURGE-RATE-LIMIT-COUNTERS-DA-017", "PRE-15-NENHUM-JOB-NEWSLETTER-AGENDADO", "PRE-15B-ANON-E-AUTHENTICATED-SEM-LOGIN", "PRE-15C-ROLES-COM-LOGIN-TODOS-PREVISTOS", "PRE-15D-SCHEMA-NET-FORA-DA-DATA-API"]) {
       expect(preflight, id).toContain(id);
     }
     // Mencionar a view (to_regclass) é permitido; ler a coluna do valor ou consultar a view, não.
@@ -108,7 +108,7 @@ describe("runbook da 019", () => {
   it("o verify cobre jobs, comando sem credencial literal, timeout, preservação e acesso ao pg_net", () => {
     for (const id of ["POS-02-DISPATCH-AGENDADO-A-CADA-MINUTO", "POS-03-MANUTENCAO-AGENDADA", "POS-05-DISPATCH-USA-NET-HTTP-POST-E-VAULT",
       "POS-06-DISPATCH-TIMEOUT-125000", "POS-07-DISPATCH-SEM-CREDENCIAL-LITERAL", "POS-09-EXATAMENTE-2-JOBS-NEWSLETTER", "POS-10-JOB-DA-011-INTACTO",
-      "POS-11-JOB-DA-017-INTACTO", "POS-12-MIGRATION-018-INTACTA", "POS-13B-DISPATCH-BYPASS-OPCIONAL", "POS-13C-NET-SEM-ACESSO"]) {
+      "POS-11-JOB-DA-017-INTACTO", "POS-12-MIGRATION-018-INTACTA", "POS-13B-DISPATCH-BYPASS-OPCIONAL", "POS-15B-ANON-E-AUTHENTICATED-SEM-LOGIN", "POS-15C-ROLES-COM-LOGIN-TODOS-PREVISTOS", "POS-15D-SCHEMA-NET-FORA-DA-DATA-API"]) {
       expect(verify, id).toContain(id);
     }
   });
@@ -139,5 +139,33 @@ describe("runbook da 019", () => {
     expect(readme).toMatch(/com bearer válido e sem `RESEND_API_KEY` → HTTP 503 `not_configured`/);
     expect(readme).toMatch(/HTTP 200 com `claimed = 0`\*\* \(isso exige provedor configurado[^)]*não está previsto para o Preview atual/);
     expect(readme).not.toMatch(/200 com `claimed: 0` com fila vazia/);
+  });
+
+  it("pg_net hospedado: nenhum check exige SELECT=false nas tabelas net; controles compatíveis e gates manuais documentados", () => {
+    for (const sql of [preflight, verify]) {
+      const c = noComments(sql);
+      expect(c).not.toMatch(/has_table_privilege/);
+      expect(c).not.toMatch(/NET-SEM-ACESSO/);
+      expect(c).toMatch(/rolcanlogin/);
+      expect(c).toMatch(/pgrst\.db_schemas/);
+      expect(c).toContain("nao_verificavel"); // sem prova automática = reprovado, nunca aprovado
+      expect(c).not.toMatch(/REVOKE|GRANT|OWNER TO/i);
+    }
+    expect(code).not.toMatch(/REVOKE|OWNER TO/i);
+    expect(rollback).not.toMatch(/REVOKE|OWNER TO/i);
+    expect(readme).toMatch(/supabase_admin/);
+    expect(readme).toMatch(/PUBLIC/);
+    expect(readme).toMatch(/Gates manuais/);
+    for (const g of ["G-1", "G-2", "G-3"]) expect(readme, g).toContain(g);
+    expect(readme).toMatch(/Risco residual/);
+    expect(readme).toMatch(/Nenhum `REVOKE` nem troca de proprietário é tentado/);
+    expect(readme).toMatch(/distinto do de \*\*Production\*\*/);
+    expect(readme).not.toMatch(/exigem que \*\*`anon` e `authenticated` não tenham SELECT\*\*/);
+  });
+
+  it("SDD §8.8 registra a exposição transitória e os controles do pg_net", () => {
+    const sdd = read("docs/superpowers/specs/2026-10-13-newsletter-design.md");
+    expect(sdd).toMatch(/Exposição transitória:\*\* no Supabase hospedado/);
+    expect(sdd).toMatch(/não podem ser restringidas por `REVOKE`/);
   });
 });

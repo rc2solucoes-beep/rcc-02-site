@@ -69,18 +69,46 @@ Situação verificada (projeto `rcc-02-site`): **SSO ativo, escopo `all_except_c
 **Requisitos de segurança, qualquer que seja a opção:**
 1. **Cabeçalho HTTP, nunca token na URL** (a query vai para logs e histórico). A 019 só envia o bypass por cabeçalho e o verify reprova bypass literal.
 2. **Segregação:** o bypass e o `NEWSLETTER_DISPATCH_SECRET` do Preview **nunca** são reutilizados em Production, e Production **não tem** `newsletter_dispatch_bypass`.
-3. **Exposição transitória no `pg_net`:** a requisição (inclusive `Authorization` e o bypass) fica em `net.http_request_queue` até ser enviada; a resposta (só contagens, sem PII) fica em `net._http_response`. Quem puder ler essas tabelas lê o bearer. O preflight (PRE-15B) e o verify (POS-13C) exigem que **`anon` e `authenticated` não tenham SELECT** nelas; se não for o caso, é preciso um `REVOKE` (autorização à parte) **antes** de criar os segredos.
+3. **Exposição transitória no `pg_net` (risco residual aceito só com os gates abaixo):** a requisição (inclusive `Authorization` e o bypass) fica em `net.http_request_queue` até ser enviada; a resposta (só contagens, sem PII) fica em `net._http_response`. Quem puder ler essas tabelas lê o bearer. **No Supabase hospedado não é possível restringir isso por `REVOKE`:** as tabelas pertencem a `supabase_admin` com SELECT concedido a `PUBLIC`, o `postgres` não assume esse papel e o worker do `pg_net` roda como `postgres` (KB Supabase: *revoking access to pg_net objects has no effect* e *database roles can read request headers queued by pg_net*). Por isso o preflight **não** exige `SELECT = false`; exige os controles compensatórios de "Controles de acesso ao `pg_net`". Nenhum `REVOKE` nem troca de proprietário é tentado.
 4. **Rotação:** trocar o segredo = atualizar o Vault e a variável da Vercel do mesmo ambiente (o job lê o Vault a cada execução, sem nova migration). O bypass é revogado/regenerado no painel da Vercel.
 5. Sem bypass, sem cookie e sem exceção de proteção criados **nesta etapa**.
+
+## Controles de acesso ao `pg_net` (Supabase hospedado)
+
+Quem consegue ler as tabelas `net` precisa antes **conectar-se ao banco** ou **alcançar o schema `net` pela Data API**. Os controles fecham esses dois caminhos e documentam o que sobra.
+
+| Check (preflight / verify) | Exige | Fecha |
+|---|---|---|
+| `PRE-15B` / `POS-15B` | `anon` e `authenticated` **sem `LOGIN`** (0 papéis) | conexão direta com os papéis públicos |
+| `PRE-15C` / `POS-15C` | **nenhum** papel com `LOGIN` fora da lista prevista (`postgres`, `supabase_admin`, `authenticator`, `pgbouncer`, `supabase_auth_admin`, `supabase_storage_admin`, `supabase_read_only_user`, `supabase_replication_admin`, `supabase_etl_admin`; `pg_*` ignorados). Qualquer outro nome aparece em `actual` e **reprova** | contas de conexão não previstas |
+| `PRE-15D` / `POS-15D` | `pgrst.db_schemas` do papel `authenticator` (configuração efetiva do PostgREST) **sem `net`** → `nao_exposto`. Valor ausente ou ilegível → `nao_verificavel` = **REPROVADO** | leitura de `net` por `/rest/v1` |
+
+Papéis fora da lista só entram nela por decisão registrada no `REGISTRO.md` (nome, motivo, quem criou); a lista não é ampliada para fazer o check passar.
+
+### Gates manuais (evidência ANTES do apply)
+
+SQL não prova tudo. Cada gate exige evidência registrada no `REGISTRO.md`; sem ela **não há apply**, mesmo com o preflight `APROVADO`.
+
+| Gate | Evidência exigida |
+|---|---|
+| **G-1. Data API** | Captura/descrição do painel Supabase (*Settings → API → Exposed schemas*) mostrando que `net` **não** está exposto. **Obrigatório** quando `PRE-15D` der `nao_verificavel`; recomendado também quando der `nao_exposto` (a configuração efetiva do painel é a fonte; o papel `authenticator` é um reflexo dela) |
+| **G-2. Papéis com `LOGIN`** | Se `PRE-15C` listar nomes: a identificação de cada um (origem e finalidade) e a decisão de manter ou remover, tomada pelo operador. Nenhum nome é presumido seguro |
+| **G-3. Segredos segregados** | Confirmação de que o `NEWSLETTER_DISPATCH_SECRET` (e o bypass, se existir) do **Preview/isolado** é distinto do de **Production**, que o Vault do isolado não contém o segredo de Production e que Production **não tem** `newsletter_dispatch_bypass`. Verificar por existência e comprimento, **nunca** exibindo valores |
+
+### Risco residual (documentado, aceito para o isolado e o Preview)
+
+- Os cabeçalhos da requisição (inclusive `Authorization: Bearer ...` e o bypass) ficam legíveis em `net.http_request_queue` até o envio e a resposta em `net._http_response` (retenção do `pg_net`, ordem de horas). Leem essas tabelas `supabase_admin`, `postgres` e qualquer papel com `LOGIN` ou acesso pela Data API ao schema `net`; `service_role` só chegaria a elas se `net` estivesse exposto.
+- Mitigações: segredo **só dá acesso à rota interna** (que devolve contagens, sem PII); rotação simples (Vault + variável da Vercel do mesmo ambiente); segredos de Preview e Production **nunca compartilhados**; resposta sem dados pessoais; fila `net` sem requisições pendentes antes da 019.
+- Se um dos controles não puder ser demonstrado, a 019 **não é aplicada** e a alternativa é o SDD §8.9 (opção B/C), não o enfraquecimento do gate.
 
 ## Ordem de execução (por ambiente, cada passo com autorização)
 
 1. **LC-01 etapa A** (não depende da 019 nem do `pg_net`): `RC2_RUN_LC01=1 npm run test:integration -- tests/integration/lc01/lc01.test.ts` no isolado, com a 018 aplicada. Processador + fila reais, provedor = simulador em loopback.
 2. Instalar `pg_net` (e confirmar Vault) no isolado.
 3. Criar os segredos no Vault (operador). Na Vercel Preview: `NEWSLETTER_DISPATCH_SECRET` (igual ao do Vault). **Sem `RESEND_API_KEY`** no Preview: o dispatch responde `503 not_configured` e nada é reivindicado (essa é a resposta **esperada e correta** da etapa B; não usar credencial real para forçar um 200).
-4. **Preflight** (`preflight.sql`, READ ONLY): esperado `APROVADO` (**16 checks**). Para produção, trocar a linha `alvo` para `'ausente'`.
+4. **Gates G-1 a G-3** com evidência registrada, depois **Preflight** (`preflight.sql`, READ ONLY): esperado `APROVADO` (**18 checks**). Para produção, trocar a linha `alvo` para `'ausente'`.
 5. **Apply** (`019_newsletter_dispatch_jobs.sql`): `Success. No rows returned`. Aborto = nada aplicado; **não contornar editando o SQL**.
-6. **Verify** (`verify.sql`, READ ONLY): esperado `APROVADO` (**16 checks**).
+6. **Verify** (`verify.sql`, READ ONLY): esperado `APROVADO` (**18 checks**).
 7. **LC-01 etapa B** (o salto): ver abaixo. Critério de aceite: 401 sem bearer válido e 503 `not_configured` com bearer válido, mais o job disparando a cada minuto.
 8. Só depois, e só em produção com autorização: nada de ativar flags antes da E4-essencial (BL-11).
 

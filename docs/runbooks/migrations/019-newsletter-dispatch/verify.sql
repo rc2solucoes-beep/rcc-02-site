@@ -7,6 +7,8 @@
 --   * Check ausente, resultado NULL e comparação NULL contam como FALHA.
 --   * Este arquivo NÃO dispara o job nem chama a rota. A demonstração ponta a ponta (autenticação,
 --     200/401, idempotência, recuperação) é o LC-01 (runbook README, seção "LC-01").
+--   * POS-15B a POS-15D repetem os controles de acesso ao pg_net do preflight (sem SELECT = false:
+--     as tabelas net pertencem a supabase_admin no Supabase hospedado). Ver README, "Gates manuais".
 --   * Lê o COMANDO dos jobs (não contém segredo); nunca lê o valor de um segredo do Vault.
 BEGIN READ ONLY;
 
@@ -28,8 +30,10 @@ checks(ord, check_id, expected, actual) AS (
   (12, 'POS-12-MIGRATION-018-INTACTA-NOVE-FUNCOES', '9', (SELECT count(*)::text FROM pg_proc p WHERE p.pronamespace = 'public'::regnamespace AND p.proname LIKE 'newsletter\_%')),
   (13, 'POS-13-SEGREDOS-DO-VAULT-AINDA-PRESENTES', '2', coalesce((SELECT CASE WHEN to_regclass('vault.secrets') IS NULL THEN 'ausente' ELSE (xpath('/row/c/text()', query_to_xml('SELECT count(*) AS c FROM vault.secrets WHERE name IN (''newsletter_dispatch_url'', ''newsletter_dispatch_secret'')', false, true, '')))[1]::text END), 'ausente')),
   (14, 'POS-13B-DISPATCH-BYPASS-OPCIONAL-VEM-DO-VAULT-SEM-LITERAL', 'false', (SELECT (command ~* 'x-vercel-protection-bypass''\s*,\s*''[A-Za-z0-9]{16,}' OR (command LIKE '%x-vercel-protection-bypass%' AND command NOT LIKE '%newsletter_dispatch_bypass%'))::text FROM cron.job WHERE jobname = 'newsletter-dispatch')),
-  (15, 'POS-13C-NET-SEM-ACESSO-DE-ANON-E-AUTHENTICATED-AS-TABELAS', 'false', (SELECT CASE WHEN to_regclass('net.http_request_queue') IS NULL OR to_regclass('net._http_response') IS NULL THEN 'ausente' ELSE (has_table_privilege('anon', 'net.http_request_queue', 'SELECT') OR has_table_privilege('authenticated', 'net.http_request_queue', 'SELECT') OR has_table_privilege('anon', 'net._http_response', 'SELECT') OR has_table_privilege('authenticated', 'net._http_response', 'SELECT'))::text END)),
-  (16, 'POS-14-PG-NET-INSTALADO', '1', (SELECT count(*)::text FROM pg_extension WHERE extname = 'pg_net'))
+  (15, 'POS-15B-ANON-E-AUTHENTICATED-SEM-LOGIN', '0', (SELECT count(*)::text FROM pg_roles WHERE rolname IN ('anon', 'authenticated') AND rolcanlogin)),
+  (16, 'POS-15C-ROLES-COM-LOGIN-TODOS-PREVISTOS', 'nenhum', coalesce((SELECT string_agg(rolname::text, ',' ORDER BY rolname) FROM pg_roles WHERE rolcanlogin AND rolname NOT IN ('postgres', 'supabase_admin', 'authenticator', 'pgbouncer', 'supabase_auth_admin', 'supabase_storage_admin', 'supabase_read_only_user', 'supabase_replication_admin', 'supabase_etl_admin') AND rolname NOT LIKE 'pg\_%'), 'nenhum')),
+  (17, 'POS-15D-SCHEMA-NET-FORA-DA-DATA-API', 'nao_exposto', (SELECT CASE WHEN count(v) = 0 THEN 'nao_verificavel' WHEN bool_or(string_to_array(regexp_replace(v, '\s', '', 'g'), ',') @> ARRAY['net']) THEN 'exposto' ELSE 'nao_exposto' END FROM (SELECT (SELECT substr(c, length('pgrst.db_schemas=') + 1) FROM unnest(d.setconfig) c WHERE c LIKE 'pgrst.db_schemas=%') AS v FROM pg_db_role_setting d WHERE d.setrole = (SELECT oid FROM pg_roles WHERE rolname = 'authenticator')) q)),
+  (18, 'POS-14-PG-NET-INSTALADO', '1', (SELECT count(*)::text FROM pg_extension WHERE extname = 'pg_net'))
 ),
 res AS (
   SELECT ord, check_id, expected, actual, (actual IS NOT NULL AND actual = expected) AS pass FROM checks
@@ -39,8 +43,8 @@ FROM (
   SELECT ord, check_id, expected, actual, pass FROM res
   UNION ALL
   SELECT 999, 'RESULTADO', 'APROVADO',
-         CASE WHEN count(*) = 16 AND bool_and(pass) THEN 'APROVADO' ELSE 'REPROVADO' END,
-         count(*) = 16 AND bool_and(pass)
+         CASE WHEN count(*) = 18 AND bool_and(pass) THEN 'APROVADO' ELSE 'REPROVADO' END,
+         count(*) = 18 AND bool_and(pass)
     FROM res
 ) s
 ORDER BY ord;
