@@ -38,7 +38,8 @@ CREATE ROLE newsletter_ops NOLOGIN NOINHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE
 -- PG 17 exige que o operador seja membro do novo proprietário; revogar antes do COMMIT.
 GRANT newsletter_ops TO postgres;
 
-GRANT USAGE ON SCHEMA public TO newsletter_ops;
+GRANT USAGE, CREATE ON SCHEMA public TO newsletter_ops;
+-- CREATE é temporário para a transferência de propriedade das funções no mesmo schema.
 GRANT SELECT (id) ON public.admin_users TO newsletter_ops;
 CREATE POLICY newsletter_ops_admin_self ON public.admin_users
   FOR SELECT TO newsletter_ops USING (id = NULLIF(current_setting('request.jwt.claim.sub',true),'')::uuid);
@@ -157,5 +158,6 @@ REVOKE ALL ON FUNCTION public.newsletter_admin_unsubscribe(uuid,text) FROM PUBLI
 REVOKE ALL ON FUNCTION public.newsletter_admin_delete_subscriber(uuid,text) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.newsletter_admin_unsubscribe(uuid,text) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.newsletter_admin_delete_subscriber(uuid,text) TO authenticated;
+REVOKE CREATE ON SCHEMA public FROM newsletter_ops;
 REVOKE newsletter_ops FROM postgres;
 COMMIT;
