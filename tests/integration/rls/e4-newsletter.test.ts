@@ -29,7 +29,9 @@ describe.skipIf(!run)("E4 / N4 — JWT real, descadastro e exclusão (isolado)",
   async function getOne(table: string, cols: string, column: string, value: string) {
     const { data, error } = await svc().from(table).select(cols).eq(column, value);
     expect(error?.code ?? null).toBe(null);
-    return data ?? [];
+    // A tabela é dinâmica nesta inspeção. O client Supabase infere GenericStringError
+    // sem schema estático; depois de checar error, tratamos linhas como registros.
+    return (data ?? []) as unknown as Array<Record<string, unknown>>;
   }
   async function assertOk(promise: PromiseLike<{ error: { code?: string } | null }>, label: string): Promise<void> {
     const { error } = await promise;
