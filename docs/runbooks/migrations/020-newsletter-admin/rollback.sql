@@ -27,6 +27,8 @@ DROP POLICY newsletter_ops_outbox_select ON public.newsletter_outbox;
 DROP POLICY newsletter_ops_outbox_update ON public.newsletter_outbox;
 DROP POLICY newsletter_ops_tokens_select ON public.newsletter_tokens;
 DROP POLICY newsletter_ops_tokens_delete ON public.newsletter_tokens;
+DROP POLICY newsletter_ops_payload_id_select ON public.newsletter_outbox_payload;
+DROP POLICY newsletter_ops_payload_delete ON public.newsletter_outbox_payload;
 DROP POLICY newsletter_ops_consents_insert ON public.newsletter_consents;
 DROP POLICY newsletter_ops_audit_insert ON public.admin_audit_logs;
 
@@ -34,6 +36,7 @@ REVOKE SELECT (id) ON public.admin_users FROM newsletter_ops;
 REVOKE SELECT, UPDATE, DELETE ON public.newsletter_subscribers FROM newsletter_ops;
 REVOKE SELECT, UPDATE ON public.newsletter_outbox FROM newsletter_ops;
 REVOKE SELECT, DELETE ON public.newsletter_tokens FROM newsletter_ops;
+REVOKE SELECT (outbox_id), DELETE ON public.newsletter_outbox_payload FROM newsletter_ops;
 REVOKE INSERT (subscriber_id,event,reason) ON public.newsletter_consents FROM newsletter_ops;
 REVOKE INSERT (event,severity,actor_user_id,actor_type,path,method,status,resource_type,resource_id,metadata)
   ON public.admin_audit_logs FROM newsletter_ops;
