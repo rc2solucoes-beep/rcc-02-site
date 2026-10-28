@@ -69,3 +69,7 @@ Os testes unitários de Server Actions usam dublês (não substituem os testes d
 ## Reconciliação versionada — migration 021
 
 O arquivo `supabase/migrations/021_newsletter_admin_acl_reconcile.sql` reproduz a correção de `EXECUTE` executada manualmente no isolado. A migration 020 já aplicada não deve ser reexecutada ou alterada retroativamente. A 021 foi adicionada ao Git, mas **não aplicada pelo agente**. Antes de marcá-la aplicada no histórico do isolado ou executá-la em outros ambientes, conferir estado e autorização. O fluxo de CI da PR agora também contempla evento `pull_request`; sua execução real ainda deve ser confirmada.
+
+## Teste de integração reproduzível
+
+Adicionado `tests/integration/rls/e4-newsletter.test.ts` com JWTs reais via `createRoleClients()`, proteção anti-produção, dados sintéticos e limpeza. Cobre negação `anon`/não-admin, descadastro, payload, consentimento, auditoria, idempotência e exclusão. Executar somente após disponibilizar `.env.test.local` do projeto isolado e configurar `RC2_E4_PHASE=post020` usando `npm run test:integration -- tests/integration/rls/e4-newsletter.test.ts`. A suíte não foi executada contra o Supabase nesta sessão; não considerá-la homologada. Teste de rollback por falha induzida de auditoria continua pendente e exige ambiente controlado.
