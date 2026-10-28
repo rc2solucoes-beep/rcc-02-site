@@ -41,8 +41,8 @@ describe("E4 N4 — contrato estático de segurança",()=>{
   it("ações e interface bloqueadas por padrão; não usam service-role",()=>{
     expect((actions.match(/NEWSLETTER_ADMIN_MUTATIONS_ENABLED !== "true"/g)||[]).length).toBe(2);
     expect(actions).toContain("requireAdmin");
-    expect(actions).toMatch(/deleteNewsletterSubscriber[\\s\\S]*?NEWSLETTER_ADMIN_MUTATIONS_ENABLED !== "true"/);
-    expect(actions).toMatch(/unsubscribeNewsletterSubscriber[\\s\\S]*?NEWSLETTER_ADMIN_MUTATIONS_ENABLED !== "true"/);
+    expect(actions).toMatch(/deleteNewsletterSubscriber[\s\S]*?NEWSLETTER_ADMIN_MUTATIONS_ENABLED !== "true"/);
+    expect(actions).toMatch(/unsubscribeNewsletterSubscriber[\s\S]*?NEWSLETTER_ADMIN_MUTATIONS_ENABLED !== "true"/);
     expect(actions).toContain("createSessionClient");
     expect(actions).not.toContain("createServiceClient");
     expect(page).toContain('NEWSLETTER_ADMIN_MUTATIONS_ENABLED === "true"');
