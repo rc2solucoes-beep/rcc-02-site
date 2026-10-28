@@ -14,11 +14,20 @@ WITH x AS (
     NOT has_column_privilege('newsletter_ops','public.newsletter_outbox_payload','confirm_token','SELECT') AS no_confirm_token_read,
     NOT has_column_privilege('newsletter_ops','public.newsletter_outbox_payload','unsubscribe_token','SELECT') AS no_unsubscribe_token_read,
     NOT has_column_privilege('newsletter_ops','public.newsletter_outbox_payload','template_version','SELECT') AS no_template_read,
-    has_table_privilege('newsletter_ops','public.newsletter_outbox_payload','DELETE') AS payload_delete
+    has_table_privilege('newsletter_ops','public.newsletter_outbox_payload','DELETE') AS payload_delete,
+    NOT has_schema_privilege('newsletter_ops','public','CREATE') AS no_schema_create,
+    NOT has_table_privilege('anon','public.newsletter_subscribers','SELECT') AS anon_no_subscribers,
+    NOT has_table_privilege('authenticated','public.newsletter_subscribers','DELETE') AS auth_no_subscriber_delete,
+    NOT has_table_privilege('authenticated','public.newsletter_subscribers','UPDATE') AS auth_no_subscriber_update,
+    NOT has_table_privilege('newsletter_ops','public.leads','SELECT') AS no_leads_read,
+    NOT has_table_privilege('newsletter_ops','public.posts','SELECT') AS no_posts_read,
+    NOT has_table_privilege('newsletter_ops','public.settings','SELECT') AS no_settings_read
 )
 SELECT '020-N4' AS migration,
        CASE WHEN role_safe AND functions_owned AND exec_unsub AND exec_delete AND anon_denied AND role_set_denied AND payload_id_select AND no_confirm_token_read
-        AND no_unsubscribe_token_read AND no_template_read AND payload_delete
+        AND no_unsubscribe_token_read AND no_template_read AND payload_delete AND no_schema_create
+        AND anon_no_subscribers AND auth_no_subscriber_delete AND auth_no_subscriber_update
+        AND no_leads_read AND no_posts_read AND no_settings_read
        THEN 'APROVADO' ELSE 'REPROVADO' END AS resultado,
        to_jsonb(x) AS checks FROM x;
 ROLLBACK;
