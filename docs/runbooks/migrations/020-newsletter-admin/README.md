@@ -65,3 +65,7 @@ Os testes unitários de Server Actions usam dublês (não substituem os testes d
 - Não reaplicar `020` no isolado. A correção manual ainda precisa ser reproduzida em **nova migration de reconciliação** para ambientes futuros, sem editar histórico já aplicado.
 - Testes unitários da E4 possuem workflow `.github/workflows/newsletter-e4-check.yml`; conferir resultado real no GitHub Actions (não presumir aprovação).
 - Testes funcionais com JWT admin/não-admin, transações e auditoria ainda pendentes. Flags públicas e mutações administrativas continuam desligadas; Production intocada.
+
+## Reconciliação versionada — migration 021
+
+O arquivo `supabase/migrations/021_newsletter_admin_acl_reconcile.sql` reproduz a correção de `EXECUTE` executada manualmente no isolado. A migration 020 já aplicada não deve ser reexecutada ou alterada retroativamente. A 021 foi adicionada ao Git, mas **não aplicada pelo agente**. Antes de marcá-la aplicada no histórico do isolado ou executá-la em outros ambientes, conferir estado e autorização. O fluxo de CI da PR agora também contempla evento `pull_request`; sua execução real ainda deve ser confirmada.
