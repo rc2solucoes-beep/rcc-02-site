@@ -10,7 +10,7 @@ describe("E4 N4 — contrato estático de segurança",()=>{
   it("a migration N4 tem primeira aplicação estrita e transação única",()=>{
     expect(sql).toMatch(/^BEGIN;$/m);
     expect(sql).toMatch(/^COMMIT;$/m);
-    expect(sql).not.toMatch(/\bIF NOT EXISTS\b/i);
+    expect(sql.replace(/^--.*$/gm, "")).not.toMatch(/\bIF NOT EXISTS\b/i);
     expect(sql).toContain("role newsletter_ops já existe");
   });
   it("dedica role sem login, superuser ou BYPASSRLS; sem proprietário postgres",()=>{
