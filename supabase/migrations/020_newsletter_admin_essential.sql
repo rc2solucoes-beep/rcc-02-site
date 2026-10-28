@@ -36,13 +36,16 @@ $guard$;
 CREATE ROLE newsletter_ops NOLOGIN NOINHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
 -- Membership temporária apenas durante a transferência de ownership nesta transação.
 -- PG 17 exige que o operador seja membro do novo proprietário; revogar antes do COMMIT.
-GRANT newsletter_ops TO postgres;
+GRANT newsletter_ops TO postgres WITH SET TRUE, INHERIT FALSE;
+-- O CREATEROLE recebe membership ADMIN automática (SET FALSE) ao criar o papel.
+-- A concessão explícita SET TRUE permite transferir ownership durante a transação.
 
 GRANT USAGE, CREATE ON SCHEMA public TO newsletter_ops;
 -- CREATE é temporário para a transferência de propriedade das funções no mesmo schema.
 GRANT SELECT (id) ON public.admin_users TO newsletter_ops;
 CREATE POLICY newsletter_ops_admin_self ON public.admin_users
-  FOR SELECT TO newsletter_ops USING (id = NULLIF(current_setting('request.jwt.claim.sub',true),'')::uuid);
+  FOR SELECT TO newsletter_ops USING (id = COALESCE(NULLIF(current_setting('request.jwt.claim.sub',true),''),
+      (NULLIF(current_setting('request.jwt.claims',true),'')::jsonb ->> 'sub'))::uuid);
 
 -- Menor superfície para as duas ações essenciais; nenhuma permissão em leads/posts/settings.
 GRANT SELECT, UPDATE, DELETE ON public.newsletter_subscribers TO newsletter_ops;
@@ -73,7 +76,8 @@ GRANT INSERT (event,severity,actor_user_id,actor_type,path,method,status,resourc
   ON public.admin_audit_logs TO newsletter_ops;
 CREATE POLICY newsletter_ops_audit_insert ON public.admin_audit_logs
   FOR INSERT TO newsletter_ops WITH CHECK (
-    actor_type='admin' AND actor_user_id=NULLIF(current_setting('request.jwt.claim.sub',true),'')::uuid AND
+    actor_type='admin' AND actor_user_id=COALESCE(NULLIF(current_setting('request.jwt.claim.sub',true),''),
+      (NULLIF(current_setting('request.jwt.claims',true),'')::jsonb ->> 'sub'))::uuid AND
     event IN ('admin_newsletter_unsubscribed','admin_newsletter_deleted')
     AND resource_type='newsletter_subscriber'
   );
@@ -88,7 +92,10 @@ SECURITY DEFINER
 SET search_path = pg_catalog, public
 AS $fn$
 DECLARE
-  v_actor uuid := NULLIF(current_setting('request.jwt.claim.sub',true),'')::uuid;
+  v_actor uuid := COALESCE(
+    NULLIF(current_setting('request.jwt.claim.sub', true), ''),
+    (NULLIF(current_setting('request.jwt.claims', true), '')::jsonb ->> 'sub')
+  )::uuid;
   v_status text;
 BEGIN
   IF v_actor IS NULL OR NOT EXISTS (SELECT 1 FROM public.admin_users WHERE id = v_actor) THEN
@@ -131,7 +138,10 @@ SECURITY DEFINER
 SET search_path = pg_catalog, public
 AS $fn$
 DECLARE
-  v_actor uuid := NULLIF(current_setting('request.jwt.claim.sub',true),'')::uuid;
+  v_actor uuid := COALESCE(
+    NULLIF(current_setting('request.jwt.claim.sub', true), ''),
+    (NULLIF(current_setting('request.jwt.claims', true), '')::jsonb ->> 'sub')
+  )::uuid;
   v_deleted uuid;
 BEGIN
   IF v_actor IS NULL OR NOT EXISTS (SELECT 1 FROM public.admin_users WHERE id = v_actor) THEN
@@ -160,4 +170,6 @@ GRANT EXECUTE ON FUNCTION public.newsletter_admin_unsubscribe(uuid,text) TO auth
 GRANT EXECUTE ON FUNCTION public.newsletter_admin_delete_subscriber(uuid,text) TO authenticated;
 REVOKE CREATE ON SCHEMA public FROM newsletter_ops;
 REVOKE newsletter_ops FROM postgres;
+-- Membership ADMIN implícita ao criador pode permanecer (SET FALSE), conforme PG17.
+-- O verify deve reprovar SET TRUE, não exigir remoção do vínculo implícito.
 COMMIT;
