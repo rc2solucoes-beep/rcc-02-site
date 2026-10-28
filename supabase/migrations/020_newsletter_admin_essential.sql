@@ -48,7 +48,7 @@ CREATE POLICY newsletter_ops_admin_self ON public.admin_users
       (NULLIF(current_setting('request.jwt.claims',true),'')::jsonb ->> 'sub'))::uuid);
 
 -- Menor superfície para as duas ações essenciais; nenhuma permissão em leads/posts/settings.
-GRANT SELECT, UPDATE, DELETE ON public.newsletter_subscribers TO newsletter_ops;
+GRANT SELECT (id,status), UPDATE (status,unsubscribed_at), DELETE ON public.newsletter_subscribers TO newsletter_ops;
 CREATE POLICY newsletter_ops_subscribers_select ON public.newsletter_subscribers
   FOR SELECT TO newsletter_ops USING (true);
 CREATE POLICY newsletter_ops_subscribers_update ON public.newsletter_subscribers
@@ -56,13 +56,13 @@ CREATE POLICY newsletter_ops_subscribers_update ON public.newsletter_subscribers
 CREATE POLICY newsletter_ops_subscribers_delete ON public.newsletter_subscribers
   FOR DELETE TO newsletter_ops USING (true);
 
-GRANT SELECT, UPDATE ON public.newsletter_outbox TO newsletter_ops;
+GRANT SELECT (id,subscriber_id,kind,status), UPDATE (status,dead_reason,lease_until) ON public.newsletter_outbox TO newsletter_ops;
 CREATE POLICY newsletter_ops_outbox_select ON public.newsletter_outbox
   FOR SELECT TO newsletter_ops USING (true);
 CREATE POLICY newsletter_ops_outbox_update ON public.newsletter_outbox
   FOR UPDATE TO newsletter_ops USING (true) WITH CHECK (true);
 
-GRANT SELECT, DELETE ON public.newsletter_tokens TO newsletter_ops;
+GRANT SELECT (subscriber_id,kind), DELETE ON public.newsletter_tokens TO newsletter_ops;
 CREATE POLICY newsletter_ops_tokens_select ON public.newsletter_tokens
   FOR SELECT TO newsletter_ops USING (true);
 CREATE POLICY newsletter_ops_tokens_delete ON public.newsletter_tokens
