@@ -39,3 +39,19 @@ O identificador do chamador utiliza `request.jwt.claim.sub` com fallback para `r
 No descadastro administrativo, mensagens de confirmação ainda em `queued` ou `retry` passam a `dead/superseded` e seus registros em `newsletter_outbox_payload` são removidos **na mesma transação**, sem ler os tokens brutos. O papel `newsletter_ops` recebe somente `SELECT(outbox_id)` e `DELETE` sobre payload, com policies dedicadas; não recebe `SELECT` das colunas com segredos. Mensagens `sending` não são alteradas por essa operação, pois dependem da revalidação do processador; verificar a corrida no teste de integração. Rollback cobre as policies e grants adicionais. Nenhuma operação foi habilitada ou aplicada.
 
 **Limite de evidência:** o teste estático cobre a presença da limpeza e os grants declarados, mas não substitui T-NL-I16/I17/I30 nem a execução real com JWT. O build Vercel não homologa SQL.
+
+## Roteiro de homologação funcional (a executar após GO para aplicar N4)
+
+**Pré-condição:** N4/020 aplicada exclusivamente em `pyhhygvdjokddphftuua` após autorização; flags públicas e `NEWSLETTER_ADMIN_MUTATIONS_ENABLED` permanecem desligadas. Nenhum teste desta seção autoriza alterar o banco antecipadamente.
+
+1. **PV-26 / dono:** verificar `proowner=newsletter_ops`, `prosecdef=true`, `search_path` fixo, role `NOLOGIN/NOBYPASSRLS` e ausência de `SET ROLE newsletter_ops` efetivo para `postgres`; executar `verify.sql`.
+2. **Sem JWT:** chamar as duas RPCs com papel anônimo e confirmar `42501`/negação de EXECUTE, sem alteração no cadastro, fila ou auditoria.
+3. **JWT não-admin autenticado:** chamar ambas as RPCs com UUID sintético e confirmar `42501`, sem qualquer efeito de dados ou auditoria de sucesso.
+4. **Admin autenticado:** inserir assinante sintético `pending`, consentimento e item `queued` de confirmação (com payload sintético e token hash), descadastrar com `titular_request` e verificar: status `unsubscribed`, registro `unsubscribed_admin`, confirmação `dead/superseded`, payload removido, token de confirmação removido, exatamente uma linha `admin_newsletter_unsubscribed` com `actor_user_id`.
+5. **Idempotência:** repetir descadastro; deve retornar `already_unsubscribed` e não duplicar consentimento ou auditoria; repetir exclusão retorna `not_found`.
+6. **Exclusão:** exigir texto literal `EXCLUIR`. Validar FK cascata (outbox, payload, consentimento, tokens removidos) e auditoria `admin_newsletter_deleted` sobrevivente, sem ler tokens brutos.
+7. **Auditoria obrigatória:** provocar falha de INSERT de auditoria dentro de transação controlada e garantir rollback integral de descadastro/exclusão; nunca executar teste de falha destrutiva fora do isolado.
+8. **Concorrência:** `sending` deve ser revalidado pelo processador antes do envio; concorrer descadastro e processador, comprovando que confirmação posterior a descadastro não é enviada. Testar separadamente a janela entre revalidação e chamada externa.
+9. **Encerramento:** remover exclusivamente registros sintéticos usados na homologação por procedimento aprovado; manter `NEWSLETTER_ADMIN_MUTATIONS_ENABLED` desligada até verificação e autorização de ativação.
+
+Os testes unitários de Server Actions usam dublês (não substituem os testes de JWT, ACL/RLS, transação e concorrência). O status READY da Vercel comprova build, não homologação SQL.
