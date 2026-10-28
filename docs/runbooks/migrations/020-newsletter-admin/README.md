@@ -1,6 +1,6 @@
 # N4 / 020 — Administração essencial da newsletter (E4)
 
-**STATUS: PROPOSTA — NÃO APLICADA. PR #48 DRAFT.** Alvo inicial exclusivo: `rc2-test-isolated` (`pyhhygvdjokddphftuua`). Não aplicar em Production. A N4 é independente dos jobs da 019, mas requer N1/018.
+**STATUS: 020 APLICADA NO ISOLADO, ACL CORRIGIDA MANUALMENTE E VERIFY APROVADO. PR #48 DRAFT.** Alvo inicial exclusivo: `rc2-test-isolated` (`pyhhygvdjokddphftuua`). Não aplicar em Production. A N4 é independente dos jobs da 019, mas requer N1/018.
 
 ## Entrega
 - Papel PostgreSQL dedicado `newsletter_ops` sem LOGIN/BYPASSRLS, policies e privilégios restritos.
@@ -55,3 +55,13 @@ No descadastro administrativo, mensagens de confirmação ainda em `queued` ou `
 9. **Encerramento:** remover exclusivamente registros sintéticos usados na homologação por procedimento aprovado; manter `NEWSLETTER_ADMIN_MUTATIONS_ENABLED` desligada até verificação e autorização de ativação.
 
 Os testes unitários de Server Actions usam dublês (não substituem os testes de JWT, ACL/RLS, transação e concorrência). O status READY da Vercel comprova build, não homologação SQL.
+
+## Execução real no isolado — 28/10/2026
+
+- Projeto: `rc2-test-isolated` (`pyhhygvdjokddphftuua`). Migration `020_newsletter_admin_essential` aplicada via Supabase.
+- Primeiro `verify.sql`: REPROVADO exclusivamente por EXECUTE indevido em `PUBLIC/anon`.
+- A correção foi executada manualmente no SQL Editor sob `SET ROLE newsletter_ops`, com concessão transitória de SET e revogação antes de COMMIT.
+- Verificação posterior diretamente no projeto: `verify.sql` **APROVADO**, `anon_exec=false` nas duas funções, `authenticated_exec=true`, owner `newsletter_ops`, `role_set_denied=true`.
+- Não reaplicar `020` no isolado. A correção manual ainda precisa ser reproduzida em **nova migration de reconciliação** para ambientes futuros, sem editar histórico já aplicado.
+- Testes unitários da E4 possuem workflow `.github/workflows/newsletter-e4-check.yml`; conferir resultado real no GitHub Actions (não presumir aprovação).
+- Testes funcionais com JWT admin/não-admin, transações e auditoria ainda pendentes. Flags públicas e mutações administrativas continuam desligadas; Production intocada.
