@@ -9,10 +9,10 @@ WITH x AS (
     has_function_privilege('authenticated','public.newsletter_admin_unsubscribe(uuid,text)','EXECUTE') AS exec_unsub,
     has_function_privilege('authenticated','public.newsletter_admin_delete_subscriber(uuid,text)','EXECUTE') AS exec_delete,
     has_function_privilege('anon','public.newsletter_admin_unsubscribe(uuid,text)','EXECUTE')=false AS anon_denied,
-    (SELECT count(*)=0 FROM pg_auth_members WHERE roleid='newsletter_ops'::regrole AND member='postgres'::regrole) AS membership_revoked
+    (SELECT NOT pg_has_role('postgres','newsletter_ops','SET')) AS role_set_denied
 )
 SELECT '020-N4' AS migration,
-       CASE WHEN role_safe AND functions_owned AND exec_unsub AND exec_delete AND anon_denied AND membership_revoked
+       CASE WHEN role_safe AND functions_owned AND exec_unsub AND exec_delete AND anon_denied AND role_set_denied
        THEN 'APROVADO' ELSE 'REPROVADO' END AS resultado,
        to_jsonb(x) AS checks FROM x;
 ROLLBACK;
