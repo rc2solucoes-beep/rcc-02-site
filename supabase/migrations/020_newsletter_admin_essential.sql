@@ -34,11 +34,14 @@ END
 $guard$;
 
 CREATE ROLE newsletter_ops NOLOGIN NOINHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
+-- Membership temporária apenas durante a transferência de ownership nesta transação.
+-- PG 17 exige que o operador seja membro do novo proprietário; revogar antes do COMMIT.
+GRANT newsletter_ops TO postgres;
 
 GRANT USAGE ON SCHEMA public TO newsletter_ops;
 GRANT SELECT (id) ON public.admin_users TO newsletter_ops;
 CREATE POLICY newsletter_ops_admin_self ON public.admin_users
-  FOR SELECT TO newsletter_ops USING (id = (SELECT auth.uid()));
+  FOR SELECT TO newsletter_ops USING (id = NULLIF(current_setting('request.jwt.claim.sub',true),'')::uuid);
 
 -- Menor superfície para as duas ações essenciais; nenhuma permissão em leads/posts/settings.
 GRANT SELECT, UPDATE, DELETE ON public.newsletter_subscribers TO newsletter_ops;
@@ -69,13 +72,14 @@ GRANT INSERT (event,severity,actor_user_id,actor_type,path,method,status,resourc
   ON public.admin_audit_logs TO newsletter_ops;
 CREATE POLICY newsletter_ops_audit_insert ON public.admin_audit_logs
   FOR INSERT TO newsletter_ops WITH CHECK (
-    actor_type='admin' AND actor_user_id=(SELECT auth.uid()) AND
+    actor_type='admin' AND actor_user_id=NULLIF(current_setting('request.jwt.claim.sub',true),'')::uuid AND
     event IN ('admin_newsletter_unsubscribed','admin_newsletter_deleted')
     AND resource_type='newsletter_subscriber'
   );
 
--- O owner NOLOGIN possui USAGE+EXECUTE sobre auth.uid via defaults existentes.
--- PV-26 verifica grants efetivos ANTES do apply; jamais promover newsletter_ops a BYPASSRLS.
+-- O schema auth não concede USAGE a newsletter_ops e pertence a supabase_admin;
+-- usar claim JWT de PostgREST (SDD §11.4, alternativa) evita novos grants privilegiados.
+-- PV-26 exige teste de role/JWT real; jamais promover newsletter_ops a BYPASSRLS.
 CREATE FUNCTION public.newsletter_admin_unsubscribe(p_subscriber_id uuid, p_reason text)
 RETURNS text
 LANGUAGE plpgsql
@@ -83,7 +87,7 @@ SECURITY DEFINER
 SET search_path = pg_catalog, public
 AS $fn$
 DECLARE
-  v_actor uuid := auth.uid();
+  v_actor uuid := NULLIF(current_setting('request.jwt.claim.sub',true),'')::uuid;
   v_status text;
 BEGIN
   IF v_actor IS NULL OR NOT EXISTS (SELECT 1 FROM public.admin_users WHERE id = v_actor) THEN
@@ -126,7 +130,7 @@ SECURITY DEFINER
 SET search_path = pg_catalog, public
 AS $fn$
 DECLARE
-  v_actor uuid := auth.uid();
+  v_actor uuid := NULLIF(current_setting('request.jwt.claim.sub',true),'')::uuid;
   v_deleted uuid;
 BEGIN
   IF v_actor IS NULL OR NOT EXISTS (SELECT 1 FROM public.admin_users WHERE id = v_actor) THEN
@@ -153,4 +157,5 @@ REVOKE ALL ON FUNCTION public.newsletter_admin_unsubscribe(uuid,text) FROM PUBLI
 REVOKE ALL ON FUNCTION public.newsletter_admin_delete_subscriber(uuid,text) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.newsletter_admin_unsubscribe(uuid,text) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.newsletter_admin_delete_subscriber(uuid,text) TO authenticated;
+REVOKE newsletter_ops FROM postgres;
 COMMIT;
