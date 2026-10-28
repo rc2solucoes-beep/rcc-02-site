@@ -3,7 +3,7 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSessionClient } from "@/lib/supabase/server";
 import {
-  PAGE_SIZE, buildListHref, buildSearchOrFilter, firstParam, pageCount, pageRange, parsePage, parseSearchTerm,
+  buildListHref, buildSearchOrFilter, firstParam, pageCount, pageRange, parsePage, parseSearchTerm,
   type RawSearchParams,
 } from "@/lib/admin/listParams";
 import { getQueueHealth, type QueueHealth } from "@/lib/newsletter/health";
