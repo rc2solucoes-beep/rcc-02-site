@@ -27,3 +27,9 @@
 - \`supabase/migrations/020_newsletter_admin_essential.sql\`: **primeira aplicação estrita**, transação única. Não reaplicar.
 - Rollback pré-ativação só mediante autorização; deve revogar EXECUTE, remover policies, funções, grants e role apenas após verificar dependências. Com assinantes reais, avaliar auditoria/retencão com jurídico.
 - Nenhuma alteração na migration 018, jobs 019, flags públicas, produção ou credenciais.
+
+## Revisão 28/10/2026 — ownership PostgreSQL 17
+
+A migration concede temporariamente `newsletter_ops TO postgres WITH SET TRUE, INHERIT FALSE` para a transferência de propriedade e revoga a associação explícita antes do COMMIT. No PostgreSQL 17, o criador de uma role pode conservar associação administrativa automática (`SET FALSE`): o verify exige **negação efetiva de `pg_has_role('postgres','newsletter_ops','SET')`**, não ausência absoluta de linhas em `pg_auth_members`. Essa condição requer teste real antes do apply, pois `GRANT/REVOKE` não foram executados no isolado.
+
+O identificador do chamador utiliza `request.jwt.claim.sub` com fallback para `request.jwt.claims->>'sub'`, equivalente à implementação de `auth.uid()` observada no isolado (Postgres 17.11). A aplicação permanece bloqueada por padrão. **Preflight estrutural não é homologação de JWT, ownership nem auditoria.**
