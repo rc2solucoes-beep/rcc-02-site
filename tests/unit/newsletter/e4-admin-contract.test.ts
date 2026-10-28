@@ -43,8 +43,8 @@ describe("E4 N4 — contrato estático de segurança",()=>{
     expect(aclFix).toContain("SET ROLE newsletter_ops");
     expect(aclFix).toContain("RESET ROLE");
     expect(aclFix).toContain("REVOKE newsletter_ops FROM postgres");
-    expect(aclFix).toMatch(/REVOKE EXECUTE ON FUNCTION public\\.newsletter_admin_unsubscribe\\(uuid,text\\) FROM PUBLIC, anon/);
-    expect(aclFix).toMatch(/REVOKE EXECUTE ON FUNCTION public\\.newsletter_admin_delete_subscriber\\(uuid,text\\) FROM PUBLIC, anon/);
+    expect(aclFix).toMatch(/REVOKE EXECUTE ON FUNCTION public\.newsletter_admin_unsubscribe\(uuid,text\) FROM PUBLIC, anon/);
+    expect(aclFix).toMatch(/REVOKE EXECUTE ON FUNCTION public\.newsletter_admin_delete_subscriber\(uuid,text\) FROM PUBLIC, anon/);
     expect(aclFix).toContain("has_function_privilege('anon'");
     expect(aclFix).toContain("pg_has_role('postgres','newsletter_ops','SET')");
     expect(aclFix).toMatch(/^COMMIT;$/m);
