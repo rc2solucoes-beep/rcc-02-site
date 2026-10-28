@@ -60,6 +60,7 @@ async function execute(
 export async function unsubscribeNewsletterSubscriber(input: {
   id: string; reason: string;
 }): Promise<NewsletterActionResult> {
+  if (process.env.NEWSLETTER_ADMIN_MUTATIONS_ENABLED !== "true") return { ok: false, code: "not_enabled" };
   if (!(await adminGuard())) return { ok: false, code: "forbidden" };
   const parsed = unsubscribeSchema.safeParse(input);
   if (!parsed.success) return { ok: false, code: "invalid" };
