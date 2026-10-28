@@ -31,7 +31,11 @@ describe("E4 N4 — contrato estático de segurança",()=>{
   it("não inclui operações complementares ou acesso a token bruto",()=>{
     expect(sql).not.toContain("newsletter_admin_resend_confirmation(");
     expect(sql).not.toContain("newsletter_admin_revoke_unsubscribe_tokens(");
-    expect(sql).not.toContain("newsletter_outbox_payload");
+    expect(sql).toContain("GRANT SELECT (outbox_id), DELETE ON public.newsletter_outbox_payload TO newsletter_ops");
+    expect(sql).toContain("DELETE FROM public.newsletter_outbox_payload");
+    expect(sql).toContain("WHERE outbox_id IN (SELECT id FROM superseded)");
+    expect(sql).not.toMatch(/GRANT SELECT, DELETE ON public\.newsletter_outbox_payload TO newsletter_ops/);
+    expect(sql).not.toMatch(/GRANT SELECT \([^)]*(confirm_token|unsubscribe_token|template_version)/);
     expect(sql).not.toContain("leads,");
   });
   it("ações e interface bloqueadas por padrão; não usam service-role",()=>{
