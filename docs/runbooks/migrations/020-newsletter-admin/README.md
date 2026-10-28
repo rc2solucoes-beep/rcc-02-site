@@ -33,3 +33,9 @@
 A migration concede temporariamente `newsletter_ops TO postgres WITH SET TRUE, INHERIT FALSE` para a transferência de propriedade e revoga a associação explícita antes do COMMIT. No PostgreSQL 17, o criador de uma role pode conservar associação administrativa automática (`SET FALSE`): o verify exige **negação efetiva de `pg_has_role('postgres','newsletter_ops','SET')`**, não ausência absoluta de linhas em `pg_auth_members`. Essa condição requer teste real antes do apply, pois `GRANT/REVOKE` não foram executados no isolado.
 
 O identificador do chamador utiliza `request.jwt.claim.sub` com fallback para `request.jwt.claims->>'sub'`, equivalente à implementação de `auth.uid()` observada no isolado (Postgres 17.11). A aplicação permanece bloqueada por padrão. **Preflight estrutural não é homologação de JWT, ownership nem auditoria.**
+
+## Revisão de integridade — 28/10/2026
+
+No descadastro administrativo, mensagens de confirmação ainda em `queued` ou `retry` passam a `dead/superseded` e seus registros em `newsletter_outbox_payload` são removidos **na mesma transação**, sem ler os tokens brutos. O papel `newsletter_ops` recebe somente `SELECT(outbox_id)` e `DELETE` sobre payload, com policies dedicadas; não recebe `SELECT` das colunas com segredos. Mensagens `sending` não são alteradas por essa operação, pois dependem da revalidação do processador; verificar a corrida no teste de integração. Rollback cobre as policies e grants adicionais. Nenhuma operação foi habilitada ou aplicada.
+
+**Limite de evidência:** o teste estático cobre a presença da limpeza e os grants declarados, mas não substitui T-NL-I16/I17/I30 nem a execução real com JWT. O build Vercel não homologa SQL.
