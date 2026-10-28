@@ -16,6 +16,10 @@ WITH x AS (
     NOT has_column_privilege('newsletter_ops','public.newsletter_outbox_payload','template_version','SELECT') AS no_template_read,
     has_table_privilege('newsletter_ops','public.newsletter_outbox_payload','DELETE') AS payload_delete,
     NOT has_schema_privilege('newsletter_ops','public','CREATE') AS no_schema_create,
+    NOT has_column_privilege('newsletter_ops','public.newsletter_subscribers','email','SELECT') AS no_subscriber_email_read,
+    NOT has_column_privilege('newsletter_ops','public.newsletter_outbox','provider_message_id','SELECT') AS no_provider_id_read,
+    NOT has_column_privilege('newsletter_ops','public.newsletter_tokens','token_hash','SELECT') AS no_token_hash_read,
+    has_column_privilege('newsletter_ops','public.newsletter_subscribers','status','UPDATE') AS can_update_status,
     NOT has_table_privilege('anon','public.newsletter_subscribers','SELECT') AS anon_no_subscribers,
     NOT has_table_privilege('authenticated','public.newsletter_subscribers','DELETE') AS auth_no_subscriber_delete,
     NOT has_table_privilege('authenticated','public.newsletter_subscribers','UPDATE') AS auth_no_subscriber_update,
@@ -28,6 +32,7 @@ SELECT '020-N4' AS migration,
         AND no_unsubscribe_token_read AND no_template_read AND payload_delete AND no_schema_create
         AND anon_no_subscribers AND auth_no_subscriber_delete AND auth_no_subscriber_update
         AND no_leads_read AND no_posts_read AND no_settings_read
+        AND no_subscriber_email_read AND no_provider_id_read AND no_token_hash_read AND can_update_status
        THEN 'APROVADO' ELSE 'REPROVADO' END AS resultado,
        to_jsonb(x) AS checks FROM x;
 ROLLBACK;
