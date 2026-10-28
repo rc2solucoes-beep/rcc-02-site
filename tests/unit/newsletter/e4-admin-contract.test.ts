@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 const root = resolve(process.cwd());
 const read = (p: string) => readFileSync(resolve(root,p), "utf8");
 const sql=read("supabase/migrations/020_newsletter_admin_essential.sql");
+const aclFix=read("supabase/migrations/021_newsletter_admin_acl_reconcile.sql");
 const actions=read("src/app/admin/(protected)/newsletter/actions.ts");
 const page=read("src/app/admin/(protected)/newsletter/[id]/page.tsx");
 describe("E4 N4 — contrato estático de segurança",()=>{
@@ -37,6 +38,16 @@ describe("E4 N4 — contrato estático de segurança",()=>{
     expect(sql).not.toMatch(/GRANT SELECT, DELETE ON public\.newsletter_outbox_payload TO newsletter_ops/);
     expect(sql).not.toMatch(/GRANT SELECT \([^)]*(confirm_token|unsubscribe_token|template_version)/);
     expect(sql).not.toContain("leads,");
+  });
+  it("021 versiona a revogação de EXECUTE como proprietário e falha fechado",()=>{
+    expect(aclFix).toContain("SET ROLE newsletter_ops");
+    expect(aclFix).toContain("RESET ROLE");
+    expect(aclFix).toContain("REVOKE newsletter_ops FROM postgres");
+    expect(aclFix).toMatch(/REVOKE EXECUTE ON FUNCTION public\\.newsletter_admin_unsubscribe\\(uuid,text\\) FROM PUBLIC, anon/);
+    expect(aclFix).toMatch(/REVOKE EXECUTE ON FUNCTION public\\.newsletter_admin_delete_subscriber\\(uuid,text\\) FROM PUBLIC, anon/);
+    expect(aclFix).toContain("has_function_privilege('anon'");
+    expect(aclFix).toContain("pg_has_role('postgres','newsletter_ops','SET')");
+    expect(aclFix).toMatch(/^COMMIT;$/m);
   });
   it("ações e interface bloqueadas por padrão; não usam service-role",()=>{
     expect((actions.match(/NEWSLETTER_ADMIN_MUTATIONS_ENABLED !== "true"/g)||[]).length).toBe(2);
