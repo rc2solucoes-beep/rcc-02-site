@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - feat/admin-e4-newsletter-essential
+  pull_request:
+    branches:
+      - feat/admin-e3-newsletter
   workflow_dispatch:
 
 permissions:
