@@ -73,6 +73,7 @@ export async function unsubscribeNewsletterSubscriber(input: {
 export async function deleteNewsletterSubscriber(input: {
   id: string; confirmation: string;
 }): Promise<NewsletterActionResult> {
+  if (process.env.NEWSLETTER_ADMIN_MUTATIONS_ENABLED !== "true") return { ok: false, code: "not_enabled" };
   if (!(await adminGuard())) return { ok: false, code: "forbidden" };
   const parsed = deleteSchema.safeParse(input);
   if (!parsed.success) return { ok: false, code: "invalid" };
