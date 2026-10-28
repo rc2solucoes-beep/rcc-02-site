@@ -68,6 +68,15 @@ CREATE POLICY newsletter_ops_tokens_select ON public.newsletter_tokens
 CREATE POLICY newsletter_ops_tokens_delete ON public.newsletter_tokens
   FOR DELETE TO newsletter_ops USING (true);
 
+-- A N4 pode APENAS localizar o payload pelo outbox_id e apagá-lo quando a confirmação
+-- vira dead. NUNCA conceder SELECT sobre confirm_token/unsubscribe_token/template_version.
+-- newsletter_ops é NOLOGIN; authenticated/anon mantêm acesso zero à tabela.
+GRANT SELECT (outbox_id), DELETE ON public.newsletter_outbox_payload TO newsletter_ops;
+CREATE POLICY newsletter_ops_payload_id_select ON public.newsletter_outbox_payload
+  FOR SELECT TO newsletter_ops USING (true);
+CREATE POLICY newsletter_ops_payload_delete ON public.newsletter_outbox_payload
+  FOR DELETE TO newsletter_ops USING (true);
+
 GRANT INSERT (subscriber_id,event,reason) ON public.newsletter_consents TO newsletter_ops;
 CREATE POLICY newsletter_ops_consents_insert ON public.newsletter_consents
   FOR INSERT TO newsletter_ops WITH CHECK (event='unsubscribed_admin' AND reason IN ('titular_request','bounce_or_complaint','other'));
@@ -116,9 +125,16 @@ BEGIN
   -- Links de confirmação pendentes não devem ser usados após descadastro.
   DELETE FROM public.newsletter_tokens
     WHERE subscriber_id=p_subscriber_id AND kind='confirm';
-  UPDATE public.newsletter_outbox
-    SET status='dead',dead_reason='superseded',lease_until=NULL
-    WHERE subscriber_id=p_subscriber_id AND kind='confirmation' AND status IN ('queued','retry');
+  -- Também elimina payloads com tokens brutos de mensagens em retry, na MESMA transação.
+  -- Somente estados queued/retry mudam; sending continua sob revalidação do processador.
+  WITH superseded AS (
+    UPDATE public.newsletter_outbox
+      SET status='dead',dead_reason='superseded',lease_until=NULL
+      WHERE subscriber_id=p_subscriber_id AND kind='confirmation' AND status IN ('queued','retry')
+    RETURNING id
+  )
+  DELETE FROM public.newsletter_outbox_payload
+    WHERE outbox_id IN (SELECT id FROM superseded);
 
   INSERT INTO public.newsletter_consents (subscriber_id,event,reason)
   VALUES (p_subscriber_id,'unsubscribed_admin',p_reason);
