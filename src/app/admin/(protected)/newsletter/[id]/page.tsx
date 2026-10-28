@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AdminHeader } from "@/components/admin/AdminHeader";
+import { NewsletterAdminActions } from "@/components/admin/newsletter/NewsletterAdminActions";
 import { getNewsletterSubscriber, NEWSLETTER_PATH, NEWSLETTER_STATUS_LABELS } from "@/lib/admin/newsletterAdmin";
 import { formatSaoPauloDateTime } from "@/lib/datetime";
 
@@ -41,10 +42,13 @@ export default async function NewsletterSubscriberPage({ params }: { params: Pro
       </section>
       <section className="border border-rc2-border bg-rc2-surface p-5">
         <h2 className="font-semibold text-rc2-heading mb-2">Ações administrativas</h2>
-        <p className="text-sm text-rc2-text-secondary">
-          Descadastro e exclusão serão disponibilizados após a homologação das funções transacionais auditadas da migration N4.
-          Nenhuma operação administrativa é executada por esta tela.
-        </p>
+        {process.env.NEWSLETTER_ADMIN_MUTATIONS_ENABLED === "true" ? (
+          <NewsletterAdminActions id={subscriber.id} status={subscriber.status} />
+        ) : (
+          <p className="text-sm text-rc2-text-secondary">
+            Descadastro e exclusão desabilitados até a homologação da migration N4 e autorização específica de ativação.
+          </p>
+        )}
       </section>
       <section className="border border-rc2-border bg-rc2-surface p-5 overflow-x-auto">
         <h2 className="font-semibold text-rc2-heading mb-3">Histórico de consentimento</h2>
