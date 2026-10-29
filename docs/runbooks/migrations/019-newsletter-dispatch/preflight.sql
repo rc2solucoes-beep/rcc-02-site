@@ -38,7 +38,7 @@ checks(ord, check_id, expected, actual) AS (
   (3, 'PRE-03-PAPEIS-ANON-AUTHENTICATED-SERVICE', '3', (SELECT count(*)::text FROM pg_roles WHERE rolname IN ('anon', 'authenticated', 'service_role'))),
   (4, 'PRE-04-TABELA-LEADS-EXISTE-ALVO-CORRETO', 'true', (to_regclass('public.leads') IS NOT NULL)::text),
   (5, 'PRE-05-MIGRATION-018-CINCO-TABELAS-PRESENTES', '5', (SELECT count(*)::text FROM unnest(ARRAY['newsletter_subscribers','newsletter_outbox','newsletter_tokens','newsletter_outbox_payload','newsletter_consents']) t WHERE to_regclass('public.' || t) IS NOT NULL)),
-  (6, 'PRE-06-MIGRATION-018-NOVE-FUNCOES-PRESENTES', '9', (SELECT count(*)::text FROM pg_proc p WHERE p.pronamespace = 'public'::regnamespace AND p.proname LIKE 'newsletter\_%')),
+  (6, 'PRE-06-MIGRATION-018-NOVE-FUNCOES-PRESENTES', '9', (SELECT count(*)::text FROM unnest(ARRAY['newsletter_touch_updated_at','newsletter_request_subscription','newsletter_request_unsubscribe_link','newsletter_confirm','newsletter_unsubscribe','newsletter_outbox_claim','newsletter_outbox_prepare','newsletter_outbox_complete','newsletter_outbox_expire']) AS fn(name) WHERE EXISTS (SELECT 1 FROM pg_proc p WHERE p.pronamespace = 'public'::regnamespace AND p.proname = fn.name))),
   (7, 'PRE-07-MIGRATION-017-FUNCAO-PRESENTE', 'true', (to_regprocedure('public.rate_limit_hit(text,integer,integer)') IS NOT NULL)::text),
   (8, 'PRE-08-PG-CRON-INSTALADO', '1', (SELECT count(*)::text FROM pg_extension WHERE extname = 'pg_cron')),
   (9, 'PRE-09-PG-NET-INSTALADO', '1', (SELECT count(*)::text FROM pg_extension WHERE extname = 'pg_net')),
