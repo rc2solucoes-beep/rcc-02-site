@@ -1,6 +1,13 @@
 name: Newsletter E4 isolated integration
 
 on:
+  push:
+    branches:
+      - feat/admin-e4-newsletter-essential
+    paths:
+      - .github/workflows/newsletter-e4-integration.yml
+      - tests/integration/rls/e4-newsletter.test.ts
+      - tests/integration/support/**
   workflow_dispatch:
 
 permissions:
@@ -9,6 +16,7 @@ permissions:
 jobs:
   n4-isolated:
     name: N4 JWT and transaction checks (isolated only)
+    if: github.repository == 'rc2solucoes-beep/rcc-02-site' && github.ref == 'refs/heads/feat/admin-e4-newsletter-essential'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
