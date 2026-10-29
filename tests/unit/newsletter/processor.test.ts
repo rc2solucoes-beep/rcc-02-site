@@ -293,6 +293,45 @@ describe("revalidação antes do envio (SDD §8.2, T-NL-U16)", () => {
   });
 });
 
+describe("E4 — corrida entre prepare e envio", () => {
+  it("descadastro ocorrido após renderização e antes do provedor impede envio", async () => {
+    const { clock, store, provider, run } = setup();
+    store.enqueue("e4-race", "confirmation");
+    const originalLoad = store.loadContext.bind(store);
+    let reads = 0;
+    store.loadContext = async (item) => {
+      reads++;
+      // A última revalidação encontra um descadastro que ocorreu após o prepare.
+      if (reads === 3) {
+        const sub = store.subscribers.get(item.subscriberId)!;
+        sub.status = "unsubscribed";
+        sub.unsubscribedAt = clock.now + 1000;
+      }
+      return originalLoad(item);
+    };
+    const summary = await run();
+    expect(reads).toBe(3);
+    expect(summary).toMatchObject({ claimed: 1, sent: 0, superseded: 1 });
+    expect(provider.calls).toHaveLength(0);
+    expect(store.get("e4-race")).toMatchObject({ status: "dead", deadReason: "superseded" });
+  });
+
+  it("payload revogado após prepare também impede chamada ao provedor", async () => {
+    const { store, provider, run } = setup();
+    store.enqueue("e4-token", "confirmation");
+    const originalLoad = store.loadContext.bind(store);
+    let reads = 0;
+    store.loadContext = async (item) => {
+      reads++;
+      if (reads === 3) store.get(item.id).payload = null;
+      return originalLoad(item);
+    };
+    const summary = await run();
+    expect(summary).toMatchObject({ sent: 0, superseded: 1 });
+    expect(provider.calls).toHaveLength(0);
+  });
+});
+
 describe("flag de confirmação, orçamento e falhas do armazenamento", () => {
   it("com NEWSLETTER_CONFIRMATION_DISPATCH_ENABLED desligada só reivindica unsubscribe_link", async () => {
     const { store, provider, run } = setup(undefined, { confirmationEnabled: false });

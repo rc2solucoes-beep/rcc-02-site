@@ -1,0 +1,48 @@
+name: Newsletter E4 isolated integration
+
+on:
+  push:
+    branches:
+      - feat/admin-e4-newsletter-essential
+    paths:
+      - .github/workflows/newsletter-e4-integration.yml
+      - tests/integration/rls/e4-newsletter.test.ts
+      - tests/integration/support/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  n4-isolated:
+    name: N4 JWT and transaction checks (isolated only)
+    if: github.repository == 'rc2solucoes-beep/rcc-02-site' && github.ref == 'refs/heads/feat/admin-e4-newsletter-essential'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      RC2_E4_PHASE: post020
+      RC2_TEST_SUPABASE_URL: https://pyhhygvdjokddphftuua.supabase.co
+      RC2_TEST_PROJECT_REF: pyhhygvdjokddphftuua
+      RC2_TEST_PROJECT_REF_ALLOWLIST: pyhhygvdjokddphftuua
+      RC2_PRODUCTION_PROJECT_REF: ymfcepzwhiemgkxzmbdm
+      RC2_TEST_SUPABASE_ANON_KEY: ${{ secrets.RC2_TEST_SUPABASE_ANON_KEY }}
+      RC2_TEST_SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.RC2_TEST_SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Verify isolated credentials exist without revealing their values
+        shell: bash
+        run: |
+          if [[ -z "$RC2_TEST_SUPABASE_ANON_KEY" || -z "$RC2_TEST_SUPABASE_SERVICE_ROLE_KEY" ]]; then
+            echo "::error::Missing isolated test credentials. Configure RC2_TEST_SUPABASE_ANON_KEY and RC2_TEST_SUPABASE_SERVICE_ROLE_KEY as repository Actions secrets; do not use Production credentials."
+            exit 1
+          fi
+      - name: Install dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: E4 integration (guard validates project, JWT ref and DB marker)
+        run: npm run test:integration -- tests/integration/rls/e4-newsletter.test.ts

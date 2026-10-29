@@ -1,0 +1,100 @@
+# N4 / 020 — Administração essencial da newsletter (E4)
+
+**STATUS: 020 APLICADA NO ISOLADO, ACL CORRIGIDA MANUALMENTE E VERIFY APROVADO. PR #48 DRAFT.** Alvo inicial exclusivo: `rc2-test-isolated` (`pyhhygvdjokddphftuua`). Não aplicar em Production. A N4 é independente dos jobs da 019, mas requer N1/018.
+
+## Entrega
+- Papel PostgreSQL dedicado `newsletter_ops` sem LOGIN/BYPASSRLS, policies e privilégios restritos.
+- `newsletter_admin_unsubscribe(uuid,text)`: admin autenticado, motivo em whitelist, revoga confirmação pendente, registra consentimento e auditoria na transação.
+- `newsletter_admin_delete_subscriber(uuid,text)`: admin autenticado, confirmação literal EXCLUIR, exclusão em cascata e auditoria transacional.
+- Server Actions usam sessão/RLS e estão **desligadas por padrão**, exigem `NEWSLETTER_ADMIN_MUTATIONS_ENABLED=true` somente após homologação isolada.
+- Sem enviar e-mail, criar cron ou disponibilizar ação fora da administração. Complemento (reenviar confirmação e revogar tokens U) excluído.
+
+## Pré-condições e pontos de decisão
+1. Evidência do marcador de isolamento e 018 aplicada, tabelas `admin_users` e `admin_audit_logs` existentes.
+2. Conferir que `postgres` pode transferir ownership para role `newsletter_ops` (PV-26). `CREATEROLE=true` **não prova** que pode `ALTER FUNCTION ... OWNER`; testar em ambiente descartável, nunca resolver com `BYPASSRLS` ou ownership de `postgres`.
+3. Confirmar privilégios efetivos do owner sobre `auth.uid()` e RLS de `admin_users`, `newsletter_subscribers`, `newsletter_tokens`, `newsletter_outbox`, `admin_audit_logs`.
+4. Revisar comportamento de cascata e corrida com `sending`: descadastro não cancela item já reivindicado; processador deve revalidar o status. Para exclusão, excluir assinante enquanto há envio em andamento pode exigir nova contenção; cobrir em testes.
+5. Testar status e auditoria sob JWT admin, usuário autenticado não-admin, e ausência de JWT; validar que `authenticated` só tem EXECUTE e não escrita em tabelas; `newsletter_ops` não toca `leads`, `posts`, `settings`.
+6. Sem backup/PITR no isolado, qualquer tentativa deve ser autorizada explicitamente para esse projeto e deve ser recuperável por reconstrução. Não executar SQL sem novo GO.
+
+## Verificação proposta antes de aplicar
+- `BEGIN READ ONLY` com identificação do marcador, checagem de objetos e roles inexistentes, ownership existente, grants e policies relevantes.
+- Inventário das funções `SECURITY DEFINER`: `prosecdef=true`, owner dedicado, `search_path=pg_catalog,public`, EXECUTE para `authenticated`, sem PUBLIC/anon.
+- Testes T-NL-I16/I17/I30 com JWT de administrador e não-admin, mais teste de auditoria falhando (ação tem que reverter).
+- `typecheck`, `lint`, unitários afetados e build. A presença do arquivo no GitHub **não significa aprovação**.
+
+## Apply e rollback
+- `supabase/migrations/020_newsletter_admin_essential.sql`: **primeira aplicação estrita**, transação única. Não reaplicar.
+- Rollback pré-ativação só mediante autorização; deve revogar EXECUTE, remover policies, funções, grants e role apenas após verificar dependências. Com assinantes reais, avaliar auditoria/retencão com jurídico.
+- Nenhuma alteração na migration 018, jobs 019, flags públicas, produção ou credenciais.
+
+## Revisão 28/10/2026 — ownership PostgreSQL 17
+
+A migration concede temporariamente `newsletter_ops TO postgres WITH SET TRUE, INHERIT FALSE` para a transferência de propriedade e revoga a associação explícita antes do COMMIT. No PostgreSQL 17, o criador de uma role pode conservar associação administrativa automática (`SET FALSE`): o verify exige **negação efetiva de `pg_has_role('postgres','newsletter_ops','SET')`**, não ausência absoluta de linhas em `pg_auth_members`. Essa condição requer teste real antes do apply, pois `GRANT/REVOKE` não foram executados no isolado.
+
+O identificador do chamador utiliza `request.jwt.claim.sub` com fallback para `request.jwt.claims->>'sub'`, equivalente à implementação de `auth.uid()` observada no isolado (Postgres 17.11). A aplicação permanece bloqueada por padrão. **Preflight estrutural não é homologação de JWT, ownership nem auditoria.**
+
+## Revisão de integridade — 28/10/2026
+
+No descadastro administrativo, mensagens de confirmação ainda em `queued` ou `retry` passam a `dead/superseded` e seus registros em `newsletter_outbox_payload` são removidos **na mesma transação**, sem ler os tokens brutos. O papel `newsletter_ops` recebe somente `SELECT(outbox_id)` e `DELETE` sobre payload, com policies dedicadas; não recebe `SELECT` das colunas com segredos. Mensagens `sending` não são alteradas por essa operação, pois dependem da revalidação do processador; verificar a corrida no teste de integração. Rollback cobre as policies e grants adicionais. Nenhuma operação foi habilitada ou aplicada.
+
+**Limite de evidência:** o teste estático cobre a presença da limpeza e os grants declarados, mas não substitui T-NL-I16/I17/I30 nem a execução real com JWT. O build Vercel não homologa SQL.
+
+## Roteiro de homologação funcional (a executar após GO para aplicar N4)
+
+**Pré-condição:** N4/020 aplicada exclusivamente em `pyhhygvdjokddphftuua` após autorização; flags públicas e `NEWSLETTER_ADMIN_MUTATIONS_ENABLED` permanecem desligadas. Nenhum teste desta seção autoriza alterar o banco antecipadamente.
+
+1. **PV-26 / dono:** verificar `proowner=newsletter_ops`, `prosecdef=true`, `search_path` fixo, role `NOLOGIN/NOBYPASSRLS` e ausência de `SET ROLE newsletter_ops` efetivo para `postgres`; executar `verify.sql`.
+2. **Sem JWT:** chamar as duas RPCs com papel anônimo e confirmar `42501`/negação de EXECUTE, sem alteração no cadastro, fila ou auditoria.
+3. **JWT não-admin autenticado:** chamar ambas as RPCs com UUID sintético e confirmar `42501`, sem qualquer efeito de dados ou auditoria de sucesso.
+4. **Admin autenticado:** inserir assinante sintético `pending`, consentimento e item `queued` de confirmação (com payload sintético e token hash), descadastrar com `titular_request` e verificar: status `unsubscribed`, registro `unsubscribed_admin`, confirmação `dead/superseded`, payload removido, token de confirmação removido, exatamente uma linha `admin_newsletter_unsubscribed` com `actor_user_id`.
+5. **Idempotência:** repetir descadastro; deve retornar `already_unsubscribed` e não duplicar consentimento ou auditoria; repetir exclusão retorna `not_found`.
+6. **Exclusão:** exigir texto literal `EXCLUIR`. Validar FK cascata (outbox, payload, consentimento, tokens removidos) e auditoria `admin_newsletter_deleted` sobrevivente, sem ler tokens brutos.
+7. **Auditoria obrigatória:** provocar falha de INSERT de auditoria dentro de transação controlada e garantir rollback integral de descadastro/exclusão; nunca executar teste de falha destrutiva fora do isolado.
+8. **Concorrência:** `sending` deve ser revalidado pelo processador antes do envio; concorrer descadastro e processador, comprovando que confirmação posterior a descadastro não é enviada. Testar separadamente a janela entre revalidação e chamada externa.
+9. **Encerramento:** remover exclusivamente registros sintéticos usados na homologação por procedimento aprovado; manter `NEWSLETTER_ADMIN_MUTATIONS_ENABLED` desligada até verificação e autorização de ativação.
+
+Os testes unitários de Server Actions usam dublês (não substituem os testes de JWT, ACL/RLS, transação e concorrência). O status READY da Vercel comprova build, não homologação SQL.
+
+## Execução real no isolado — 28/10/2026
+
+- Projeto: `rc2-test-isolated` (`pyhhygvdjokddphftuua`). Migration `020_newsletter_admin_essential` aplicada via Supabase.
+- Primeiro `verify.sql`: REPROVADO exclusivamente por EXECUTE indevido em `PUBLIC/anon`.
+- A correção foi executada manualmente no SQL Editor sob `SET ROLE newsletter_ops`, com concessão transitória de SET e revogação antes de COMMIT.
+- Verificação posterior diretamente no projeto: `verify.sql` **APROVADO**, `anon_exec=false` nas duas funções, `authenticated_exec=true`, owner `newsletter_ops`, `role_set_denied=true`.
+- Não reaplicar `020` no isolado. A correção manual ainda precisa ser reproduzida em **nova migration de reconciliação** para ambientes futuros, sem editar histórico já aplicado.
+- Testes unitários da E4 possuem workflow `.github/workflows/newsletter-e4-check.yml`; conferir resultado real no GitHub Actions (não presumir aprovação).
+- Testes funcionais com JWT admin/não-admin, transações e auditoria ainda pendentes. Flags públicas e mutações administrativas continuam desligadas; Production intocada.
+
+## Reconciliação versionada — migration 021
+
+O arquivo `supabase/migrations/021_newsletter_admin_acl_reconcile.sql` reproduz a correção de `EXECUTE` executada manualmente no isolado. A migration 020 já aplicada não deve ser reexecutada ou alterada retroativamente. A 021 foi adicionada ao Git, mas **não aplicada pelo agente**. Antes de marcá-la aplicada no histórico do isolado ou executá-la em outros ambientes, conferir estado e autorização. O fluxo de CI da PR agora também contempla evento `pull_request`; sua execução real ainda deve ser confirmada.
+
+## Teste de integração reproduzível
+
+Adicionado `tests/integration/rls/e4-newsletter.test.ts` com JWTs reais via `createRoleClients()`, proteção anti-produção, dados sintéticos e limpeza. Cobre negação `anon`/não-admin, descadastro, payload, consentimento, auditoria, idempotência e exclusão. Executar somente após disponibilizar `.env.test.local` do projeto isolado e configurar `RC2_E4_PHASE=post020` usando `npm run test:integration -- tests/integration/rls/e4-newsletter.test.ts`. A suíte não foi executada contra o Supabase nesta sessão; não considerá-la homologada. Teste de rollback por falha induzida de auditoria continua pendente e exige ambiente controlado.
+
+## Homologação funcional executada — 29/10/2026 (isolado)
+
+**Evidência de execução enviada pelo operador:** PowerShell 7.6.9 em `D:\\Projetos\\RC2-2026`, branch `feat/admin-e4-newsletter-essential`, `RC2_E4_PHASE=post020`, comando `npm run test:integration -- tests/integration/rls/e4-newsletter.test.ts`. Vitest 4.1.5: **1 arquivo aprovado, 4/4 testes aprovados**, duração 6,96 s; guarda: `[integração] alvo de teste validado (ref pyhh…)`.
+
+- Negação `anon` e usuário autenticado não-admin com `42501`, sem mutação.
+- Admin: descadastro com auditoria, revogação da confirmação e remoção de payload.
+- Repetição idempotente, confirmação literal de exclusão.
+- Exclusão CASCADE, auditoria preservada, repetição retornando `not_found`.
+- **Conferência independente read-only pós-execução** no projeto `pyhhygvdjokddphftuua`: marcador correto; newsletter_subscribers=0, newsletter_outbox=0, newsletter_outbox_payload=0, newsletter_tokens=0, newsletter_consents=0, eventos de auditoria N4=0 e admins sintéticos do harness=0.
+- Build Vercel e workflow unitário GitHub Actions do HEAD anterior `3540b237decd0a6bb55853908a898d2c4ae4a782` concluídos com sucesso.
+
+**Limites da evidência:** a suíte atual NÃO injeta falha no INSERT de auditoria para provar rollback sob erro, nem exercita corrida `sending`/processador. Esses cenários continuam pendentes para homologação completa de exceções; não afirmar que foram executados. A aplicação da `021` no histórico de migrations, a dependência da PR E3/#47 e a ativação controlada ainda são itens separados. `NEWSLETTER_ADMIN_MUTATIONS_ENABLED` continua desativada; Production não foi modificada.
+
+## Teste de falha de auditoria — 29/10/2026
+
+Executado exclusivamente no isolado `pyhhygvdjokddphftuua` em transação única, terminada por `ROLLBACK`. Foi criado assinante sintético `77fe280b-0da7-4a20-9e42-029ae41e4ab1`, revogada temporariamente a permissão de INSERT de auditoria do owner `newsletter_ops`, usado papel `authenticated` com claim `sub` de administrador existente e chamadas ambas as RPCs. Ambas retornaram `42501` pela falha induzida de INSERT; o bloco de teste conferiu que o assinante permaneceu pendente e nenhum consentimento/auditoria persistiu. Resultado do banco: `rollback_verified_in_transaction`.
+
+Após o `ROLLBACK`, consulta independente confirmou assinante sintético = 0, consentimentos sintéticos = 0, auditorias sintéticas = 0 e `newsletter_ops` com INSERT(event) de auditoria restaurado. **Não ocorreu mudança persistente de ACL nem de dados.** Este teste demonstra atomicidade diante da falha de auditoria, não garante interrupção de chamada já em andamento ao provedor externo.
+
+A migration `021_newsletter_admin_acl_reconcile.sql` permanece versionada mas ainda **não está registrada no histórico de migrations do isolado** (histórico contém 020). Não declarar 021 aplicada. E4 permanece em Draft até reconciliação do histórico/decisão de promoção e dependência E3 (#47).
+
+## Reconciliação efetivada — 29/10/2026
+
+Migration `021_newsletter_admin_acl_reconcile` aplicada **somente** ao Supabase isolado `pyhhygvdjokddphftuua` pela ferramenta de migrations; retorno `success=true`. Histórico confirmado: `020_newsletter_admin_essential` (`20261028170213`) e `021_newsletter_admin_acl_reconcile` (`20261029172418`). Reexecutado `docs/runbooks/migrations/020-newsletter-admin/verify.sql`: resultado **APROVADO**, todos os checks `true`, inclusive `anon_denied`, `functions_owned`, `role_set_denied` e permissões limitadas. Esta anotação substitui registros anteriores que diziam que a 021 ainda não estava aplicada. Nenhuma operação em Production. A PR #48 segue Draft enquanto #47/E3 for dependência não integrada; flags de ativação continuam desligadas.
