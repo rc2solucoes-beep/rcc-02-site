@@ -1,10 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { serializeJsonLd } from "@/lib/jsonLd";
 import { Barlow, Barlow_Condensed } from "next/font/google";
-import { Suspense } from "react";
-import { DelayedGtm } from "@/components/tracking/DelayedGtm";
-import { PageViewTracker } from "@/components/tracking/PageViewTracker";
-import { getConsentBootstrapScript } from "@/lib/consent";
 import {
   getOrgSettings,
   getOrganizationSchema,
@@ -38,7 +34,6 @@ const barlowCondensed = Barlow_Condensed({
 });
 
 const BASE_URL = SITE_BASE_URL;
-const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID ?? "GTM-MQF4K77";
 
 export const viewport: Viewport = {
   themeColor: "#081827",
@@ -99,6 +94,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const schemaWebSite = getWebSiteSchema(BASE_URL);
 
+// Nenhum rastreador de terceiros fica neste layout. Eles são montados só pelos layouts que podem
+// carregá-los; as páginas de token da newsletter (grupo `(newsletter)`) ficam fora por estrutura
+// (DEC-27 / PRP-10, opção O5).
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -131,10 +129,6 @@ export default async function RootLayout({
       className={`h-full ${barlow.variable} ${barlowCondensed.variable}`}
     >
       <head>
-        <script
-          id="rc2-consent-bootstrap"
-          dangerouslySetInnerHTML={{ __html: getConsentBootstrapScript() }}
-        />
         {/* next/font/google handles font loading automatically */}
         <script
           type="application/ld+json"
@@ -146,10 +140,6 @@ export default async function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-rc2-sand text-rc2-ebony antialiased">
-        <DelayedGtm gtmId={GTM_ID} />
-        <Suspense fallback={null}>
-          <PageViewTracker />
-        </Suspense>
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-rc2-orange focus:text-white focus:text-sm focus:font-medium focus:rounded"

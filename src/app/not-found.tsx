@@ -15,6 +15,9 @@ export const metadata: Metadata = {
   openGraph: null,
 };
 
+// Sem rastreadores de terceiros (DEC-27 / PRP-10, opção O5): este not-found global entra no payload
+// do layout raiz de TODAS as rotas, inclusive das páginas de token da newsletter, e montar
+// rastreadores aqui enviaria o código deles ao navegador ali. Decisão do responsável pela tracking.
 export default function NotFound() {
   return (
     <div className="flex-1 flex items-center justify-center min-h-[70vh] px-4">

@@ -42,7 +42,7 @@ Decisões de produto: remetente `newsletter@rc2solucoes.com.br` (sujeito a DNS);
 
 | ID | Premissa | Validação |
 |---|---|---|
-| PV-04 | `pg_net` disponível no projeto Supabase. | Preflight; senão, §8.9 (alternativas). |
+| PV-04 | `pg_net` disponível no projeto Supabase. | **Parcialmente verificada (27/10/2026, leitura direta do isolado): `pg_cron` instalado; `pg_net` disponível, mas NÃO instalado.** Falta instalar (autorização específica) e demonstrar o `http_post` (LC-01); senão, §8.9 (alternativas). Especificação da N2 e do LC-01: `src/lib/newsletter/README.md`. |
 | PV-05 | `ON DELETE CASCADE` ignora RLS nas tabelas filhas. | T-NL-I19 |
 | PV-08 | Plano da Vercel permite `maxDuration` de 120 s e o cron escolhido. | Painel da Vercel |
 | PV-09 | Scripts de terceiros não executam nas páginas de token após o isolamento. | LC-03, T-NL-E06 |
@@ -557,7 +557,7 @@ Uma linha `dead` é terminal: **nunca é reenviada automaticamente**. A única f
 | Caminho | Descrição |
 |---|---|
 | Rápido | Depois de gravar a RPC, o handler chama `after(dispatchOnce)`. Reduz latência; **não é** a garantia (PV-24). Usa o mesmo `claim`, portanto também recupera leases vencidos. |
-| Garantia | `pg_cron` a cada `P` → `pg_net` `http_post` para `POST /api/internal/newsletter/dispatch` com `Authorization: Bearer <NEWSLETTER_DISPATCH_SECRET>`. URL e segredo no Vault do Supabase. |
+| Garantia | `pg_cron` a cada `P` → `pg_net` `http_post` para `POST /api/internal/newsletter/dispatch` com `Authorization: Bearer <NEWSLETTER_DISPATCH_SECRET>`. URL e segredo no Vault do Supabase. **Exposição transitória:** no Supabase hospedado, `net.http_request_queue` e `net._http_response` pertencem a `supabase_admin` com SELECT para `PUBLIC` e **não podem ser restringidas por `REVOKE`** (o `postgres` não assume o proprietário e o worker do `pg_net` usa `postgres`); os cabeçalhos HTTP, inclusive o bearer, ficam legíveis ali até o envio. Controles exigidos antes do apply (N2, preflight 15B–15D e gates G-1 a G-3 do runbook 019): `anon`/`authenticated` sem `LOGIN`, nenhum papel com `LOGIN` não previsto, schema `net` fora da Data API (configuração efetiva; sem prova automática → evidência manual) e segredos de Preview e Production segregados. Quando PRE/POS-15D retornar `nao_verificavel`, o SQL continua REPROVADO; o runbook N2 permite apenas uma decisão **operacional condicional e registrada** (17/18, exclusivamente 15D pendente, prova G-1 vinculada ao ambiente, G-2/G-3 aprovados, autorização específica). `exposto` ou qualquer outra falha = NO-GO. Risco residual documentado no runbook. |
 | Rota de dispatch | compara o segredo em tempo constante; sem corpo; respeita os invariantes do §8.5; devolve só contagens; nunca registra segredo, e-mail nem tokens. Processa `unsubscribe_link` **sempre**; processa `confirmation` somente se `NEWSLETTER_CONFIRMATION_DISPATCH_ENABLED` (§18.5). |
 | Manutenção | job a cada 5 min chama `newsletter_outbox_expire()`; limpeza de tokens C descartáveis; purgas conforme §10. |
 
@@ -907,7 +907,15 @@ Logs estruturados com `event`, `outbox_id`, `attempt`, código de resultado e la
 | N3 | jobs de purga conforme `P-RET-*` | E3 | só depois de BL-01 |
 | N4 | papel `newsletter_ops`, funções administrativas `SECURITY DEFINER`, *policies* e grants | E4-essencial | **precisa estar aplicada antes da ativação pública (BL-11)** |
 
-Cada uma com `preflight`, `apply` idempotente, `verify` e `rollback`. Ordem: ambiente isolado primeiro, produção com autorização.
+**Regra de apply (revisada em 27/10/2026; substitui "`apply` idempotente").** Cada migration da newsletter tem `preflight`, `apply`, `verify` e `rollback`, e o `apply` é de **primeira aplicação estrita**, não idempotente:
+
+- O apply inicial roda **em uma única transação** e começa por um *guard* que aborta se qualquer objeto da migration já existir ou se faltar um pré-requisito.
+- **Reaplicação aborta sem nenhuma alteração** (a transação é revertida). Nenhum `CREATE` usa `IF NOT EXISTS` e o *guard* não é contornado editando o SQL.
+- **Qualquer evolução posterior exige uma nova migration**, com o seu próprio ciclo; a migration já aplicada não é editada.
+- A operação segue sempre **preflight → apply → verify**, por ambiente, com autorização específica. Ordem: ambiente isolado primeiro, produção com autorização.
+- O **rollback permanece um script separado**, nunca executado automaticamente, e depende de autorização específica (e, havendo assinantes reais, de decisão jurídica, BL-01).
+
+Motivo: é o modelo já aprovado e em produção na migration 017 (E0c). A idempotência convergente aceitaria em silêncio um objeto pré-existente com definição diferente. Registro da decisão: `docs/runbooks/migrations/018-newsletter-core/README.md`.
 
 ### 18.3 Sequência de implantação e ativação
 
