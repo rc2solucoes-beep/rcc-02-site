@@ -73,3 +73,16 @@ O arquivo `supabase/migrations/021_newsletter_admin_acl_reconcile.sql` reproduz 
 ## Teste de integração reproduzível
 
 Adicionado `tests/integration/rls/e4-newsletter.test.ts` com JWTs reais via `createRoleClients()`, proteção anti-produção, dados sintéticos e limpeza. Cobre negação `anon`/não-admin, descadastro, payload, consentimento, auditoria, idempotência e exclusão. Executar somente após disponibilizar `.env.test.local` do projeto isolado e configurar `RC2_E4_PHASE=post020` usando `npm run test:integration -- tests/integration/rls/e4-newsletter.test.ts`. A suíte não foi executada contra o Supabase nesta sessão; não considerá-la homologada. Teste de rollback por falha induzida de auditoria continua pendente e exige ambiente controlado.
+
+## Homologação funcional executada — 29/10/2026 (isolado)
+
+**Evidência de execução enviada pelo operador:** PowerShell 7.6.9 em `D:\\Projetos\\RC2-2026`, branch `feat/admin-e4-newsletter-essential`, `RC2_E4_PHASE=post020`, comando `npm run test:integration -- tests/integration/rls/e4-newsletter.test.ts`. Vitest 4.1.5: **1 arquivo aprovado, 4/4 testes aprovados**, duração 6,96 s; guarda: `[integração] alvo de teste validado (ref pyhh…)`.
+
+- Negação `anon` e usuário autenticado não-admin com `42501`, sem mutação.
+- Admin: descadastro com auditoria, revogação da confirmação e remoção de payload.
+- Repetição idempotente, confirmação literal de exclusão.
+- Exclusão CASCADE, auditoria preservada, repetição retornando `not_found`.
+- **Conferência independente read-only pós-execução** no projeto `pyhhygvdjokddphftuua`: marcador correto; newsletter_subscribers=0, newsletter_outbox=0, newsletter_outbox_payload=0, newsletter_tokens=0, newsletter_consents=0, eventos de auditoria N4=0 e admins sintéticos do harness=0.
+- Build Vercel e workflow unitário GitHub Actions do HEAD anterior `3540b237decd0a6bb55853908a898d2c4ae4a782` concluídos com sucesso.
+
+**Limites da evidência:** a suíte atual NÃO injeta falha no INSERT de auditoria para provar rollback sob erro, nem exercita corrida `sending`/processador. Esses cenários continuam pendentes para homologação completa de exceções; não afirmar que foram executados. A aplicação da `021` no histórico de migrations, a dependência da PR E3/#47 e a ativação controlada ainda são itens separados. `NEWSLETTER_ADMIN_MUTATIONS_ENABLED` continua desativada; Production não foi modificada.
