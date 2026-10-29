@@ -94,3 +94,7 @@ Executado exclusivamente no isolado `pyhhygvdjokddphftuua` em transação única
 Após o `ROLLBACK`, consulta independente confirmou assinante sintético = 0, consentimentos sintéticos = 0, auditorias sintéticas = 0 e `newsletter_ops` com INSERT(event) de auditoria restaurado. **Não ocorreu mudança persistente de ACL nem de dados.** Este teste demonstra atomicidade diante da falha de auditoria, não garante interrupção de chamada já em andamento ao provedor externo.
 
 A migration `021_newsletter_admin_acl_reconcile.sql` permanece versionada mas ainda **não está registrada no histórico de migrations do isolado** (histórico contém 020). Não declarar 021 aplicada. E4 permanece em Draft até reconciliação do histórico/decisão de promoção e dependência E3 (#47).
+
+## Reconciliação efetivada — 29/10/2026
+
+Migration `021_newsletter_admin_acl_reconcile` aplicada **somente** ao Supabase isolado `pyhhygvdjokddphftuua` pela ferramenta de migrations; retorno `success=true`. Histórico confirmado: `020_newsletter_admin_essential` (`20261028170213`) e `021_newsletter_admin_acl_reconcile` (`20261029172418`). Reexecutado `docs/runbooks/migrations/020-newsletter-admin/verify.sql`: resultado **APROVADO**, todos os checks `true`, inclusive `anon_denied`, `functions_owned`, `role_set_denied` e permissões limitadas. Esta anotação substitui registros anteriores que diziam que a 021 ainda não estava aplicada. Nenhuma operação em Production. A PR #48 segue Draft enquanto #47/E3 for dependência não integrada; flags de ativação continuam desligadas.
