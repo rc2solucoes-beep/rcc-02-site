@@ -30,4 +30,4 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
       - name: E4 unit tests
-        run: npx vitest run tests/unit/newsletter/e4-admin-actions.test.ts tests/unit/newsletter/e4-admin-contract.test.ts
+        run: npx vitest run tests/unit/newsletter/e4-admin-actions.test.ts tests/unit/newsletter/e4-admin-contract.test.ts tests/unit/newsletter/processor.test.ts
