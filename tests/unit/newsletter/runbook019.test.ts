@@ -25,7 +25,7 @@ describe("migration 019 — proposta N2", () => {
     expect(existsSync(resolve(root, "supabase/migrations/020_newsletter_dispatch_jobs.sql"))).toBe(false);
     expect(migration).toMatch(/PROPOSTA NÃO APLICADA/);
     expect(readme).toMatch(/NÃO APLICADA EM NENHUM AMBIENTE/);
-    expect(readme).toMatch(/NENHUMA EXTENSÃO FOI INSTALADA/);
+    expect(readme).toMatch(/`pg_net` 0.20.4 INSTALADO SOMENTE NO ISOLADO/);
   });
 
   it("em transação, com guard ANTES de agendar e autoverificação ANTES do COMMIT", () => {
