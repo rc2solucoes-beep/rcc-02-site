@@ -212,6 +212,19 @@ async function processItem(item: ClaimedItem, deps: Required<Pick<DispatchDeps, 
     return dead("invalid_state", null);
   }
 
+  // Última leitura ANTES de chamar o provedor. O descadastro administrativo
+  // pode ocorrer depois do prepare e da renderização, inclusive com item "sending".
+  // Isso reduz a janela de corrida; uma revogação APÓS esta leitura e DURANTE
+  // provider.send não pode ser garantida atomicamente com a API externa.
+  const latest = await store.loadContext(item);
+  if (!sendable(item, latest, now()) ||
+      !latest.subscriber || latest.subscriber.email !== subscriber.email ||
+      !latest.payload ||
+      latest.payload.confirmToken !== ctx.payload!.confirmToken ||
+      latest.payload.unsubscribeToken !== ctx.payload!.unsubscribeToken) {
+    return dead("superseded", null);
+  }
+
   let result: SendResult;
   try {
     result = await withTimeout(provider.send(message, { idempotencyKey: item.idempotencyKey, timeoutMs: params.timeoutMs }), params.timeoutMs);
