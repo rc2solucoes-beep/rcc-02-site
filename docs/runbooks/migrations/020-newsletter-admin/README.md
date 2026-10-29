@@ -86,3 +86,11 @@ Adicionado `tests/integration/rls/e4-newsletter.test.ts` com JWTs reais via `cre
 - Build Vercel e workflow unitário GitHub Actions do HEAD anterior `3540b237decd0a6bb55853908a898d2c4ae4a782` concluídos com sucesso.
 
 **Limites da evidência:** a suíte atual NÃO injeta falha no INSERT de auditoria para provar rollback sob erro, nem exercita corrida `sending`/processador. Esses cenários continuam pendentes para homologação completa de exceções; não afirmar que foram executados. A aplicação da `021` no histórico de migrations, a dependência da PR E3/#47 e a ativação controlada ainda são itens separados. `NEWSLETTER_ADMIN_MUTATIONS_ENABLED` continua desativada; Production não foi modificada.
+
+## Teste de falha de auditoria — 29/10/2026
+
+Executado exclusivamente no isolado `pyhhygvdjokddphftuua` em transação única, terminada por `ROLLBACK`. Foi criado assinante sintético `77fe280b-0da7-4a20-9e42-029ae41e4ab1`, revogada temporariamente a permissão de INSERT de auditoria do owner `newsletter_ops`, usado papel `authenticated` com claim `sub` de administrador existente e chamadas ambas as RPCs. Ambas retornaram `42501` pela falha induzida de INSERT; o bloco de teste conferiu que o assinante permaneceu pendente e nenhum consentimento/auditoria persistiu. Resultado do banco: `rollback_verified_in_transaction`.
+
+Após o `ROLLBACK`, consulta independente confirmou assinante sintético = 0, consentimentos sintéticos = 0, auditorias sintéticas = 0 e `newsletter_ops` com INSERT(event) de auditoria restaurado. **Não ocorreu mudança persistente de ACL nem de dados.** Este teste demonstra atomicidade diante da falha de auditoria, não garante interrupção de chamada já em andamento ao provedor externo.
+
+A migration `021_newsletter_admin_acl_reconcile.sql` permanece versionada mas ainda **não está registrada no histórico de migrations do isolado** (histórico contém 020). Não declarar 021 aplicada. E4 permanece em Draft até reconciliação do histórico/decisão de promoção e dependência E3 (#47).
