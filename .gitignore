@@ -97,3 +97,6 @@ contrast-audit.html
 .worktrees/
 # Logs do E2E isolado (fora do outputDir do Playwright, que apaga test-results/)
 e2e-logs/
+
+# temporarios locais (Lighthouse, auditorias visuais, servidores de teste)
+/.tmp/
