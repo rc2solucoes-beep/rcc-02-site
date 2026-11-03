@@ -520,6 +520,176 @@
     }
   }
 
+  /* ── Hero v2 e cabeçalho (docs/proposta-visual-hero-v2.md) ──
+     Headline contínua em duas escalas, sem régua entre as frases. A família e o
+     peso vêm de .rc2-hero-signature; aqui só entram escala, quebra e entrada.
+     Mobile: ≈32px / ≈45px em 390. Desktop: ≤64px / ≤88px. */
+  /* Tracking do protótipo aprovado (0.02em). Com o 0.04em de
+     --rc2-tracking-display, "PRECISA FUNCIONAR" não cabe em 390px e a
+     conclusão quebrava em 3 linhas. Escopado ao h1 da Home. */
+  .rc2-hero-title {
+    letter-spacing: 0.02em;
+  }
+
+  .rc2-hero-title__lead,
+  .rc2-hero-title__resolve {
+    display: block;
+    text-wrap: balance;
+  }
+
+  /* As escalas seguem a largura REAL do bloco do hero (cqw), não a viewport:
+     `vw` inclui a scrollbar persistente (≈15px) e a conclusão estourava a linha
+     em 390px. Medido: "PRECISA FUNCIONAR" ocupa ≈7,66em e a primeira linha da
+     frase inicial ≈10,9em; 12,2cqw e 8,8cqw deixam ≈6% e ≈4% de folga. */
+  .rc2-hero-measure {
+    container-type: inline-size;
+  }
+
+  .rc2-hero-title__lead {
+    font-size: max(1.5rem, 8.8cqw);
+    line-height: 1.04;
+  }
+
+  .rc2-hero-title__resolve {
+    font-size: max(2rem, 12.2cqw);
+    line-height: 0.98;
+    margin-top: 0.12em;
+  }
+
+  @media (min-width: 600px) {
+    .rc2-hero-title__lead {
+      font-size: clamp(2rem, 5.82cqw, 4rem);
+    }
+
+    .rc2-hero-title__resolve {
+      font-size: clamp(2.5rem, 8.1cqw, 5.5rem);
+    }
+  }
+
+  /* Entrada única do h1 inteiro: sem delay e sem fill-mode, então sem JS (ou
+     antes dele) o texto já está no estado final. */
+  @keyframes rc2-hero-title-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .rc2-hero-title {
+      animation: rc2-hero-title-in 240ms ease-out;
+    }
+  }
+
+  /* Faixa institucional no fim do hero. #081827 é o mesmo tom da seção de
+     problemas que vem a seguir; a borda dark-border impede que as duas leiam
+     como um bloco só (regra inviolável nº 8). */
+  .rc2-hero-closing span {
+    display: block;
+  }
+
+  .rc2-hero-closing span + span {
+    color: var(--rc2-dark-text-secondary);
+    font-weight: 500;
+  }
+
+  @media (min-width: 768px) {
+    .rc2-hero-closing span {
+      display: inline;
+    }
+  }
+
+  /* Feedback dos CTAs do hero e do cabeçalho: pressionado desce 1px, mas só com
+     movimento permitido. */
+  @media (prefers-reduced-motion: reduce) {
+    .rc2-hero-cta,
+    .rc2-header-cta {
+      transform: none !important;
+      translate: none !important;
+    }
+  }
+
+  /* Logo recortado, opt-in do cabeçalho (<Logo crop />). O PNG não é alterado:
+     o quadro mostra a faixa y256–800 do arquivo 1491×1055 (área útil y334–722
+     mais respiro de 78px acima e abaixo) e a margem negativa alinha o início da
+     marca (x69 de 1353 de área útil) ao gutter. --rc2-logo-useful é a largura
+     óptica da marca. */
+  .rc2-logo-crop {
+    --rc2-logo-useful: 92px;
+    display: block;
+    flex: none;
+    width: calc(var(--rc2-logo-useful) * 1491 / 1353);
+    margin-left: calc(var(--rc2-logo-useful) * -0.051);
+  }
+
+  @media (min-width: 1024px) {
+    .rc2-logo-crop {
+      --rc2-logo-useful: 112px;
+    }
+  }
+
+  .rc2-logo-crop__frame {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 1491 / 544;
+  }
+
+  .rc2-logo-crop__frame img {
+    position: absolute;
+    left: 0;
+    top: -47.0588%;
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Item de navegação do cabeçalho: sublinhado discreto no hover e na página
+     ativa, em vez da pílula. */
+  .rc2-nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding-inline: 0.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--rc2-text);
+    transition: color 160ms ease-out;
+  }
+
+  .rc2-nav-link::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0.75rem;
+    bottom: 0.5rem;
+    height: 2px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 160ms ease-out;
+  }
+
+  .rc2-nav-link:hover {
+    color: var(--rc2-heading);
+  }
+
+  .rc2-nav-link[aria-current="page"] {
+    color: var(--rc2-brand-text);
+    font-weight: 600;
+  }
+
+  .rc2-nav-link:hover::after,
+  .rc2-nav-link[aria-current="page"]::after {
+    transform: scaleX(1);
+  }
+
   .rc2-quote-card {
     position: relative;
     overflow: hidden;

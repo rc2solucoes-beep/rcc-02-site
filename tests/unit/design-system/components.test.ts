@@ -183,9 +183,21 @@ describe("Hero — o módulo diagramático saiu", () => {
     expect(home).not.toContain("HomeHeroDiagram");
   });
 
-  it("o hero usa o ritmo de seção de assinatura", () => {
+  it("o hero usa o ritmo compacto do protótipo v2, não o de seção de assinatura", () => {
+    // Substitui o contrato anterior (`rc2-section--signature`, 72/160px): o
+    // hero aprovado em docs/proposta-visual-hero-v2.md tem padding próprio e
+    // fecha com a faixa institucional.
     const home = read("src/app/(public)/page.tsx");
-    expect(home).toContain("rc2-section--signature");
+    const hero = home.slice(home.indexOf("rc2-hero-stage"));
+    expect(hero.slice(0, hero.indexOf(">"))).toContain("pt-8");
+    expect(home).not.toContain("rc2-section--signature");
+  });
+
+  it("o h1 é único, vem de HOME_COPY.h1 e não usa o gesto cinético", () => {
+    const home = read("src/app/(public)/page.tsx");
+    expect(home.match(/<h1\b/g)).toHaveLength(1);
+    expect(home).toContain("splitAfterFirstSentence(HOME_COPY.h1)");
+    expect(home).not.toContain("KineticHeadline");
   });
 });
 
@@ -239,18 +251,112 @@ describe("Acabamentos da §8", () => {
     expect(css).toContain("transform: translateX(2px)");
   });
 
-  it("os cards de case usam espaçamento de seção de assinatura", () => {
-    const body = read("src/components/marketing/home/HomeAuthority.tsx");
-    expect(body).toMatch(/gap-8 md:grid-cols-3 md:gap-10/);
+  it("a prova da Home entrega indicadores, contexto e trajetória do fundador", async () => {
+    const { createElement } = await import("react");
+    const { renderToStaticMarkup } = await import("react-dom/server");
+    const { HomeAuthority } = await import(
+      "@/components/marketing/home/HomeAuthority"
+    );
+    const { HOME_AUTHORITY } = await import("@/lib/content/home");
+
+    const doc = new DOMParser().parseFromString(
+      renderToStaticMarkup(createElement(HomeAuthority)),
+      "text/html"
+    );
+    const clean = (el: Element | null | undefined) =>
+      (el?.textContent ?? "").replace(/\s+/g, " ").trim();
+
+    // Indicadores finais: o SSR já traz o valor final, não zero.
+    const [statsDl, ...outrasDl] = [...doc.querySelectorAll("dl")];
+    const itens = [...statsDl.querySelectorAll(":scope > div")];
+    expect(itens).toHaveLength(3);
+    const valores = itens.map((i) =>
+      clean(i.querySelector("dd")).replace(/[\s., ]/g, "")
+    );
+    expect(valores).toEqual(["US$384mil", "636", "20+"]);
+
+    // Contexto: Uno Healthcare nos dois primeiros, trajetória no terceiro.
+    const legendas = itens.map((i) => clean(i.querySelector("dt")));
+    expect(legendas[0]).toContain("Uno Healthcare");
+    expect(legendas[1]).toContain("Uno Healthcare");
+    expect(legendas[2]).toContain("Trajetória do fundador");
+    expect(legendas[2]).not.toContain("Uno Healthcare");
+
+    // Experiências: lista de definição própria, logo após o título.
+    const titulo = [...doc.querySelectorAll("h3")].find(
+      (h) => clean(h) === "Trajetória do fundador"
+    );
+    expect(titulo).toBeDefined();
+    const experiencias = titulo!.nextElementSibling;
+    expect(experiencias?.tagName).toBe("DL");
+    expect(experiencias).not.toBe(statsDl);
+    expect(outrasDl).toContain(experiencias);
+    expect(experiencias!.closest("figure")).toBeNull();
+    expect(
+      [...experiencias!.querySelectorAll("dt")].map((e) => clean(e))
+    ).toEqual(HOME_AUTHORITY.facts.map((f) => f.org));
+    expect(
+      [...experiencias!.querySelectorAll("dd")].map((e) => clean(e))
+    ).toEqual(HOME_AUTHORITY.facts.map((f) => f.fact));
+
+    // Avaliações ficam em figures separadas, fora das listas de definição.
+    const figures = [...doc.querySelectorAll("figure")];
+    expect(figures).toHaveLength(4);
+    for (const f of figures) {
+      expect(f.closest("dl")).toBeNull();
+      expect(f.querySelector("blockquote")).not.toBeNull();
+      expect(f.querySelector("figcaption")).not.toBeNull();
+    }
   });
 
-  it("a Caption saiu de classe morta para uso real nos testemunhos", () => {
-    for (const file of [
-      "src/components/marketing/HomeReviews.tsx",
-      "src/components/GoogleReviews.tsx",
-    ]) {
-      expect(read(file)).toContain("rc2-caption");
-    }
+  it("as avaliações preservam nome, data, relato e nota sem virar link", async () => {
+    const { createElement } = await import("react");
+    const { renderToStaticMarkup } = await import("react-dom/server");
+    const { HomeReviews } = await import("@/components/marketing/HomeReviews");
+
+    // Fonte canônica capturada do módulo: o array não é exportado.
+    const fonte = read("src/components/marketing/HomeReviews.tsx");
+    const esperado = [
+      ...fonte.matchAll(
+        /name: "([^"]+)",\s*date: "([^"]+)",\s*rating: (\d),\s*text: "((?:[^"\\]|\\.)*)"/g
+      ),
+    ].map(([, name, date, rating, text]) => ({
+      name,
+      date,
+      rating: Number(rating),
+      text,
+    }));
+    expect(esperado.map((r) => r.name)).toEqual([
+      "Luana Gonçalves",
+      "Nelson Jose Dias Mello",
+      "Brenda Araujo",
+      "Ellen Luisa Lima",
+    ]);
+
+    const doc = new DOMParser().parseFromString(
+      renderToStaticMarkup(createElement(HomeReviews)),
+      "text/html"
+    );
+    const clean = (el: Element | null) =>
+      (el?.textContent ?? "").replace(/\s+/g, " ").trim();
+
+    const figures = [...doc.querySelectorAll("figure")];
+    expect(figures).toHaveLength(4);
+    expect(doc.querySelectorAll("blockquote")).toHaveLength(4);
+    expect(doc.querySelectorAll("a")).toHaveLength(0);
+
+    figures.forEach((figure, i) => {
+      const r = esperado[i];
+      // Relato completo, sem truncar nem reescrever.
+      expect(clean(figure.querySelector("blockquote"))).toBe(r.text);
+      expect(clean(figure.querySelector("figcaption"))).toContain(r.name);
+      expect(clean(figure.querySelector("time"))).toBe(r.date);
+      expect(
+        figure.querySelector(`[aria-label="${r.rating} de 5 estrelas"]`)
+      ).not.toBeNull();
+      expect(figure.querySelectorAll("svg")).toHaveLength(5);
+      expect(figure.closest("a")).toBeNull();
+    });
   });
 
   it("a Caption está na escala da §6 (Light 300, 13–14px)", () => {

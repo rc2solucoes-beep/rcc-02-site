@@ -29,7 +29,7 @@ const PROBLEM_ICONS: Record<string, LucideIcon> = {
 export function HomeProblems() {
   return (
     <section className="rc2-grain relative overflow-hidden bg-rc2-dark rc2-section">
-      <div className="rc2-blueprint-dark pointer-events-none absolute inset-0 opacity-60" aria-hidden />
+      <div className="rc2-blueprint-dark pointer-events-none absolute inset-0 opacity-20" aria-hidden />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <ScrollReveal>
           <SectionLabel className="rc2-rule block mb-5 text-rc2-brand">

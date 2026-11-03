@@ -18,7 +18,7 @@ export function ConsentPreferencesButton() {
     <button
       type="button"
       onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))}
-      className="ui-focus-ring rounded-sm text-xs text-rc2-dark-text-secondary underline-offset-4 hover:text-rc2-dark-text hover:underline"
+      className="ui-focus-ring inline-flex min-h-11 items-center rounded-sm py-2 text-sm text-rc2-dark-text-secondary underline-offset-4 hover:text-rc2-dark-text hover:underline"
     >
       Preferências de cookies
     </button>

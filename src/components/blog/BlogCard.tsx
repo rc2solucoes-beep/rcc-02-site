@@ -16,6 +16,8 @@ import { cn } from "@/lib/utils";
  * - `feature` — o último post no índice do blog. Imagem em 3:2, a proporção que
  *   a §6 reserva a destaque, e título na escala de H2.
  * - `grid` — imagem em cima, conteúdo embaixo, para os demais em duas colunas.
+ * - `compact` — opcional. Miniatura de ~192px (120px de altura no mobile) com a
+ *   capa inteira (`object-contain`) e texto editorial agrupado; usado na Home.
  *
  * As três dividem tipografia, borda, hover e rodapé de metadados: dar destaque
  * a um post não pode criar um segundo sistema de card.
@@ -29,7 +31,7 @@ interface BlogCardProps {
   publishedAt?: string | Date | null;
   readingTimeMinutes?: number | null;
   category?: string;
-  variant?: "row" | "feature" | "grid";
+  variant?: "row" | "feature" | "grid" | "compact";
   /**
    * Opcional. Quando presente, o clique no card emite `cta_click`.
    * Ausente (padrão), o card mantém o comportamento anterior sem medição.
@@ -67,6 +69,7 @@ export function BlogCard({
   const isFeature = variant === "feature";
   const isGrid = variant === "grid";
   const isRow = variant === "row";
+  const isCompact = variant === "compact";
 
   return (
     <FadeIn className={cn("group block", isGrid && "h-full")}>
@@ -99,6 +102,7 @@ export function BlogCard({
               // §8: "Thumbnail cresce de tamanho". A `row` mantém 400px à
               // esquerda; destaque e grid empilham imagem sobre texto.
               isRow && "grid grid-cols-1 gap-0 md:grid-cols-[400px_1fr]",
+              isCompact && "grid grid-cols-1 gap-0 md:grid-cols-[192px_minmax(0,1fr)]",
               // O destaque empilha no mobile e vira duas colunas no desktop:
               // em coluna única, a imagem 3:2 na largura do container deixava
               // o card com ~980px de altura e engolia o resto do índice.
@@ -111,6 +115,7 @@ export function BlogCard({
               className={cn(
                 "relative overflow-hidden bg-rc2-bg",
                 isRow && "aspect-[4/3] md:aspect-auto md:min-h-[300px]",
+                isCompact && "h-[120px] md:h-auto",
                 // §6 Imagens: 3:2 em foto de destaque, 4:3 em thumbnail.
                 isFeature && "aspect-[3/2] lg:h-full lg:aspect-auto",
                 isGrid && "aspect-[4/3]"
@@ -126,9 +131,14 @@ export function BlogCard({
                     sizes={
                       isFeature
                         ? "(max-width: 1024px) 100vw, 1024px"
-                        : "(max-width: 768px) 100vw, 400px"
+                        : isCompact
+                          ? "(max-width: 768px) 100vw, 192px"
+                          : "(max-width: 768px) 100vw, 400px"
                     }
-                    className="h-full w-full object-cover"
+                    className={cn(
+                      "h-full w-full",
+                      isCompact ? "object-contain" : "object-cover"
+                    )}
                     // O destaque é o maior elemento acima da dobra do índice.
                     priority={isFeature}
                   />
@@ -150,7 +160,8 @@ export function BlogCard({
             {/* Conteúdo */}
             <div
               className={cn(
-                "flex flex-col justify-between p-5 sm:p-6",
+                "flex flex-col",
+                isCompact ? "min-w-0 gap-2 p-4 sm:p-5" : "justify-between p-5 sm:p-6",
                 isFeature && "md:p-8 lg:justify-center",
                 isGrid && "flex-1"
               )}
@@ -169,7 +180,11 @@ export function BlogCard({
                 <h3
                   className={cn(
                     "font-semibold leading-snug text-rc2-heading transition-colors group-hover:text-rc2-brand-text",
-                    isFeature ? "rc2-h3 mb-3 md:text-3xl" : "mb-2 text-lg"
+                    isFeature
+                      ? "rc2-h3 mb-3 md:text-3xl"
+                      : isCompact
+                        ? "mb-0 text-xl md:text-2xl"
+                        : "mb-2 text-lg"
                   )}
                 >
                   {title}
@@ -178,19 +193,32 @@ export function BlogCard({
 
               <p
                 className={cn(
-                  "mb-4 leading-relaxed text-rc2-text-secondary",
+                  "leading-relaxed text-rc2-text-secondary",
+                  isCompact ? "mb-0 text-base leading-[1.75]" : "mb-4",
                   // Sem `line-clamp`: o resumo é a única prévia do conteúdo e
                   // aparece inteiro. Os cards do grid já se igualam em altura
                   // pela linha do grid, e o rodapé de metadados fica preso
                   // embaixo pelo `justify-between`.
-                  isFeature ? "rc2-body-lg" : "text-sm"
+                  isFeature ? "rc2-body-lg" : !isCompact && "text-sm"
                 )}
               >
                 {summary}
               </p>
 
-              <div className="flex items-center justify-between gap-2 border-t border-rc2-border/40 pt-3">
-                <div className="flex flex-wrap items-center gap-2 text-xs text-rc2-text-muted">
+              <div
+                className={cn(
+                  "flex items-center justify-between gap-2 border-t border-rc2-border/40 pt-3",
+                  isCompact && "mt-1"
+                )}
+              >
+                <div
+                  className={cn(
+                    "flex flex-wrap items-center gap-2",
+                    isCompact
+                      ? "min-w-0 text-sm text-rc2-text-secondary"
+                      : "text-xs text-rc2-text-muted"
+                  )}
+                >
                   {author && (
                     <span className="font-medium text-rc2-text-secondary">
                       {author}
