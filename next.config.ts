@@ -179,6 +179,12 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
   },
 
+  experimental: {
+    // Evita reutilizar CSS obsoleto do cache persistente no build de produção.
+    // O cache de desenvolvimento mantém seu comportamento padrão.
+    turbopackFileSystemCacheForBuild: false,
+  },
+
   // Already using Turbopack in dev; enable server-side source maps in prod for Sentry
   productionBrowserSourceMaps: false,
 };
