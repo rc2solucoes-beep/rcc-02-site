@@ -230,3 +230,126 @@ test.describe("header menu", () => {
     await page.close();
   });
 });
+
+// Regressão de produção: o JSX novo (logo recortado, spans do h1) foi publicado
+// sem o bloco novo do globals.css. Sem CSS, o logo do header renderiza ~722px, o
+// do rodapé fica enorme e os spans do h1 ficam inline. Estas asserções medem
+// geometria computada no navegador (não nomes de classe), então falham contra
+// CSS ausente ou cacheado mesmo sem overflow horizontal.
+const LOGO_ALT = "RC2 Soluções";
+const CSS_HINT =
+  " — indica CSS do globals.css ausente/desatualizado no deploy (JSX novo com CSS antigo)";
+const CLIPS = /^(hidden|clip)$/;
+
+async function logoGeometry(page: Page, container: "header" | "footer") {
+  return page.evaluate(
+    ({ container, alt }) => {
+      const box = (r: DOMRect) => ({
+        width: Math.round(r.width),
+        height: Math.round(r.height),
+      });
+      const root = Array.from(document.querySelectorAll(container)).find((el) =>
+        el.querySelector(`img[alt="${alt}"]`)
+      );
+      if (!root) {
+        return { found: false as const, reason: `nenhum <${container}> contém img alt="${alt}"` };
+      }
+      const img = root.querySelector(`img[alt="${alt}"]`) as HTMLImageElement;
+      const link = img.closest("a");
+      if (!link) {
+        return { found: false as const, reason: `img do ${container} não está dentro de <a>` };
+      }
+      const frame = img.parentElement as HTMLElement;
+      const fs = getComputedStyle(frame);
+      const ir = img.getBoundingClientRect();
+      const fr = frame.getBoundingClientRect();
+      const ix = Math.max(0, Math.min(ir.right, fr.right) - Math.max(ir.left, fr.left));
+      const iy = Math.max(0, Math.min(ir.bottom, fr.bottom) - Math.max(ir.top, fr.top));
+      return {
+        found: true as const,
+        link: box(link.getBoundingClientRect()),
+        frame: box(fr),
+        img: box(ir),
+        frameIsLink: frame === link,
+        framePosition: fs.position,
+        frameOverflowX: fs.overflowX,
+        frameOverflowY: fs.overflowY,
+        // fração do quadro efetivamente coberta pela imagem (conteúdo visível)
+        frameCoverage: fr.width * fr.height > 0 ? (ix * iy) / (fr.width * fr.height) : 0,
+        containerBottom: root.getBoundingClientRect().bottom,
+        imgNaturalWidth: img.naturalWidth,
+      };
+    },
+    { container, alt: LOGO_ALT }
+  );
+}
+
+test.describe("home CSS published together with the JSX (production regression)", () => {
+  for (const width of [390, 1440]) {
+    test(`header logo, footer logo and hero spans have bounded geometry at ${width}`, async ({ page }, testInfo) => {
+      const height = width === 390 ? 900 : 1000;
+      await page.setViewportSize({ width, height });
+      await gotoHome(page);
+      const at = `viewport ${width}`;
+
+      // Header: logo contido em wrapper recortado.
+      const h = await logoGeometry(page, "header");
+      if (!h.found) throw new Error(`${at}: ${h.reason}`);
+      const hctx = `${at}: ${JSON.stringify({ link: h.link, frame: h.frame, img: h.img })}${CSS_HINT}`;
+      expect(h.link.width, `largura do link do logo no header fora de 90..140. ${hctx}`).toBeGreaterThanOrEqual(90);
+      expect(h.link.width, `largura do link do logo no header fora de 90..140. ${hctx}`).toBeLessThanOrEqual(140);
+      expect(h.link.height, `altura do link do logo no header > 68. ${hctx}`).toBeLessThanOrEqual(68);
+      expect(h.frameIsLink, `imagem do logo sem wrapper de recorte. ${hctx}`).toBe(false);
+      expect(h.framePosition, `wrapper do logo sem position:relative. ${hctx}`).toBe("relative");
+      expect(h.frameOverflowX, `wrapper do logo não recorta em X. ${hctx}`).toMatch(CLIPS);
+      expect(h.frameOverflowY, `wrapper do logo não recorta em Y. ${hctx}`).toMatch(CLIPS);
+      expect(h.frame.width, `wrapper do logo > 140px. ${hctx}`).toBeLessThanOrEqual(140);
+      expect(h.frame.height, `wrapper do logo > 68px (conteúdo visível estourado). ${hctx}`).toBeLessThanOrEqual(68);
+      expect(h.frameCoverage, `imagem não cobre o wrapper do logo (recorte quebrado). ${hctx}`).toBeGreaterThanOrEqual(0.9);
+      expect(h.imgNaturalWidth, `imagem do logo do header não carregou. ${hctx}`).toBeGreaterThan(0);
+
+      // A viewport inicial (sem full-page) inclui o header.
+      expect(h.containerBottom, `${at}: header fora da viewport inicial`).toBeGreaterThan(0);
+      expect(h.containerBottom, `${at}: header não cabe na viewport inicial`).toBeLessThanOrEqual(height);
+      await testInfo.attach(`viewport-${width}.png`, {
+        body: await page.screenshot({ fullPage: false }),
+        contentType: "image/png",
+      });
+
+      // Hero: spans em bloco e conclusão maior que a primeira frase.
+      const hero = await page.evaluate(() => {
+        const read = (selector: string) => {
+          const el = document.querySelector(selector);
+          if (!el) return null;
+          const style = getComputedStyle(el);
+          return { display: style.display, fontSize: parseFloat(style.fontSize) };
+        };
+        return { lead: read(".rc2-hero-title__lead"), resolve: read(".rc2-hero-title__resolve") };
+      });
+      const heroCtx = `${at}: ${JSON.stringify(hero)}${CSS_HINT}`;
+      expect(hero.lead, `span .rc2-hero-title__lead ausente do DOM. ${heroCtx}`).not.toBeNull();
+      expect(hero.resolve, `span .rc2-hero-title__resolve ausente do DOM. ${heroCtx}`).not.toBeNull();
+      expect(hero.lead!.display, `lead não é display:block (inline). ${heroCtx}`).toBe("block");
+      expect(hero.resolve!.display, `resolve não é display:block (inline). ${heroCtx}`).toBe("block");
+      expect(
+        hero.resolve!.fontSize,
+        `font-size da conclusão deve ser maior que o da primeira frase. ${heroCtx}`
+      ).toBeGreaterThan(hero.lead!.fontSize);
+
+      // Footer: âncora do logo com tamanho limitado e imagem contida no wrapper.
+      await page.locator("footer").scrollIntoViewIfNeeded();
+      const f = await logoGeometry(page, "footer");
+      if (!f.found) throw new Error(`${at}: ${f.reason}`);
+      const fctx = `${at}: ${JSON.stringify({ link: f.link, frame: f.frame, img: f.img })}${CSS_HINT}`;
+      expect(f.link.width, `largura do link do logo no rodapé fora de 90..140. ${fctx}`).toBeGreaterThanOrEqual(90);
+      expect(f.link.width, `largura do link do logo no rodapé fora de 90..140. ${fctx}`).toBeLessThanOrEqual(140);
+      expect(f.link.height, `link do logo no rodapé menor que 44px (alvo de toque). ${fctx}`).toBeGreaterThanOrEqual(44);
+      expect(f.frameIsLink, `imagem do logo do rodapé sem wrapper de recorte. ${fctx}`).toBe(false);
+      expect(f.framePosition, `wrapper do logo do rodapé sem position:relative. ${fctx}`).toBe("relative");
+      expect(f.frameOverflowX, `wrapper do logo do rodapé não recorta em X. ${fctx}`).toMatch(CLIPS);
+      expect(f.frameOverflowY, `wrapper do logo do rodapé não recorta em Y. ${fctx}`).toMatch(CLIPS);
+      expect(f.frame.width, `wrapper do logo do rodapé > 140px. ${fctx}`).toBeLessThanOrEqual(140);
+      expect(f.frame.height, `wrapper visual do logo do rodapé > 60px (logo gigante). ${fctx}`).toBeLessThanOrEqual(60);
+    });
+  }
+});

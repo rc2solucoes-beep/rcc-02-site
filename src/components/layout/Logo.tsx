@@ -47,6 +47,7 @@ export function Logo({
             height={1055}
             preload={preloadImage}
             sizes="(min-width: 1024px) 124px, 102px"
+            unoptimized={variant === "dark"}
           />
         </span>
       </Link>
