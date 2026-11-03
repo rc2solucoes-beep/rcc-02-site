@@ -26,6 +26,35 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Ao passar para o desktop o menu recolhido deixa de existir: fecha, o que
+  // também cancela a animação em curso (cleanup do efeito de abertura).
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const onChange = (event: MediaQueryListEvent) => {
+      if (event.matches) setOpen(false);
+    };
+    desktop.addEventListener("change", onChange);
+    return () => desktop.removeEventListener("change", onChange);
+  }, []);
+
+  // Abertura em 170ms (opacity + translateY 6px) via WAAPI, sem animar altura;
+  // o fechamento é imediato (o menu sai do DOM). Cancelada em toda troca de
+  // estado e no unmount; com movimento reduzido, não anima.
+  useEffect(() => {
+    const menu = mobileMenuRef.current;
+    if (!open || !menu) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const animation = menu.animate(
+      [
+        { opacity: 0, transform: "translateY(-6px)" },
+        { opacity: 1, transform: "none" },
+      ],
+      { duration: 170, easing: "ease-out" }
+    );
+    return () => animation.cancel();
+  }, [open]);
+
   useEffect(() => {
     if (!open) return;
 
@@ -77,25 +106,20 @@ export function Header() {
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          <Logo />
+        <div className="flex h-[4.25rem] items-center justify-between lg:h-[4.75rem]">
+          <Logo crop />
 
           {/* Desktop nav */}
           {/* `lg`, não `md`: com seis itens mais o CTA, a nav desktop passava
               de 768px e criava overflow horizontal em toda página. Em tablet o
               menu recolhido é o comportamento correto. */}
-          <nav className="hidden lg:flex items-center gap-6">
+          <nav className="hidden lg:flex items-center gap-1">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 aria-current={isActive(link.href) ? "page" : undefined}
-                className={cn(
-                  "ui-focus-ring rounded-full text-sm transition-[background-color,color,box-shadow] duration-200 px-3 py-1",
-                  isActive(link.href)
-                    ? "font-semibold text-rc2-brand-text bg-rc2-brand-text/10 ring-1 ring-rc2-brand-text/20"
-                    : "font-medium text-rc2-text hover:text-rc2-brand-text hover:bg-rc2-text/5"
-                )}
+                className="rc2-nav-link ui-focus-ring rounded-sm"
               >
                 {link.label}
               </Link>
@@ -111,65 +135,73 @@ export function Header() {
               }
               className={cn(
                 buttonVariants({ variant: "brand", size: "brand-sm" }),
-                "ml-2 shadow-sm ring-1 ring-rc2-brand/20"
+                "rc2-header-cta ml-3 h-11 rounded-lg px-5 text-base normal-case tracking-normal hover:bg-rc2-brand-hover active:bg-rc2-brand-hover"
               )}
             >
               Falar com a RC2
             </Link>
           </nav>
 
-          {/* Mobile hamburger */}
+          {/* Mobile hamburger. `aria-controls` só aponta para o menu enquanto
+              ele existe no DOM. */}
           <button
             ref={mobileMenuButtonRef}
-            className="ui-focus-ring rounded lg:hidden p-2 -mr-2 text-rc2-text hover:text-rc2-brand-text transition-colors"
+            className="ui-focus-ring -mr-3 inline-flex size-12 items-center justify-center rounded-lg text-rc2-heading lg:hidden"
             onClick={() => setOpen(!open)}
             aria-label={open ? "Fechar menu" : "Abrir menu"}
             aria-expanded={open}
-            aria-controls="mobile-main-menu"
+            aria-controls={open ? "mobile-main-menu" : undefined}
           >
-            {open ? <X size={22} /> : <Menu size={22} />}
+            {open ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu: sobrepõe o conteúdo abaixo do cabeçalho, como no protótipo.
+          O limite de altura mantém o CTA alcançável em telas baixas. */}
       {open && (
-        <div ref={mobileMenuRef} id="mobile-main-menu" className="lg:hidden bg-rc2-bg border-t border-border px-4 pb-4 pt-2">
-          <nav className="flex flex-col gap-1">
-            {NAV_LINKS.map((link) => (
+        <div
+          ref={mobileMenuRef}
+          id="mobile-main-menu"
+          className="absolute inset-x-0 top-full max-h-[calc(100dvh-4.25rem)] overflow-y-auto border-b border-rc2-border bg-rc2-bg lg:hidden"
+        >
+          <div className="mx-auto max-w-7xl px-4 pb-5 pt-2 sm:px-6">
+            <nav className="flex flex-col">
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={isActive(link.href) ? "page" : undefined}
+                  className={cn(
+                    "ui-focus-ring flex min-h-12 items-center border-b border-rc2-border-soft text-lg",
+                    isActive(link.href)
+                      ? "font-semibold text-rc2-brand-text"
+                      : "font-medium text-rc2-text hover:text-rc2-heading"
+                  )}
+                  onClick={() => setOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
               <Link
-                key={link.href}
-                href={link.href}
-                aria-current={isActive(link.href) ? "page" : undefined}
+                href="/contato"
+                onClick={() => {
+                  trackCtaClick({
+                    location: "header_mobile",
+                    label: "diagnostico_gratuito",
+                    destination: "/contato",
+                  });
+                  setOpen(false);
+                }}
                 className={cn(
-                  "ui-focus-ring flex min-h-[44px] items-center rounded-sm py-2 text-sm transition-colors",
-                  isActive(link.href)
-                    ? "font-semibold text-rc2-brand-text"
-                    : "font-medium text-rc2-text hover:text-rc2-brand-text"
+                  buttonVariants({ variant: "brand", size: "brand-md" }),
+                  "rc2-header-cta mt-5 h-12 w-full justify-center text-base normal-case tracking-normal hover:bg-rc2-brand-hover active:bg-rc2-brand-hover"
                 )}
-                onClick={() => setOpen(false)}
               >
-                {link.label}
+                Falar com a RC2
               </Link>
-            ))}
-            <Link
-              href="/contato"
-              onClick={() => {
-                trackCtaClick({
-                  location: "header_mobile",
-                  label: "diagnostico_gratuito",
-                  destination: "/contato",
-                });
-                setOpen(false);
-              }}
-              className={cn(
-                buttonVariants({ variant: "brand", size: "brand-md" }),
-                "mt-3 min-h-[44px] w-full justify-center"
-              )}
-            >
-              Falar com a RC2
-            </Link>
-          </nav>
+            </nav>
+          </div>
         </div>
       )}
     </header>

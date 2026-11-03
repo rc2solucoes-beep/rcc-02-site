@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { TrackedLink } from "@/components/tracking/TrackedLink";
@@ -32,6 +33,12 @@ export interface CTABlockBaseProps {
    * formulário do Contato, que é a ação real da página.
    */
   variant?: "dark" | "quiet";
+  /**
+   * `default` mantém a apresentação original.
+   * `home` é o refinamento do CTA final da Home: malha mais discreta, ações
+   * empilhadas e WhatsApp como link auxiliar textual.
+   */
+  presentation?: "default" | "home";
   className?: string;
 }
 
@@ -46,9 +53,11 @@ export function CTABlockBase({
   secondaryTracking,
   hideSecondary = false,
   variant = "dark",
+  presentation = "default",
   className,
 }: CTABlockBaseProps) {
   const isDark = variant === "dark";
+  const isHome = presentation === "home";
 
   return (
     <section
@@ -64,7 +73,9 @@ export function CTABlockBase({
       <div
         className={cn(
           "pointer-events-none absolute inset-0",
-          isDark ? "rc2-blueprint-dark opacity-60" : "rc2-blueprint opacity-40"
+          isDark
+            ? cn("rc2-blueprint-dark", isHome ? "opacity-20" : "opacity-60")
+            : "rc2-blueprint opacity-40"
         )}
         aria-hidden
       />
@@ -90,12 +101,19 @@ export function CTABlockBase({
           </FadeIn>
         )}
         <ScrollReveal delay={120} distance="18px">
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div
+            className={cn(
+              "mt-8 flex flex-col items-center justify-center",
+              isHome ? "gap-3" : "sm:flex-row gap-4"
+            )}
+          >
             <TrackedLink
               href={primaryHref}
               tracking={primaryTracking || { kind: "cta", location: "cta_block", label: "primary" }}
               className={cn(
-                buttonVariants({ variant: "brand", size: "brand-md" })
+                buttonVariants({ variant: "brand", size: "brand-md" }),
+                isHome &&
+                  "normal-case tracking-normal text-[17px] font-semibold min-h-12 h-auto py-3 px-6 w-full sm:w-auto sm:min-w-[20rem] max-w-full whitespace-normal text-center hover:bg-rc2-brand-hover active:bg-rc2-brand-hover"
               )}
             >
               {primaryLabel}
@@ -107,14 +125,21 @@ export function CTABlockBase({
                 rel={secondaryHref.startsWith("http") ? "noopener noreferrer" : undefined}
                 tracking={secondaryTracking || { kind: "cta", location: "cta_block", label: "secondary" }}
                 className={cn(
-                  "ui-focus-ring rounded-lg px-6 h-11 inline-flex items-center gap-1.5 border font-medium text-sm transition-[background-color,border-color,color,box-shadow] duration-200",
-                  isDark
-                    ? "border-rc2-dark-border text-rc2-dark-text hover:border-rc2-dark-text/80 hover:bg-rc2-dark-text/10 active:bg-rc2-dark-text/20 active:border-rc2-dark-text/90"
-                    : "border-rc2-heading/40 text-rc2-heading hover:border-rc2-heading/80 hover:bg-rc2-heading/10 active:bg-rc2-heading/20 active:border-rc2-heading/90"
+                  isHome
+                    ? "ui-focus-ring rounded-sm inline-flex min-h-11 items-center justify-center gap-2 py-2 text-base underline underline-offset-4 transition-colors duration-150 text-rc2-dark-text-secondary hover:text-rc2-dark-text"
+                    : "ui-focus-ring rounded-lg px-6 h-11 inline-flex items-center gap-1.5 border font-medium text-sm transition-[background-color,border-color,color,box-shadow] duration-200",
+                  !isHome &&
+                    (isDark
+                      ? "border-rc2-dark-border text-rc2-dark-text hover:border-rc2-dark-text/80 hover:bg-rc2-dark-text/10 active:bg-rc2-dark-text/20 active:border-rc2-dark-text/90"
+                      : "border-rc2-heading/40 text-rc2-heading hover:border-rc2-heading/80 hover:bg-rc2-heading/10 active:bg-rc2-heading/20 active:border-rc2-heading/90")
                 )}
               >
                 {secondaryLabel}
-                <span>→</span>
+                {isHome ? (
+                  <ArrowUpRight size={16} aria-hidden="true" />
+                ) : (
+                  <span>→</span>
+                )}
               </TrackedLink>
             )}
           </div>

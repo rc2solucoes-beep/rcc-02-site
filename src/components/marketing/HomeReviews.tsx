@@ -35,11 +35,11 @@ export function HomeReviews() {
       {reviews.map((review) => (
         <figure
           key={review.name}
-          className="group rc2-card rc2-card-hover relative flex flex-col overflow-hidden p-6 pt-7"
+          className="rc2-card relative flex flex-col overflow-hidden p-6 pt-7"
         >
-          {/* Acento estrutural — aba laranja no topo */}
+          {/* Acento estrutural estático — aba laranja no topo */}
           <span
-            className="absolute left-0 top-0 h-1 w-14 origin-left scale-x-[0.72] bg-rc2-brand transition-[opacity,transform] duration-200 group-hover:scale-x-100 group-hover:opacity-90"
+            className="absolute left-0 top-0 h-1 w-10 bg-rc2-brand"
             aria-hidden
           />
           <div
@@ -55,12 +55,12 @@ export function HomeReviews() {
               />
             ))}
           </div>
-          <blockquote className="flex-1 text-sm leading-relaxed text-rc2-text/80">
+          <blockquote className="flex-1 text-base leading-[1.75] text-rc2-text">
             {review.text}
           </blockquote>
-          <figcaption className="mt-4 flex items-center justify-between border-t border-border pt-3">
-            <span className="rc2-caption font-medium text-rc2-heading">{review.name}</span>
-            <time className="rc2-caption text-rc2-text-secondary">{review.date}</time>
+          <figcaption className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3">
+            <span className="text-base font-medium text-rc2-heading">{review.name}</span>
+            <time className="text-sm text-rc2-text-secondary">{review.date}</time>
           </figcaption>
         </figure>
       ))}

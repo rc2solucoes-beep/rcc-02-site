@@ -24,14 +24,14 @@ export function HomeProducts() {
               delay={index * 90}
               className="rc2-card flex flex-col p-6 md:p-7"
             >
-              <SectionLabel className="block mb-3">{product.category}</SectionLabel>
-              <h3 className="text-xl font-semibold text-rc2-heading mb-1">
+              <SectionLabel className="block mb-2">{product.category}</SectionLabel>
+              <h3 className="mb-2 text-2xl font-semibold leading-snug text-rc2-heading lg:text-[28px]">
                 {product.name}
               </h3>
-              <p className="mb-3 text-sm font-medium text-rc2-text">
+              <p className="mb-4 text-base font-medium leading-[1.75] text-rc2-text">
                 {product.tagline}
               </p>
-              <p className="text-sm text-rc2-text/70 leading-relaxed flex-1">
+              <p className="flex-1 text-base leading-[1.75] text-rc2-text-secondary">
                 {product.description}
               </p>
               <TrackedLink
@@ -45,13 +45,13 @@ export function HomeProducts() {
                   label: product.analyticsLabel,
                   destination: product.href,
                 }}
-                className="rc2-action-link mt-6"
+                className="rc2-action-link mt-5 min-h-11 max-w-full self-start py-2 text-base"
               >
                 {product.ctaLabel}
                 {product.external ? (
-                  <ArrowUpRight size={14} />
+                  <ArrowUpRight size={14} aria-hidden="true" />
                 ) : (
-                  <ArrowRight size={14} />
+                  <ArrowRight size={14} aria-hidden="true" />
                 )}
               </TrackedLink>
             </ScrollReveal>

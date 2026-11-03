@@ -19,18 +19,23 @@ export function HomeMethod() {
           </h2>
         </ScrollReveal>
 
-        <ol className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-rc2-dark-border bg-rc2-dark-border md:grid-cols-2 lg:grid-cols-5">
+        <ol className="flex flex-col divide-y divide-rc2-dark-border overflow-hidden rounded-xl border border-rc2-dark-border">
           {HOME_METHOD.steps.map((step, index) => (
-            <li key={step.name} className="bg-rc2-dark-2 px-5 py-7">
-              {/* Numeral é dispositivo de ritmo, não estado mudando: navy
-                  muted, nunca Safety Orange (§11 Do/Don't). */}
-              <span className="rc2-label text-rc2-dark-text-muted mb-3 block">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <h3 className="text-base font-semibold text-rc2-dark-text mb-2">
-                {step.name}
-              </h3>
-              <p className="text-sm text-rc2-dark-text-secondary leading-relaxed">
+            <li
+              key={step.name}
+              className="flex flex-col gap-3 p-6 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-8 lg:p-8"
+            >
+              <div className="flex min-w-0 items-baseline gap-3">
+                {/* Numeral é dispositivo de ritmo, não estado mudando: navy
+                    muted, nunca Safety Orange (§11 Do/Don't). */}
+                <span className="rc2-label text-rc2-dark-text-muted shrink-0">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3 className="min-w-0 text-xl font-semibold leading-snug text-rc2-dark-text">
+                  {step.name}
+                </h3>
+              </div>
+              <p className="min-w-0 text-base leading-[1.75] text-rc2-dark-text-secondary">
                 {step.description}
               </p>
             </li>
@@ -46,10 +51,10 @@ export function HomeMethod() {
               label: HOME_METHOD.managedOpsAnalyticsLabel,
               destination: HOME_METHOD.managedOpsHref,
             }}
-            className="rc2-action-link text-rc2-brand"
+            className="rc2-action-link text-rc2-brand min-h-11 max-w-full py-2 text-base"
           >
             {HOME_METHOD.managedOpsLabel}
-            <ArrowRight size={14} />
+            <ArrowRight size={14} aria-hidden="true" />
           </TrackedLink>
         </ScrollReveal>
       </div>

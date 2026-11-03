@@ -38,7 +38,7 @@ export function HomeCompetencies() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <ScrollReveal>
           <SectionLabel className="rc2-rule block mb-5">O que a RC2 faz</SectionLabel>
-          <h2 className="rc2-h2 text-rc2-heading mb-16 max-w-2xl">
+          <h2 className="rc2-h2 text-rc2-heading mb-10 max-w-2xl md:mb-14">
             Quatro competências para a operação voltar a funcionar.
           </h2>
         </ScrollReveal>
@@ -48,21 +48,21 @@ export function HomeCompetencies() {
             <ScrollReveal
               key={competency.title}
               delay={index * 70}
-              className="group grid grid-cols-1 gap-x-12 gap-y-5 border-b border-rc2-border py-10 md:grid-cols-12 md:py-12"
+              className="group grid grid-cols-[2rem_minmax(0,1fr)] gap-x-3 gap-y-4 border-b border-rc2-border py-8 sm:gap-x-4 lg:grid-cols-[3rem_minmax(0,1fr)_minmax(0,1fr)] lg:gap-x-8 lg:py-12"
             >
               {/* Índice — a anotação técnica que ordena a leitura. */}
-              <div className="flex items-center gap-3 md:col-span-2 md:block">
+              <div className="row-span-2 pt-1 lg:row-span-1">
                 {/* Numeral navy/muted (§11 Do/Don't). */}
                 <span className="rc2-label text-rc2-text-muted">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span
-                  className="h-px w-8 bg-rc2-border md:mt-4 md:block md:w-10"
+                  className="mt-4 hidden h-px w-8 bg-rc2-border lg:block"
                   aria-hidden
                 />
               </div>
 
-              <div className="md:col-span-5">
+              <div className="min-w-0">
                 <h3 className="flex items-center gap-3 text-xl font-semibold leading-snug text-rc2-heading md:text-2xl">
                   {(() => {
                     const Icon = COMPETENCY_ICONS[competency.title];
@@ -70,13 +70,13 @@ export function HomeCompetencies() {
                   })()}
                   {competency.title}
                 </h3>
-                <p className="mt-3 text-sm font-medium text-rc2-text">
+                <p className="mt-3 text-base font-medium leading-[1.75] text-rc2-text">
                   {competency.problem}
                 </p>
               </div>
 
-              <div className="md:col-span-5">
-                <p className="text-sm leading-relaxed text-rc2-text/70">
+              <div className="min-w-0">
+                <p className="text-base leading-[1.75] text-rc2-text-secondary">
                   {competency.delivery}
                 </p>
                 <TrackedLink
@@ -87,17 +87,17 @@ export function HomeCompetencies() {
                     label: competency.analyticsLabel,
                     destination: competency.href,
                   }}
-                  className="rc2-action-link mt-5"
+                  className="rc2-action-link mt-2 min-h-11 py-2 text-base"
                 >
                   {competency.linkLabel}
-                  <ArrowRight size={14} />
+                  <ArrowRight size={14} aria-hidden="true" />
                 </TrackedLink>
               </div>
             </ScrollReveal>
           ))}
         </div>
 
-        <ScrollReveal delay={300} className="mt-12">
+        <ScrollReveal delay={300} className="mt-8 md:mt-12">
           <TrackedLink
             href={HOME_CTAS.competencies.href}
             tracking={{
@@ -106,10 +106,10 @@ export function HomeCompetencies() {
               label: HOME_CTAS.competencies.analyticsLabel,
               destination: HOME_CTAS.competencies.href,
             }}
-            className="rc2-action-link"
+            className="rc2-action-link min-h-11 py-2 text-base"
           >
             {HOME_CTAS.competencies.label}
-            <ArrowRight size={14} />
+            <ArrowRight size={14} aria-hidden="true" />
           </TrackedLink>
         </ScrollReveal>
       </div>

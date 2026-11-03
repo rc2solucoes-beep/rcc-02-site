@@ -40,15 +40,16 @@ export async function HomeContent() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <ScrollReveal>
           <SectionLabel className="rc2-rule block mb-5">Conteúdo</SectionLabel>
-          <h2 className="rc2-h2 text-rc2-heading mb-12 max-w-2xl">
+          <h2 className="rc2-h2 text-rc2-heading mb-8 max-w-2xl">
             Como pensamos automação, integração e IA na prática.
           </h2>
         </ScrollReveal>
 
-        <div className="space-y-6">
+        <div className="space-y-4">
           {posts.map((post) => (
             <BlogCard
               key={post.id}
+              variant="compact"
               image={post.cover_url}
               title={post.title}
               summary={post.summary}
@@ -61,7 +62,7 @@ export async function HomeContent() {
           ))}
         </div>
 
-        <ScrollReveal delay={120} className="mt-10">
+        <ScrollReveal delay={120} className="mt-8">
           <TrackedLink
             href={HOME_CTAS.content.href}
             tracking={{
@@ -70,10 +71,10 @@ export async function HomeContent() {
               label: HOME_CTAS.content.analyticsLabel,
               destination: HOME_CTAS.content.href,
             }}
-            className="rc2-action-link"
+            className="rc2-action-link min-h-11 py-2 text-base"
           >
             {HOME_CTAS.content.label}
-            <ArrowRight size={14} />
+            <ArrowRight size={14} aria-hidden="true" />
           </TrackedLink>
         </ScrollReveal>
       </div>

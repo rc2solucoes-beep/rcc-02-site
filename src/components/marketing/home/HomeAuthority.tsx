@@ -7,6 +7,11 @@ import { StatCounter } from "@/components/ui/StatCounter";
 import { HOME_AUTHORITY, HOME_AUTHORITY_STATS, HOME_CTAS } from "@/lib/content/home";
 
 export function HomeAuthority() {
+  const statsWithContext = HOME_AUTHORITY_STATS.map((stat, index) => ({
+    ...stat,
+    context: index < 2 ? "Uno Healthcare · trajetória do fundador" : "Trajetória do fundador",
+  }));
+
   return (
     // Segundo momento de assinatura da página (§9 Home): prova quantificada
     // recebe o respiro reservado a acontecimentos, não o ritmo de rotina.
@@ -19,7 +24,7 @@ export function HomeAuthority() {
           <h2 className="rc2-h2 text-rc2-heading mb-6 max-w-2xl">
             Experiência de operação, não só de ferramenta.
           </h2>
-          <p className="text-rc2-text/75 text-lg leading-relaxed max-w-2xl mb-10">
+          <p className="text-rc2-text-secondary text-lg leading-relaxed max-w-2xl mb-10">
             {HOME_AUTHORITY.intro}
           </p>
         </ScrollReveal>
@@ -27,28 +32,33 @@ export function HomeAuthority() {
         {/* Os números do case Uno Healthcare saem da prosa e viram o
             componente Stat/Counter (§8, §9). São os mesmos valores. */}
         <ScrollReveal delay={60} className="mb-14">
-          <StatCounter stats={HOME_AUTHORITY_STATS} />
+          <StatCounter stats={statsWithContext} />
         </ScrollReveal>
 
-        {/* §8 Card Case: "espaçamento maior entre cards (seção de
-            assinatura)". O gap de rotina achatava a prova social contra as
-            demais grades da página. */}
-        <dl className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-10">
+        {/* Experiências do fundador: lista editorial, distinta das avaliações
+            de clientes abaixo (Proximity — grupos distintos, espaçamento
+            distinto). */}
+        <h3 className="rc2-h3 text-rc2-heading text-xl mb-4">
+          Trajetória do fundador
+        </h3>
+        <dl className="border-b border-rc2-border">
           {HOME_AUTHORITY.facts.map((item, index) => (
             <ScrollReveal
               key={item.org}
               delay={index * 80}
-              className="rc2-card p-6"
+              className="grid grid-cols-1 gap-2 border-t border-rc2-border py-5 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-6 md:py-6"
             >
-              <dt className="rc2-label text-rc2-brand-text mb-3">{item.org}</dt>
-              <dd className="text-sm text-rc2-text/75 leading-relaxed">
+              <dt className="text-xl font-semibold text-rc2-heading">
+                {item.org}
+              </dt>
+              <dd className="text-base leading-[1.75] text-rc2-text-secondary">
                 {item.fact}
               </dd>
             </ScrollReveal>
           ))}
         </dl>
 
-        <div className="mt-16">
+        <div className="mt-12">
           <ScrollReveal>
             <h3 className="rc2-h3 text-rc2-heading mb-8">
               O que os clientes dizem
@@ -66,10 +76,10 @@ export function HomeAuthority() {
               label: HOME_CTAS.authority.analyticsLabel,
               destination: HOME_CTAS.authority.href,
             }}
-            className="rc2-action-link"
+            className="rc2-action-link text-base min-h-11 min-w-11 py-2 max-w-full"
           >
             {HOME_CTAS.authority.label}
-            <ArrowRight size={14} />
+            <ArrowRight size={14} aria-hidden="true" />
           </TrackedLink>
         </ScrollReveal>
       </div>

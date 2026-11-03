@@ -11,6 +11,8 @@ export type Stat = {
   /** Ex.: " mil", "+" */
   suffix?: string;
   label: string;
+  /** Contexto exibido antes da legenda, para explicar a origem do número. */
+  context?: string;
 };
 
 /**
@@ -117,10 +119,20 @@ function StatItem({ stat, variant }: { stat: Stat; variant: "light" | "dark" }) 
       </dd>
       <dt
         className={cn(
-          "mt-3 text-sm leading-relaxed",
-          isDark ? "text-rc2-dark-text-secondary" : "text-rc2-text/75"
+          "mt-3 text-base leading-[1.75]",
+          isDark ? "text-rc2-dark-text-secondary" : "text-rc2-text-secondary"
         )}
       >
+        {stat.context ? (
+          <span
+            className={cn(
+              "block font-medium",
+              isDark ? "text-rc2-dark-text" : "text-rc2-text"
+            )}
+          >
+            {stat.context}
+          </span>
+        ) : null}
         {stat.label}
       </dt>
     </div>

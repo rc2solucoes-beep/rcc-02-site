@@ -11,11 +11,14 @@ interface HomeCtaBlockProps {
    * `/sobre`, por exemplo. O destino é sempre `/contato`.
    */
   primaryLabel?: string;
+  /** `home` ativa o refinamento do CTA final da Home; `default` preserva o atual. */
+  presentation?: "default" | "home";
 }
 
 export function HomeCtaBlock({
   className,
   primaryLabel = "Falar sobre minha operação",
+  presentation = "default",
 }: HomeCtaBlockProps = {}) {
   return (
     <CTABlockBase
@@ -37,6 +40,7 @@ export function HomeCtaBlock({
         label: "whatsapp",
       }}
       variant="dark"
+      presentation={presentation}
       className={className}
     />
   );
