@@ -19,6 +19,10 @@ import { cn } from "@/lib/utils";
  * - `compact` — opcional. Miniatura de ~192px (120px de altura no mobile) com a
  *   capa inteira (`object-contain`) e texto editorial agrupado; usado na Home.
  *
+ * - `editorial` (prop opt-in, só o índice do blog) — capa inteira
+ *   (`object-contain`) dentro dos frames 3:2 / 4:3, resumo em 16px e metadados
+ *   em 14px `--rc2-text-secondary`. Sem ela, nada muda.
+ *
  * As três dividem tipografia, borda, hover e rodapé de metadados: dar destaque
  * a um post não pode criar um segundo sistema de card.
  */
@@ -32,6 +36,10 @@ interface BlogCardProps {
   readingTimeMinutes?: number | null;
   category?: string;
   variant?: "row" | "feature" | "grid" | "compact";
+  /** Opt-in do índice do blog; ver a composição `editorial` acima. */
+  editorial?: boolean;
+  /** Nível do título, para o card caber na hierarquia da página. */
+  headingLevel?: "h2" | "h3";
   /**
    * Opcional. Quando presente, o clique no card emite `cta_click`.
    * Ausente (padrão), o card mantém o comportamento anterior sem medição.
@@ -63,8 +71,11 @@ export function BlogCard({
   readingTimeMinutes,
   category,
   variant = "row",
+  editorial = false,
+  headingLevel = "h3",
   tracking,
 }: BlogCardProps) {
+  const Heading = headingLevel;
   const formattedDate = formatDate(publishedAt);
   const isFeature = variant === "feature";
   const isGrid = variant === "grid";
@@ -113,7 +124,8 @@ export function BlogCard({
             {/* Imagem */}
             <div
               className={cn(
-                "relative overflow-hidden bg-rc2-bg",
+                "relative overflow-hidden",
+                editorial ? "bg-rc2-bg-alt" : "bg-rc2-bg",
                 isRow && "aspect-[4/3] md:aspect-auto md:min-h-[300px]",
                 isCompact && "h-[120px] md:h-auto",
                 // §6 Imagens: 3:2 em foto de destaque, 4:3 em thumbnail.
@@ -126,18 +138,20 @@ export function BlogCard({
                   <Image
                     src={image}
                     alt={title}
-                    width={isFeature ? 1200 : 400}
-                    height={isFeature ? 800 : 300}
+                    width={isFeature ? 1200 : editorial ? 800 : 400}
+                    height={isFeature ? 800 : editorial ? 600 : 300}
                     sizes={
                       isFeature
                         ? "(max-width: 1024px) 100vw, 1024px"
-                        : isCompact
+                        : editorial
+                          ? "(max-width: 768px) 100vw, 512px"
+                          : isCompact
                           ? "(max-width: 768px) 100vw, 192px"
                           : "(max-width: 768px) 100vw, 400px"
                     }
                     className={cn(
                       "h-full w-full",
-                      isCompact ? "object-contain" : "object-cover"
+                      isCompact || editorial ? "object-contain" : "object-cover"
                     )}
                     // O destaque é o maior elemento acima da dobra do índice.
                     priority={isFeature}
@@ -152,7 +166,14 @@ export function BlogCard({
                 </>
               ) : (
                 <div className="flex h-full w-full items-center justify-center bg-gradient-to-b from-rc2-accent-soft to-rc2-brand/10">
-                  <span className="text-sm text-rc2-text-muted">Sem imagem</span>
+                  <span
+                    className={cn(
+                      "text-sm",
+                      editorial ? "text-rc2-text-secondary" : "text-rc2-text-muted"
+                    )}
+                  >
+                    Sem imagem
+                  </span>
                 </div>
               )}
             </div>
@@ -177,18 +198,20 @@ export function BlogCard({
                     {category}
                   </span>
                 )}
-                <h3
+                <Heading
                   className={cn(
                     "font-semibold leading-snug text-rc2-heading transition-colors group-hover:text-rc2-brand-text",
                     isFeature
                       ? "rc2-h3 mb-3 md:text-3xl"
                       : isCompact
                         ? "mb-0 text-xl md:text-2xl"
-                        : "mb-2 text-lg"
+                        : editorial
+                          ? "mb-3 text-xl"
+                          : "mb-2 text-lg"
                   )}
                 >
                   {title}
-                </h3>
+                </Heading>
               </div>
 
               <p
@@ -199,7 +222,11 @@ export function BlogCard({
                   // aparece inteiro. Os cards do grid já se igualam em altura
                   // pela linha do grid, e o rodapé de metadados fica preso
                   // embaixo pelo `justify-between`.
-                  isFeature ? "rc2-body-lg" : !isCompact && "text-sm"
+                  isFeature
+                    ? "rc2-body-lg"
+                    : editorial
+                      ? "text-base leading-[1.75]"
+                      : !isCompact && "text-sm"
                 )}
               >
                 {summary}
@@ -214,7 +241,7 @@ export function BlogCard({
                 <div
                   className={cn(
                     "flex flex-wrap items-center gap-2",
-                    isCompact
+                    isCompact || editorial
                       ? "min-w-0 text-sm text-rc2-text-secondary"
                       : "text-xs text-rc2-text-muted"
                   )}
